@@ -11,7 +11,7 @@ Chat with your documents: upload a file, ask questions, get answers grounded in 
 | 限制 | 做法 |
 |---|---|
 | LLM 只做 text-to-text，不得用 GPT/Gemini API 解析文件 | 文件以本地程式庫解析；LLM 為本機 Ollama |
-| LLM context 上限 10K tokens | 每次呼叫的 prompt + completion ≤ 10,000，由程式強制檢查並記錄 |
+| LLM context 上限 10K tokens | 每次呼叫的 prompt + completion ≤ 10,000：送出前以內附的 Qwen3 tokenizer 在本地計數並分配預算；每個請求都要求 Ollama 拒絕超量的輸入、不捨棄已有的內容（`truncate=false`、`shift=false`），所以不會被悄悄截斷 |
 
 ## 快速啟動 / Quick start
 
@@ -21,6 +21,9 @@ Chat with your documents: upload a file, ask questions, get answers grounded in 
 ollama pull qwen3:32b
 ollama pull bge-m3
 ```
+
+Qwen3 的 tokenizer 已內附在專案中（`app/backend/third-party/qwen3-tokenizer/`，Apache-2.0），建置時不需要連到 Hugging Face。內附的只有 tokenizer：上面兩個模型仍須事先用 Ollama 安裝。
+The Qwen3 tokenizer is bundled with the project (Apache-2.0), so the build does not download it from Hugging Face. Only the tokenizer is bundled: the two models above must still be installed with Ollama beforehand.
 
 啟動 / Run：
 
