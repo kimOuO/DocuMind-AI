@@ -1,0 +1,9 @@
+# Development and test dependencies (includes runtime dependencies).
+-r requirements.txt
+pytest==9.2.0
+pytest-asyncio==1.4.1.post1
+ruff==0.17.3
+mypy==2.4.1
+pre_commit==4.7.0
+# Installs Node.js into this venv, so frontend tooling is isolated from the host too.
+nodeenv==1.12.0

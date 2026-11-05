@@ -1,0 +1,34 @@
+# Tool configuration only. Dependencies live in requirements*.txt (see ADR 0001).
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC", "RUF"]
+# RUF001-003: Traditional Chinese text in strings and comments is intentional.
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+# FastAPI's dependency-injection idiom calls Depends() in argument defaults.
+"app/api/*.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["migrations/"]
+
+[[tool.mypy.overrides]]
+module = ["pgvector.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "llm: calls a real Ollama model (slow; not run in CI)",
+    "db: needs a running PostgreSQL with pgvector",
+]
+addopts = "-m 'not llm and not db'"

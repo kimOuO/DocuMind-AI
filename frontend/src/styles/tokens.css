@@ -1,0 +1,38 @@
+/*
+ * Design tokens. Components must use these variables, never raw colour values.
+ * P0 defines the minimum set; the full system is specified in
+ * docs/design/design-system.md (P5).
+ */
+:root {
+  --color-bg: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #dfe3ea;
+  --color-text: #171a21;
+  --color-text-muted: #5b6474;
+  --color-accent: #2f5fd0;
+  --color-success: #1a7f4b;
+  --color-danger: #c2362b;
+
+  --radius-md: 8px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+
+  --font-sans:
+    'Inter', 'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f1218;
+    --color-surface: #181c25;
+    --color-border: #2a303c;
+    --color-text: #e8ebf1;
+    --color-text-muted: #98a1b2;
+    --color-accent: #7ea2ff;
+    --color-success: #4cc38a;
+    --color-danger: #ff8176;
+  }
+}
