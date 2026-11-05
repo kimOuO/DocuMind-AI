@@ -12,7 +12,7 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
 from typing import Any
 
-from sqlalchemy import case, select
+from sqlalchemy import case, select, true
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.core import sse
@@ -53,39 +53,45 @@ class Event:
 async def read_snapshot(
     sessions: async_sessionmaker[AsyncSession], owner_id: uuid.UUID, document_id: uuid.UUID
 ) -> DocumentSnapshot | None:
-    """The current state of the owner's document, or None if there is no such document."""
+    """The current state of the owner's document, or None if there is no such document.
+
+    Document and job are read in one statement, so they are seen as of the same
+    moment. Read separately, a job that completed in between would show as
+    finished next to a document whose status had not changed yet, and the
+    stream would end without reporting the final status.
+    """
+    latest_job = (
+        select(
+            IngestionJob.id,
+            IngestionJob.kind,
+            IngestionJob.status,
+            IngestionJob.stage,
+            IngestionJob.progress_current,
+            IngestionJob.progress_total,
+            IngestionJob.error,
+        )
+        .where(IngestionJob.document_id == document_id)
+        .order_by(
+            case((IngestionJob.status.in_(ACTIVE_STATUSES), 0), else_=1),
+            IngestionJob.created_at.desc(),
+            IngestionJob.retry_count.desc(),
+        )
+        .limit(1)
+        .subquery()
+    )
     async with sessions() as session:
-        document = (
+        row = (
             await session.execute(
-                select(Document.status, Document.summary_status).where(
-                    Document.id == document_id, Document.owner_id == owner_id
-                )
+                select(Document.status, Document.summary_status, latest_job)
+                .outerjoin(latest_job, true())
+                .where(Document.id == document_id, Document.owner_id == owner_id)
             )
         ).one_or_none()
-        if document is None:
-            return None
-        job = (
-            await session.execute(
-                select(
-                    IngestionJob.id,
-                    IngestionJob.kind,
-                    IngestionJob.status,
-                    IngestionJob.stage,
-                    IngestionJob.progress_current,
-                    IngestionJob.progress_total,
-                    IngestionJob.error,
-                )
-                .where(IngestionJob.document_id == document_id)
-                .order_by(
-                    case((IngestionJob.status.in_(ACTIVE_STATUSES), 0), else_=1),
-                    IngestionJob.created_at.desc(),
-                    IngestionJob.retry_count.desc(),
-                )
-                .limit(1)
-            )
-        ).one_or_none()
+    if row is None:
+        return None
+    status, summary_status, *job = row
     return DocumentSnapshot(
-        document.status, document.summary_status, JobSnapshot(*job) if job else None
+        status, summary_status, JobSnapshot(*job) if job[0] is not None else None
     )
 
 
