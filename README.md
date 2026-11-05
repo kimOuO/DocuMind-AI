@@ -3,8 +3,8 @@
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 Chat with your documents: upload a file, ask questions, get answers grounded in the document with citations.
 
-> 狀態 / Status：**P0 基礎建設完成**。目前只有系統狀態頁；文件上傳與問答自 P2 起實作。
-> P0 (scaffolding) is done. Only a system-status page exists so far; upload and Q&A arrive in P2.
+> 狀態 / Status：**P2-A 完成**：可以註冊、登入、登出，並查看系統狀態。文件上傳自 P2-B、問答自 P2-D 起實作。
+> P2-A is done: register, log in, log out, and see the system status. Document upload arrives in P2-B and Q&A in P2-D.
 
 ## 題目限制 / Constraints
 
@@ -29,18 +29,23 @@ docker compose up --build -d --wait     # 或 make up
 # 開啟 http://127.0.0.1:3000
 ```
 
-狀態頁應顯示資料庫與 LLM 服務皆「正常」。
-The status page should report both the database and the LLM server as healthy.
+註冊並登入後，首頁應顯示資料庫與 LLM 服務皆「正常」。
+After registering and logging in, the home page should report both the database and the LLM server as healthy.
 
-- Ollama 必須監聽容器連得到的位址（`OLLAMA_HOST=0.0.0.0`）。若沒有預裝 Ollama，可改用內建的容器：`docker compose --profile ollama up --build`，並在 `.env` 設定 `COMPOSE_OLLAMA_BASE_URL=http://ollama:11434`（此模式尚未實測）。
-- 設定值見 `.env.example`；不建立 `.env` 也能以預設值執行。
+請從 `http://127.0.0.1:3000` 或 `http://localhost:3000` 開啟。用其他位址（例如區網 IP）開啟時，把該位址加進 `.env` 的 `ALLOWED_ORIGINS`，否則會被來源檢查擋下。
+Open the site at one of those two addresses. If you use another address, add it to `ALLOWED_ORIGINS` in `.env`; otherwise state-changing requests are refused by the origin check.
+
+- Ollama 必須監聽容器連得到的位址（`OLLAMA_HOST=0.0.0.0`）。若沒有預裝 Ollama，可改用內建的容器：`docker compose --profile ollama up --build`，並在 `.env` 設定 `COMPOSE_OLLAMA_HOST=ollama`（此模式尚未實測）。
+- 設定值見 `.env.sample`。`make setup`、`make up` 會在 `.env` 不存在時由它複製一份。
+- API 文件：`http://127.0.0.1:3000/api/v1/docs`。
 
 ## 本地開發 / Local development
 
 ```bash
 make setup    # 建立 .venv（標準 venv + pip，Node 也裝在裡面）並安裝前後端相依
 make dev      # 資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
-make check    # lint、型別檢查、單元測試
+make check    # lint、型別檢查、所有測試（會啟動資料庫容器）
+make smoke    # 最小流程驗證：bge-m3 → pgvector → qwen3
 make help     # 所有指令
 ```
 
@@ -69,7 +74,7 @@ DocuMind-AI/
 ├── scripts/                    工具腳本（匯出逐字稿、打包）
 ├── .venv/                      開發環境（不進版控，make setup 建立）
 ├── CLAUDE.md / AGENTS.md       給 AI coding agent 的專案規則
-└── Makefile / docker-compose.yml / .env.example
+└── Makefile / docker-compose.yml / .env.sample
 ```
 
 原則：資料夾用完整英文名稱、不用縮寫；還沒有內容的資料夾不預先建立。
