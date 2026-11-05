@@ -119,6 +119,9 @@ async def test_the_paper_is_summarised_within_the_budget_with_page_tags(
         pages = f"p{source['page_start']}-{source['page_end']}"
         print(f"  [{source['index']}] {source['section_title']} {pages}")
     print(f"answer:\n{answer}")
+    print(f"unverified numbers: {by_name['done']['unverified_numbers']}")
+    for v in by_name["done"]["verified_numbers"]:
+        print(f"  {v['number']:>10} p{v['page']}: {v['snippet'][:100]}")
 
     assert by_name["route"]["type"] == "summary"
     assert {s["kind"] for s in by_name["sources"]} == {"summary"}

@@ -8,7 +8,7 @@ that are ready are searched.
 import uuid
 from dataclasses import dataclass
 
-from sqlalchemy import select, text
+from sqlalchemy import and_, or_, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Chunk, Document
@@ -92,3 +92,41 @@ class RetrievalRepository:
             )
             for row in rows
         ]
+
+    async def page_texts(
+        self, owner_id: uuid.UUID, ranges: list[tuple[uuid.UUID, int, int]]
+    ) -> list[tuple[uuid.UUID, int, str]]:
+        """The stored text of the owner's pages, one entry per (document, page).
+
+        `ranges` are (document id, first page, last page). Chunks of a page are
+        joined in order; their overlap does no harm to a lookup.
+        """
+        if not ranges:
+            return []
+        rows = (
+            await self._db.execute(
+                select(Chunk.document_id, Chunk.page, Chunk.text)
+                .join(Document, Document.id == Chunk.document_id)
+                .where(
+                    Document.owner_id == owner_id,
+                    or_(
+                        *(
+                            and_(
+                                Chunk.document_id == document_id,
+                                Chunk.page >= first,
+                                Chunk.page <= last,
+                            )
+                            for document_id, first, last in ranges
+                        )
+                    ),
+                )
+                .order_by(Chunk.document_id, Chunk.page, Chunk.ordinal)
+            )
+        ).all()
+        pages: list[tuple[uuid.UUID, int, str]] = []
+        for document_id, page, chunk_text in rows:
+            if pages and pages[-1][:2] == (document_id, page):
+                pages[-1] = (document_id, page, pages[-1][2] + "\n" + chunk_text)
+            else:
+                pages.append((document_id, page, chunk_text))
+        return pages

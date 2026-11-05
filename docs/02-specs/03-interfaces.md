@@ -178,7 +178,7 @@
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
 | `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000}` | Ollama 回報的實測用量 |
-| `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": []}` | 結束 |
+| `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "finish_reason": "stop"}` | 結束 |
 | `error` | `{"detail": "…", "code": "…"}` | 失敗；助理訊息的狀態為 `failed` |
 
 來源的格式（原文切塊與摘要共用）：
@@ -201,7 +201,8 @@
 - `kind=chunk`：原文切塊，`page_start` 與 `page_end` 相同，`score` 為相似度。
 - `kind=summary`：章節摘要，帶章節標題與頁碼範圍，`score` 為 `null`。
 - `done.answered=false` 表示判定為找不到答案；此時仍以 `delta` 送出一段固定的說明文字，`cited` 為空。
-- `done.unverified_numbers` 列出回答中無法在所引用頁面原文找到的數字（AC-26）。
+- `done.unverified_numbers` 列出回答中無法在所引用頁面原文找到的數字（AC-26）；此時另以 `delta` 在回答後附一段說明，列出這些數字。`done.verified_numbers` 列出找得到的數字與其所在的文件、頁碼及該頁原文片段（架構規格第 7 節「來源附上該頁原文片段」的落實；2026-11-06 補入）。核對範圍是被引用來源的頁碼範圍，沒有引用時為全部來源；比對時忽略千分位逗號與百分號；一位數的整數（如「Table 2」）不核對。
+- `done.finish_reason`：LLM 呼叫的結束原因（`stop`、`output_limit`、`context_exhausted`…）；未呼叫 LLM 時為 `null`。
 - 摘要類問題而摘要尚未 `ready`：以 `delta` 回覆摘要尚未完成或已失敗，`answered` 為 `false`（AC-42）。
 
 ### 1.6 `GET /llm-calls`

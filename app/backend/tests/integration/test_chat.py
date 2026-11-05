@@ -195,6 +195,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "answered": True,
         "cited": [1],
         "unverified_numbers": [],
+        "verified_numbers": [],
         "finish_reason": "stop",
     }
     # What the model was given: the rules, the numbered source, the question.

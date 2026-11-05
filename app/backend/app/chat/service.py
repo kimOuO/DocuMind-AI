@@ -29,6 +29,7 @@ from app.chat.prompting import (
 )
 from app.chat.repository import ChatRepository
 from app.chat.routing import question_type
+from app.chat.verification import NumberCheck, PageText, check_note, verify_numbers
 from app.conversations.service import ConversationService
 from app.core.env_loader import Settings
 from app.core.errors import ApiError
@@ -36,6 +37,7 @@ from app.llm.embedding import Embedder, EmbeddingError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
 from app.models import User
+from app.retrieval.repository import RetrievalRepository
 from app.retrieval.service import RetrievalService, SearchScope
 from app.summarization.repository import DocumentSummaryState, SummaryRepository
 
@@ -172,6 +174,7 @@ class ChatService:
                         "answered": False,
                         "cited": [],
                         "unverified_numbers": [],
+                        "verified_numbers": [],
                         "finish_reason": None,
                     },
                 )
@@ -210,10 +213,18 @@ class ChatService:
             # A stream that ended normally is not necessarily a finished answer:
             # only a natural stop is. Anything else is kept, marked interrupted.
             complete = result.finish_reason.is_complete
-            if complete and evidence.note:
-                # Documents whose summary was not available are named after the answer.
-                received.append("\n\n" + evidence.note)
-                yield ChatEvent("delta", {"text": "\n\n" + evidence.note})
+            check = NumberCheck([], [])
+            if complete:
+                check = await self._check_numbers(prepared, "".join(received), evidence, cited)
+                language = question_language(prepared.question)
+                notes = [evidence.note] if evidence.note else []
+                if check.unverified:
+                    notes.append(check_note(check.unverified, language))
+                for note in notes:
+                    # Said after the answer, as part of it: documents whose summary was
+                    # not available, and numbers that could not be checked.
+                    received.append("\n\n" + note)
+                    yield ChatEvent("delta", {"text": "\n\n" + note})
             status = "completed" if complete else "interrupted"
             answered = bool(cited) if complete else None
             await self._finish(
@@ -233,7 +244,16 @@ class ChatService:
                     "status": status,
                     "answered": answered,
                     "cited": cited,
-                    "unverified_numbers": [],
+                    "unverified_numbers": check.unverified,
+                    "verified_numbers": [
+                        {
+                            "number": v.number,
+                            "document_id": str(v.document_id),
+                            "page": v.page,
+                            "snippet": v.snippet,
+                        }
+                        for v in check.verified
+                    ],
                     "finish_reason": result.finish_reason.value,
                 },
             )
@@ -254,6 +274,20 @@ class ChatService:
             yield ChatEvent(
                 "error", {"code": "INTERNAL_ERROR", "detail": "The answer could not be produced."}
             )
+
+    async def _check_numbers(
+        self, prepared: PreparedQuestion, answer: str, evidence: Evidence, cited: list[int]
+    ) -> NumberCheck:
+        """AC-26: look the answer's numbers up on the pages of the cited sources."""
+        sources = [evidence.sources[i - 1] for i in cited] or evidence.sources
+        ranges = list(
+            dict.fromkeys(
+                (uuid.UUID(s["document_id"]), s["page_start"], s["page_end"]) for s in sources
+            )
+        )
+        async with self._sessions() as session:
+            rows = await RetrievalRepository(session).page_texts(prepared.actor.id, ranges)
+        return verify_numbers(answer, [PageText(*row) for row in rows])
 
     async def _retrieval_evidence(self, prepared: PreparedQuestion) -> Evidence:
         async with self._sessions() as session:

@@ -235,3 +235,46 @@ async def test_each_document_gets_its_own_part_and_missing_summaries_are_named(
     assert '"later.txt"' in content and "not available" in content
     # The note is part of the answer the client received, too.
     assert "later.txt" in "".join(d["text"] for n, d in received if n == "delta")
+
+
+async def test_numbers_in_the_answer_are_checked_against_the_cited_pages(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-26: 67.6% is on page 1 of the note; 12,345 is not anywhere in it."""
+    await add_document(kim, tokenizer, "notes.md", NOTE)
+    model = StubOllama(["The win rate is 67.6% [2]", " for 12,345 users [2]."])
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    received = events(ask(kim, conversation, "summary this document."))
+
+    done = received[-1][1]
+    assert isinstance(done, dict)
+    assert done["unverified_numbers"] == ["12,345"]
+    assert [(v["number"], v["page"]) for v in done["verified_numbers"]] == [("67.6%", 1)]
+    assert "Win rate 67.6%" in done["verified_numbers"][0]["snippet"]
+    assert done["answered"] is True
+    # The reader is told, after the answer, which numbers could not be checked.
+    deltas = [d["text"] for n, d in received if n == "delta"]
+    assert deltas[:2] == ["The win rate is 67.6% [2]", " for 12,345 users [2]."]
+    assert "12,345" in deltas[-1] and "could not be checked" in deltas[-1]
+    start = received[0][1]
+    assert isinstance(start, dict)
+    content = message(db, start["assistant_message_id"])[2]
+    assert content.startswith("The win rate is 67.6% [2] for 12,345 users [2].")
+    assert content.endswith(deltas[-1])
+
+
+async def test_a_chinese_answer_gets_the_check_note_in_chinese(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    await add_document(kim, tokenizer, "notes.md", NOTE)
+    model = StubOllama(["勝率為 67.6%，共 12,345 位使用者 [2]。"])
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    received = events(ask(kim, conversation, "請摘要這份文件"))
+
+    deltas = [d["text"] for n, d in received if n == "delta"]
+    assert "12,345" in deltas[-1] and "未能在引用的原文頁面中核對" in deltas[-1]
+    assert received[-1][1]["unverified_numbers"] == ["12,345"]
