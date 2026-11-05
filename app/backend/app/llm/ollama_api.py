@@ -1,4 +1,4 @@
-"""The one place that builds generation requests for Ollama and reads how they ended.
+"""The one place that builds requests for Ollama and reads how generation ended.
 
 Every request must carry the same limits, so that the context window can never
 be exceeded without notice:
@@ -103,6 +103,17 @@ def chat_request(
         turns.insert(0, {"role": "system", "content": system})
     body["messages"] = turns
     return OllamaRequest("/api/chat", body)
+
+
+def embed_request(settings: Settings, texts: list[str]) -> OllamaRequest:
+    """A request for the embeddings of several texts.
+
+    `truncate: false` here too: a text that is too long for the embedding model
+    is refused, so a chunk is never embedded from only part of its content.
+    """
+    return OllamaRequest(
+        "/api/embed", {"model": settings.embed_model, "input": texts, "truncate": False}
+    )
 
 
 def read_finish_reason(final: dict[str, Any], *, max_output_tokens: int) -> FinishReason:

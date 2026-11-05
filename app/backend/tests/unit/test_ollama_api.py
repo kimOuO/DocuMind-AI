@@ -163,6 +163,7 @@ def test_generation_requests_are_built_in_one_place_only() -> None:
     forbidden = (
         "/api/generate",
         "/api/chat",
+        "/api/embed",
         '"num_ctx"',
         '"num_predict"',
         '"truncate"',

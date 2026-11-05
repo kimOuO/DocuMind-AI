@@ -21,7 +21,7 @@ import psycopg
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app" / "backend"))
 from app.core.env_loader import get_settings
-from app.llm.ollama_api import generate_request
+from app.llm.ollama_api import embed_request, generate_request
 
 PASSAGES = [
     (
@@ -65,11 +65,8 @@ def main() -> int:
 
     # 1. Embeddings
     started = time.time()
-    response = httpx.post(
-        f"{ollama}/api/embed",
-        json={"model": settings.embed_model, "input": [*PASSAGES, QUESTION]},
-        timeout=120,
-    )
+    embedding = embed_request(settings, [*PASSAGES, QUESTION])
+    response = httpx.post(f"{ollama}{embedding.path}", json=embedding.body, timeout=120)
     response.raise_for_status()
     vectors = response.json()["embeddings"]
     dimensions = len(vectors[0])

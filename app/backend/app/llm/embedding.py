@@ -1,0 +1,69 @@
+"""Text embeddings from the local Ollama server.
+
+The embedder sits behind a Protocol so that unit and integration tests can use
+a fake one and never need a running model.
+"""
+
+from typing import Protocol
+
+import httpx
+
+from app.core.env_loader import Settings
+from app.llm.ollama_api import embed_request
+from app.models import EMBEDDING_DIMENSIONS
+
+
+class EmbeddingError(RuntimeError):
+    """The embeddings could not be produced. The message says why."""
+
+
+class Embedder(Protocol):
+    async def embed(self, texts: list[str]) -> list[list[float]]: ...
+
+
+class OllamaEmbedder:
+    def __init__(
+        self,
+        settings: Settings,
+        *,
+        timeout_seconds: float = 120,
+        transport: httpx.AsyncBaseTransport | None = None,
+    ) -> None:
+        self._settings = settings
+        self._timeout = timeout_seconds
+        self._transport = transport
+
+    async def embed(self, texts: list[str]) -> list[list[float]]:
+        """One vector per text, in the same order."""
+        if not texts:
+            return []
+        request = embed_request(self._settings, texts)
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._settings.ollama_base_url,
+                timeout=self._timeout,
+                transport=self._transport,
+            ) as client:
+                response = await client.post(request.path, json=request.body)
+        except httpx.HTTPError as error:
+            raise EmbeddingError(f"The embedding service could not be reached: {error}") from error
+
+        if response.status_code != 200:
+            raise EmbeddingError(
+                f"The embedding service answered {response.status_code}: {response.text[:200]}"
+            )
+        try:
+            vectors = response.json().get("embeddings") or []
+        except ValueError as error:
+            raise EmbeddingError("The embedding service reply is not valid JSON.") from error
+
+        if len(vectors) != len(texts):
+            raise EmbeddingError(
+                f"The embedding service returned {len(vectors)} vectors for {len(texts)} texts."
+            )
+        if any(len(vector) != EMBEDDING_DIMENSIONS for vector in vectors):
+            raise EmbeddingError(
+                f"The embedding service returned vectors that do not have "
+                f"{EMBEDDING_DIMENSIONS} dimensions."
+            )
+        return [list(vector) for vector in vectors]
