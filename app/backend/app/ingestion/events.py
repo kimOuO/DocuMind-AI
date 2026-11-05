@@ -7,7 +7,6 @@ still gets the current progress.
 """
 
 import asyncio
-import json
 import uuid
 from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
@@ -16,6 +15,7 @@ from typing import Any
 from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.core import sse
 from app.models import Document, IngestionJob
 
 ACTIVE_STATUSES = ("queued", "running")
@@ -158,4 +158,4 @@ async def document_event_stream(
 
 
 def format_sse(event: Event) -> str:
-    return f"event: {event.name}\ndata: {json.dumps(event.data, ensure_ascii=False)}\n\n"
+    return sse.format_sse(event.name, event.data)

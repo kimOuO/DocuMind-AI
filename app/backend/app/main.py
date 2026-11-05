@@ -7,6 +7,8 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, Depends, FastAPI
 
 from app.auth import router as auth
+from app.chat import router as chat
+from app.chat.repository import ChatRepository
 from app.conversations import router as conversations
 from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
@@ -45,6 +47,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     async with sessions() as session, session.begin():
         interrupted = await IngestionRepository(session).fail_unfinished_jobs(RESTART_REASON)
         await ledger.LedgerRepository(session).fail_pending(ledger.RESTART_REASON)
+        await ChatRepository(session).interrupt_unfinished()
     if interrupted:
         logger.warning("Marked %d interrupted processing job(s) as failed", interrupted)
 
@@ -83,6 +86,7 @@ def create_app() -> FastAPI:
     api.include_router(auth.router)
     api.include_router(documents.router)
     api.include_router(conversations.router)
+    api.include_router(chat.router)
     api.include_router(monitoring.router)
     app.include_router(api)
     return app

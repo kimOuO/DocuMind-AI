@@ -14,6 +14,7 @@ from app.auth.router import current_user
 from app.core.database import get_session, get_sessionmaker
 from app.core.env_loader import Settings, get_settings
 from app.core.errors import ApiError
+from app.core.sse import SSE_HEADERS
 from app.documents.service import DocumentService, DocumentView
 from app.documents.storage import FileStorage
 from app.ingestion.events import document_event_stream, format_sse, read_snapshot
@@ -180,6 +181,5 @@ async def document_events(
     return StreamingResponse(
         body(),
         media_type="text/event-stream",
-        # Tell proxies not to hold events back.
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        headers=SSE_HEADERS,
     )
