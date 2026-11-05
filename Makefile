@@ -11,12 +11,15 @@ VENV     := .venv
 export PATH := $(CURDIR)/$(VENV)/bin:$(PATH)
 
 .PHONY: help setup dev dev-backend dev-frontend db migrate up down logs \
-        check check-backend check-frontend test eval package transcript
+        check check-backend check-frontend test smoke eval package transcript
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk -F':.*?## ' '{printf "  %-16s %s\n", $$1, $$2}'
 
-setup: ## Create the venv (Python + Node) and install all dependencies
+.env: ## Create .env from .env.sample (it must exist; it is never committed)
+	cp .env.sample .env
+
+setup: .env ## Create the venv (Python + Node) and install all dependencies
 	@test -x $(VENV)/bin/python || python3 -m venv $(VENV) 2>/dev/null || { \
 	  echo "python3 -m venv needs python3-venv; using --without-pip + get-pip.py instead"; \
 	  rm -rf $(VENV) && python3 -m venv --without-pip $(VENV) \
@@ -27,7 +30,7 @@ setup: ## Create the venv (Python + Node) and install all dependencies
 	cd $(FRONTEND) && npm ci
 	$(VENV)/bin/pre-commit install
 
-db: ## Start only the database container
+db: .env ## Start only the database container
 	docker compose up -d --wait db
 
 migrate: db ## Apply database migrations
@@ -42,7 +45,7 @@ dev-backend:
 dev-frontend:
 	cd $(FRONTEND) && npm run dev
 
-up: ## Build and run everything in Docker (demo / delivery mode)
+up: .env ## Build and run everything in Docker (demo / delivery mode)
 	docker compose up --build -d --wait
 	@echo "Open http://$${WEB_BIND:-127.0.0.1}:$${WEB_PORT:-3000}"
 
@@ -54,14 +57,17 @@ logs: ## Follow container logs
 
 check: check-backend check-frontend ## Lint, type-check and test everything
 
-check-backend:
-	cd $(BACKEND) && ruff check . && ruff format --check . && mypy app && pytest -q
+check-backend: db ## Backend lint, types and all tests except those calling a real LLM
+	cd $(BACKEND) && ruff check . && ruff format --check . && mypy app && pytest -q -m "not llm"
 
 check-frontend:
 	cd $(FRONTEND) && npm run check
 
-test: ## Run backend tests, including those that need the database
+test: db ## Run the backend tests only
 	cd $(BACKEND) && pytest -q -m "not llm"
+
+smoke: migrate ## Minimal end-to-end check: bge-m3 -> pgvector -> qwen3 (AC-47)
+	$(VENV)/bin/python scripts/smoke_rag.py
 
 eval: ## Run the retrieval/answer evaluation (added in P4)
 	@echo "evaluation is implemented in phase P4" && exit 1

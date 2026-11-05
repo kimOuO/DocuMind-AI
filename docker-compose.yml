@@ -3,15 +3,16 @@
 # The LLM runs in Ollama on the host by default (models are already downloaded
 # there). On a machine without Ollama, add the bundled one:
 #   docker compose --profile ollama up --build
-# and set OLLAMA_BASE_URL=http://ollama:11434 in .env.
+# and set COMPOSE_OLLAMA_HOST=ollama in .env.
 
 services:
   db:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-documind}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-documind}
-      POSTGRES_DB: ${POSTGRES_DB:-documind}
+      # The postgres image has its own variable names; values come from DB_*.
+      POSTGRES_USER: ${DB_USER:-documind}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-documind}
+      POSTGRES_DB: ${DB_NAME:-documind}
     ports:
       # Published on loopback only, for the backend running in a local venv.
       - "127.0.0.1:${DB_PORT:-5433}:5432"
@@ -26,11 +27,21 @@ services:
   backend:
     build: ./app/backend
     environment:
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-documind}:${POSTGRES_PASSWORD:-documind}@db:5432/${POSTGRES_DB:-documind}
-      OLLAMA_BASE_URL: ${COMPOSE_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      # Inside the compose network the database is always db:5432.
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-documind}
+      DB_USER: ${DB_USER:-documind}
+      DB_PASSWORD: ${DB_PASSWORD:-documind}
+      HTTP_OLLAMA_HOST: ${COMPOSE_OLLAMA_HOST:-host.docker.internal}
+      HTTP_OLLAMA_PORT: ${HTTP_OLLAMA_PORT:-11434}
       LLM_MODEL: ${LLM_MODEL:-qwen3:32b}
       EMBED_MODEL: ${EMBED_MODEL:-bge-m3}
       LLM_CONTEXT_LIMIT: ${LLM_CONTEXT_LIMIT:-10000}
+      SESSION_TTL_HOURS: ${SESSION_TTL_HOURS:-168}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://127.0.0.1:3000,http://localhost:3000}
+      DATA_DIR: /data
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:

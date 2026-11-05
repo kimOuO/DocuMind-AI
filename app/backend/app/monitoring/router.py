@@ -1,4 +1,4 @@
-"""Health endpoint: reports whether the database and the LLM server are reachable."""
+"""Health endpoint (public): reports whether the database and the LLM server are reachable."""
 
 from typing import Literal, Protocol
 
@@ -7,8 +7,8 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import text
 
-from app.core.config import Settings, get_settings
-from app.db.session import get_engine
+from app.core.database import get_engine
+from app.core.env_loader import Settings, get_settings
 
 router = APIRouter(tags=["health"])
 

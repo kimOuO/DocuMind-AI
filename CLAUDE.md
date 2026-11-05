@@ -4,8 +4,8 @@
 
 ## 專案是什麼
 
-和碩 PEGAAI 面試作業：一個網站，使用者上傳文件後用聊天介面提問，LLM 依文件內容回答。
-目標是「可運作、可驗證、可解釋設計決策的 RAG 系統」，不是包一層 LLM API 的聊天介面。
+一個本地執行的 AI 文件管理與問答平台（實作題）：使用者註冊登入後管理自己的文件，用聊天介面對指定的文件提問，LLM 依文件內容回答並附上來源。
+最核心的功能是能可靠回答文件問題的 RAG；平台功能不能犧牲題目的驗收條件。
 規格見 `docs/02-specs/` 的 `01`–`04`，文件導覽見 `docs/README.md`，目前進度見 `docs/04-dev-journal/`。
 
 - **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。
@@ -25,12 +25,15 @@
 | `make setup` | 建立 `.venv`、安裝前後端相依 |
 | `make dev` | 起資料庫容器，後端跑 venv、前端跑 Vite（熱重載） |
 | `make up` / `make down` | 全部用 Docker 啟動／停止（Demo 與交付模式） |
-| `make check` | lint、型別檢查、單元測試（提交前必跑） |
-| `make test` | 含需要資料庫的測試 |
+| `make check` | lint、型別檢查、所有不需真實 LLM 的測試（會啟動資料庫容器；提交前必跑） |
+| `make test` | 只跑後端測試 |
+| `make smoke` | 最小流程驗證：bge-m3 → pgvector → qwen3 |
 | `make transcript` | 匯出對話逐字稿到 `docs/05-ai-collaboration/sessions/raw/` |
 
 - **所有開發都在專案的 venv 內進行，不在主機上安裝或執行開發工具。** Python、pip、Node、npm 都在 `.venv/bin/`（Node 由 nodeenv 裝進 venv）。
 - 不要用系統 Python、不要 `pip install` 到別處、不要用 nvm 或全域 npm。直接下指令前先 `source .venv/bin/activate`，或用 Makefile。
+- 環境變數只能在 `app/backend/app/core/env_loader.py` 讀取；其他地方不得使用 `os.getenv` 或 `os.environ`（有測試檢查）。範例檔是 `.env.sample`。
+- 整合測試直接對真實的 PostgreSQL 執行，使用獨立的測試資料庫 `documind_test`；不為 Repository 建假實作。
 - 裝了新的 Python 套件，當下就寫進 `app/backend/requirements*.txt` 並釘死版本。
 - 前端 lint 用 eslint。TypeScript 釘在 6.0，因為 typescript-eslint 尚不支援 7.x。
 - 一次指令只做一件事，動手前先用一句話說明要做什麼；刪除專案以外的檔案前必須先取得同意。
@@ -62,7 +65,7 @@
 
 ## 與使用者互動的規則
 
-這個專案的互動過程本身是交付物（面試要報告「如何與 AI 協作」）。
+這個專案的互動過程本身是交付物（要報告「如何與 AI 協作」）。
 
 - 提選項前先問使用者自己的想法，或至少附一題開放題；每個選項寫清楚取捨。
 - 使用者的補充、反對、否決，**原文**記入 `docs/05-ai-collaboration/decision-log.md`。AI 建議被否決或修改的案例一定要保留。

@@ -8,14 +8,15 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from app.core.config import get_settings
+from app.core.env_loader import get_settings
+from app.models import Base
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Set to the ORM metadata once models exist (P2), to enable autogenerate.
-target_metadata = None
+# ORM metadata, used by `alembic revision --autogenerate`.
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:

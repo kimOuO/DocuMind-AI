@@ -13,7 +13,7 @@ export interface Health {
 }
 
 export async function fetchHealth(): Promise<Health> {
-  const response = await fetch('/api/health')
+  const response = await fetch('/api/v1/health')
   if (!response.ok) {
     throw new Error(`Backend responded with HTTP ${response.status}`)
   }

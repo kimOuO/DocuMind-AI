@@ -19,7 +19,7 @@ dist/
 # Secrets and local config
 .env
 .env.*
-!.env.example
+!.env.sample
 
 # Editors / OS
 .vscode/
@@ -31,6 +31,12 @@ dist/
 
 # Build artifacts
 *.zip
+*.egg-info/
+
+# Logs and editor leftovers
+*.log
+*.swp
+*~
 
 # Project documents: only the specifications and the architecture decision
 # records are published. Working records stay on the development machine.

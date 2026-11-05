@@ -9,13 +9,17 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 
-from app.core.config import get_settings
+from app.core.env_loader import get_settings
 
 
 @lru_cache
 def get_engine() -> AsyncEngine:
-    return create_async_engine(get_settings().database_url, pool_pre_ping=True)
+    settings = get_settings()
+    if settings.db_null_pool:
+        return create_async_engine(settings.database_url, poolclass=NullPool)
+    return create_async_engine(settings.database_url, pool_pre_ping=True)
 
 
 @lru_cache
@@ -24,5 +28,6 @@ def get_sessionmaker() -> async_sessionmaker[AsyncSession]:
 
 
 async def get_session() -> AsyncIterator[AsyncSession]:
+    """One database session per request. Services decide when to commit."""
     async with get_sessionmaker()() as session:
         yield session
