@@ -1,0 +1,1423 @@
+{
+ "source": "LaTeX source of arXiv:2410.05779v3 (https://arxiv.org/e-print/2410.05779v3)",
+ "table2": [
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "83.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "23.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "76.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.0%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "62.0%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "13.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "86.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "83.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "42.8%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "57.2%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "15.2%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "84.8%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "40.0%"
+  },
+  {
+   "block": 0,
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "60.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "34.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "-High",
+   "value": "65.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "42.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "-High",
+   "value": "57.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "23.6%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "-High",
+   "value": "76.4%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "40.4%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "-High",
+   "value": "59.6%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "27.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "-High",
+   "value": "72.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "36.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "-High",
+   "value": "63.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "-High",
+   "value": "83.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "36.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "-High",
+   "value": "64.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "36.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "-High",
+   "value": "64.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "42.4%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "-High",
+   "value": "57.6%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "22.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "-High",
+   "value": "77.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "47.6%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "-High",
+   "value": "52.4%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "35.2%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "-High",
+   "value": "64.8%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "44.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "-High",
+   "value": "56.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "22.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "-High",
+   "value": "78.0%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "42.4%"
+  },
+  {
+   "block": 1,
+   "variant": "-High",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "-High",
+   "value": "57.6%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "36.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "-Low",
+   "value": "64.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "43.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "-Low",
+   "value": "56.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "19.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "-Low",
+   "value": "80.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "36.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "-Low",
+   "value": "64.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "28.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "-Low",
+   "value": "72.0%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "39.6%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "-Low",
+   "value": "60.4%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "13.6%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "-Low",
+   "value": "86.4%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "33.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "-Low",
+   "value": "66.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "34.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "-Low",
+   "value": "65.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "42.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "-Low",
+   "value": "57.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "-Low",
+   "value": "83.6%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "35.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "-Low",
+   "value": "64.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "34.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "-Low",
+   "value": "65.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "43.6%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "-Low",
+   "value": "56.4%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "18.8%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "-Low",
+   "value": "81.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "35.2%"
+  },
+  {
+   "block": 2,
+   "variant": "-Low",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "-Low",
+   "value": "64.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "24.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "-Origin",
+   "value": "75.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "39.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "-Origin",
+   "value": "60.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "-Origin",
+   "value": "83.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "44.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "-Origin",
+   "value": "55.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "26.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "-Origin",
+   "value": "73.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "44.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "-Origin",
+   "value": "55.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "14.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "-Origin",
+   "value": "85.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "25.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "-Origin",
+   "value": "74.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.0%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "-Origin",
+   "value": "68.0%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "43.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "-Origin",
+   "value": "56.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "17.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "-Origin",
+   "value": "82.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "45.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "-Origin",
+   "value": "54.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "25.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "-Origin",
+   "value": "74.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "39.2%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "-Origin",
+   "value": "60.8%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "15.6%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "-Origin",
+   "value": "84.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "44.4%"
+  },
+  {
+   "block": 3,
+   "variant": "-Origin",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "-Origin",
+   "value": "55.6%"
+  }
+ ],
+ "headings": [
+  {
+   "file": "intro",
+   "level": "section",
+   "title": "Introduction"
+  },
+  {
+   "file": "model",
+   "level": "section",
+   "title": "Retrieval-Augmented Generation"
+  },
+  {
+   "file": "solution",
+   "level": "section",
+   "title": "The LightRAG Architecture"
+  },
+  {
+   "file": "solution",
+   "level": "subsection",
+   "title": "Graph-based Text Indexing"
+  },
+  {
+   "file": "solution",
+   "level": "subsection",
+   "title": "Dual-level Retrieval Paradigm"
+  },
+  {
+   "file": "solution",
+   "level": "subsection",
+   "title": "Retrieval-Augmented Answer Generation"
+  },
+  {
+   "file": "solution",
+   "level": "subsection",
+   "title": "Complexity Analysis of the LightRAG Framework"
+  },
+  {
+   "file": "eval",
+   "level": "section",
+   "title": "Evaluation"
+  },
+  {
+   "file": "eval",
+   "level": "subsection",
+   "title": "Experimental Settings"
+  },
+  {
+   "file": "eval",
+   "level": "subsection",
+   "title": "Comparison of LightRAG with Existing RAG Methods (RQ1)"
+  },
+  {
+   "file": "eval",
+   "level": "subsection",
+   "title": "Ablation Studies (RQ2)"
+  },
+  {
+   "file": "eval",
+   "level": "subsection",
+   "title": "Case Study (RQ3)"
+  },
+  {
+   "file": "eval",
+   "level": "subsection",
+   "title": "Model Cost and Adaptability Analysis (RQ4)"
+  },
+  {
+   "file": "relate",
+   "level": "section",
+   "title": "Related Work"
+  },
+  {
+   "file": "relate",
+   "level": "subsection",
+   "title": "Retrieval-Augmented Generation with LLMs"
+  },
+  {
+   "file": "relate",
+   "level": "subsection",
+   "title": "Large Language Model for Graphs"
+  },
+  {
+   "file": "conclusion",
+   "level": "section",
+   "title": "Conclusion"
+  },
+  {
+   "file": "appendix",
+   "level": "section",
+   "title": "Appendix"
+  },
+  {
+   "file": "appendix",
+   "level": "subsection",
+   "title": "Experimental Data Details"
+  },
+  {
+   "file": "appendix",
+   "level": "subsection",
+   "title": "Case Example of Retrieval-Augmented Generation in LightRAG"
+  },
+  {
+   "file": "appendix",
+   "level": "subsection",
+   "title": "Overview of the Prompts Used in LightRAG"
+  },
+  {
+   "file": "appendix",
+   "level": "subsection",
+   "title": "Case Study: Comparison Between LightRAG and the Baseline NaiveRAG"
+  }
+ ],
+ "anchors": [
+  {
+   "file": "intro",
+   "phrase": "systems have been developed to enhance large language"
+  },
+  {
+   "file": "intro",
+   "phrase": "existing RAG systems have key limitations that hinder"
+  },
+  {
+   "file": "intro",
+   "phrase": "we propose incorporating graph structures into text indexing"
+  },
+  {
+   "file": "intro",
+   "phrase": "a model that seamlessly integrates a graph-based text"
+  },
+  {
+   "file": "intro",
+   "phrase": "the key contributions of this work are highlighted"
+  },
+  {
+   "file": "intro",
+   "phrase": "We emphasize the importance of developing a graph-empowered"
+  },
+  {
+   "file": "intro",
+   "phrase": "To enable an efficient and adaptive RAG system"
+  },
+  {
+   "file": "intro",
+   "phrase": "Extensive experiments were conducted to evaluate the effectiveness"
+  },
+  {
+   "file": "model",
+   "phrase": "integrates user queries with a collection of pertinent"
+  },
+  {
+   "file": "model",
+   "phrase": "represent the generation module and the retrieval module"
+  },
+  {
+   "file": "model",
+   "phrase": "we target several key points essential for an"
+  },
+  {
+   "file": "model",
+   "phrase": "as this is crucial for enhancing the model"
+  },
+  {
+   "file": "model",
+   "phrase": "must enable rapid and cost-efficient retrieval to effectively"
+  },
+  {
+   "file": "model",
+   "phrase": "The ability to swiftly and efficiently adjust the"
+  },
+  {
+   "file": "solution",
+   "phrase": "enhances the retrieval system by segmenting documents into"
+  },
+  {
+   "file": "solution",
+   "phrase": "we apply three main processing steps to the"
+  },
+  {
+   "file": "solution",
+   "phrase": "This function prompts a LLM to identify entities"
+  },
+  {
+   "file": "solution",
+   "phrase": "Each index key is a word or short"
+  },
+  {
+   "file": "solution",
+   "phrase": "that identifies and merges identical entities and relations"
+  },
+  {
+   "file": "solution",
+   "phrase": "offers two advantages through its graph-based text indexing"
+  },
+  {
+   "file": "solution",
+   "phrase": "To efficiently adapt to evolving data changes while"
+  },
+  {
+   "file": "solution",
+   "phrase": "Two key objectives guide our approach to fast"
+  },
+  {
+   "file": "solution",
+   "phrase": "To retrieve relevant information from both specific document"
+  },
+  {
+   "file": "solution",
+   "phrase": "These queries are detail-oriented and typically reference specific"
+  },
+  {
+   "file": "solution",
+   "phrase": "or overarching themes that are not directly tied"
+  },
+  {
+   "file": "solution",
+   "phrase": "employs two distinct retrieval strategies within the dual-level"
+  },
+  {
+   "file": "solution",
+   "phrase": "This level is primarily focused on retrieving specific"
+  },
+  {
+   "file": "solution",
+   "phrase": "This level addresses broader topics and overarching themes"
+  },
+  {
+   "file": "solution",
+   "phrase": "the model gains a deeper insight into the"
+  },
+  {
+   "file": "solution",
+   "phrase": "The algorithm uses an efficient vector database to"
+  },
+  {
+   "file": "solution",
+   "phrase": "further gathers neighboring nodes within the local subgraphs"
+  },
+  {
+   "file": "solution",
+   "phrase": "This dual-level retrieval paradigm not only facilitates efficient"
+  },
+  {
+   "file": "solution",
+   "phrase": "employs a general-purpose LLM to generate answers based"
+  },
+  {
+   "file": "solution",
+   "phrase": "By unifying the query with this multi-source text"
+  },
+  {
+   "file": "solution",
+   "phrase": "we analyze the complexity of our proposed LightRAG"
+  },
+  {
+   "file": "solution",
+   "phrase": "The second part of the process involves the"
+  },
+  {
+   "file": "eval",
+   "phrase": "We conduct empirical evaluations on benchmark data to"
+  },
+  {
+   "file": "eval",
+   "phrase": "we selected four datasets from the UltraDomain benchmark"
+  },
+  {
+   "file": "eval",
+   "phrase": "This domain focuses on computer science and encompasses"
+  },
+  {
+   "file": "eval",
+   "phrase": "with a focus on the legal and financial"
+  },
+  {
+   "file": "eval",
+   "phrase": "This domain presents a rich variety of literary"
+  },
+  {
+   "file": "eval",
+   "phrase": "To evaluate the effectiveness of RAG systems for"
+  },
+  {
+   "file": "eval",
+   "phrase": "is compared against the following state-of-the-art methods across"
+  },
+  {
+   "file": "eval",
+   "phrase": "This model serves as a standard baseline in"
+  },
+  {
+   "file": "eval",
+   "phrase": "This approach leverages the LLM to decompose the"
+  },
+  {
+   "file": "eval",
+   "phrase": "This method utilizes the LLM to generate a"
+  },
+  {
+   "file": "eval",
+   "phrase": "This is a graph-enhanced RAG system that utilizes"
+  },
+  {
+   "file": "eval",
+   "phrase": "The evaluation prompt we used is detailed in"
+  },
+  {
+   "file": "eval",
+   "phrase": "How thoroughly does the answer address all aspects"
+  },
+  {
+   "file": "eval",
+   "phrase": "The LLM directly compares two answers for each"
+  },
+  {
+   "file": "eval",
+   "phrase": "against each baseline across various evaluation dimensions and"
+  },
+  {
+   "file": "eval",
+   "phrase": "When handling large token counts and complex queries"
+  },
+  {
+   "file": "eval",
+   "phrase": "demonstrates a significant advantage in the Diversity metric"
+  },
+  {
+   "file": "eval",
+   "phrase": "particularly in larger datasets with complex language contexts"
+  },
+  {
+   "file": "eval",
+   "phrase": "We also conduct ablation studies to evaluate the"
+  },
+  {
+   "file": "eval",
+   "phrase": "We begin by analyzing the effects of low-level"
+  },
+  {
+   "file": "eval",
+   "phrase": "leading to a significant performance decline across nearly"
+  },
+  {
+   "file": "eval",
+   "phrase": "variant prioritizes capturing a broader range of content"
+  },
+  {
+   "file": "eval",
+   "phrase": "combines the strengths of both low-level and high-level"
+  },
+  {
+   "file": "eval",
+   "phrase": "We eliminated the use of original text in"
+  },
+  {
+   "file": "eval",
+   "phrase": "To provide a clear comparison between baseline methods"
+  },
+  {
+   "file": "eval",
+   "phrase": "covers a broader range of machine learning metrics"
+  },
+  {
+   "file": "eval",
+   "phrase": "not only offers a more diverse array of"
+  },
+  {
+   "file": "eval",
+   "phrase": "we examine the number of tokens and API"
+  },
+  {
+   "file": "eval",
+   "phrase": "communities actively utilized for retrieval in this experiment"
+  },
+  {
+   "file": "eval",
+   "phrase": "designed to address changes in dynamic real-world scenarios"
+  },
+  {
+   "file": "relate",
+   "phrase": "systems enhance LLM inputs by retrieving relevant information"
+  },
+  {
+   "file": "relate",
+   "phrase": "have explored using graph structures for knowledge representation"
+  },
+  {
+   "file": "relate",
+   "phrase": "Graphs are a powerful framework for representing complex"
+  },
+  {
+   "file": "conclusion",
+   "phrase": "This work introduces an advancement in Retrieval-Augmented Generation"
+  }
+ ]
+}

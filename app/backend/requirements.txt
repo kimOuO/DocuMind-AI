@@ -11,3 +11,5 @@ psycopg[binary]==3.3.8
 alembic==1.20.1
 pgvector==0.5.1
 argon2-cffi==25.1.0
+# PDF text extraction (chosen by experiment, see docs/03-decisions/0005).
+pypdf==6.21.4

@@ -2,7 +2,11 @@
 
 用一組標準問題量測系統回答得好不好，讓 chunk size、Top-K、是否用 Hybrid Search 等選擇有實驗數據依據。
 
-目前是空的，P4 階段才會加入：
+目前有：
+
+- `pdf-parser-comparison/`：PDF 解析套件的比較實驗（PyMuPDF、pypdf、pdfplumber），是選用 pypdf 的依據。
+
+P4 階段會加入：
 
 - 題庫：必答三題、細節事實題、表格數字題、跨文件題、無答案題。
 - 評測腳本與實驗設定。

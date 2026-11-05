@@ -11,7 +11,7 @@
 
 | 想知道什麼 | 看哪裡 |
 |---|---|
-| 要做什麼、怎樣算完成 | `02-specs/01-requirements.md`：需求、階段與里程碑、52 條驗收條件 |
+| 要做什麼、怎樣算完成 | `02-specs/01-requirements.md`：需求、階段與里程碑、53 條驗收條件 |
 | 系統怎麼設計 | `02-specs/02-architecture.md`：架構、登入安全、入庫、Token 預算、切塊、檢索、摘要、評測 |
 | API、資料表、環境變數 | `02-specs/03-interfaces.md` |
 | 使用者實際怎麼用、系統該怎麼反應 | `02-specs/04-use-cases.md`：19 個情境 |

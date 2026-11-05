@@ -1,0 +1,4668 @@
+{
+ "pdf": "2410.05779v3.pdf",
+ "page_count": 16,
+ "ground_truth_source": "LaTeX source of arXiv:2410.05779v3 (https://arxiv.org/e-print/2410.05779v3)",
+ "configs": {
+  "pymupdf-default": {
+   "library": "pymupdf",
+   "call": "page.get_text()",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1483,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2331,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3339,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4354,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5231,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5296,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5605,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6057,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7041,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 8872,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 9083,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 9204,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 9310,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 9617,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 10219,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 10505,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 10985,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 11380,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 11612,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 12205,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 12625,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 13394,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 13569,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 13870,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 14051,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 14272,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 14503,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 14812,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 15175,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 15403,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 15608,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 15957,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 16237,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 16562,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 16952,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 17426,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 17974,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 18511,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 18882,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 18926,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 19102,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 19737,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 19822,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 20142,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 20353,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 20560,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 21499,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 21614,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 21995,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 22477,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 23567,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 24295,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 24919,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 25698,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 25903,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 27020,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 27379,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 27868,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 28243,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 28719,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 29131,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 29425,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": 33382,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": 33856,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 34545,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 35484,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 35951,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 36685,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 37632,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": true
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": true
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": true
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": true
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": true
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": true
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": true
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": true
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": true
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 15,
+    "mismatched_pages": [
+     1
+    ]
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 128,
+    "rows_intact": 16,
+    "rows_on_one_line": 0,
+    "block_headers_correct": 4,
+    "dataset_header_correct": true,
+    "whole_sequence_correct": true,
+    "first_mismatch": null,
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 61133,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 0,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 0,
+    "longest_token_examples": [],
+    "characters_per_page": [
+     3787,
+     4808,
+     5308,
+     4652,
+     4199,
+     4709,
+     4417,
+     4475,
+     5886,
+     4835,
+     3666,
+     1349,
+     1570,
+     1633,
+     986,
+     4838
+    ]
+   },
+   "timing": {
+    "median_ms": 47.6,
+    "min_ms": 46.6,
+    "max_ms": 53.8
+   },
+   "summary": {
+    "config": "pymupdf-default",
+    "anchors_total": 70,
+    "anchors_found": 70,
+    "anchors_intact": 69,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 22
+   }
+  },
+  "pymupdf-sorted": {
+   "library": "pymupdf",
+   "call": "page.get_text(sort=True)",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1496,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2360,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3339,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4354,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5231,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5296,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5605,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6057,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7041,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 8872,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 9083,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 9204,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 9310,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 9617,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 10219,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 10505,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 10985,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 11380,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 11612,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 12205,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 12625,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 13394,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 13569,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 13870,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 14051,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 14272,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 14503,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 14812,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 15175,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 15403,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 15608,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 15957,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 16237,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 16562,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 16952,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 17426,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 17974,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 18511,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 18882,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 18926,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 19102,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 19737,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 19822,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 20142,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 20353,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 20560,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 21499,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 21614,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 21995,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 22477,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 23567,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 24295,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 24919,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 25698,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 25903,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 27020,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 27379,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 27868,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 28243,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 28719,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 29131,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 29425,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": -1,
+      "occurrences": 0,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": 33856,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 34545,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 35484,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 35951,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 36685,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 37632,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": true
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": true
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": true
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": true
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": true
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": true
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": true
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": true
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": true
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 16,
+    "mismatched_pages": []
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 128,
+    "rows_intact": 16,
+    "rows_on_one_line": 16,
+    "block_headers_correct": 4,
+    "dataset_header_correct": true,
+    "whole_sequence_correct": true,
+    "first_mismatch": null,
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 90850,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 0,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 0,
+    "longest_token_examples": [],
+    "characters_per_page": [
+     5024,
+     4892,
+     28992,
+     4727,
+     4266,
+     4791,
+     5377,
+     5526,
+     6846,
+     4889,
+     3791,
+     1421,
+     1786,
+     1748,
+     1098,
+     5661
+    ]
+   },
+   "timing": {
+    "median_ms": 398.0,
+    "min_ms": 394.4,
+    "max_ms": 415.6
+   },
+   "summary": {
+    "config": "pymupdf-sorted",
+    "anchors_total": 70,
+    "anchors_found": 69,
+    "anchors_intact": 68,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 22
+   }
+  },
+  "pypdf-default": {
+   "library": "pypdf",
+   "call": "page.extract_text()",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1483,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2331,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3339,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4354,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5231,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5296,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5605,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6057,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7041,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 8872,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 9083,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 9204,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 9310,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 9617,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 10219,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 10505,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 10985,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 11380,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 11612,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 12205,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 12625,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 13394,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 13569,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 13870,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 14051,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 14272,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 14503,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 14812,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 15175,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 15403,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 15608,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 15957,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 16237,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 16562,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 16952,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 17426,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 17974,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 18511,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 18882,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 18926,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 19102,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 19737,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 19822,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 20142,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 20353,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 20560,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 21499,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 21614,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 21995,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 22477,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 23567,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 24295,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 24919,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 25698,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 25903,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 27020,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 27379,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 27868,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 28243,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 28719,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 29131,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 29425,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": 33382,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": 33856,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 34545,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 35484,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 35951,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 36685,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 37632,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": false
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": false
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": false
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": false
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": false
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": false
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": false
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": false
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": false
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": false
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": false
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": false
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": false
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": false
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 15,
+    "mismatched_pages": [
+     1
+    ]
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 128,
+    "rows_intact": 16,
+    "rows_on_one_line": 16,
+    "block_headers_correct": 4,
+    "dataset_header_correct": true,
+    "whole_sequence_correct": true,
+    "first_mismatch": null,
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 61179,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 0,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 0,
+    "longest_token_examples": [],
+    "characters_per_page": [
+     3790,
+     4808,
+     5313,
+     4658,
+     4206,
+     4711,
+     4417,
+     4475,
+     5882,
+     4840,
+     3674,
+     1349,
+     1574,
+     1636,
+     988,
+     4843
+    ]
+   },
+   "timing": {
+    "median_ms": 487.9,
+    "min_ms": 472.3,
+    "max_ms": 505.1
+   },
+   "summary": {
+    "config": "pypdf-default",
+    "anchors_total": 70,
+    "anchors_found": 70,
+    "anchors_intact": 69,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 0
+   }
+  },
+  "pypdf-layout": {
+   "library": "pypdf",
+   "call": "page.extract_text(extraction_mode=\"layout\")",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1483,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2331,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3310,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4325,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5202,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5267,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5576,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6028,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6385,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7012,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 7589,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 7800,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 7921,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 8027,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 8334,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 8936,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 9222,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 9702,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 10097,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 10329,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 10922,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 11342,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 12111,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 12286,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 12587,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 12768,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 12989,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 13220,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 13529,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 13892,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 14120,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 14325,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 14674,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 14954,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 15279,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 15669,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 16143,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 16691,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 17228,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 17599,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 17643,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 17819,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 18454,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 18539,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 18859,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 19070,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 19277,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 20216,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 20331,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 20712,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 21194,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 21475,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 22203,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 22827,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 23606,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 23896,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 24944,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 25303,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 25792,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 26167,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 26643,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 27055,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 27457,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": -1,
+      "occurrences": 0,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": -1,
+      "occurrences": 0,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 33262,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 34201,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 34668,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 35402,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 36349,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": true
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": true
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": true
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": true
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": true
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": true
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": true
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": true
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": false
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 12,
+    "mismatched_pages": [
+     7,
+     8,
+     9,
+     16
+    ]
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 61,
+    "rows_intact": 7,
+    "rows_on_one_line": 7,
+    "block_headers_correct": 2,
+    "dataset_header_correct": false,
+    "whole_sequence_correct": false,
+    "first_mismatch": {
+     "index": 0,
+     "expected": "Agriculture",
+     "found": "•"
+    },
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 70096,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 0,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 0,
+    "longest_token_examples": [],
+    "characters_per_page": [
+     4064,
+     4975,
+     3929,
+     4769,
+     4306,
+     4830,
+     7198,
+     7497,
+     7328,
+     4935,
+     3850,
+     1477,
+     1934,
+     1819,
+     1171,
+     5999
+    ]
+   },
+   "timing": {
+    "median_ms": 476.9,
+    "min_ms": 458.0,
+    "max_ms": 481.9
+   },
+   "summary": {
+    "config": "pypdf-layout",
+    "anchors_total": 70,
+    "anchors_found": 68,
+    "anchors_intact": 67,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 21
+   }
+  },
+  "pdfplumber-default": {
+   "library": "pdfplumber",
+   "call": "page.extract_text()",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1483,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2331,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3339,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4354,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5231,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5296,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5605,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6057,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6414,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7061,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 8892,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 9103,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 9224,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 9330,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 9637,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 10239,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 10525,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 11005,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 11400,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 11632,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 12225,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 12645,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 13414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 13589,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 13890,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 14071,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 14292,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 14523,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 14832,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 15195,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 15423,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 15628,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 15977,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 16257,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 16582,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 16972,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 17446,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 17994,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 18531,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 18902,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 18946,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 19122,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 19757,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 19842,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 20162,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 20373,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 20580,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 21519,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 21634,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 22015,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 22497,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 23587,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 24315,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 24939,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 25718,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 25923,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 27040,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 27399,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 27888,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 28263,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 28739,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 29151,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 29445,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": -1,
+      "occurrences": 0,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": 33876,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 34565,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 35504,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 35971,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 36705,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 37652,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": true
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": true
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": false
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": false
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": false
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": false
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": false
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": false
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": false
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": false
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": false
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": false
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": false
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": false
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 15,
+    "mismatched_pages": [
+     1
+    ]
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 128,
+    "rows_intact": 16,
+    "rows_on_one_line": 16,
+    "block_headers_correct": 4,
+    "dataset_header_correct": true,
+    "whole_sequence_correct": true,
+    "first_mismatch": null,
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 56253,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 4,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 577,
+    "longest_token_examples": [
+     "culturalsignificance,collaboration,andlegalframeworks,includingspecificexamplesanddetailedinsights.",
+     "Thisdual-levelretrievalparadigmnotonlyfacilitatesefficientretrievalofrelatedentitiesandrelations",
+     "partnerships.Corporationsmustadoptrespectful,inclusivepracticesthathonorIndigenousculturalvalues"
+    ],
+    "characters_per_page": [
+     3411,
+     4393,
+     5937,
+     4118,
+     3734,
+     4169,
+     4093,
+     4134,
+     5274,
+     4347,
+     3336,
+     1191,
+     1405,
+     1481,
+     877,
+     4338
+    ]
+   },
+   "timing": {
+    "median_ms": 1722.4,
+    "min_ms": 1712.1,
+    "max_ms": 1756.7
+   },
+   "summary": {
+    "config": "pdfplumber-default",
+    "anchors_total": 70,
+    "anchors_found": 69,
+    "anchors_intact": 11,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 7
+   }
+  },
+  "pdfplumber-xtol1": {
+   "library": "pdfplumber",
+   "call": "page.extract_text(x_tolerance=1)",
+   "anchors": {
+    "rows": [
+     {
+      "phrase": "systems have been developed to enhance large language",
+      "file": "intro",
+      "position": 1483,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "existing RAG systems have key limitations that hinder",
+      "file": "intro",
+      "position": 2331,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we propose incorporating graph structures into text indexing",
+      "file": "intro",
+      "position": 3339,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "a model that seamlessly integrates a graph-based text",
+      "file": "intro",
+      "position": 4354,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the key contributions of this work are highlighted",
+      "file": "intro",
+      "position": 5231,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We emphasize the importance of developing a graph-empowered",
+      "file": "intro",
+      "position": 5296,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To enable an efficient and adaptive RAG system",
+      "file": "intro",
+      "position": 5605,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Extensive experiments were conducted to evaluate the effectiveness",
+      "file": "intro",
+      "position": 6057,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "integrates user queries with a collection of pertinent",
+      "file": "model",
+      "position": 6414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "represent the generation module and the retrieval module",
+      "file": "model",
+      "position": 7061,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we target several key points essential for an",
+      "file": "model",
+      "position": 8892,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "as this is crucial for enhancing the model",
+      "file": "model",
+      "position": 9103,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "must enable rapid and cost-efficient retrieval to effectively",
+      "file": "model",
+      "position": 9224,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The ability to swiftly and efficiently adjust the",
+      "file": "model",
+      "position": 9330,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "enhances the retrieval system by segmenting documents into",
+      "file": "solution",
+      "position": 9637,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we apply three main processing steps to the",
+      "file": "solution",
+      "position": 10239,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This function prompts a LLM to identify entities",
+      "file": "solution",
+      "position": 10525,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Each index key is a word or short",
+      "file": "solution",
+      "position": 11005,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "that identifies and merges identical entities and relations",
+      "file": "solution",
+      "position": 11400,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "offers two advantages through its graph-based text indexing",
+      "file": "solution",
+      "position": 11632,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To efficiently adapt to evolving data changes while",
+      "file": "solution",
+      "position": 12225,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Two key objectives guide our approach to fast",
+      "file": "solution",
+      "position": 12645,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To retrieve relevant information from both specific document",
+      "file": "solution",
+      "position": 13414,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "These queries are detail-oriented and typically reference specific",
+      "file": "solution",
+      "position": 13589,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "or overarching themes that are not directly tied",
+      "file": "solution",
+      "position": 13890,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs two distinct retrieval strategies within the dual-level",
+      "file": "solution",
+      "position": 14071,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level is primarily focused on retrieving specific",
+      "file": "solution",
+      "position": 14292,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This level addresses broader topics and overarching themes",
+      "file": "solution",
+      "position": 14523,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "the model gains a deeper insight into the",
+      "file": "solution",
+      "position": 14832,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The algorithm uses an efficient vector database to",
+      "file": "solution",
+      "position": 15195,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "further gathers neighboring nodes within the local subgraphs",
+      "file": "solution",
+      "position": 15423,
+      "occurrences": 1,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "This dual-level retrieval paradigm not only facilitates efficient",
+      "file": "solution",
+      "position": 15628,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "employs a general-purpose LLM to generate answers based",
+      "file": "solution",
+      "position": 15977,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "By unifying the query with this multi-source text",
+      "file": "solution",
+      "position": 16257,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we analyze the complexity of our proposed LightRAG",
+      "file": "solution",
+      "position": 16582,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The second part of the process involves the",
+      "file": "solution",
+      "position": 16972,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We conduct empirical evaluations on benchmark data to",
+      "file": "eval",
+      "position": 17446,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we selected four datasets from the UltraDomain benchmark",
+      "file": "eval",
+      "position": 17994,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain focuses on computer science and encompasses",
+      "file": "eval",
+      "position": 18531,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "with a focus on the legal and financial",
+      "file": "eval",
+      "position": 18902,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This domain presents a rich variety of literary",
+      "file": "eval",
+      "position": 18946,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To evaluate the effectiveness of RAG systems for",
+      "file": "eval",
+      "position": 19122,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "is compared against the following state-of-the-art methods across",
+      "file": "eval",
+      "position": 19757,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This model serves as a standard baseline in",
+      "file": "eval",
+      "position": 19842,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This approach leverages the LLM to decompose the",
+      "file": "eval",
+      "position": 20162,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This method utilizes the LLM to generate a",
+      "file": "eval",
+      "position": 20373,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This is a graph-enhanced RAG system that utilizes",
+      "file": "eval",
+      "position": 20580,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The evaluation prompt we used is detailed in",
+      "file": "eval",
+      "position": 21519,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "How thoroughly does the answer address all aspects",
+      "file": "eval",
+      "position": 21634,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "The LLM directly compares two answers for each",
+      "file": "eval",
+      "position": 22015,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "against each baseline across various evaluation dimensions and",
+      "file": "eval",
+      "position": 22497,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "When handling large token counts and complex queries",
+      "file": "eval",
+      "position": 23587,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "demonstrates a significant advantage in the Diversity metric",
+      "file": "eval",
+      "position": 24315,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "particularly in larger datasets with complex language contexts",
+      "file": "eval",
+      "position": 24939,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We also conduct ablation studies to evaluate the",
+      "file": "eval",
+      "position": 25718,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We begin by analyzing the effects of low-level",
+      "file": "eval",
+      "position": 25923,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "leading to a significant performance decline across nearly",
+      "file": "eval",
+      "position": 27040,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "variant prioritizes capturing a broader range of content",
+      "file": "eval",
+      "position": 27399,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "combines the strengths of both low-level and high-level",
+      "file": "eval",
+      "position": 27888,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "We eliminated the use of original text in",
+      "file": "eval",
+      "position": 28263,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "To provide a clear comparison between baseline methods",
+      "file": "eval",
+      "position": 28739,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "covers a broader range of machine learning metrics",
+      "file": "eval",
+      "position": 29151,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "not only offers a more diverse array of",
+      "file": "eval",
+      "position": 29445,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "we examine the number of tokens and API",
+      "file": "eval",
+      "position": -1,
+      "occurrences": 0,
+      "intact": false,
+      "in_document": true
+     },
+     {
+      "phrase": "communities actively utilized for retrieval in this experiment",
+      "file": "eval",
+      "position": 33876,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "designed to address changes in dynamic real-world scenarios",
+      "file": "eval",
+      "position": 34565,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "systems enhance LLM inputs by retrieving relevant information",
+      "file": "relate",
+      "position": 35504,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "have explored using graph structures for knowledge representation",
+      "file": "relate",
+      "position": 35971,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "Graphs are a powerful framework for representing complex",
+      "file": "relate",
+      "position": 36705,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     },
+     {
+      "phrase": "This work introduces an advancement in Retrieval-Augmented Generation",
+      "file": "conclusion",
+      "position": 37652,
+      "occurrences": 1,
+      "intact": true,
+      "in_document": true
+     }
+    ]
+   },
+   "headings": {
+    "rows": [
+     {
+      "heading": "1 Introduction",
+      "page": 1,
+      "intact": true
+     },
+     {
+      "heading": "2 Retrieval-Augmented Generation",
+      "page": 2,
+      "intact": true
+     },
+     {
+      "heading": "3 The LightRAG Architecture",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.1 Graph-based Text Indexing",
+      "page": 3,
+      "intact": true
+     },
+     {
+      "heading": "3.2 Dual-level Retrieval Paradigm",
+      "page": 4,
+      "intact": true
+     },
+     {
+      "heading": "3.3 Retrieval-Augmented Answer Generation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "3.4 Complexity Analysis of the LightRAG Framework",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4 Evaluation",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.1 Experimental Settings",
+      "page": 5,
+      "intact": true
+     },
+     {
+      "heading": "4.2 Comparison of LightRAG with Existing RAG Methods (RQ1)",
+      "page": 6,
+      "intact": true
+     },
+     {
+      "heading": "4.3 Ablation Studies (RQ2)",
+      "page": 7,
+      "intact": true
+     },
+     {
+      "heading": "4.4 Case Study (RQ3)",
+      "page": 8,
+      "intact": true
+     },
+     {
+      "heading": "4.5 Model Cost and Adaptability Analysis (RQ4)",
+      "page": 9,
+      "intact": true
+     },
+     {
+      "heading": "5 Related Work",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.1 Retrieval-Augmented Generation with LLMs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "5.2 Large Language Model for Graphs",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "6 Conclusion",
+      "page": 10,
+      "intact": true
+     },
+     {
+      "heading": "7 Appendix",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.1 Experimental Data Details",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.2 Case Example of Retrieval-Augmented Generation in LightRAG",
+      "page": 13,
+      "intact": true
+     },
+     {
+      "heading": "7.3 Overview of the Prompts Used in LightRAG",
+      "page": 14,
+      "intact": true
+     },
+     {
+      "heading": "7.4 Case Study: Comparison Between LightRAG and the Baseline NaiveRAG",
+      "page": 16,
+      "intact": true
+     }
+    ]
+   },
+   "page_numbers": {
+    "page_count": 16,
+    "footer_matches": 15,
+    "mismatched_pages": [
+     1
+    ]
+   },
+   "table2": {
+    "page": 8,
+    "caption_found": true,
+    "values_present_anywhere": 128,
+    "cells_in_correct_position": 128,
+    "rows_intact": 16,
+    "rows_on_one_line": 16,
+    "block_headers_correct": 4,
+    "dataset_header_correct": true,
+    "whole_sequence_correct": true,
+    "first_mismatch": null,
+    "total_cells": 128,
+    "total_rows": 16
+   },
+   "quality": {
+    "characters": 62235,
+    "replacement_characters": 0,
+    "ligature_characters": 0,
+    "cid_placeholders": 4,
+    "private_use_characters": 0,
+    "tokens_longer_than_30": 0,
+    "longest_token_examples": [],
+    "characters_per_page": [
+     3784,
+     4835,
+     6305,
+     4653,
+     4213,
+     4708,
+     4416,
+     4474,
+     5960,
+     4834,
+     3665,
+     1348,
+     1569,
+     1632,
+     985,
+     4839
+    ]
+   },
+   "timing": {
+    "median_ms": 1785.2,
+    "min_ms": 1753.6,
+    "max_ms": 1834.0
+   },
+   "summary": {
+    "config": "pdfplumber-xtol1",
+    "anchors_total": 70,
+    "anchors_found": 69,
+    "anchors_intact": 68,
+    "anchors_out_of_order": 0,
+    "headings_total": 22,
+    "headings_found": 22,
+    "headings_intact": 22
+   }
+  }
+ },
+ "heading_page_disagreements": [],
+ "anchors_not_in_document": [],
+ "table_apis": {
+  "pdfplumber extract_tables() [lines]": {
+   "tables_found": 0,
+   "rows_recovered": 0,
+   "total_rows": 16
+  },
+  "pdfplumber extract_tables() [text]": {
+   "tables_found": 1,
+   "rows_recovered": 16,
+   "total_rows": 16
+  },
+  "pymupdf find_tables() [lines]": {
+   "tables_found": 1,
+   "rows_recovered": 0,
+   "total_rows": 16
+  },
+  "pymupdf find_tables() [text]": {
+   "tables_found": 1,
+   "rows_recovered": 0,
+   "total_rows": 16
+  },
+  "pypdf": {
+   "note": "no table detection API"
+  }
+ },
+ "packages": {
+  "pymupdf": {
+   "package": {
+    "name": "pymupdf",
+    "version": "2.1",
+    "licence": "Dual Licensed - GNU AFFERO GPL 3.0 or Artifex Commercial License",
+    "size_mb": 122.0
+   },
+   "dependencies": [
+    {
+     "name": "networkx",
+     "version": "3.7",
+     "licence": "BSD-3-Clause",
+     "size_mb": 16.3
+    },
+    {
+     "name": "numpy",
+     "version": "2.5.4",
+     "licence": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+     "size_mb": 68.4
+    },
+    {
+     "name": "onnxruntime",
+     "version": "1.31.1",
+     "licence": "MIT License",
+     "size_mb": 68.7
+    },
+    {
+     "name": "PyYAML",
+     "version": "6.0.3",
+     "licence": "MIT License",
+     "size_mb": 3.2
+    },
+    {
+     "name": "pymupdf_layout",
+     "version": "2.1",
+     "licence": "unknown",
+     "size_mb": 0.0
+    },
+    {
+     "name": "psutil",
+     "version": "7.2.2",
+     "licence": "BSD-3-Clause",
+     "size_mb": 0.9
+    },
+    {
+     "name": "tabulate",
+     "version": "0.10.0",
+     "licence": "MIT",
+     "size_mb": 0.3
+    },
+    {
+     "name": "pymupdf4llm",
+     "version": "2.1",
+     "licence": "unknown",
+     "size_mb": 0.0
+    },
+    {
+     "name": "flatbuffers",
+     "version": "25.12.19",
+     "licence": "Apache Software License",
+     "size_mb": 0.2
+    },
+    {
+     "name": "packaging",
+     "version": "26.3",
+     "licence": "Apache-2.0 OR BSD-2-Clause",
+     "size_mb": 1.0
+    },
+    {
+     "name": "protobuf",
+     "version": "7.36.2",
+     "licence": "3-Clause BSD License",
+     "size_mb": 2.4
+    }
+   ],
+   "total_size_mb": 283.4
+  },
+  "pypdf": {
+   "package": {
+    "name": "pypdf",
+    "version": "6.21.4",
+    "licence": "BSD-3-Clause",
+    "size_mb": 3.9
+   },
+   "dependencies": [
+    {
+     "name": "typing_extensions",
+     "version": "4.16.0",
+     "licence": "PSF-2.0",
+     "size_mb": 0.3
+    }
+   ],
+   "total_size_mb": 4.2
+  },
+  "pdfplumber": {
+   "package": {
+    "name": "pdfplumber",
+    "version": "0.11.10",
+    "licence": "MIT License",
+    "size_mb": 0.4
+   },
+   "dependencies": [
+    {
+     "name": "pdfminer.six",
+     "version": "20260107",
+     "licence": "MIT",
+     "size_mb": 9.3
+    },
+    {
+     "name": "pillow",
+     "version": "13.0.0",
+     "licence": "MIT-CMU",
+     "size_mb": 21.8
+    },
+    {
+     "name": "pypdfium2",
+     "version": "5.14.0",
+     "licence": "BSD-3-Clause, Apache-2.0, dependency licenses",
+     "size_mb": 8.8
+    },
+    {
+     "name": "charset-normalizer",
+     "version": "3.5.2",
+     "licence": "MIT",
+     "size_mb": 0.9
+    },
+    {
+     "name": "cryptography",
+     "version": "50.0.2",
+     "licence": "Apache-2.0 OR BSD-3-Clause",
+     "size_mb": 15.6
+    },
+    {
+     "name": "cffi",
+     "version": "2.1.1",
+     "licence": "MIT-0",
+     "size_mb": 1.2
+    },
+    {
+     "name": "typing_extensions",
+     "version": "4.16.0",
+     "licence": "PSF-2.0",
+     "size_mb": 0.3
+    },
+    {
+     "name": "pycparser",
+     "version": "3.12",
+     "licence": "BSD-3-Clause",
+     "size_mb": 0.6
+    }
+   ],
+   "total_size_mb": 58.9
+  }
+ }
+}

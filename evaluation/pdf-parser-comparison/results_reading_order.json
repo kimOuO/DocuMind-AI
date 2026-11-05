@@ -1,0 +1,67 @@
+{
+ "paper": "arXiv:1810.04805v2 (BERT, two-column)",
+ "anchors_from_latex": 71,
+ "anchors_in_document": 66,
+ "configs": {
+  "pymupdf-default": {
+   "found": 66,
+   "intact": 66,
+   "out_of_order": 2,
+   "not_found": []
+  },
+  "pymupdf-sorted": {
+   "found": 17,
+   "intact": 15,
+   "out_of_order": 4,
+   "not_found": [
+    "Language model pre-training has been shown to be",
+    "we improve the fine-tuning based approaches by proposing",
+    "We demonstrate the importance of bidirectional pre-training for",
+    "We show that pre-trained representations reduce the need",
+    "The code and pre-trained models are available at"
+   ]
+  },
+  "pypdf-default": {
+   "found": 66,
+   "intact": 66,
+   "out_of_order": 2,
+   "not_found": []
+  },
+  "pypdf-layout": {
+   "found": 13,
+   "intact": 11,
+   "out_of_order": 3,
+   "not_found": [
+    "Language model pre-training has been shown to be",
+    "There are two existing strategies for applying pre-trained",
+    "we improve the fine-tuning based approaches by proposing",
+    "We demonstrate the importance of bidirectional pre-training for",
+    "We show that pre-trained representations reduce the need"
+   ]
+  },
+  "pdfplumber-default": {
+   "found": 16,
+   "intact": 6,
+   "out_of_order": 4,
+   "not_found": [
+    "Language model pre-training has been shown to be",
+    "we improve the fine-tuning based approaches by proposing",
+    "We demonstrate the importance of bidirectional pre-training for",
+    "We show that pre-trained representations reduce the need",
+    "The code and pre-trained models are available at"
+   ]
+  },
+  "pdfplumber-xtol1": {
+   "found": 16,
+   "intact": 13,
+   "out_of_order": 4,
+   "not_found": [
+    "Language model pre-training has been shown to be",
+    "we improve the fine-tuning based approaches by proposing",
+    "We demonstrate the importance of bidirectional pre-training for",
+    "We show that pre-trained representations reduce the need",
+    "The code and pre-trained models are available at"
+   ]
+  }
+ }
+}
