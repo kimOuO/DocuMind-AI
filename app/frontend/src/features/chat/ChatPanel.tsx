@@ -1,4 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { ConfirmDialog } from '../../components/ConfirmDialog'
 import {
   ApiError,
@@ -63,6 +65,17 @@ function SourceList({ sources }: { sources: Source[] }) {
   )
 }
 
+/** The model's answer as formatted text. Raw HTML in it is never rendered. */
+function AnswerText({ content }: { content: string }) {
+  return (
+    <div className="answer break-words">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>
+        {content}
+      </ReactMarkdown>
+    </div>
+  )
+}
+
 function MessageView({ message }: { message: ChatMessage }) {
   if (message.role === 'user') {
     return (
@@ -88,7 +101,7 @@ function MessageView({ message }: { message: ChatMessage }) {
           <span className="ml-2 font-medium text-accent">文件中找不到答案</span>
         )}
       </p>
-      <p className="whitespace-pre-wrap break-words">{message.content}</p>
+      <AnswerText content={message.content} />
       <SourceList sources={message.sources} />
     </li>
   )

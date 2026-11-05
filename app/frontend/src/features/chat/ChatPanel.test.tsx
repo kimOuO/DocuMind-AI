@@ -141,6 +141,34 @@ test('asking creates a conversation and shows the answer with its sources, scope
   expect(await screen.findByRole('option', { name: QUESTION.slice(0, 40) })).toBeInTheDocument()
 })
 
+test('the answer is rendered as formatted text, with citations kept literally', async () => {
+  mockApi({
+    'GET /api/v1/conversations': { status: 200, body: [] },
+    'POST /api/v1/conversations': { status: 201, body: CONVERSATION },
+    [ASK]: answerStream({ pieces: ['**Low-level**', ' retrieval [1]\n\n- first\n- second [2][3]'] }),
+    [`GET /api/v1/conversations/${CONVERSATION.id}`]: {
+      status: 200,
+      body: {
+        ...stored(),
+        messages: [
+          stored().messages[0],
+          { ...stored().messages[1], content: '**Low-level** retrieval [1]\n\n- first\n- second [2][3]' },
+        ],
+      },
+    },
+  })
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  const conversation = await screen.findByRole('list', { name: '對話內容' })
+  const bold = within(conversation).getByText('Low-level')
+  expect(bold.tagName).toBe('STRONG')
+  expect(within(conversation).queryByText(/\*\*/)).not.toBeInTheDocument()
+  expect(within(conversation).getByText('first').tagName).toBe('LI')
+  expect(within(conversation).getByText('second [2][3]')).toBeInTheDocument()
+})
+
 test('ticked documents limit the search and are named as the scope', async () => {
   const calls = mockApi({
     'GET /api/v1/conversations': { status: 200, body: [] },
