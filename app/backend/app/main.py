@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, Depends, FastAPI
 
 from app.auth import router as auth
+from app.conversations import router as conversations
 from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
 from app.core.errors import install_error_handlers
@@ -81,6 +82,7 @@ def create_app() -> FastAPI:
     api = APIRouter(prefix=API_PREFIX, dependencies=[Depends(verify_origin)])
     api.include_router(auth.router)
     api.include_router(documents.router)
+    api.include_router(conversations.router)
     api.include_router(monitoring.router)
     app.include_router(api)
     return app
