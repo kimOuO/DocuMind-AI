@@ -4,7 +4,12 @@ import uuid
 
 import pytest
 
-from app.chat.prompting import build_answer_prompt, cited_indexes, source_payload
+from app.chat.prompting import (
+    build_answer_prompt,
+    cited_indexes,
+    question_language,
+    source_payload,
+)
 from app.llm.tokenizer import Qwen3TokenCounter
 from app.retrieval.repository import RetrievedChunk
 
@@ -66,6 +71,27 @@ def test_sources_that_do_not_fit_the_evidence_budget_are_left_out_whole(
         counter.count(f"[{i}] paper.pdf, page {c.page}\n{c.text}") for i, c in enumerate(used, 1)
     )
     assert evidence <= 1_000
+
+
+@pytest.mark.parametrize(
+    ("question", "expected"),
+    [
+        ("compare lightRAG with GraphRAG", "other"),
+        ("LightRAG 跟 GraphRAG 的差異？", "zh"),
+        ("請摘要這份文件", "zh"),
+        ("Table 2 的數字", "zh"),
+    ],
+)
+def test_the_language_of_the_question_is_recognised(question: str, expected: str) -> None:
+    assert question_language(question) == expected
+
+
+def test_a_chinese_question_asks_for_traditional_chinese(counter: Qwen3TokenCounter) -> None:
+    chinese, _ = build_answer_prompt("請摘要這份文件", [], counter, 100)
+    english, _ = build_answer_prompt("summary this document.", [], counter, 100)
+
+    assert "Traditional Chinese (繁體中文" in chinese and "never in Simplified" in chinese
+    assert "繁體中文" not in english and "language of the question" in english
 
 
 def test_the_instructions_fit_their_budget(counter: Qwen3TokenCounter) -> None:

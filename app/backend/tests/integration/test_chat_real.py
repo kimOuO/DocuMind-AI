@@ -78,3 +78,41 @@ async def test_the_paper_is_indexed_and_a_question_gets_a_cited_streamed_answer(
     report = client.get("/api/v1/llm-calls").json()
     assert report["underestimate_events"] == 0
     assert report["measured"]["max_total_tokens"] <= settings.llm_context_limit
+
+
+# Characters that exist only in Simplified Chinese; none may appear in an answer.
+SIMPLIFIED_ONLY = "国们这为对说时会学关现还从进间们种实发体样问题级义论样变统对双检图据"
+
+
+async def test_a_chinese_question_is_answered_in_traditional_chinese(
+    client: TestClient, db: psycopg.Connection
+) -> None:
+    register_and_login(client, "kim")
+    settings = get_settings()
+    uploaded = client.post(
+        "/api/v1/documents", files={"file": ("2410.05779v3.pdf", SAMPLE_PDF.read_bytes())}
+    ).json()
+    runner = IndexJobRunner(
+        sessions=get_sessionmaker(),
+        storage=FileStorage(settings.data_dir),
+        tokenizer=Qwen3TokenCounter(),
+        embedder=OllamaEmbedder(settings),
+        settings=settings,
+    )
+    assert await runner.run(uuid.UUID(uploaded["jobs"][0]["id"])) is JobOutcome.COMPLETED
+    conversation = client.post("/api/v1/conversations", json={}).json()["id"]
+
+    response = client.post(
+        f"/api/v1/conversations/{conversation}/messages",
+        json={"question": "LightRAG 的雙層檢索是什麼？"},
+    )
+
+    answer = "".join(
+        json.loads(block.split("\n", 1)[1].removeprefix("data: "))["text"]
+        for block in response.text.strip().split("\n\n")
+        if block.startswith("event: delta")
+    )
+    print(f"\nanswer:\n{answer}")
+    assert answer
+    simplified = [c for c in answer if c in SIMPLIFIED_ONLY]
+    assert simplified == [], f"Simplified characters in the answer: {simplified}"

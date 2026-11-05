@@ -21,10 +21,26 @@ for example [1] or [2][3].
 - Copy numbers and names exactly as they appear in the sources.
 - If the sources do not contain the answer, say that the documents do not contain it and \
 cite nothing.
-- Answer in the language of the question.
+{language_rule}
 
 Sources:
 """
+
+# Qwen answers Chinese questions in Simplified Chinese unless told otherwise;
+# this platform's users write Traditional Chinese.
+LANGUAGE_RULES = {
+    "zh": "- The question is in Chinese: answer in Traditional Chinese (繁體中文，台灣用語), "
+    "never in Simplified Chinese.",
+    "other": "- Answer in the language of the question.",
+}
+
+_CJK = re.compile(r"[\u4e00-\u9fff\u3400-\u4dbf]")
+
+
+def question_language(question: str) -> str:
+    """'zh' when the question contains Chinese characters, otherwise 'other'."""
+    return "zh" if _CJK.search(question) else "other"
+
 
 _CITATION = re.compile(r"\[\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)\s*\]")
 
@@ -50,7 +66,8 @@ def build_answer_prompt(
         blocks.append(block)
         spent += cost
     sources = "\n\n".join(blocks) if blocks else "(no sources)"
-    return f"{INSTRUCTIONS}{sources}\n\nQuestion: {question}\nAnswer:", used
+    instructions = INSTRUCTIONS.format(language_rule=LANGUAGE_RULES[question_language(question)])
+    return f"{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
 
 
 def source_payload(index: int, chunk: RetrievedChunk) -> dict[str, Any]:
