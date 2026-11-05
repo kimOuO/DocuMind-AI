@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from app.ingestion.parsing import Page
 
 _NUMBERED_LINE = re.compile(r"^(?P<number>\d{1,2}(?:\.\d{1,2})*)\s+(?P<title>\S.*)$")
+_MARKDOWN_LINE = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>\S.*)$")
 # A detached first letter: one capital, a space, then the rest of the word in capitals.
 _DETACHED_INITIAL = re.compile(r"\b([A-Z]) (?=[A-Z]{2,}\b)")
 _SPACE_BEFORE_HYPHEN = re.compile(r" +-(?=[A-Z])")
@@ -25,8 +26,8 @@ MIN_UPPERCASE_SHARE = 0.6
 
 @dataclass(frozen=True)
 class Heading:
-    number: str  # "4.2"
-    level: int  # 1 for "4", 2 for "4.2", 3 for "4.2.1"
+    number: str | None  # "4.2"; None for a Markdown heading
+    level: int  # 1 for "4" or "#", 2 for "4.2" or "##", 3 for "4.2.1" or "###"
     raw: str  # the line as extracted, for the record
     title: str  # the normalised title text
     page: int
@@ -59,11 +60,25 @@ def _looks_like_heading(title: str) -> bool:
 
 
 def find_headings(pages: Sequence[Page]) -> list[Heading]:
-    """Numbered headings in document order."""
+    """Numbered headings (papers) and Markdown headings, in document order."""
     headings: list[Heading] = []
     for page in pages:
         for index, line in enumerate(page.text.splitlines()):
-            match = _NUMBERED_LINE.match(line.strip())
+            stripped = line.strip()
+            markdown = _MARKDOWN_LINE.match(stripped)
+            if markdown is not None:
+                headings.append(
+                    Heading(
+                        number=None,
+                        level=len(markdown.group("hashes")),
+                        raw=stripped,
+                        title=" ".join(markdown.group("title").rstrip("#").split()),
+                        page=page.number,
+                        line=index,
+                    )
+                )
+                continue
+            match = _NUMBERED_LINE.match(stripped)
             if match is None or not _looks_like_heading(match.group("title")):
                 continue
             number = match.group("number")
@@ -71,7 +86,7 @@ def find_headings(pages: Sequence[Page]) -> list[Heading]:
                 Heading(
                     number=number,
                     level=number.count(".") + 1,
-                    raw=line.strip(),
+                    raw=stripped,
                     title=normalize_title(match.group("title")),
                     page=page.number,
                     line=index,
