@@ -282,6 +282,8 @@ none → processing → ready
 
 **Message（助理訊息）**：`pending → streaming → completed` 或 `failed` 或 `interrupted`。使用者訊息建立時即為 `completed`。
 
+`completed` 只用於模型自然結束的回答。串流中斷，或回答因輸出上限、context 用盡而未完整生成時，皆為 `interrupted`（`02-architecture.md` 第 4.2 節，AC-57）。
+
 **LLMCall**：`pending → completed` 或 `failed` 或 `interrupted`。
 
 合法的轉換只有上面列出的。Service 收到不合法的轉換要求時回 `409`。
@@ -414,6 +416,7 @@ P4 的 Hybrid 實驗需要全文檢索的欄位與索引時，屆時以新的 mi
 | `prompt_tokens` | int，可為空 | **只放 Ollama 回報的實測值**；未知為空 |
 | `completion_tokens` | int，可為空 | **只放 Ollama 回報的實測值**；未知為空 |
 | `received_output_tokens_estimated` | int，可為空 | 中斷時對已收到文字的本地計數，預估值 |
+| `finish_reason` | text，可為空 | Ollama 正常結束時的停止原因：`stop`／`output_limit`／`context_exhausted`／`unknown`；呼叫失敗或中斷時為空。此欄在 P2-D 以 migration 加入 |
 | `error` | text，可為空 | |
 | `duration_ms` | int，可為空 | |
 | `created_at`、`updated_at` | timestamptz | |
@@ -485,7 +488,7 @@ class Embedder(Protocol):
 | `CHUNK_OVERLAP` | `80` | tokens；D30 |
 | `TOP_K` | `5` | D30，P4 實驗調整 |
 | `MIN_SIMILARITY` | `0.45` | 拒答門檻；D36，P4 校正 |
-| `TOKEN_SAFETY_BUFFER` | `0` | token 計數的安全緩衝（AC-25） |
+| `TOKEN_SAFETY_BUFFER` | `16` | token 計數的安全緩衝（AC-25）。不是絕對保證，見 `02-architecture.md` 第 4.1 節 |
 | `QUESTION_TOKEN_BUDGET` | `200` | 問題的 token 上限；超過時請使用者縮短（D45）。未來可改為動態分配 |
 | `MAX_UPLOAD_MB` | `50` | |
 | `DATA_DIR` | `.data` | 上傳檔案的儲存目錄 |

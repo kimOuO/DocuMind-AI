@@ -15,7 +15,7 @@
 ## 不可違反的限制（來自題目）
 
 1. **LLM 只做 text-to-text。** 不得把檔案、圖片交給任何 LLM 或雲端 API 解析。文件解析一律用本地程式庫。
-2. **單次 LLM 呼叫的 prompt + completion ≤ 10,000 tokens。** 超量時用檢索、壓縮、map-reduce 處理，**絕不截斷**。所有呼叫都必須經過 `LLMClient` 的預算守門並寫入 `llm_calls` 帳本。
+2. **單次 LLM 呼叫的 prompt + completion ≤ 10,000 tokens。** 超量時用檢索、壓縮、map-reduce 處理，**絕不截斷**。所有呼叫都必須經過 `LLMClient` 的預算守門並寫入 `llm_calls` 帳本。送給 Ollama 的生成請求只能由 `app/backend/app/llm/ollama_api.py` 組裝（固定帶 `num_ctx`、`num_predict`、`truncate=false`、`shift=false`）。
 3. **找不到答案時不編造。** 回答必須有來源引用（檔名、頁碼、片段）。
 
 ## 常用指令

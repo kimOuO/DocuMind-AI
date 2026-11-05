@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY alembic.ini .
 COPY migrations ./migrations
+# Vendored assets (the Qwen3 tokenizer): used as they are, nothing is downloaded.
+COPY third-party ./third-party
 COPY app ./app
 
 RUN useradd --create-home --uid 10001 app \

@@ -21,6 +21,7 @@ import psycopg
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app" / "backend"))
 from app.core.env_loader import get_settings
+from app.llm.ollama_api import generate_request
 
 PASSAGES = [
     (
@@ -121,21 +122,12 @@ def main() -> int:
         f"Evidence:\n{evidence}\n\nQuestion: {QUESTION}\nAnswer in one sentence."
     )
     started = time.time()
-    response = httpx.post(
-        f"{ollama}/api/generate",
-        json={
-            "model": settings.llm_model,
-            "prompt": prompt,
-            "stream": False,
-            "think": settings.llm_thinking,
-            "options": {
-                "num_ctx": settings.llm_context_limit,
-                "num_predict": 200,
-                "temperature": 0,
-            },
-        },
-        timeout=600,
+    # Built by the application's own request builder, so the script sends the
+    # same limits as every other call (context window, output limit, no truncation).
+    request = generate_request(
+        settings, prompt=prompt, max_output_tokens=200, stream=False, temperature=0
     )
+    response = httpx.post(f"{ollama}{request.path}", json=request.body, timeout=600)
     response.raise_for_status()
     result = response.json()
     answer = result.get("response", "").strip()

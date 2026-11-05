@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     chunk_overlap: int = 80
     top_k: int = 5
     min_similarity: float = 0.45
-    token_safety_buffer: int = 0
+    token_safety_buffer: int = 16
     question_token_budget: int = 200
 
     # Uploads
