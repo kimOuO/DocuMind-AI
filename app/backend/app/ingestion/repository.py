@@ -23,6 +23,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import Chunk, Document, IngestionJob
 
 ACTIVE_STATUSES = ("queued", "running")
+RESTART_REASON = "Processing was interrupted because the service restarted. Please retry."
 
 
 @dataclass(frozen=True)
@@ -137,6 +138,36 @@ class IngestionRepository:
         job.completed_at = func.now()
         await self._db.flush()
         return True
+
+    async def fail_unfinished_jobs(self, reason: str) -> int:
+        """Mark every queued or running job, and its document, as failed.
+
+        Called once when the service starts: nothing is running yet, so any job
+        still marked unfinished was interrupted by the previous shutdown.
+        """
+        active = IngestionJob.status.in_(ACTIVE_STATUSES)
+
+        def documents_of(kind: str):  # type: ignore[no-untyped-def]
+            return select(IngestionJob.document_id).where(active, IngestionJob.kind == kind)
+
+        # Documents first, then jobs: the same order as every other write.
+        await self._db.execute(
+            update(Document)
+            .where(Document.id.in_(documents_of("index")))
+            .values(status="failed", error=reason)
+        )
+        await self._db.execute(
+            update(Document)
+            .where(Document.id.in_(documents_of("summary")))
+            .values(summary_status="failed")
+        )
+        result = await self._db.execute(
+            update(IngestionJob)
+            .where(active)
+            .values(status="failed", error=reason, completed_at=func.now())
+        )
+        assert isinstance(result, CursorResult)
+        return result.rowcount
 
     async def fail_job(self, job_id: uuid.UUID, reason: str) -> bool:
         """Mark an unfinished job, and what it was producing, as failed."""

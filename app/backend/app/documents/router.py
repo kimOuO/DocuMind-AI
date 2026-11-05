@@ -1,4 +1,4 @@
-"""HTTP endpoints for documents: upload, list, read, delete."""
+"""HTTP endpoints for documents: upload, list, read, delete, retry."""
 
 import uuid
 from datetime import datetime
@@ -13,6 +13,7 @@ from app.core.database import get_session
 from app.core.env_loader import Settings, get_settings
 from app.documents.service import DocumentService, DocumentView
 from app.documents.storage import FileStorage
+from app.ingestion.scheduler import JobScheduler, get_job_scheduler
 from app.models import User
 
 router = APIRouter(tags=["documents"])
@@ -88,9 +89,11 @@ def _detail(view: DocumentView) -> DocumentDetailResponse:
 
 
 def get_document_service(
-    db: AsyncSession = Depends(get_session), settings: Settings = Depends(get_settings)
+    db: AsyncSession = Depends(get_session),
+    settings: Settings = Depends(get_settings),
+    scheduler: JobScheduler = Depends(get_job_scheduler),
 ) -> DocumentService:
-    return DocumentService(db, settings, FileStorage(settings.data_dir))
+    return DocumentService(db, settings, FileStorage(settings.data_dir), scheduler)
 
 
 @router.post("/documents", status_code=202, response_model=DocumentDetailResponse)
@@ -130,3 +133,12 @@ async def delete_document(
     service: DocumentService = Depends(get_document_service),
 ) -> None:
     await service.delete(user, document_id)
+
+
+@router.post("/documents/{id}/retry", status_code=202, response_model=DocumentDetailResponse)
+async def retry_document(
+    document_id: DocumentId,
+    user: User = Depends(current_user),
+    service: DocumentService = Depends(get_document_service),
+) -> DocumentDetailResponse:
+    return _detail(await service.retry(user, document_id))

@@ -58,13 +58,40 @@ class DocumentRepository:
             latest.setdefault(job.kind, job)
         return [latest[kind] for kind in sorted(latest)]
 
-    async def add_with_index_job(self, document: Document) -> Document:
+    async def get_for_update(self, owner_id: uuid.UUID, document_id: uuid.UUID) -> Document | None:
+        """The owner's document, locked until the end of the transaction."""
+        return await self._db.scalar(
+            select(Document)
+            .where(Document.id == document_id, Document.owner_id == owner_id)
+            .with_for_update()
+        )
+
+    async def add_with_index_job(self, document: Document) -> IngestionJob:
+        """Store a new document together with its first index job."""
         self._db.add(document)
         await self._db.flush()
-        self._db.add(IngestionJob(document_id=document.id, kind="index", status="queued"))
+        job = IngestionJob(document_id=document.id, kind="index", status="queued")
+        self._db.add(job)
         await self._db.flush()
         await self._db.refresh(document)
-        return document
+        return job
+
+    async def add_retry_job(self, document: Document, kind: str) -> IngestionJob:
+        """Queue another attempt. Earlier jobs are kept as the processing history."""
+        previous = await self._db.scalar(
+            select(func.max(IngestionJob.retry_count)).where(
+                IngestionJob.document_id == document.id, IngestionJob.kind == kind
+            )
+        )
+        job = IngestionJob(
+            document_id=document.id,
+            kind=kind,
+            status="queued",
+            retry_count=0 if previous is None else previous + 1,
+        )
+        self._db.add(job)
+        await self._db.flush()
+        return job
 
     async def delete(self, document: Document) -> None:
         # Jobs, chunks and summaries go with it (ON DELETE CASCADE).

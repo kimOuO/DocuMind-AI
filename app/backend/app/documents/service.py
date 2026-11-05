@@ -16,6 +16,7 @@ from app.core.env_loader import Settings
 from app.core.errors import ApiError
 from app.documents.repository import DocumentRepository
 from app.documents.storage import FileStorage, UploadTooLarge
+from app.ingestion.scheduler import JobScheduler
 from app.models import Document, IngestionJob, User
 
 SUPPORTED_EXTENSIONS = {".pdf": "pdf", ".txt": "txt", ".md": "md"}
@@ -36,11 +37,14 @@ def clean_filename(raw: str | None) -> str:
 
 
 class DocumentService:
-    def __init__(self, db: AsyncSession, settings: Settings, storage: FileStorage) -> None:
+    def __init__(
+        self, db: AsyncSession, settings: Settings, storage: FileStorage, scheduler: JobScheduler
+    ) -> None:
         self._db = db
         self._repo = DocumentRepository(db)
         self._settings = settings
         self._storage = storage
+        self._scheduler = scheduler
 
     async def upload(self, actor: User, upload: UploadFile) -> tuple[DocumentView, bool]:
         """Store an uploaded file and queue it for indexing.
@@ -86,7 +90,7 @@ class DocumentService:
         )
         try:
             # The document and its first indexing job are created together.
-            await self._repo.add_with_index_job(document)
+            job = await self._repo.add_with_index_job(document)
             await self._db.commit()
         except IntegrityError:
             # The same content was uploaded concurrently by the same user.
@@ -100,6 +104,8 @@ class DocumentService:
             await self._db.rollback()
             self._storage.delete(relative_path)
             raise
+        # Only after the commit: the background job reads what was just stored.
+        self._scheduler.schedule(job.id, document.id)
         return await self._view(document), True
 
     async def list_documents(self, actor: User) -> list[DocumentView]:
@@ -117,6 +123,35 @@ class DocumentService:
         await self._db.commit()
         # The file is removed only after the database change is committed.
         self._storage.delete(relative_path)
+        # A job still working on it would write nothing anyway; this just stops it sooner.
+        self._scheduler.cancel_document(document_id)
+
+    async def retry(self, actor: User, document_id: uuid.UUID) -> DocumentView:
+        """Queue a new attempt at indexing a document whose processing failed."""
+        document = await self._repo.get_for_update(actor.id, document_id)
+        if document is None:
+            await self._db.rollback()
+            raise ApiError(404, "DOCUMENT_NOT_FOUND", "Document not found.")
+        if document.status != "failed":
+            await self._db.rollback()
+            raise ApiError(
+                409, "RETRY_NOT_ALLOWED", "Only a document whose processing failed can be retried."
+            )
+        try:
+            job = await self._repo.add_retry_job(document, "index")
+            document.status = "processing"
+            document.error = None
+            await self._db.commit()
+            # updated_at is set by the database; read it back before it is returned.
+            await self._db.refresh(document)
+        except IntegrityError as exc:
+            # Another job of the same kind is already queued or running.
+            await self._db.rollback()
+            raise ApiError(
+                409, "RETRY_NOT_ALLOWED", "This document is already being processed."
+            ) from exc
+        self._scheduler.schedule(job.id, document.id)
+        return await self._view(document)
 
     async def _owned(self, actor: User, document_id: uuid.UUID) -> Document:
         document = await self._repo.get(actor.id, document_id)

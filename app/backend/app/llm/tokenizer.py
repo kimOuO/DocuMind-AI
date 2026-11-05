@@ -6,6 +6,7 @@ vendored in third-party/qwen3-tokenizer (see the README there for its source).
 """
 
 import hashlib
+from functools import lru_cache
 from pathlib import Path
 from typing import Protocol
 
@@ -52,3 +53,9 @@ class Qwen3TokenCounter:
     def spans(self, text: str) -> list[tuple[int, int]]:
         """The character range of each token in `text`, in order."""
         return list(self._tokenizer.encode(text, add_special_tokens=False).offsets)
+
+
+@lru_cache
+def get_token_counter() -> Qwen3TokenCounter:
+    """The process-wide tokenizer. Loading the file takes about half a second."""
+    return Qwen3TokenCounter()

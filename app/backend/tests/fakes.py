@@ -37,3 +37,17 @@ class FakeEmbedder:
         if self._fail_on_call == index:
             raise EmbeddingError("The embedding service answered 500: simulated failure")
         return [fake_vector(text) for text in texts]
+
+
+class RecordingScheduler:
+    """Records what would have been run in the background, without running it."""
+
+    def __init__(self) -> None:
+        self.scheduled: list[tuple[str, str]] = []
+        self.cancelled: list[str] = []
+
+    def schedule(self, job_id, document_id) -> None:  # type: ignore[no-untyped-def]
+        self.scheduled.append((str(job_id), str(document_id)))
+
+    def cancel_document(self, document_id) -> None:  # type: ignore[no-untyped-def]
+        self.cancelled.append(str(document_id))
