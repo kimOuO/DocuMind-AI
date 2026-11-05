@@ -343,7 +343,7 @@ async def test_a_write_that_arrives_during_a_deletion_waits_and_then_writes_noth
         deleting.commit()
     written = await asyncio.wait_for(task, timeout=10)
 
-    assert written is False
+    assert written is None
     for table in ("documents", "ingestion_jobs", "chunks"):
         assert one(db, f"SELECT count(*) FROM {table}")[0] == 0
 

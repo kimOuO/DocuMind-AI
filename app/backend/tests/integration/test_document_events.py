@@ -10,6 +10,7 @@ import uuid
 from collections.abc import Callable
 from pathlib import Path
 
+import httpx
 import psycopg
 import pytest
 from fastapi.testclient import TestClient
@@ -18,9 +19,12 @@ from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
 from app.documents import router as documents_router
 from app.documents.storage import FileStorage
+from app.ingestion.dispatcher import JobDispatcher
 from app.ingestion.indexing import IndexJobRunner
+from app.llm.gateway import OllamaGateway
 from app.llm.tokenizer import Qwen3TokenCounter
-from tests.fakes import FakeEmbedder
+from app.summarization.service import SummaryJobRunner
+from tests.fakes import FakeEmbedder, StubSummariser
 from tests.integration.conftest import register_and_login
 
 pytestmark = pytest.mark.db
@@ -53,15 +57,29 @@ def upload(client: TestClient, name: str = "notes.txt", content: bytes = TEXT) -
     return body["id"], body["jobs"][0]["id"]
 
 
-def runner(tokenizer: Qwen3TokenCounter, embedder: FakeEmbedder) -> IndexJobRunner:
+def runner(tokenizer: Qwen3TokenCounter, embedder: FakeEmbedder) -> JobDispatcher:
+    """Processes a document end to end: indexing, then the summary (with a stubbed model)."""
     settings = get_settings()
-    return IndexJobRunner(
+    storage = FileStorage(settings.data_dir)
+    index = IndexJobRunner(
         sessions=get_sessionmaker(),
-        storage=FileStorage(settings.data_dir),
+        storage=storage,
         tokenizer=tokenizer,
         embedder=embedder,
         settings=settings,
     )
+    summary = SummaryJobRunner(
+        sessions=get_sessionmaker(),
+        storage=storage,
+        counter=tokenizer,
+        gateway=OllamaGateway(
+            settings=settings,
+            sessions=get_sessionmaker(),
+            counter=tokenizer,
+            transport=httpx.MockTransport(StubSummariser()),
+        ),
+    )
+    return JobDispatcher(sessions=get_sessionmaker(), index_runner=index, summary_runner=summary)
 
 
 def parse(stream: str) -> list[tuple[str, dict]]:
@@ -84,8 +102,8 @@ async def test_a_ready_document_reports_its_status_and_ends(
     assert response.headers["content-type"].startswith("text/event-stream")
     assert response.headers["cache-control"] == "no-cache"
     assert parse(response.text) == [
-        ("status", {"status": "ready", "summary_status": "none"}),
-        ("done", {"status": "ready", "summary_status": "none"}),
+        ("status", {"status": "ready", "summary_status": "ready"}),
+        ("done", {"status": "ready", "summary_status": "ready"}),
     ]
 
 
@@ -125,9 +143,14 @@ async def test_progress_is_streamed_while_the_document_is_processed(
     progress = [data for name, data in events if name == "progress"]
     assert {"kind": "index", "stage": "embedding", "current": 0, "total": 48} in progress
     assert {"kind": "index", "stage": "embedding", "current": 32, "total": 48} in progress
+    # Indexing done, then the summary job takes over without the stream closing in between.
+    assert ("status", {"status": "ready", "summary_status": "none"}) in events
+    assert ("status", {"status": "ready", "summary_status": "processing"}) in events
+    assert any(p["kind"] == "summary" and p["stage"] == "summarizing" for p in progress)
+    assert "done" not in [name for name, _ in events[:-1]]
     assert events[-2:] == [
-        ("status", {"status": "ready", "summary_status": "none"}),
-        ("done", {"status": "ready", "summary_status": "none"}),
+        ("status", {"status": "ready", "summary_status": "ready"}),
+        ("done", {"status": "ready", "summary_status": "ready"}),
     ]
 
 

@@ -21,6 +21,14 @@ _CAPITALS_ONLY = re.compile(r"^[A-Z ]+$")
 
 
 @dataclass(frozen=True)
+class PageSlice:
+    """The part of one page that belongs to a unit."""
+
+    page: int
+    text: str
+
+
+@dataclass(frozen=True)
 class SummaryUnit:
     number: str | None
     title: str
@@ -28,12 +36,25 @@ class SummaryUnit:
     page_end: int
     text: str
     token_count: int
+    pages: tuple[PageSlice, ...] = ()
 
 
 @dataclass(frozen=True)
 class _Line:
     page: int
     text: str
+
+
+def _slices(lines: list[_Line]) -> tuple[PageSlice, ...]:
+    """The lines regrouped by page, blank edges removed."""
+    grouped: list[list[_Line]] = []
+    for line in lines:
+        if grouped and grouped[-1][0].page == line.page:
+            grouped[-1].append(line)
+        else:
+            grouped.append([line])
+    slices = (PageSlice(g[0].page, "\n".join(x.text for x in g).strip()) for g in grouped)
+    return tuple(s for s in slices if s.text)
 
 
 @dataclass(frozen=True)
@@ -138,7 +159,11 @@ def _fit(
     text = "\n".join(line.text for line in kept).strip()
     tokens = counter.count(text)
     if tokens <= budget:
-        return [SummaryUnit(span.number, span.title, kept[0].page, kept[-1].page, text, tokens)]
+        return [
+            SummaryUnit(
+                span.number, span.title, kept[0].page, kept[-1].page, text, tokens, _slices(kept)
+            )
+        ]
 
     deeper = [h.level for i, h in located if span.start < i < span.stop and h.level > span.level]
     if deeper:
@@ -199,7 +224,13 @@ def _batches(
         )
         units.append(
             SummaryUnit(
-                span.number, title, group[0].page, group[-1].page, text, counter.count(text)
+                span.number,
+                title,
+                group[0].page,
+                group[-1].page,
+                text,
+                counter.count(text),
+                _slices(group),
             )
         )
     return units

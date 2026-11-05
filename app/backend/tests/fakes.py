@@ -1,8 +1,13 @@
 """Stand-ins for external services, used by tests instead of the real ones."""
 
+import asyncio
 import hashlib
+import json
 import math
+import re
 from collections.abc import Awaitable, Callable
+
+import httpx
 
 from app.llm.embedding import EmbeddingError
 from app.models import EMBEDDING_DIMENSIONS
@@ -51,3 +56,41 @@ class RecordingScheduler:
 
     def cancel_document(self, document_id) -> None:  # type: ignore[no-untyped-def]
         self.cancelled.append(str(document_id))
+
+
+class StubSummariser:
+    """Plays the model for summary calls: answers from what the prompt asked for."""
+
+    def __init__(self, *, fail_on_call: int | None = None, cut_short: bool = False) -> None:
+        self.prompts: list[str] = []
+        self.fail_on_call = fail_on_call
+        self.cut_short = cut_short
+        self.pause: asyncio.Event | None = None
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        assert (body["truncate"], body["shift"]) == (False, False)
+        assert body["options"]["num_ctx"] == 10_000 and body["options"]["num_predict"] == 1_500
+        prompt = body["prompt"]
+        self.prompts.append(prompt)
+        if self.fail_on_call == len(self.prompts) - 1:
+            return httpx.Response(500, json={"error": "model failed to load"})
+        section = re.search(r"^Section: (.*)$", prompt, flags=re.M)
+        if section:
+            pages = re.search(r"^Pages: (.*)$", prompt, flags=re.M)
+            first_page = pages.group(1).split("-")[0]  # type: ignore[union-attr]
+            text = f"Summary of {section.group(1)}: key figure 67.6% (p. {first_page})."
+        elif prompt.rstrip().endswith("Condensed summary:"):
+            text = "Condensed: " + " ".join(re.findall(r"Summary of ([^:]+):", prompt))
+        else:
+            text = "Overall: the document proposes LightRAG; results 67.6% (p. 8)."
+        return httpx.Response(
+            200,
+            json={
+                "response": text,
+                "done": True,
+                "done_reason": "length" if self.cut_short else "stop",
+                "prompt_eval_count": 1_200,
+                "eval_count": 300 if self.cut_short else 40,
+            },
+        )

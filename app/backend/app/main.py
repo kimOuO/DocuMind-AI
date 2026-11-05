@@ -16,13 +16,16 @@ from app.core.errors import install_error_handlers
 from app.core.origin import verify_origin
 from app.documents import router as documents
 from app.documents.storage import FileStorage
+from app.ingestion.dispatcher import JobDispatcher
 from app.ingestion.indexing import IndexJobRunner
 from app.ingestion.repository import RESTART_REASON, IngestionRepository
 from app.ingestion.scheduler import InProcessScheduler
 from app.llm import ledger
 from app.llm.embedding import OllamaEmbedder
+from app.llm.gateway import OllamaGateway
 from app.llm.tokenizer import get_token_counter
 from app.monitoring import router as monitoring
+from app.summarization.service import SummaryJobRunner
 
 logger = logging.getLogger(__name__)
 
@@ -51,13 +54,24 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     if interrupted:
         logger.warning("Marked %d interrupted processing job(s) as failed", interrupted)
 
+    storage = FileStorage(settings.data_dir)
+    counter = get_token_counter()
     scheduler = InProcessScheduler(
-        IndexJobRunner(
+        JobDispatcher(
             sessions=sessions,
-            storage=FileStorage(settings.data_dir),
-            tokenizer=get_token_counter(),
-            embedder=OllamaEmbedder(settings),
-            settings=settings,
+            index_runner=IndexJobRunner(
+                sessions=sessions,
+                storage=storage,
+                tokenizer=counter,
+                embedder=OllamaEmbedder(settings),
+                settings=settings,
+            ),
+            summary_runner=SummaryJobRunner(
+                sessions=sessions,
+                storage=storage,
+                counter=counter,
+                gateway=OllamaGateway(settings=settings, sessions=sessions, counter=counter),
+            ),
         )
     )
     app.state.job_scheduler = scheduler

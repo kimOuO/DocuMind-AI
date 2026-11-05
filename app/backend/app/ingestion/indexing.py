@@ -50,6 +50,8 @@ class IndexJobRunner:
         self._tokenizer = tokenizer
         self._embedder = embedder
         self._settings = settings
+        # The summary job queued by each completed index job, for the dispatcher.
+        self.queued_summary_jobs: dict[uuid.UUID, uuid.UUID] = {}
 
     async def run(self, job_id: uuid.UUID) -> JobOutcome:
         async with self._sessions() as session, session.begin():
@@ -80,10 +82,13 @@ class IndexJobRunner:
                 vectors.extend(await self._embedder.embed([draft.text for draft in batch]))
 
             async with self._sessions() as session, session.begin():
-                written = await IngestionRepository(session).complete_index_job(
+                summary_job = await IngestionRepository(session).complete_index_job(
                     job_id, page_count=len(pages), chunks=_records(drafts, vectors)
                 )
-            return JobOutcome.COMPLETED if written else JobOutcome.ABANDONED
+            if summary_job is None:
+                return JobOutcome.ABANDONED
+            self.queued_summary_jobs[job_id] = summary_job
+            return JobOutcome.COMPLETED
         except (DocumentParseError, EmbeddingError) as error:
             return await self._fail(job_id, str(error))
         except Exception:

@@ -79,9 +79,10 @@ async def run(tokenizer: Qwen3TokenCounter, job_id: str, embedder: FakeEmbedder)
 
 
 def jobs(db: psycopg.Connection, document_id: str) -> list[tuple]:
+    """The index jobs of a document; the summary job queued after indexing is tested elsewhere."""
     return db.execute(
         "SELECT retry_count, status FROM ingestion_jobs "
-        "WHERE document_id = %s ORDER BY retry_count",
+        "WHERE document_id = %s AND kind = 'index' ORDER BY retry_count",
         (document_id,),
     ).fetchall()
 
@@ -226,7 +227,8 @@ async def test_unfinished_jobs_are_failed_at_startup_and_can_be_retried(
     failed_document, failed_job = upload(user, "failed.txt", b"failed earlier\n")
     await run(tokenizer, failed_job, FakeEmbedder(fail_on_call=0))
 
-    assert await _recover() == 2
+    # The two unfinished index jobs, and the summary job queued when ready.txt was indexed.
+    assert await _recover() == 3
 
     documents = {d["id"]: d for d in user.get(DOCUMENTS).json()}
     for document_id in (queued_document, running_document):
@@ -235,8 +237,10 @@ async def test_unfinished_jobs_are_failed_at_startup_and_can_be_retried(
         job = user.get(f"{DOCUMENTS}/{document_id}").json()["jobs"][0]
         assert (job["status"], job["error"]) == ("failed", RESTART_REASON)
         assert job["completed_at"] is not None
-    # Finished work is left alone.
+    # Finished work is left alone. The summary job queued for the ready document is
+    # failed; the document itself stays ready.
     assert documents[ready_document]["status"] == "ready"
+    assert documents[ready_document]["summary_status"] == "failed"
     assert documents[failed_document]["error"] != RESTART_REASON
     # Running it again changes nothing.
     assert await _recover() == 0

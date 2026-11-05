@@ -61,6 +61,10 @@ def test_the_paper_splits_into_its_top_level_sections_without_the_references(
     assert all(not (11 <= u.page_start <= 12 or 11 <= u.page_end <= 12) for u in units)
     # Each unit starts with its heading line and the text is the document's own.
     assert units[4].text.startswith("4 E VALUATION")
+    # Each unit knows which part of its text is on which page.
+    assert [piece.page for piece in units[4].pages] == [5, 6, 7, 8, 9, 10]
+    assert "\n".join(piece.text for piece in units[4].pages) == units[4].text
+    assert units[0].pages[0].text.startswith("LIGHT RAG")
     assert "Table 2: Performance of ablated versions" in units[4].text
 
 

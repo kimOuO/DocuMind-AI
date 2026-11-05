@@ -20,7 +20,7 @@ from sqlalchemy import (
     func,
     text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 EMBEDDING_DIMENSIONS = 1024
@@ -32,6 +32,7 @@ JOB_STATUSES = ("queued", "running", "completed", "failed")
 MESSAGE_ROLES = ("user", "assistant")
 MESSAGE_STATUSES = ("pending", "streaming", "completed", "failed", "interrupted")
 LLM_CALL_STATUSES = ("pending", "completed", "failed", "interrupted")
+SUMMARY_LEVELS = ("section", "document")
 LLM_FINISH_REASONS = ("stop", "output_limit", "context_exhausted", "client_disconnect", "unknown")
 
 
@@ -154,6 +155,37 @@ class Chunk(Base):
     text: Mapped[str] = mapped_column(Text)
     token_count: Mapped[int] = mapped_column(Integer)
     embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIMENSIONS))
+    created_at: Mapped[datetime] = _created()
+
+
+class Summary(Base):
+    __tablename__ = "summaries"
+    __table_args__ = (
+        CheckConstraint(_in("level", SUMMARY_LEVELS), name="ck_summaries_level"),
+        UniqueConstraint(
+            "document_id", "level", "ordinal", name="uq_summaries_document_level_ordinal"
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = _pk()
+    document_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("documents.id", ondelete="CASCADE"), index=True
+    )
+    level: Mapped[str] = mapped_column(Text)
+    ordinal: Mapped[int] = mapped_column(Integer)  # section order; 0 for the document summary
+    title: Mapped[str | None] = mapped_column(Text)
+    page_start: Mapped[int] = mapped_column(Integer)
+    page_end: Mapped[int] = mapped_column(Integer)
+    # Section summary: the chunks of the pages it was made from. Document summary: empty.
+    source_chunk_ids: Mapped[list[uuid.UUID]] = mapped_column(
+        ARRAY(UUID(as_uuid=True)), server_default=text("'{}'::uuid[]")
+    )
+    # Document summary: the section summaries it was merged from. Section summary: empty.
+    source_summary_ids: Mapped[list[uuid.UUID]] = mapped_column(
+        ARRAY(UUID(as_uuid=True)), server_default=text("'{}'::uuid[]")
+    )
+    text: Mapped[str] = mapped_column(Text)
+    token_count: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = _created()
 
 
