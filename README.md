@@ -3,8 +3,8 @@
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 Chat with your documents: upload a file, ask questions, get answers grounded in the document with citations.
 
-> 狀態 / Status：**P2-A 完成**：可以註冊、登入、登出，並查看系統狀態。文件上傳自 P2-B、問答自 P2-D 起實作。
-> P2-A is done: register, log in, log out, and see the system status. Document upload arrives in P2-B and Q&A in P2-D.
+> 狀態 / Status：已完成帳號（註冊、登入、登出）與文件管理（上傳、清單、刪除）。文件的解析與問答尚未實作，上傳的文件會停在「已上傳，等待處理」。
+> Accounts (register, log in, log out) and document management (upload, list, delete) are done. Parsing and question answering are not implemented yet, so uploaded documents stay in "uploaded, waiting to be processed".
 
 ## 題目限制 / Constraints
 
@@ -29,8 +29,8 @@ docker compose up --build -d --wait     # 或 make up
 # 開啟 http://127.0.0.1:3000
 ```
 
-註冊並登入後，首頁應顯示資料庫與 LLM 服務皆「正常」。
-After registering and logging in, the home page should report both the database and the LLM server as healthy.
+註冊並登入後，可以上傳 PDF、TXT、Markdown 文件，首頁同時顯示資料庫與 LLM 服務的狀態。
+After registering and logging in you can upload PDF, TXT and Markdown documents; the home page also shows whether the database and the LLM server are healthy.
 
 請從 `http://127.0.0.1:3000` 或 `http://localhost:3000` 開啟。用其他位址（例如區網 IP）開啟時，把該位址加進 `.env` 的 `ALLOWED_ORIGINS`，否則會被來源檢查擋下。
 Open the site at one of those two addresses. If you use another address, add it to `ALLOWED_ORIGINS` in `.env`; otherwise state-changing requests are refused by the origin check.
