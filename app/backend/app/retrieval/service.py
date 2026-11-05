@@ -1,0 +1,72 @@
+"""Deciding what to search, and searching it.
+
+Every method takes the acting user: the search never leaves that user's own
+documents.
+"""
+
+import uuid
+from dataclasses import dataclass
+from typing import Literal
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.env_loader import Settings
+from app.core.errors import ApiError
+from app.llm.embedding import Embedder
+from app.models import User
+from app.retrieval.repository import RetrievalRepository, RetrievedChunk
+
+__all__ = ["RetrievalService", "RetrievedChunk", "SearchScope"]
+
+
+@dataclass(frozen=True)
+class SearchScope:
+    """The documents a question is answered from."""
+
+    # "all": every ready document of the user; "selected": the ones they named.
+    mode: Literal["all", "selected"]
+    document_ids: list[uuid.UUID]
+
+
+class RetrievalService:
+    def __init__(self, db: AsyncSession, embedder: Embedder, settings: Settings) -> None:
+        self._repo = RetrievalRepository(db)
+        self._embedder = embedder
+        self._settings = settings
+
+    async def resolve_scope(self, actor: User, document_ids: list[uuid.UUID] | None) -> SearchScope:
+        """Check the requested documents, or fall back to all that are ready.
+
+        Raises 404 if a named document does not exist or belongs to someone
+        else, and 409 if a named document is not ready or there is nothing
+        ready to search.
+        """
+        if document_ids:
+            wanted = list(dict.fromkeys(document_ids))
+            found = {d.id: d for d in await self._repo.documents_in(actor.id, wanted)}
+            if len(found) != len(wanted):
+                # Same answer whether it does not exist or belongs to someone else.
+                raise ApiError(404, "DOCUMENT_NOT_FOUND", "Document not found.")
+            not_ready = [found[i] for i in wanted if found[i].status != "ready"]
+            if not_ready:
+                names = ", ".join(f"{d.filename} ({d.id})" for d in not_ready)
+                raise ApiError(
+                    409,
+                    "DOCUMENT_NOT_READY",
+                    f"These documents are not ready to be searched: {names}",
+                )
+            return SearchScope("selected", wanted)
+
+        ready = await self._repo.ready_document_ids(actor.id)
+        if not ready:
+            raise ApiError(
+                409, "NO_READY_DOCUMENT", "There is no document ready to be searched yet."
+            )
+        return SearchScope("all", ready)
+
+    async def search(self, actor: User, scope: SearchScope, question: str) -> list[RetrievedChunk]:
+        """The Top-K chunks for the question, shared across the documents in scope."""
+        [embedding] = await self._embedder.embed([question])
+        return await self._repo.search(
+            actor.id, scope.document_ids, embedding, self._settings.top_k
+        )
