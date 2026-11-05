@@ -220,6 +220,7 @@
       "purpose": "answer | rewrite | section_summary | document_summary",
       "model": "qwen3:32b",
       "status": "pending | completed | failed | interrupted",
+      "finish_reason": "stop | output_limit | context_exhausted | client_disconnect | unknown | null",
       "estimated_prompt_tokens": 2598,
       "max_output_tokens": 2500,
       "budget_upper_bound": 5098,
@@ -240,7 +241,9 @@
 - `received_output_tokens_estimated`：串流中斷時，以本地 tokenizer 對已收到的文字計數。這是預估值，只供參考，不計入實測。
 - `measured`：有實測值的呼叫數，以及其中最大的實測總和。這是**實測合規**的依據。
 - `unmeasured`：沒有實測值的呼叫數，以及其中最大的預算上界。這只能說明它們**送出前通過了預算檢查**，不能稱為實測合規。
-- `underestimate_events`：實測 prompt tokens 大於預估值的次數（AC-25）。
+- `underestimate_events`：實測 prompt tokens 大於預估值的次數，加上被 Ollama 以輸入超量拒絕的次數（AC-25）。
+- `finish_reason`：這次呼叫如何結束；呼叫失敗時為 `null`，原因在 `error`。
+- 合計數字涵蓋所有符合篩選條件的呼叫，`limit` 只限制 `calls` 清單的筆數（1–200）。
 
 ### 1.7 `GET /health`
 

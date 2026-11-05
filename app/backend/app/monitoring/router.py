@@ -1,14 +1,20 @@
-"""Health endpoint (public): reports whether the database and the LLM server are reachable."""
+"""Monitoring endpoints: the public health check and each user's LLM call ledger."""
 
-from typing import Literal, Protocol
+import uuid
+from datetime import datetime
+from typing import Annotated, Literal, Protocol
 
 import httpx
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_engine
+from app.auth.router import current_user
+from app.core.database import get_engine, get_session
 from app.core.env_loader import Settings, get_settings
+from app.models import LLMCall, User
+from app.monitoring.ledger import LedgerService
 
 router = APIRouter(tags=["health"])
 
@@ -85,4 +91,92 @@ async def health(
         llm_model=settings.llm_model,
         embed_model=settings.embed_model,
         llm_context_limit=settings.llm_context_limit,
+    )
+
+
+class MeasuredTotals(BaseModel):
+    count: int
+    max_total_tokens: int | None
+
+
+class UnmeasuredTotals(BaseModel):
+    count: int
+    max_budget_upper_bound: int | None
+
+
+class LLMCallResponse(BaseModel):
+    id: uuid.UUID
+    purpose: str
+    model: str
+    status: str
+    finish_reason: str | None
+    estimated_prompt_tokens: int
+    max_output_tokens: int
+    budget_upper_bound: int
+    # Reported by Ollama. None means the value is not known.
+    prompt_tokens: int | None
+    completion_tokens: int | None
+    total_tokens: int | None
+    received_output_tokens_estimated: int | None
+    error: str | None
+    duration_ms: int | None
+    created_at: datetime
+
+
+class LedgerResponse(BaseModel):
+    limit: int
+    measured: MeasuredTotals
+    unmeasured: UnmeasuredTotals
+    underestimate_events: int
+    calls: list[LLMCallResponse]
+
+
+def _call(call: LLMCall) -> LLMCallResponse:
+    measured = call.prompt_tokens is not None and call.completion_tokens is not None
+    return LLMCallResponse(
+        id=call.id,
+        purpose=call.purpose,
+        model=call.model,
+        status=call.status,
+        finish_reason=call.finish_reason,
+        estimated_prompt_tokens=call.estimated_prompt_tokens,
+        max_output_tokens=call.max_output_tokens,
+        budget_upper_bound=call.estimated_prompt_tokens + call.max_output_tokens,
+        prompt_tokens=call.prompt_tokens,
+        completion_tokens=call.completion_tokens,
+        total_tokens=(call.prompt_tokens or 0) + (call.completion_tokens or 0)
+        if measured
+        else None,
+        received_output_tokens_estimated=call.received_output_tokens_estimated,
+        error=call.error,
+        duration_ms=call.duration_ms,
+        created_at=call.created_at,
+    )
+
+
+@router.get("/llm-calls", response_model=LedgerResponse, tags=["ledger"])
+async def llm_calls(
+    conversation_id: uuid.UUID | None = None,
+    document_id: uuid.UUID | None = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    user: User = Depends(current_user),
+    db: AsyncSession = Depends(get_session),
+    settings: Settings = Depends(get_settings),
+) -> LedgerResponse:
+    """The caller's LLM calls. Measured and unmeasured calls are totalled apart."""
+    report = await LedgerService(db).report(
+        user, conversation_id=conversation_id, document_id=document_id, limit=limit
+    )
+    summary = report.summary
+    return LedgerResponse(
+        limit=settings.llm_context_limit,
+        measured=MeasuredTotals(
+            count=summary.measured_count, max_total_tokens=summary.max_measured_total
+        ),
+        unmeasured=UnmeasuredTotals(
+            count=summary.unmeasured_count,
+            max_budget_upper_bound=summary.max_unmeasured_upper_bound,
+        ),
+        underestimate_events=summary.underestimate_events,
+        calls=[_call(call) for call in report.calls],
     )
