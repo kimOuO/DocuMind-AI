@@ -416,7 +416,7 @@ P4 的 Hybrid 實驗需要全文檢索的欄位與索引時，屆時以新的 mi
 | `prompt_tokens` | int，可為空 | **只放 Ollama 回報的實測值**；未知為空 |
 | `completion_tokens` | int，可為空 | **只放 Ollama 回報的實測值**；未知為空 |
 | `received_output_tokens_estimated` | int，可為空 | 中斷時對已收到文字的本地計數，預估值 |
-| `finish_reason` | text，可為空 | Ollama 正常結束時的停止原因：`stop`／`output_limit`／`context_exhausted`／`unknown`；呼叫失敗或中斷時為空。此欄在 P2-D 以 migration 加入 |
+| `finish_reason` | text，可為空 | 這次呼叫如何結束：`stop`（自然結束）／`output_limit`／`context_exhausted`／`client_disconnect`／`unknown`。呼叫失敗（含被 Ollama 拒絕）時為空，原因在 `error`。此欄在 P2-D 以 migration 加入 |
 | `error` | text，可為空 | |
 | `duration_ms` | int，可為空 | |
 | `created_at`、`updated_at` | timestamptz | |

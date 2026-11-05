@@ -293,7 +293,8 @@ Ollama 正常結束串流不代表回答已完整生成。以最後一筆回應�
 | 輸入超量 | HTTP 400，在產生任何內容之前 | 呼叫失敗 | 沒有回答 |
 | 其他或缺少 `done_reason` | — | `unknown` | 否 |
 
-- **只有 `stop` 的回答可以標為 `completed`。** 其餘情況，助理訊息標為 `interrupted`，保留已產生的內容，介面標示回答未完成。
+- **只有 `stop` 的回答可以標為 `completed`。** 其餘情況，助理訊息標為 `interrupted`，保留已產生的內容，介面標示回答未完成。不新增狀態〔使用者決定，D57〕。
+- **中斷的原因要能區分**〔使用者決定，D57〕：`interrupted` 涵蓋數種情況，原因記在該次呼叫的 `finish_reason`：`output_limit`（達到輸出上限）、`context_exhausted`（context 用盡）、`client_disconnect`（串流途中使用者離開或連線中斷）、`unknown`（Ollama 正常結束但原因無法判定）。前兩者由 `done_reason` 與輸出的 token 數判定，`client_disconnect` 由後端自己偵測到連線中斷時記錄。
 - 摘要工作收到不完整的輸出時視為失敗，不存入不完整的摘要。
 
 **帳本如何處理失敗與中斷（AC-08）**
