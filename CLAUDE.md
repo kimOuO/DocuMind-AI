@@ -6,7 +6,11 @@
 
 和碩 PEGAAI 面試作業：一個網站，使用者上傳文件後用聊天介面提問，LLM 依文件內容回答。
 目標是「可運作、可驗證、可解釋設計決策的 RAG 系統」，不是包一層 LLM API 的聊天介面。
-完整規劃與階段見 `docs/02-specs/`，目前進度見 `docs/04-dev-journal/`。
+規格見 `docs/02-specs/` 的 `01`–`04`，文件導覽見 `docs/README.md`，目前進度見 `docs/04-dev-journal/`。
+
+- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。
+- **四份規格在 P1 完成後凍結。** 不再反覆修改已決定的設計；只有實作或測試發現實際問題時才改，改之前先向使用者說明，並在決策日誌新增一筆。
+- `docs/02-specs/archive/` 是已被取代的文件，內容不代表現行設計，不要依它實作。
 
 ## 不可違反的限制（來自題目）
 
@@ -35,7 +39,12 @@
 ## 架構邊界
 
 - 資料夾結構見 `README.md` 的「資料夾導覽」。**命名用完整英文、不用縮寫；還沒有內容的資料夾不要預先建立**，新增資料夾前先向使用者說明用途。
-- 後端程式在 `app/backend/app/`，目前有 `api`（HTTP）、`core`（設定）、`db`（資料庫）。之後依階段加入 `llm`、`ingestion`、`retrieval`、`summarize`、`chat`，用到才建。依賴方向：`api` → `chat` → `retrieval` / `summarize` / `ingestion` → `llm`、`db`，上層可依賴下層，反之不可。
+- 後端依功能模組組織（`auth`、`documents`、`ingestion`、`retrieval`、`conversations`、`chat`、`summarization`、`llm`、`monitoring`），用到才建立。分層：Router → Application Service → Repository／LLM Gateway。細節見 `docs/02-specs/02-architecture.md` 第 2 節。
+- Router 不直接操作資料庫。業務規則、權限與狀態轉換放在 Service；**Service 的每個方法都明確接收操作者（目前登入的使用者）**。
+- Repository 的每個查詢都必須帶擁有者條件。存取別人的資源一律回 `404`。
+- 呼叫 Ollama 只能經過 LLM Gateway；預算檢查與帳本不得被繞過。
+- API 為 RESTful，前綴 `/api/v1`；GET 不改變資料。
+- 不建立通用 Repository 基底類別或尚未使用的介面；只有 LLM、Embedding、Tokenizer 保留介面。
 - LLM、Embedding、資料庫都放在介面（Protocol）後面；單元測試用假實作，不得連真服務。
 - 新增相依要寫進 `app/backend/requirements*.txt` 並釘死版本（`==`）。
 - 資料表變更一律寫 Alembic migration。
@@ -45,7 +54,7 @@
 
 1. **Spec**：動手前先在 `docs/02-specs/` 寫或更新規格與驗收條件，經使用者核准。
 2. **Test first**：先寫會失敗的測試，再實作。
-3. **Implement**：小步提交，Conventional Commits（`feat:`、`fix:`、`docs:`、`test:`、`chore:`），英文。
+3. **Implement**：實作到綠燈，小步提交。提交採 Conventional Commits：標題 `type(scope): description` 用英文（例：`feat(documents): add upload, listing and deletion`），scope 是功能模組、不放 P0／P1／P2 等階段編號；內文用繁體中文三段：階段、完成、驗證。Checkpoint Tag 為 `cp-{number}-{outcome}`，Release Tag 為 `v{major}.{minor}.{patch}`。這套規範已凍結，不再為了格式重寫歷史。完整內容見 `.claude/skills/checkpoint/references/git-workflow.md`。
 4. **Verify**：`make check` 全綠；生成的程式碼要有測試或實跑結果佐證才算完成。
 5. **Checkpoint**：階段結束時執行 `checkpoint` skill（`.claude/skills/checkpoint/SKILL.md`）。
 
@@ -64,5 +73,6 @@
 ## 語言
 
 - 文件（`docs/`、PPT）、與使用者的對話：繁體中文。
-- 程式碼、註解、commit message、API 欄位：英文。
+- 程式碼、註解、API 欄位：英文。
+- commit 的標題與標記：英文；commit 的內文：繁體中文。
 - `README.md`：中英對照。

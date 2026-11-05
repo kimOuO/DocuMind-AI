@@ -63,13 +63,9 @@ DocuMind-AI/
 │   └── frontend/               React 前端
 ├── evaluation/                 檢索與回答品質的評測（P4 開始有內容）
 ├── sample-documents/           測試用文件（LightRAG 論文）
-├── docs/                       依編號順序閱讀
-│   ├── 01-assignment/          題目原文
-│   ├── 02-specs/               規格；00-project-plan.md 是完整規劃
-│   ├── 03-decisions/           架構決策紀錄：選了什麼、為什麼
-│   ├── 04-dev-journal/         各階段回顧：做了什麼、遇到的困難、我的想法
-│   ├── 05-ai-collaboration/    與 AI 協作的紀錄：決策日誌、session 摘要、逐字稿
-│   └── 06-report/              簡報（P7）
+├── docs/                       規格與架構決策紀錄
+│   ├── 02-specs/               規格：01 需求、02 架構、03 介面、04 使用情境
+│   └── 03-decisions/           架構決策紀錄：選了什麼、為什麼
 ├── scripts/                    工具腳本（匯出逐字稿、打包）
 ├── .venv/                      開發環境（不進版控，make setup 建立）
 ├── CLAUDE.md / AGENTS.md       給 AI coding agent 的專案規則
@@ -80,7 +76,7 @@ DocuMind-AI/
 
 ## 兩個說明題 / The two required explanations
 
-設計已定案，實作完成後會在此補上實測數據。詳見 `docs/02-specs/00-project-plan.md` 第一節。
+設計已定案，實作完成後會在此補上實測數據。
 
 - **文件 token 超過 context 怎麼辦？** 文件切塊後建立索引，提問時只檢索相關片段；每次呼叫前依預算裝填，裝不下就先壓縮證據而不截斷；呼叫前後各檢查一次 token 數。
 - **Summary 怎麼處理？** 入庫時以 map-reduce 建立摘要樹：先對各章節摘要，再合併成全文摘要；合併仍超量就遞迴再摺一層。
@@ -88,4 +84,4 @@ DocuMind-AI/
 ## 開發方式 / How this was built
 
 以 AI-native 方式開發（Claude Code），流程為 SDD → TDD → Checkpoint。
-每個技術決策，包含 AI 建議被否決或修改的案例，都記錄在 `docs/05-ai-collaboration/decision-log.md`。
+每個技術決策，包含 AI 建議被否決或修改的案例，都有紀錄；架構層級的決策與理由見 `docs/03-decisions/`。

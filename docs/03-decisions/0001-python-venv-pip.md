@@ -6,7 +6,7 @@
 
 ## 背景
 
-專案需要隔離的 Python 環境。最終要把程式碼交給面試官在本地執行，開發時間只有一週。
+專案需要隔離的 Python 環境。最終要把程式碼交給審閱者在本地執行，開發時間只有一週。
 
 ## 考慮過的選項
 
@@ -29,6 +29,6 @@ Dockerfile 也在映像內建立 venv 並用同一份 `requirements.txt` 安裝�
 
 ## 後果
 
-- 面試官只需要 `python3 -m venv` 與 `pip install -r`，或直接用 Docker。
+- 審閱者只需要 `python3 -m venv` 與 `pip install -r`，或直接用 Docker。
 - `requirements.txt` 只釘直接相依，間接相依的版本可能隨時間漂移。若出現重現問題，再改用 pip-tools 產生完整鎖定檔。
 - 部分 Debian/Ubuntu 預設沒裝 `python3-venv`（本開發機即是）。`make setup` 內建後備流程：`python3 -m venv --without-pip` 再用 `get-pip.py` 補 pip，不需 sudo。
