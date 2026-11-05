@@ -162,7 +162,8 @@ class ChatService:
             yield ChatEvent("sources", evidence.sources)
 
             if evidence.prompt is None:
-                # No summary to answer from: say so, without spending a call (AC-42).
+                # Nothing to answer from (no ready summary, AC-42; or nothing similar
+                # enough, AC-15): say so, without spending a call.
                 yield ChatEvent("delta", {"text": evidence.note})
                 await self._finish(
                     prepared, status="completed", content=evidence.note, answered=False
@@ -294,6 +295,16 @@ class ChatService:
             chunks = await RetrievalService(session, self._embedder, self._settings).search(
                 prepared.actor, prepared.scope, prepared.question
             )
+        # First line of defence against made-up answers (AC-15): nothing close enough
+        # was found, so nothing is sent to the model and the user is told so.
+        best = chunks[0].score if chunks else None
+        if best is None or best < self._settings.min_similarity:
+            logger.info(
+                "Question refused: best similarity %s below %s",
+                None if best is None else round(best, 3),
+                self._settings.min_similarity,
+            )
+            return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
         prompt, used = build_answer_prompt(
             prepared.question, chunks, self._counter, EVIDENCE_TOKEN_BUDGET
         )
@@ -327,6 +338,12 @@ class ChatService:
                 prepared.assistant_message_id, status=status, content=content, answered=answered
             )
 
+
+# Said instead of an answer when no retrieved chunk is similar enough to the question.
+_NOTHING_RELEVANT = {
+    "other": "The documents do not contain content related to this question.",
+    "zh": "文件中找不到與這個問題相關的內容。",
+}
 
 _UNAVAILABLE = {
     "other": {

@@ -116,3 +116,52 @@ async def test_a_chinese_question_is_answered_in_traditional_chinese(
     assert answer
     simplified = [c for c in answer if c in SIMPLIFIED_ONLY]
     assert simplified == [], f"Simplified characters in the answer: {simplified}"
+
+
+async def test_a_question_the_paper_cannot_answer_is_refused_before_any_llm_call(
+    client: TestClient, db: psycopg.Connection
+) -> None:
+    """AC-15 with the real embedder: baking sourdough bread scores below the threshold."""
+    register_and_login(client, "kim")
+    settings = get_settings()
+    uploaded = client.post(
+        "/api/v1/documents", files={"file": ("2410.05779v3.pdf", SAMPLE_PDF.read_bytes())}
+    ).json()
+    runner = IndexJobRunner(
+        sessions=get_sessionmaker(),
+        storage=FileStorage(settings.data_dir),
+        tokenizer=Qwen3TokenCounter(),
+        embedder=OllamaEmbedder(settings),
+        settings=settings,
+    )
+    assert await runner.run(uuid.UUID(uploaded["jobs"][0]["id"])) is JobOutcome.COMPLETED
+    conversation = client.post("/api/v1/conversations", json={}).json()["id"]
+    question = "如何在家烤酸種麵包？"
+
+    # What the retriever sees, for the record (the threshold is calibrated in P4).
+    async with get_sessionmaker()() as session:
+        from app.models import User
+        from app.retrieval.service import RetrievalService, SearchScope
+
+        actor = await session.get(User, uuid.UUID(client.get("/api/v1/users/me").json()["id"]))
+        assert actor is not None
+        chunks = await RetrievalService(session, OllamaEmbedder(settings), settings).search(
+            actor, SearchScope("all", [uuid.UUID(uploaded["id"])]), question
+        )
+    print(f"\ntop similarities for {question!r}: {[round(c.score, 3) for c in chunks]}")
+
+    response = client.post(
+        f"/api/v1/conversations/{conversation}/messages", json={"question": question}
+    )
+
+    stream = []
+    for block in response.text.strip().split("\n\n"):
+        name, data = block.split("\n", 1)
+        stream.append((name.removeprefix("event: "), json.loads(data.removeprefix("data: "))))
+    by_name = dict(stream)
+    print(f"done: {by_name['done']}")
+    assert chunks[0].score < settings.min_similarity
+    assert by_name["done"]["answered"] is False
+    assert by_name["sources"] == []
+    assert "usage" not in by_name
+    assert db.execute("SELECT count(*) FROM llm_calls").fetchone() == (0,)

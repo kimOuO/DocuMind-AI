@@ -315,6 +315,57 @@ async def test_a_question_that_is_too_long_is_refused_and_leaves_nothing(
     assert f"Question: {long_question.strip()}\nAnswer:" in model.prompts[0]
 
 
+async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-15, first line of defence: the best match is below MIN_SIMILARITY.
+
+    Fake vectors of two different texts are about 0.75 alike and identical texts
+    1.0, so a threshold of 0.9 separates the two cases deterministically.
+    """
+    from app.core.env_loader import get_settings as settings_dependency
+
+    strict = get_settings().model_copy(update={"min_similarity": 0.9})
+    kim.app.dependency_overrides[settings_dependency] = lambda: strict  # type: ignore[attr-defined]
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["LightRAG builds", " a graph", " [1]."])
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    refused = events(ask(kim, conversation, "How do I bake sourdough bread at home?"))
+    in_chinese = events(ask(kim, conversation, "如何在家烤酸種麵包？"))
+    answered = events(ask(kim, conversation, GRAPH))
+
+    assert [name for name, _ in refused] == ["start", "route", "sources", "delta", "done"]
+    assert refused[1][1]["type"] == "retrieval"
+    assert refused[2][1] == []
+    assert refused[3][1] == {
+        "text": "The documents do not contain content related to this question."
+    }
+    assert refused[4][1] == {
+        "status": "completed",
+        "answered": False,
+        "cited": [],
+        "unverified_numbers": [],
+        "verified_numbers": [],
+        "finish_reason": None,
+    }
+    assert in_chinese[3][1] == {"text": "文件中找不到與這個問題相關的內容。"}
+    # The identical text scores 1.0 and goes through to the model.
+    assert dict(answered)["done"]["answered"] is True
+    assert dict(answered)["sources"][0]["score"] == pytest.approx(1.0, abs=1e-4)
+    # Only the third question reached the model; the refusals left no ledger row.
+    assert len(model.prompts) == 1
+    assert counts(db) == (6, 1)
+    status, answered_flag, content, sources = one(
+        db,
+        "SELECT status, answered, content, sources FROM messages WHERE id = %s",
+        refused[0][1]["assistant_message_id"],
+    )
+    assert (status, answered_flag, sources) == ("completed", False, [])
+    assert content == "The documents do not contain content related to this question."
+
+
 async def test_a_blank_question_is_refused(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:
