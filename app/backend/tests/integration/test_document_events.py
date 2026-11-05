@@ -141,8 +141,8 @@ async def test_progress_is_streamed_while_the_document_is_processed(
     assert events[0] == ("status", {"status": "uploaded", "summary_status": "none"})
     assert ("status", {"status": "processing", "summary_status": "none"}) in events
     progress = [data for name, data in events if name == "progress"]
-    assert {"kind": "index", "stage": "embedding", "current": 0, "total": 48} in progress
-    assert {"kind": "index", "stage": "embedding", "current": 32, "total": 48} in progress
+    assert {"kind": "index", "stage": "embedding", "current": 0, "total": 46} in progress
+    assert {"kind": "index", "stage": "embedding", "current": 32, "total": 46} in progress
     # Indexing done, then the summary job takes over without the stream closing in between.
     # (The moment between the two, ready with no summary yet, is too short to be seen reliably.)
     assert ("status", {"status": "ready", "summary_status": "processing"}) in events

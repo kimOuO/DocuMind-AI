@@ -218,7 +218,7 @@ async def test_a_failing_summary_leaves_the_document_ready_and_can_be_retried(
     summary_job = next(j for j in document["jobs"] if j["kind"] == "summary")
     assert summary_job["status"] == "failed" and "500" in summary_job["error"]
     assert summaries(db, document_id) == []
-    assert db.execute("SELECT count(*) FROM chunks").fetchone() == (48,)
+    assert db.execute("SELECT count(*) FROM chunks").fetchone() == (46,)
 
     retry = user.post(f"{DOCUMENTS}/{document_id}/retry")
     assert retry.status_code == 202

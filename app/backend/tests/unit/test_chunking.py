@@ -1,4 +1,4 @@
-"""Fixed-size chunking by token count, page by page (AC-03)."""
+"""Chunking by token count, page by page: fixed-size prose, tables whole (AC-03, AC-14)."""
 
 import re
 from pathlib import Path
@@ -104,7 +104,7 @@ def test_the_sample_paper_is_chunked_within_the_configured_size(
 
     chunks = chunk_pages(pages, tokenizer, chunk_size=400, overlap=80)
 
-    assert all(0 < chunk.token_count <= 400 for chunk in chunks)
+    assert all(0 < c.token_count <= 400 for c in chunks if not c.text.startswith("Table "))
     assert all(chunk.token_count == tokenizer.count(chunk.text) for chunk in chunks)
     assert {chunk.page for chunk in chunks} == set(range(1, 17))
     assert [chunk.ordinal for chunk in chunks] == list(range(len(chunks)))
@@ -112,6 +112,33 @@ def test_the_sample_paper_is_chunked_within_the_configured_size(
     assert [chunk.page for chunk in chunks] == sorted(chunk.page for chunk in chunks)
     by_page = {page.number: page.text for page in pages}
     assert all(chunk.text in by_page[chunk.page] for chunk in chunks)
-    # The row of Table 2 that question 3 needs is intact in at least one chunk.
-    row = "Overall 32.4% 67.6% 38.8% 61.2% 15.2% 84.8% 40.0% 60.0%"
-    assert any(row in chunk.text for chunk in chunks if chunk.page == 8)
+    # Table 2, which question 3 needs, is one chunk: every row next to its headers.
+    [table] = [c for c in chunks if c.text.startswith("Table 2: Performance of ablated")]
+    assert table.page == 8 and 400 < table.token_count <= 3 * 400
+    assert table.text.count("Overall ") == 4 and "Agriculture CS Legal Mix" in table.text
+    assert table.text.endswith("Overall 25.6% 74.4% 39.2% 60.8% 15.6% 84.4% 44.4% 55.6%")
+    # The prose after the table starts a fresh chunk and does not repeat the table.
+    after = chunks[table.ordinal + 1]
+    assert after.page == 8 and after.text.startswith("• Low-level-only Retrieval")
+    # Only table chunks may exceed the chunk size.
+    oversize = [c for c in chunks if c.token_count > 400]
+    assert all(c.text.startswith("Table ") for c in oversize) and len(oversize) == 2
+
+
+def test_a_table_region_is_one_chunk_and_the_prose_around_it_is_chunked_as_usual() -> None:
+    table = "Table 1: Numbers.\nA B\n" + "\n".join(f"r{i} 1% 2%" for i in range(10))
+    page = Page(number=3, text=f"{_words(0, 7)}\n{table}\n{_words(100, 112)}")
+
+    chunks = chunk_pages([page], WordTokenizer(), chunk_size=5, overlap=1)
+
+    assert chunks[0].text == _words(0, 5) and chunks[1].text == _words(4, 7)
+    # The table (34 words) exceeds 3 x 5, so it is split by rows, headers repeated.
+    table_chunks = [c for c in chunks if c.text.startswith("Table 1: Numbers.")]
+    assert len(table_chunks) == 4
+    assert all(c.text.startswith("Table 1: Numbers.\nA B\n") for c in table_chunks)
+    assert all(c.token_count <= 15 for c in table_chunks)
+    rows = [line for c in table_chunks for line in c.text.splitlines()[2:]]
+    assert rows == [f"r{i} 1% 2%" for i in range(10)]
+    assert chunks[-1].text.endswith("w111")
+    assert [c.ordinal for c in chunks] == list(range(len(chunks)))
+    assert all(c.page == 3 for c in chunks)

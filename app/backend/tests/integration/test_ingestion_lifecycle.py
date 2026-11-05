@@ -140,12 +140,12 @@ async def test_a_failed_document_can_be_retried_and_becomes_ready(
     assert await run(tokenizer, retry_job["id"], FakeEmbedder()) is JobOutcome.COMPLETED
 
     document = user.get(f"{DOCUMENTS}/{document_id}").json()
-    assert (document["status"], document["chunk_count"], document["error"]) == ("ready", 48, None)
+    assert (document["status"], document["chunk_count"], document["error"]) == ("ready", 46, None)
     assert jobs(db, document_id) == [(0, "failed"), (1, "completed")]
     ordinals = db.execute(
         "SELECT ordinal FROM chunks WHERE document_id = %s ORDER BY ordinal", (document_id,)
     ).fetchall()
-    assert [row[0] for row in ordinals] == list(range(48))
+    assert [row[0] for row in ordinals] == list(range(46))
 
 
 async def test_a_second_retry_increases_the_count_again(

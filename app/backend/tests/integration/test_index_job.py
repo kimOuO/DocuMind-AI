@@ -127,14 +127,17 @@ async def test_the_paper_is_stored_as_chunks_within_the_size_and_with_pages(
         "WHERE document_id = %s ORDER BY ordinal",
         (document_id,),
     ).fetchall()
-    assert len(rows) == 48
-    assert [row[0] for row in rows] == list(range(48))
+    assert len(rows) == 46  # 44 fixed-size chunks and the two tables (pages 7 and 8)
+    assert [row[0] for row in rows] == list(range(46))
     assert {row[1] for row in rows} == set(range(1, 17))
-    assert all(0 < row[2] <= get_settings().chunk_size for row in rows)
+    # Only the two table regions may exceed the chunk size (AC-14), by at most 3x.
+    oversize = [row for row in rows if row[2] > get_settings().chunk_size]
+    assert [(row[1], row[3][:8]) for row in oversize] == [(7, "Table 1:"), (8, "Table 2:")]
+    assert all(0 < row[2] <= 3 * get_settings().chunk_size for row in rows)
     assert all(row[2] == tokenizer.count(row[3]) for row in rows)
     assert all(row[4] == 1024 for row in rows)
     # Embedded in batches, in order, each chunk exactly once.
-    assert [len(call) for call in embedder.calls] == [EMBED_BATCH_SIZE, EMBED_BATCH_SIZE, 16]
+    assert [len(call) for call in embedder.calls] == [EMBED_BATCH_SIZE, EMBED_BATCH_SIZE, 14]
     assert [text for call in embedder.calls for text in call] == [row[3] for row in rows]
 
 
@@ -157,9 +160,9 @@ async def test_progress_is_recorded_on_the_job_while_it_runs(
     await runner(tokenizer, FakeEmbedder(before_call=observe)).run(job_id)
 
     assert seen == [
-        ("running", "embedding", 0, 48, "processing"),
-        ("running", "embedding", 16, 48, "processing"),
-        ("running", "embedding", 32, 48, "processing"),
+        ("running", "embedding", 0, 46, "processing"),
+        ("running", "embedding", 16, 46, "processing"),
+        ("running", "embedding", 32, 46, "processing"),
     ]
 
 
@@ -235,7 +238,7 @@ async def test_deleting_a_ready_document_removes_chunks_jobs_and_file(
     """AC-38 (chunks, jobs and the file; summaries are added in P3)."""
     document_id, job_id = upload(user, "paper.pdf", SAMPLE_PDF.read_bytes())
     await runner(tokenizer, FakeEmbedder()).run(job_id)
-    assert one(db, "SELECT count(*) FROM chunks")[0] == 48
+    assert one(db, "SELECT count(*) FROM chunks")[0] == 46
 
     assert user.delete(f"{DOCUMENTS}/{document_id}").status_code == 204
 

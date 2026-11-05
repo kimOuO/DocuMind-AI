@@ -73,16 +73,20 @@ def main() -> None:
             }
         )
 
-    method = f"fixed-size-{settings.chunk_size}-{settings.chunk_overlap}"
+    # The current implementation keeps table regions whole (app/ingestion/tables.py);
+    # the fixed-size-only baseline measured before that change is kept as its own file.
+    method = f"table-region-{settings.chunk_size}-{settings.chunk_overlap}"
     result = {
         "method": {
             "name": method,
-            "description": "Fixed-size chunks measured in tokens, page by page, "
-            "consecutive chunks overlapping.",
+            "description": "Table regions (caption, headers, number rows) kept as one chunk "
+            "of up to 3 x chunk size; the rest in fixed-size chunks measured in tokens, "
+            "page by page, consecutive chunks overlapping.",
             "chunk_size_tokens": settings.chunk_size,
             "overlap_tokens": settings.chunk_overlap,
+            "table_chunk_max_tokens": 3 * settings.chunk_size,
             "pdf_parser": "pypdf default",
-            "implementation": "app/ingestion/chunking.py",
+            "implementation": "app/ingestion/chunking.py, app/ingestion/tables.py",
         },
         "measurements": {
             "total_chunks": len(chunks),
