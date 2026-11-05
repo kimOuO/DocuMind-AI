@@ -5,6 +5,7 @@
 目前有：
 
 - `pdf-parser-comparison/`：PDF 解析套件的比較實驗（PyMuPDF、pypdf、pdfplumber），是選用 pypdf 的依據。
+- `table2-chunking/`：目前的切塊方式如何切開論文的 Table 2，是 AC-14（P3）的比較基準。
 
 P4 階段會加入：
 

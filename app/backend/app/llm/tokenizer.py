@@ -48,3 +48,7 @@ class Qwen3TokenCounter:
     def count(self, text: str) -> int:
         # The model's add_bos_token is false, so no special tokens are added.
         return len(self._tokenizer.encode(text, add_special_tokens=False).ids)
+
+    def spans(self, text: str) -> list[tuple[int, int]]:
+        """The character range of each token in `text`, in order."""
+        return list(self._tokenizer.encode(text, add_special_tokens=False).offsets)

@@ -1,0 +1,237 @@
+{
+ "chunk_size": 400,
+ "chunk_overlap": 80,
+ "total_chunks": 48,
+ "table_page": 8,
+ "page_chunks": [
+  {
+   "ordinal": 24,
+   "token_count": 400,
+   "text": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness 32.4% 67.6% 38.4% 61.6% 16.4% 83.6% 38.8% 61.2%\nDiversity 23.6% 76.4% 38.0% 62.0% 13.6% 86.4% 32.4% 67.6%\nEmpowerment 32.4% 67.6% 38.8% 61.2% 16.4% 83.6% 42.8% 57.2%\nOverall 32.4% 67.6% 38.8% 61.2% 15.2% 84.8% 40.0% 60.0%\nNaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\nComprehensiveness 34.8% 65.2% 42.8% 57.2% 23.6% 76.4% 40.4% 59.6%\nDiversity 27.2% 72.8% 36.8% 63.2% 16.8% 83.2% 36.0% 64.0%\nEmpowerment 36.0% 64."
+  },
+  {
+   "ordinal": 25,
+   "token_count": 400,
+   "text": "76.4% 40.4% 59.6%\nDiversity 27.2% 72.8% 36.8% 63.2% 16.8% 83.2% 36.0% 64.0%\nEmpowerment 36.0% 64.0% 42.4% 57.6% 22.8% 77.2% 47.6% 52.4%\nOverall 35.2% 64.8% 44.0% 56.0% 22.0% 78.0% 42.4% 57.6%\nNaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\nComprehensiveness 36.0% 64.0% 43.2% 56.8% 19.2% 80.8% 36.0% 64.0%\nDiversity 28.0% 72.0% 39.6% 60.4% 13.6% 86.4% 33.2% 66.8%\nEmpowerment 34.8% 65.2% 42.8% 57.2% 16.4% 83.6% 35.2% 64.8%\nOverall 34.8% 65.2% 43.6% 56.4% 18.8% 81.2% 35.2% 64.8%\nNaiveRAG -Origin"
+  },
+  {
+   "ordinal": 26,
+   "token_count": 400,
+   "text": "% 16.4% 83.6% 35.2% 64.8%\nOverall 34.8% 65.2% 43.6% 56.4% 18.8% 81.2% 35.2% 64.8%\nNaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\nComprehensiveness 24.8% 75.2% 39.2% 60.8% 16.4% 83.6% 44.4% 55.6%\nDiversity 26.4% 73.6% 44.8% 55.2% 14.4% 85.6% 25.6% 74.4%\nEmpowerment 32.0% 68.0% 43.2% 56.8% 17.2% 82.8% 45.2% 54.8%\nOverall 25.6% 74.4% 39.2% 60.8% 15.6% 84.4% 44.4% 55.6%\n• Low-level-only Retrieval: The -High variant removes high-order retrieval, leading to a significant\nperformance decline across nearly all datasets and metrics. This drop is mainly due to its emphasis\non the specific information, which focuses excessively on entities and their immediate neighbors.\nWhile this approach enables deeper exploration of directly related entities, it struggles to gather\ninformation for complex queries that demand comprehensive insights.\n• High-level-only Retrieval: The -Low variant prioritizes capturing a broader range of content by"
+  },
+  {
+   "ordinal": 27,
+   "token_count": 400,
+   "text": "significant\nperformance decline across nearly all datasets and metrics. This drop is mainly due to its emphasis\non the specific information, which focuses excessively on entities and their immediate neighbors.\nWhile this approach enables deeper exploration of directly related entities, it struggles to gather\ninformation for complex queries that demand comprehensive insights.\n• High-level-only Retrieval: The -Low variant prioritizes capturing a broader range of content by\nleveraging entity-wise relationships rather than focusing on specific entities. This approach offers\na significant advantage in comprehensiveness, allowing it to gather more extensive and varied\ninformation. However, the trade-off is a reduced depth in examining specific entities, which can\nlimit its ability to provide highly detailed insights. Consequently, this high-level-only retrieval\nmethod may struggle with tasks that require precise, detailed answers.\n• Hybrid Mode: The hybrid mode, or the full version of LightRAG, combines the strengths of\nboth low-level and high-level retrieval methods. It retrieves a broader set of relationships while\nsimultaneously conducting an in-depth exploration of specific entities. This dual-level approach\nensures both breadth in the retrieval process and depth in the analysis, providing a comprehensive\nview of the data. As a result, LightRAG achieves balanced performance across multiple dimensions.\nSemantic Graph Excels in RAG. We eliminated the use of original text in our retrieval process.\nSurprisingly, the resulting variant, -Origin, does not exhibit significant performance declines across\nall four datasets. In some cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which"
+  },
+  {
+   "ordinal": 28,
+   "token_count": 266,
+   "text": "to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8"
+  }
+ ],
+ "rows": [
+  {
+   "variant": "LightRAG",
+   "metric": "Comprehensiveness",
+   "row": "Comprehensiveness 32.4% 67.6% 38.4% 61.6% 16.4% 83.6% 38.8% 61.2%",
+   "chunks_with_whole_row": [
+    24
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "LightRAG",
+   "metric": "Diversity",
+   "row": "Diversity 23.6% 76.4% 38.0% 62.0% 13.6% 86.4% 32.4% 67.6%",
+   "chunks_with_whole_row": [
+    24
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "LightRAG",
+   "metric": "Empowerment",
+   "row": "Empowerment 32.4% 67.6% 38.8% 61.2% 16.4% 83.6% 42.8% 57.2%",
+   "chunks_with_whole_row": [
+    24
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "LightRAG",
+   "metric": "Overall",
+   "row": "Overall 32.4% 67.6% 38.8% 61.2% 15.2% 84.8% 40.0% 60.0%",
+   "chunks_with_whole_row": [
+    24
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "-High",
+   "metric": "Comprehensiveness",
+   "row": "Comprehensiveness 34.8% 65.2% 42.8% 57.2% 23.6% 76.4% 40.4% 59.6%",
+   "chunks_with_whole_row": [
+    24
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "-High",
+   "metric": "Diversity",
+   "row": "Diversity 27.2% 72.8% 36.8% 63.2% 16.8% 83.2% 36.0% 64.0%",
+   "chunks_with_whole_row": [
+    24,
+    25
+   ],
+   "with_block_header": [
+    24
+   ],
+   "with_dataset_header": [
+    24
+   ]
+  },
+  {
+   "variant": "-High",
+   "metric": "Empowerment",
+   "row": "Empowerment 36.0% 64.0% 42.4% 57.6% 22.8% 77.2% 47.6% 52.4%",
+   "chunks_with_whole_row": [
+    25
+   ],
+   "with_block_header": [],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-High",
+   "metric": "Overall",
+   "row": "Overall 35.2% 64.8% 44.0% 56.0% 22.0% 78.0% 42.4% 57.6%",
+   "chunks_with_whole_row": [
+    25
+   ],
+   "with_block_header": [],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Low",
+   "metric": "Comprehensiveness",
+   "row": "Comprehensiveness 36.0% 64.0% 43.2% 56.8% 19.2% 80.8% 36.0% 64.0%",
+   "chunks_with_whole_row": [
+    25
+   ],
+   "with_block_header": [
+    25
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Low",
+   "metric": "Diversity",
+   "row": "Diversity 28.0% 72.0% 39.6% 60.4% 13.6% 86.4% 33.2% 66.8%",
+   "chunks_with_whole_row": [
+    25
+   ],
+   "with_block_header": [
+    25
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Low",
+   "metric": "Empowerment",
+   "row": "Empowerment 34.8% 65.2% 42.8% 57.2% 16.4% 83.6% 35.2% 64.8%",
+   "chunks_with_whole_row": [
+    25
+   ],
+   "with_block_header": [
+    25
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Low",
+   "metric": "Overall",
+   "row": "Overall 34.8% 65.2% 43.6% 56.4% 18.8% 81.2% 35.2% 64.8%",
+   "chunks_with_whole_row": [
+    25,
+    26
+   ],
+   "with_block_header": [
+    25
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Origin",
+   "metric": "Comprehensiveness",
+   "row": "Comprehensiveness 24.8% 75.2% 39.2% 60.8% 16.4% 83.6% 44.4% 55.6%",
+   "chunks_with_whole_row": [
+    26
+   ],
+   "with_block_header": [
+    26
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Origin",
+   "metric": "Diversity",
+   "row": "Diversity 26.4% 73.6% 44.8% 55.2% 14.4% 85.6% 25.6% 74.4%",
+   "chunks_with_whole_row": [
+    26
+   ],
+   "with_block_header": [
+    26
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Origin",
+   "metric": "Empowerment",
+   "row": "Empowerment 32.0% 68.0% 43.2% 56.8% 17.2% 82.8% 45.2% 54.8%",
+   "chunks_with_whole_row": [
+    26
+   ],
+   "with_block_header": [
+    26
+   ],
+   "with_dataset_header": []
+  },
+  {
+   "variant": "-Origin",
+   "metric": "Overall",
+   "row": "Overall 25.6% 74.4% 39.2% 60.8% 15.6% 84.4% 44.4% 55.6%",
+   "chunks_with_whole_row": [
+    26
+   ],
+   "with_block_header": [
+    26
+   ],
+   "with_dataset_header": []
+  }
+ ]
+}
