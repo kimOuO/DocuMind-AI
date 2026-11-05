@@ -14,6 +14,7 @@ from app.core.env_loader import Settings
 from app.core.errors import ApiError
 from app.llm.embedding import Embedder
 from app.models import User
+from app.retrieval.expansion import MAX_FOLLOWING, table_context, tables_in
 from app.retrieval.repository import RetrievalRepository, RetrievedChunk
 
 __all__ = ["RetrievalService", "RetrievedChunk", "SearchScope"]
@@ -70,3 +71,24 @@ class RetrievalService:
         return await self._repo.search(
             actor.id, scope.document_ids, embedding, self._settings.top_k
         )
+
+    async def with_table_context(
+        self, actor: User, chunks: list[RetrievedChunk]
+    ) -> list[RetrievedChunk]:
+        """The search results, followed by the discussion of any table among them (D62).
+
+        The added chunks come after the search's own results, so that a tight
+        evidence budget drops them first, and carry origin="table_context".
+        """
+        already = {(c.document_id, c.ordinal) for c in chunks}
+        added: list[RetrievedChunk] = []
+        for table in tables_in(chunks):
+            following = await self._repo.chunks_after(
+                actor.id, table.document_id, table.ordinal, limit=MAX_FOLLOWING
+            )
+            ordinals = {o for d, o in already if d == table.document_id}
+            for chunk in table_context(table, following, ordinals):
+                if (chunk.document_id, chunk.ordinal) not in already:
+                    added.append(chunk)
+                    already.add((chunk.document_id, chunk.ordinal))
+        return [*chunks, *added]

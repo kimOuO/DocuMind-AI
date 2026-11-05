@@ -193,13 +193,15 @@
   "page_end": 8,
   "section_title": null,
   "snippet": "原文片段或摘要片段",
-  "score": 0.61
+  "score": 0.61,
+  "origin": "retrieval | table_context | summary"
 }
 ```
 
 - 前端必須顯示這次的搜尋範圍：`scope.mode` 為 `all` 時顯示「所有可用文件」，為 `selected` 時列出所選的文件。
 - `kind=chunk`：原文切塊，`page_start` 與 `page_end` 相同，`score` 為相似度。
 - `kind=summary`：章節摘要，帶章節標題與頁碼範圍，`score` 為 `null`。
+- `origin`（2026-11-06 補入，D62）：來源怎麼來的。`retrieval` 是向量檢索的 Top-K；`table_context` 是檢索結果含表格時，依文件結構補上的、緊接在該表格之後且屬於同一章節的討論段（最多兩塊，`score` 為 `null`，排在檢索結果之後，一樣受證據預算約束）；`summary` 是摘要類回答的來源。P4 比較不同 Top-K 時以 `origin=retrieval` 的來源為準。
 - `done.answered=false` 表示判定為找不到答案；此時仍以 `delta` 送出一段固定的說明文字，`cited` 為空。
 - `done.unverified_numbers` 列出回答中無法在所引用頁面原文找到的數字（AC-26）；此時另以 `delta` 在回答後附一段說明，列出這些數字。`done.verified_numbers` 列出找得到的數字與其所在的文件、頁碼及該頁原文片段（架構規格第 7 節「來源附上該頁原文片段」的落實；2026-11-06 補入）。核對範圍是被引用來源的頁碼範圍，沒有引用時為全部來源；比對時忽略千分位逗號與百分號；一位數的整數（如「Table 2」）不核對。
 - `done.finish_reason`：LLM 呼叫的結束原因（`stop`、`output_limit`、`context_exhausted`…）；未呼叫 LLM 時為 `null`。

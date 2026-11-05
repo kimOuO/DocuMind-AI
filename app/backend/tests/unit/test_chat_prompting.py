@@ -119,6 +119,7 @@ def test_a_source_payload_carries_what_the_interface_shows(counter: Qwen3TokenCo
         "section_title": None,
         "snippet": "Table 2: Performance of ablated versions",
         "score": 0.6123,
+        "origin": "retrieval",
     }
 
 
@@ -245,6 +246,7 @@ def test_a_summary_source_payload_carries_the_section_and_page_range() -> None:
         "section_title": "EVALUATION",
         "snippet": "Eval summary 67.6% (p. 8).",
         "score": None,
+        "origin": "summary",
     }
     assert summary_source_payload(1, PAPER[0])["section_title"] is None
 

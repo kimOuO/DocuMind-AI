@@ -51,7 +51,10 @@ _CITATION = re.compile(r"\[\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)\s*\]")
 
 
 def _source_block(index: int, chunk: RetrievedChunk) -> str:
-    return f"[{index}] {chunk.filename}, page {chunk.page}\n{chunk.text}"
+    where = f"{chunk.filename}, page {chunk.page}"
+    if chunk.origin == "table_context":
+        where += " (the text that follows the table above)"
+    return f"[{index}] {where}\n{chunk.text}"
 
 
 def build_answer_prompt(
@@ -87,7 +90,8 @@ def source_payload(index: int, chunk: RetrievedChunk) -> dict[str, Any]:
         "section_title": None,
         # The chunk as stored: it can be found verbatim on that page of the document.
         "snippet": chunk.text,
-        "score": round(chunk.score, 4),
+        "score": None if chunk.score is None else round(chunk.score, 4),
+        "origin": chunk.origin,
     }
 
 
@@ -183,4 +187,5 @@ def summary_source_payload(index: int, summary: StoredSummary) -> dict[str, Any]
         "section_title": summary.title,
         "snippet": summary.text,
         "score": None,
+        "origin": "summary",
     }

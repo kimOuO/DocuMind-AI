@@ -57,7 +57,10 @@ async def test_the_paper_is_indexed_and_a_question_gets_a_cited_streamed_answer(
     answer = "".join(data["text"] for name, data in stream if name == "delta")
     print(f"\nsources: {[(s['index'], s['page_start'], s['score']) for s in by_name['sources']]}")
     for source in by_name["sources"]:
-        print(f"  [{source['index']}] p{source['page_start']} {source['snippet'][:70]!r}")
+        print(
+            f"  [{source['index']}] p{source['page_start']} {source['origin']:13} "
+            f"{source['snippet'][:60]!r}"
+        )
     print(f"usage: {by_name['usage']}  done: {by_name['done']}")
     print(f"answer:\n{answer}")
 
@@ -66,7 +69,11 @@ async def test_the_paper_is_indexed_and_a_question_gets_a_cited_streamed_answer(
     assert by_name["done"]["status"] == "completed"
     assert by_name["done"]["answered"] is True
     assert by_name["done"]["cited"]
-    assert len(by_name["sources"]) == settings.top_k
+    searched = [s for s in by_name["sources"] if s["origin"] == "retrieval"]
+    added = [s for s in by_name["sources"] if s["origin"] == "table_context"]
+    assert len(searched) == settings.top_k
+    # The table's discussion comes along with the table (D62); it is not a search result.
+    assert all(s["score"] is None for s in added) and len(added) <= 2
     usage = by_name["usage"]
     assert usage["prompt_tokens"] + usage["completion_tokens"] <= settings.llm_context_limit
     # The ledger agrees, and the local estimate was not below what Ollama measured.

@@ -23,7 +23,10 @@ class RetrievedChunk:
     ordinal: int
     text: str
     token_count: int
-    score: float  # cosine similarity with the question, 1 is identical
+    score: float | None  # cosine similarity with the question, 1 is identical; None if not searched
+    # "retrieval": found by similarity search; "table_context": the discussion that
+    # follows a retrieved table, added for its structure, not its similarity.
+    origin: str = "retrieval"
 
 
 class RetrievalRepository:
@@ -130,3 +133,41 @@ class RetrievalRepository:
             else:
                 pages.append((document_id, page, chunk_text))
         return pages
+
+    async def chunks_after(
+        self, owner_id: uuid.UUID, document_id: uuid.UUID, ordinal: int, *, limit: int
+    ) -> list[RetrievedChunk]:
+        """The owner's chunks that follow the given one in document order."""
+        rows = await self._db.execute(
+            select(
+                Chunk.id,
+                Chunk.document_id,
+                Document.filename,
+                Chunk.page,
+                Chunk.ordinal,
+                Chunk.text,
+                Chunk.token_count,
+            )
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Document.owner_id == owner_id,
+                Chunk.document_id == document_id,
+                Chunk.ordinal > ordinal,
+            )
+            .order_by(Chunk.ordinal)
+            .limit(limit)
+        )
+        return [
+            RetrievedChunk(
+                chunk_id=row.id,
+                document_id=row.document_id,
+                filename=row.filename,
+                page=row.page,
+                ordinal=row.ordinal,
+                text=row.text,
+                token_count=row.token_count,
+                score=None,
+                origin="table_context",
+            )
+            for row in rows
+        ]

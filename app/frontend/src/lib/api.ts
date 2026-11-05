@@ -155,6 +155,8 @@ export interface Source {
   section_title: string | null
   snippet: string
   score: number | null
+  /** How the source got here: found by search, added as a table's discussion, or a stored summary. */
+  origin: 'retrieval' | 'table_context' | 'summary'
 }
 
 export type MessageStatus = 'pending' | 'streaming' | 'completed' | 'failed' | 'interrupted'

@@ -36,6 +36,7 @@ const SOURCE = {
   section_title: null,
   snippet: 'Table 2: Performance of ablated versions of LightRAG',
   score: 0.7111,
+  origin: 'retrieval',
 }
 const QUESTION = 'Performance of ablated versions of LightRAG'
 const ASK = `POST /api/v1/conversations/${CONVERSATION.id}/messages`

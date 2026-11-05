@@ -345,12 +345,13 @@ class ChatService:
 
     async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
         async with self._sessions() as session:
-            chunks = await RetrievalService(session, self._embedder, self._settings).search(
-                prepared.actor, prepared.scope, question
-            )
-        # First line of defence against made-up answers (AC-15): nothing close enough
-        # was found, so nothing is sent to the model and the user is told so.
-        best = chunks[0].score if chunks else None
+            retrieval = RetrievalService(session, self._embedder, self._settings)
+            chunks = await retrieval.search(prepared.actor, prepared.scope, question)
+            # First line of defence against made-up answers (AC-15): nothing close
+            # enough was found, so nothing is sent to the model and the user is told so.
+            best = chunks[0].score if chunks else None
+            if best is not None and best >= self._settings.min_similarity:
+                chunks = await retrieval.with_table_context(prepared.actor, chunks)
         if best is None or best < self._settings.min_similarity:
             logger.info(
                 "Question refused: best similarity %s below %s",

@@ -179,3 +179,11 @@ def _linear_row(
             named = ", ".join(f"{subs[g * per_group + j]} {value}" for j, value in enumerate(cells))
             parts.append(f"{group}: {named}")
     return f"{label} — " + "; ".join(parts)
+
+
+def is_table_chunk(text: str) -> bool:
+    """A chunk that is a table region: a caption first, and at least one row."""
+    lines = text.splitlines()
+    if not lines or not _CAPTION.match(lines[0].strip()):
+        return False
+    return any(_is_row(line) for line in lines[1:])
