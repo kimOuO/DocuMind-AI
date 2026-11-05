@@ -14,6 +14,22 @@ export interface Health {
   llm_context_limit: number
 }
 
+export type DocumentStatus = 'uploaded' | 'processing' | 'ready' | 'failed'
+
+export interface DocumentItem {
+  id: string
+  filename: string
+  media_type: string
+  file_size: number
+  status: DocumentStatus
+  summary_status: 'none' | 'processing' | 'ready' | 'failed'
+  error: string | null
+  page_count: number | null
+  chunk_count: number
+  created_at: string
+  updated_at: string
+}
+
 export interface User {
   id: string
   username: string
@@ -37,12 +53,14 @@ export class ApiError extends Error {
 }
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+  // A FormData body (file upload) sets its own multipart Content-Type.
+  const isForm = body instanceof FormData
   const response = await fetch(`${API}${path}`, {
     method,
     // The session lives in an HttpOnly cookie; the browser sends it for us.
     credentials: 'same-origin',
-    headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: body === undefined || isForm ? undefined : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
   })
   if (!response.ok) {
     let code = 'HTTP_ERROR'
@@ -66,3 +84,11 @@ export const register = (username: string, password: string) =>
 export const login = (username: string, password: string) =>
   request<User>('POST', '/auth/login', { username, password })
 export const logout = () => request<void>('POST', '/auth/logout')
+
+export const listDocuments = () => request<DocumentItem[]>('GET', '/documents')
+export const deleteDocument = (id: string) => request<void>('DELETE', `/documents/${id}`)
+export function uploadDocument(file: File) {
+  const form = new FormData()
+  form.append('file', file)
+  return request<DocumentItem>('POST', '/documents', form)
+}

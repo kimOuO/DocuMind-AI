@@ -60,6 +60,7 @@ test('logging in shows who is logged in and the system status', async () => {
     'GET /api/v1/users/me': UNAUTHENTICATED,
     'POST /api/v1/auth/login': { status: 200, body: USER },
     'GET /api/v1/health': { status: 200, body: HEALTH },
+    'GET /api/v1/documents': { status: 200, body: [] },
   })
   render(<App />)
 
@@ -111,6 +112,7 @@ test('an existing session goes straight to the signed-in page, and logout return
   const calls = mockApi({
     'GET /api/v1/users/me': { status: 200, body: USER },
     'GET /api/v1/health': { status: 200, body: HEALTH },
+    'GET /api/v1/documents': { status: 200, body: [] },
     'POST /api/v1/auth/logout': { status: 204 },
   })
   render(<App />)

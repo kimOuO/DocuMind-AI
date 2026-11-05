@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchHealth, type DependencyStatus, type Health, type User } from '../../lib/api'
+import { DocumentPanel } from '../documents/DocumentPanel'
 
 type HealthState =
   | { kind: 'loading' }
@@ -18,7 +19,7 @@ function StatusRow({ label, status }: { label: string; status: DependencyStatus 
   )
 }
 
-/** P2-A placeholder for the signed-in area: who is logged in and whether the system is up. */
+/** The signed-in area: who is logged in, their documents, and whether the system is up. */
 export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
   const [state, setState] = useState<HealthState>({ kind: 'loading' })
 
@@ -44,6 +45,8 @@ export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
           登出
         </button>
       </div>
+
+      <DocumentPanel />
 
       <section className="mt-4 rounded-lg border border-border bg-surface p-4">
         <h2 className="font-semibold">系統狀態</h2>
