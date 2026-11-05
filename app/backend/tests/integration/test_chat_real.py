@@ -56,6 +56,8 @@ async def test_the_paper_is_indexed_and_a_question_gets_a_cited_streamed_answer(
     by_name = dict(stream)
     answer = "".join(data["text"] for name, data in stream if name == "delta")
     print(f"\nsources: {[(s['index'], s['page_start'], s['score']) for s in by_name['sources']]}")
+    for source in by_name["sources"]:
+        print(f"  [{source['index']}] p{source['page_start']} {source['snippet'][:70]!r}")
     print(f"usage: {by_name['usage']}  done: {by_name['done']}")
     print(f"answer:\n{answer}")
 

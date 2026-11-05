@@ -13,10 +13,10 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from app.ingestion.parsing import Page
-from app.ingestion.tables import find_table_regions, split_table
+from app.ingestion.tables import find_table_regions, linearize_table, split_table
 
 # A table may be this many times the chunk size before it is split by rows.
-TABLE_CHUNK_FACTOR = 3
+TABLE_CHUNK_FACTOR = 4
 
 
 class ChunkTokenizer(Protocol):
@@ -45,7 +45,9 @@ def chunk_pages(
     for page in pages:
         for text, is_table in _segments(page.text):
             if is_table:
-                pieces = split_table(text, tokenizer, max_tokens=TABLE_CHUNK_FACTOR * chunk_size)
+                pieces = split_table(
+                    linearize_table(text), tokenizer, max_tokens=TABLE_CHUNK_FACTOR * chunk_size
+                )
                 for piece in pieces:
                     chunks.append(
                         ChunkDraft(len(chunks), page.number, piece, tokenizer.count(piece))

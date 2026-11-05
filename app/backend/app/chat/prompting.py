@@ -21,6 +21,9 @@ Rules:
 - After each statement, cite the sources it comes from by their numbers in square brackets, \
 for example [1] or [2][3].
 - Copy numbers and names exactly as they appear in the sources.
+- Answer completely. When a source gives specific figures for what the question asks about \
+(for example every variant, method or dataset of a table), report each of those figures with \
+its label; do not replace them with a summary such as "similar improvements".
 - If the sources do not contain the answer, say that the documents do not contain it and \
 cite nothing.
 {language_rule}

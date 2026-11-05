@@ -31,6 +31,32 @@ TRUTH = ROOT / "evaluation" / "ground-truth" / "paper-structure.json"
 DATASET_HEADER = "Agriculture CS Legal Mix"
 
 
+def _row_line(text: str, metric: str, values: list[str]) -> str | None:
+    """The line of the chunk that holds the metric and all its values in order, if any."""
+    for line in text.splitlines():
+        if not line.startswith(metric):
+            continue
+        position = 0
+        for value in values:
+            position = line.find(value, position)
+            if position < 0:
+                break
+            position += len(value)
+        else:
+            return line
+    return None
+
+
+def _row_in(text: str, metric: str, values: list[str]) -> bool:
+    return _row_line(text, metric, values) is not None
+
+
+def _row_labelled(text: str, metric: str, values: list[str], *labels: str) -> bool:
+    """The row's own line carries the labels (the cell-by-cell form)."""
+    line = _row_line(text, metric, values)
+    return line is not None and all(label in line for label in labels)
+
+
 def main() -> None:
     settings = get_settings()
     pages = parse_document(PAPER, "pdf")
@@ -57,7 +83,13 @@ def main() -> None:
     for row in rows.values():
         line = " ".join([row["metric"], *row["values"]])
         block_header = " ".join(["NaiveRAG", row["variant"]] * 4)
-        holding = [chunk for chunk in page_chunks if line in chunk.text]
+        # A row is whole in a chunk when its metric and its eight values appear in order
+        # on one line of the chunk: as pypdf wrote it, or rewritten cell by cell.
+        holding = [
+            chunk
+            for chunk in page_chunks
+            if _row_in(chunk.text, row["metric"], row["values"])
+        ]
         summary.append(
             {
                 "variant": row["variant"],
@@ -65,26 +97,37 @@ def main() -> None:
                 "row": line,
                 "chunks_with_whole_row": [chunk.ordinal for chunk in holding],
                 "with_block_header": [
-                    c.ordinal for c in holding if block_header in c.text
+                    c.ordinal
+                    for c in holding
+                    if block_header in c.text
+                    or _row_labelled(
+                        c.text, row["metric"], row["values"], row["variant"]
+                    )
                 ],
                 "with_dataset_header": [
-                    c.ordinal for c in holding if DATASET_HEADER in c.text
+                    c.ordinal
+                    for c in holding
+                    if DATASET_HEADER in c.text
+                    or _row_labelled(
+                        c.text, row["metric"], row["values"], *DATASET_HEADER.split()
+                    )
                 ],
             }
         )
 
     # The current implementation keeps table regions whole (app/ingestion/tables.py);
     # the fixed-size-only baseline measured before that change is kept as its own file.
-    method = f"table-region-{settings.chunk_size}-{settings.chunk_overlap}"
+    method = f"table-region-linearized-{settings.chunk_size}-{settings.chunk_overlap}"
     result = {
         "method": {
             "name": method,
             "description": "Table regions (caption, headers, number rows) kept as one chunk "
-            "of up to 3 x chunk size; the rest in fixed-size chunks measured in tokens, "
-            "page by page, consecutive chunks overlapping.",
+            "of up to 4 x chunk size, each row rewritten cell by cell with its column labels; "
+            "the rest in fixed-size chunks measured in tokens, page by page, consecutive "
+            "chunks overlapping.",
             "chunk_size_tokens": settings.chunk_size,
             "overlap_tokens": settings.chunk_overlap,
-            "table_chunk_max_tokens": 3 * settings.chunk_size,
+            "table_chunk_max_tokens": 4 * settings.chunk_size,
             "pdf_parser": "pypdf default",
             "implementation": "app/ingestion/chunking.py, app/ingestion/tables.py",
         },

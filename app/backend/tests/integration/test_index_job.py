@@ -130,10 +130,10 @@ async def test_the_paper_is_stored_as_chunks_within_the_size_and_with_pages(
     assert len(rows) == 46  # 44 fixed-size chunks and the two tables (pages 7 and 8)
     assert [row[0] for row in rows] == list(range(46))
     assert {row[1] for row in rows} == set(range(1, 17))
-    # Only the two table regions may exceed the chunk size (AC-14), by at most 3x.
+    # Only the two table regions may exceed the chunk size (AC-14), by at most 4x.
     oversize = [row for row in rows if row[2] > get_settings().chunk_size]
     assert [(row[1], row[3][:8]) for row in oversize] == [(7, "Table 1:"), (8, "Table 2:")]
-    assert all(0 < row[2] <= 3 * get_settings().chunk_size for row in rows)
+    assert all(0 < row[2] <= 4 * get_settings().chunk_size for row in rows)
     assert all(row[2] == tokenizer.count(row[3]) for row in rows)
     assert all(row[4] == 1024 for row in rows)
     # Embedded in batches, in order, each chunk exactly once.
