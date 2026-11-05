@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from app.auth import router as auth
 from app.core.errors import install_error_handlers
 from app.core.origin import verify_origin
+from app.documents import router as documents
 from app.monitoring import router as monitoring
 
 API_PREFIX = "/api/v1"
@@ -35,6 +36,7 @@ def create_app() -> FastAPI:
     # Every API route passes the origin check before anything else runs.
     api = APIRouter(prefix=API_PREFIX, dependencies=[Depends(verify_origin)])
     api.include_router(auth.router)
+    api.include_router(documents.router)
     api.include_router(monitoring.router)
     app.include_router(api)
     return app

@@ -1,5 +1,6 @@
 """Origin verification (AC-44), REST conventions (AC-27), authentication coverage (AC-30)."""
 
+import re
 import uuid
 from collections.abc import Callable
 
@@ -128,7 +129,7 @@ def test_every_non_public_route_requires_login(client: TestClient) -> None:
     for method, route_path in _api_operations():
         if route_path in PUBLIC_PATHS:
             continue
-        path = route_path.replace("{id}", str(uuid.uuid4()))
+        path = re.sub(r"\{[^}]+\}", str(uuid.uuid4()), route_path)
         response = client.request(method, path, json={})
         assert response.status_code == 401, (method, path, response.status_code)
         checked.append((method, route_path))
