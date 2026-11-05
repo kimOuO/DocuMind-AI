@@ -1,8 +1,13 @@
-"""The paper summarised by the real model: calls, tokens and the page tags on numbers.
+"""The paper summarised by the real model, then the first required question asked.
+
+Checks the calls, the tokens, the page tags on numbers, and that "summary this
+document." is answered from the stored summaries with summary sources (AC-12,
+AC-26 sources, AC-17).
 
 Run with:  pytest -m llm tests/integration/test_summary_job_real.py -s
 """
 
+import json
 import re
 import time
 import uuid
@@ -89,3 +94,36 @@ async def test_the_paper_is_summarised_within_the_budget_with_page_tags(
         for page in map(int, PAGE_TAG.findall(text)):
             assert start <= page <= end, (title, page, start, end)
     assert PAGE_TAG.search(document_text), "the document summary keeps at least one page tag"
+
+    # The first required question, answered from what was just stored.
+    conversation = client.post("/api/v1/conversations", json={}).json()["id"]
+    started = time.perf_counter()
+    response = client.post(
+        f"/api/v1/conversations/{conversation}/messages",
+        json={"question": "summary this document."},
+    )
+    elapsed = time.perf_counter() - started
+    assert response.status_code == 200
+    stream = []
+    for block in response.text.strip().split("\n\n"):
+        name, data = block.split("\n", 1)
+        stream.append((name.removeprefix("event: "), json.loads(data.removeprefix("data: "))))
+    by_name = dict(stream)
+    answer = "".join(data["text"] for name, data in stream if name == "delta")
+    print(
+        f"\nQ1 in {elapsed:.0f}s; route {by_name['route']}; usage {by_name['usage']}; "
+        f"done {by_name['done']}"
+    )
+    print("sources:")
+    for source in by_name["sources"]:
+        pages = f"p{source['page_start']}-{source['page_end']}"
+        print(f"  [{source['index']}] {source['section_title']} {pages}")
+    print(f"answer:\n{answer}")
+
+    assert by_name["route"]["type"] == "summary"
+    assert {s["kind"] for s in by_name["sources"]} == {"summary"}
+    assert by_name["sources"][0]["section_title"] is None  # the whole-document summary first
+    assert by_name["done"]["status"] == "completed" and by_name["done"]["answered"] is True
+    usage = by_name["usage"]
+    assert usage["prompt_tokens"] + usage["completion_tokens"] <= settings.llm_context_limit
+    assert client.get("/api/v1/llm-calls").json()["underestimate_events"] == 0

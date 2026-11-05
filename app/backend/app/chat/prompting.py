@@ -1,8 +1,9 @@
-"""The prompt for answering a question from retrieved sources, and its citations.
+"""The prompts for answering a question, and the citations read back from an answer.
 
 The model is told to answer only from the numbered sources and to cite them
-by number. Sources are added in order of relevance while they fit the evidence
-budget; one that does not fit is left out whole, never cut short.
+by number. Sources are added in order while they fit the evidence budget; one
+that does not fit is left out whole, never cut short. Ordinary questions get
+retrieved chunks as sources; summary questions get the stored summaries.
 """
 
 import re
@@ -10,6 +11,7 @@ from typing import Any
 
 from app.llm.tokenizer import TokenCounter
 from app.retrieval.repository import RetrievedChunk
+from app.summarization.repository import StoredSummary
 
 INSTRUCTIONS = """\
 You answer questions about the user's documents.
@@ -99,3 +101,83 @@ def cited_indexes(answer: str, available: int) -> list[int]:
             if 1 <= index <= available and index not in cited:
                 cited.append(index)
     return cited
+
+
+# --- Summary questions ----------------------------------------------------------------
+
+SUMMARY_INSTRUCTIONS = """\
+You answer questions about the user's documents from the summaries below. Each summary \
+covers a whole document or one of its sections.
+
+Rules:
+- Use only the numbered sources below. Do not use any other knowledge.
+- After each statement, cite the sources it comes from by their numbers in square brackets, \
+for example [1] or [2][3].
+- Copy numbers and names exactly as they appear, and keep the page reference that follows \
+a number, for example "67.6% (p. 8)".
+- When asked for a summary of a document, cover the problem it addresses, what it proposes \
+or does, and its main results, as far as the sources say so.
+- If the sources do not contain what the question asks, say so and cite nothing.
+{documents_rule}{language_rule}
+
+Sources:
+"""
+
+DOCUMENTS_RULE = (
+    "- The sources come from {count} documents. Write one separate part per document, headed "
+    "by its file name, and never mix the content of different documents.\n"
+)
+
+
+def _summary_block(index: int, summary: StoredSummary) -> str:
+    where = "whole document" if summary.level == "document" else f"section: {summary.title}"
+    pages = f"pages {summary.page_start}-{summary.page_end}"
+    return f"[{index}] {summary.filename}, {pages}, {where}\n{summary.text}"
+
+
+def build_summary_prompt(
+    question: str, summaries: list[StoredSummary], counter: TokenCounter, *, evidence_budget: int
+) -> tuple[str, list[StoredSummary]]:
+    """The prompt, and the summaries included in it (numbered from 1 in that order).
+
+    The budget is shared equally between the documents, so that with several
+    documents each one gets its part (D32). Within a document the whole-document
+    summary comes first, then the sections in order; the first that does not
+    fit ends that document's share.
+    """
+    documents = list(dict.fromkeys(s.document_id for s in summaries))
+    share = evidence_budget // len(documents) if documents else evidence_budget
+    used: list[StoredSummary] = []
+    blocks: list[str] = []
+    for document_id in documents:
+        spent = 0
+        for summary in (s for s in summaries if s.document_id == document_id):
+            block = _summary_block(len(used) + 1, summary)
+            cost = counter.count(block)
+            if spent + cost > share:
+                break
+            used.append(summary)
+            blocks.append(block)
+            spent += cost
+    sources = "\n\n".join(blocks) if blocks else "(no sources)"
+    documents_rule = DOCUMENTS_RULE.format(count=len(documents)) if len(documents) > 1 else ""
+    instructions = SUMMARY_INSTRUCTIONS.format(
+        documents_rule=documents_rule,
+        language_rule=LANGUAGE_RULES[question_language(question)],
+    )
+    return f"{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
+
+
+def summary_source_payload(index: int, summary: StoredSummary) -> dict[str, Any]:
+    """A summary as a source: file name, section title and page range (AC-26)."""
+    return {
+        "index": index,
+        "kind": "summary",
+        "document_id": str(summary.document_id),
+        "filename": summary.filename,
+        "page_start": summary.page_start,
+        "page_end": summary.page_end,
+        "section_title": summary.title,
+        "snippet": summary.text,
+        "score": None,
+    }

@@ -6,12 +6,15 @@ import pytest
 
 from app.chat.prompting import (
     build_answer_prompt,
+    build_summary_prompt,
     cited_indexes,
     question_language,
     source_payload,
+    summary_source_payload,
 )
 from app.llm.tokenizer import Qwen3TokenCounter
 from app.retrieval.repository import RetrievedChunk
+from app.summarization.repository import StoredSummary
 
 
 def chunk(
@@ -136,3 +139,116 @@ def test_citations_are_read_from_the_answer(
     answer: str, available: int, expected: list[int]
 ) -> None:
     assert cited_indexes(answer, available) == expected
+
+
+# --- Summary questions: the prompt is built from stored summaries ---------------------
+
+
+class WordCounter:
+    def count(self, text: str) -> int:
+        return len(text.split())
+
+
+def stored(
+    filename: str, level: str, ordinal: int, title: str | None, pages: tuple[int, int], text: str
+) -> StoredSummary:
+    return StoredSummary(
+        document_id=uuid.uuid5(uuid.NAMESPACE_URL, filename),
+        filename=filename,
+        level=level,
+        ordinal=ordinal,
+        title=title,
+        page_start=pages[0],
+        page_end=pages[1],
+        text=text,
+        token_count=len(text.split()),
+    )
+
+
+PAPER = [
+    stored("paper.pdf", "document", 0, None, (1, 16), "Overall: LightRAG; 67.6% (p. 8)."),
+    stored("paper.pdf", "section", 1, "INTRODUCTION", (1, 2), "Intro summary."),
+    stored("paper.pdf", "section", 2, "EVALUATION", (5, 10), "Eval summary 67.6% (p. 8)."),
+]
+
+
+def test_the_summary_prompt_numbers_the_summaries_with_their_pages_and_sections() -> None:
+    prompt, used = build_summary_prompt(
+        "summary this document.", PAPER, WordCounter(), evidence_budget=1_000
+    )
+
+    assert used == PAPER
+    assert "[1] paper.pdf, pages 1-16, whole document\nOverall: LightRAG; 67.6% (p. 8)." in prompt
+    assert "[2] paper.pdf, pages 1-2, section: INTRODUCTION\nIntro summary." in prompt
+    assert "[3] paper.pdf, pages 5-10, section: EVALUATION\nEval summary 67.6% (p. 8)." in prompt
+    assert prompt.index("[1]") < prompt.index("[2]") < prompt.index("[3]")
+    assert "(p. 8)" in prompt  # the model is told to keep such page references
+    assert "keep the page reference" in prompt
+    assert prompt.endswith("Question: summary this document.\nAnswer:")
+    # One document: no instruction about separating documents.
+    assert "one separate part per document" not in prompt
+
+
+def test_summaries_that_do_not_fit_are_left_out_whole_in_document_order() -> None:
+    counter = WordCounter()
+    # Budget for the document summary and the first section only.
+    budget = sum(
+        counter.count(block)
+        for block in [
+            "[1] paper.pdf, pages 1-16, whole document\nOverall: LightRAG; 67.6% (p. 8).",
+            "[2] paper.pdf, pages 1-2, section: INTRODUCTION\nIntro summary.",
+        ]
+    )
+
+    _, used = build_summary_prompt("summary", PAPER, counter, evidence_budget=budget)
+
+    assert used == PAPER[:2]
+
+
+def test_with_several_documents_each_gets_its_share_and_its_own_part() -> None:
+    other = [
+        stored("notes.md", "document", 0, None, (1, 1), "Overall: notes."),
+        stored("notes.md", "section", 1, "Indexing", (1, 1), "Indexing summary."),
+    ]
+    counter = WordCounter()
+    # Each document gets half. Half fits both summaries of the notes; for the paper it fits
+    # the whole-document summary but not the first section as well.
+    budget = 2 * sum(
+        counter.count(block)
+        for block in [
+            "[2] notes.md, pages 1-1, whole document\nOverall: notes.",
+            "[3] notes.md, pages 1-1, section: Indexing\nIndexing summary.",
+        ]
+    )
+
+    prompt, used = build_summary_prompt("summary", PAPER + other, counter, evidence_budget=budget)
+
+    assert [(s.filename, s.level) for s in used] == [
+        ("paper.pdf", "document"),
+        ("notes.md", "document"),
+        ("notes.md", "section"),
+    ]
+    assert "sources come from 2 documents" in prompt
+    assert "one separate part per document" in prompt
+
+
+def test_a_summary_source_payload_carries_the_section_and_page_range() -> None:
+    payload = summary_source_payload(2, PAPER[2])
+
+    assert payload == {
+        "index": 2,
+        "kind": "summary",
+        "document_id": str(PAPER[2].document_id),
+        "filename": "paper.pdf",
+        "page_start": 5,
+        "page_end": 10,
+        "section_title": "EVALUATION",
+        "snippet": "Eval summary 67.6% (p. 8).",
+        "score": None,
+    }
+    assert summary_source_payload(1, PAPER[0])["section_title"] is None
+
+
+def test_the_summary_instructions_fit_their_budget(counter: Qwen3TokenCounter) -> None:
+    prompt, _ = build_summary_prompt("summary this document.", [], counter, evidence_budget=0)
+    assert counter.count(prompt) <= 500
