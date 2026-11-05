@@ -117,6 +117,29 @@ async def test_a_chinese_question_is_answered_in_traditional_chinese(
     simplified = [c for c in answer if c in SIMPLIFIED_ONLY]
     assert simplified == [], f"Simplified characters in the answer: {simplified}"
 
+    # AC-16: a follow-up with a pronoun is rewritten from the conversation first.
+    follow_up = client.post(
+        f"/api/v1/conversations/{conversation}/messages",
+        json={"question": "那它的缺點呢？"},
+    )
+    stream = []
+    for block in follow_up.text.strip().split("\n\n"):
+        name, data = block.split("\n", 1)
+        stream.append((name.removeprefix("event: "), json.loads(data.removeprefix("data: "))))
+    by_name = dict(stream)
+    rewritten = by_name["route"]["standalone_question"]
+    follow_up_answer = "".join(d["text"] for n, d in stream if n == "delta")
+    rewrite_call = db.execute(
+        "SELECT status, finish_reason, prompt_tokens, completion_tokens FROM llm_calls "
+        "WHERE purpose = 'rewrite'"
+    ).fetchone()
+    print(f"\nfollow-up rewritten as: {rewritten}\nrewrite call: {rewrite_call}")
+    print(f"follow-up answer:\n{follow_up_answer}")
+    assert rewrite_call is not None and rewrite_call[0] == "completed"
+    assert rewrite_call[2] + rewrite_call[3] <= settings.llm_context_limit
+    assert rewritten != "那它的缺點呢？"
+    assert any(word in rewritten for word in ("LightRAG", "雙層", "檢索"))
+
 
 async def test_a_question_the_paper_cannot_answer_is_refused_before_any_llm_call(
     client: TestClient, db: psycopg.Connection

@@ -58,12 +58,27 @@ class StubOllama:
         self.completion_tokens = len(pieces) if completion_tokens is None else completion_tokens
         self.status_code = status_code
         self.error = error
-        self.prompts: list[str] = []
+        self.prompts: list[str] = []  # answer prompts
+        self.rewrite_prompts: list[str] = []
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
+        assert (body["truncate"], body["shift"]) == (False, False)
+        if not body["stream"]:
+            # A follow-up's rewrite (AC-16): hand the question back unchanged.
+            self.rewrite_prompts.append(body["prompt"])
+            latest = body["prompt"].rsplit("Latest question: ", 1)[1].split("\n", 1)[0]
+            return httpx.Response(
+                200,
+                json={
+                    "response": latest,
+                    "done": True,
+                    "done_reason": "stop",
+                    "prompt_eval_count": 150,
+                    "eval_count": 9,
+                },
+            )
         self.prompts.append(body["prompt"])
-        assert (body["truncate"], body["shift"], body["stream"]) == (False, False, True)
         assert body["options"] == {"num_ctx": 10_000, "num_predict": 2_500}
         if self.status_code != 200:
             return httpx.Response(self.status_code, json={"error": self.error})
@@ -330,11 +345,10 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
     await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
     model = StubOllama(["LightRAG builds", " a graph", " [1]."])
     use_model(kim, tokenizer, model)
-    conversation = new_conversation(kim)
-
-    refused = events(ask(kim, conversation, "How do I bake sourdough bread at home?"))
-    in_chinese = events(ask(kim, conversation, "如何在家烤酸種麵包？"))
-    answered = events(ask(kim, conversation, GRAPH))
+    # One conversation per question, so that no rewrite call enters the picture.
+    refused = events(ask(kim, new_conversation(kim), "How do I bake sourdough bread at home?"))
+    in_chinese = events(ask(kim, new_conversation(kim), "如何在家烤酸種麵包？"))
+    answered = events(ask(kim, new_conversation(kim), GRAPH))
 
     assert [name for name, _ in refused] == ["start", "route", "sources", "delta", "done"]
     assert refused[1][1]["type"] == "retrieval"

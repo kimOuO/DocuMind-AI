@@ -19,6 +19,13 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.chat.memory import (
+    MEMORY_TOKEN_BUDGET,
+    HistoryMessage,
+    build_memory,
+    clean_rewrite,
+    rewrite_prompt,
+)
 from app.chat.prompting import (
     build_answer_prompt,
     build_summary_prompt,
@@ -30,6 +37,7 @@ from app.chat.prompting import (
 from app.chat.repository import ChatRepository
 from app.chat.routing import question_type
 from app.chat.verification import NumberCheck, PageText, check_note, verify_numbers
+from app.conversations.repository import ConversationRepository
 from app.conversations.service import ConversationService
 from app.core.env_loader import Settings
 from app.core.errors import ApiError
@@ -60,6 +68,8 @@ class PreparedQuestion:
     assistant_message_id: uuid.UUID
     question: str
     scope: SearchScope
+    # The conversation before this question, oldest first (memory for a follow-up).
+    history: tuple[HistoryMessage, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -123,12 +133,14 @@ class ChatService:
             actor, document_ids
         )
 
+        earlier = await ConversationRepository(self._db).messages(actor.id, conversation.id)
+        history = tuple(HistoryMessage(m.role, m.content, m.status) for m in earlier)
         user_message_id, assistant_message_id = await ChatRepository(self._db).add_exchange(
             conversation, question
         )
         await self._db.commit()
         return PreparedQuestion(
-            actor, conversation.id, user_message_id, assistant_message_id, question, scope
+            actor, conversation.id, user_message_id, assistant_message_id, question, scope, history
         )
 
     async def answer(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
@@ -146,14 +158,16 @@ class ChatService:
                     },
                 },
             )
-            # Rewriting the question from the conversation so far comes with AC-16.
-            kind = question_type(prepared.question)
-            yield ChatEvent("route", {"type": kind, "standalone_question": prepared.question})
+            # A follow-up is first made to stand on its own (AC-16); the route, the
+            # retrieval and the answer all work from that standalone question.
+            question = await self._standalone_question(prepared)
+            kind = question_type(question)
+            yield ChatEvent("route", {"type": kind, "standalone_question": question})
 
             evidence = (
-                await self._summary_evidence(prepared)
+                await self._summary_evidence(prepared, question)
                 if kind == "summary"
-                else await self._retrieval_evidence(prepared)
+                else await self._retrieval_evidence(prepared, question)
             )
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
@@ -276,6 +290,45 @@ class ChatService:
                 "error", {"code": "INTERNAL_ERROR", "detail": "The answer could not be produced."}
             )
 
+    async def _standalone_question(self, prepared: PreparedQuestion) -> str:
+        """The question rewritten from the conversation so far, or as asked.
+
+        Without earlier turns there is nothing to resolve and no call is made.
+        A rewrite that fails, is cut short, is not a single line or exceeds the
+        question budget is not used: the question is kept as asked, and the
+        call is in the ledger either way.
+        """
+        memory = build_memory(
+            list(prepared.history), self._counter, budget_tokens=MEMORY_TOKEN_BUDGET
+        )
+        if not memory:
+            return prepared.question
+        context = CallContext(
+            owner_id=prepared.actor.id,
+            conversation_id=prepared.conversation_id,
+            message_id=prepared.assistant_message_id,
+        )
+        try:
+            result = await self._gateway.generate(
+                rewrite_prompt(memory, prepared.question),
+                purpose="rewrite",
+                max_output_tokens=self._settings.question_token_budget,
+                context=context,
+            )
+        except (LLMCallFailed, ContextBudgetExceeded) as error:
+            logger.warning("Rewrite skipped, question used as asked: %s", error)
+            return prepared.question
+        if not result.finish_reason.is_complete:
+            return prepared.question
+        rewritten = clean_rewrite(result.text)
+        too_long = (
+            rewritten is not None
+            and self._counter.count(rewritten) > self._settings.question_token_budget
+        )
+        if rewritten is None or too_long:
+            return prepared.question
+        return rewritten
+
     async def _check_numbers(
         self, prepared: PreparedQuestion, answer: str, evidence: Evidence, cited: list[int]
     ) -> NumberCheck:
@@ -290,10 +343,10 @@ class ChatService:
             rows = await RetrievalRepository(session).page_texts(prepared.actor.id, ranges)
         return verify_numbers(answer, [PageText(*row) for row in rows])
 
-    async def _retrieval_evidence(self, prepared: PreparedQuestion) -> Evidence:
+    async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
         async with self._sessions() as session:
             chunks = await RetrievalService(session, self._embedder, self._settings).search(
-                prepared.actor, prepared.scope, prepared.question
+                prepared.actor, prepared.scope, question
             )
         # First line of defence against made-up answers (AC-15): nothing close enough
         # was found, so nothing is sent to the model and the user is told so.
@@ -305,13 +358,11 @@ class ChatService:
                 self._settings.min_similarity,
             )
             return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
-        prompt, used = build_answer_prompt(
-            prepared.question, chunks, self._counter, EVIDENCE_TOKEN_BUDGET
-        )
+        prompt, used = build_answer_prompt(question, chunks, self._counter, EVIDENCE_TOKEN_BUDGET)
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "")
 
-    async def _summary_evidence(self, prepared: PreparedQuestion) -> Evidence:
+    async def _summary_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
         """The stored summaries of the documents in scope; the ones without are named."""
         async with self._sessions() as session:
             repository = SummaryRepository(session)
@@ -325,7 +376,7 @@ class ChatService:
         if not summaries:
             return Evidence(None, [], note)
         prompt, used = build_summary_prompt(
-            prepared.question, summaries, self._counter, evidence_budget=EVIDENCE_TOKEN_BUDGET
+            question, summaries, self._counter, evidence_budget=EVIDENCE_TOKEN_BUDGET
         )
         sources = [summary_source_payload(index, s) for index, s in enumerate(used, start=1)]
         return Evidence(prompt, sources, note)
