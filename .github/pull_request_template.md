@@ -11,5 +11,5 @@
 ## AI 協作
 
 - [ ] AI 生成的程式碼已由我檢視，並有測試或實跑結果佐證
-- [ ] 本次的技術決策已記入 `docs/ai-collab/decision-log.md`
+- [ ] 本次的技術決策已記入 `docs/05-ai-collaboration/decision-log.md`
 - AI 提案被我修改或否決的地方：<!-- 沒有就寫「無」 -->

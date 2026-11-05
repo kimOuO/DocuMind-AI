@@ -24,7 +24,7 @@ services:
       retries: 10
 
   backend:
-    build: ./backend
+    build: ./app/backend
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-documind}:${POSTGRES_PASSWORD:-documind}@db:5432/${POSTGRES_DB:-documind}
       OLLAMA_BASE_URL: ${COMPOSE_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
@@ -40,7 +40,7 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    build: ./app/frontend
     ports:
       - "${WEB_BIND:-127.0.0.1}:${WEB_PORT:-3000}:80"
     depends_on:

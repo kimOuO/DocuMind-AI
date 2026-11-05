@@ -3,7 +3,7 @@
 
 Claude Code stores every session as JSON Lines under
 ``~/.claude/projects/<project-slug>/<session-id>.jsonl``. This script turns each
-session into ``docs/ai-collab/sessions/raw/<date>-<session-id[:8]>.md`` so the
+session into ``docs/05-ai-collaboration/sessions/raw/<date>-<session-id[:8]>.md`` so the
 human-AI interaction can be kept as evidence without manual transcription.
 
 What is kept: what the user typed, what the assistant replied, the questions the
@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_OUT = REPO_ROOT / "docs" / "ai-collab" / "sessions" / "raw"
+DEFAULT_OUT = REPO_ROOT / "docs" / "05-ai-collaboration" / "sessions" / "raw"
 
 REDACTIONS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "[email]"),

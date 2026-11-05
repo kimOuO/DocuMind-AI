@@ -13,9 +13,8 @@ node_modules/
 dist/
 *.tsbuildinfo
 
-# Runtime data
-data/*
-!data/.gitkeep
+# Runtime data (uploaded files in local development)
+.data/
 
 # Secrets and local config
 .env
