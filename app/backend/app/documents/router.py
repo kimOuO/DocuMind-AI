@@ -1,22 +1,29 @@
-"""HTTP endpoints for documents: upload, list, read, delete, retry."""
+"""HTTP endpoints for documents: upload, list, read, delete, retry, progress."""
 
 import uuid
+from collections.abc import AsyncIterator
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, Path, Response, UploadFile
+from fastapi import APIRouter, Depends, File, Path, Request, Response, UploadFile
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.router import current_user
-from app.core.database import get_session
+from app.core.database import get_session, get_sessionmaker
 from app.core.env_loader import Settings, get_settings
+from app.core.errors import ApiError
 from app.documents.service import DocumentService, DocumentView
 from app.documents.storage import FileStorage
+from app.ingestion.events import document_event_stream, format_sse, read_snapshot
 from app.ingestion.scheduler import JobScheduler, get_job_scheduler
 from app.models import User
 
 router = APIRouter(tags=["documents"])
+
+# How often the progress stream looks for changes.
+EVENT_POLL_SECONDS = 0.5
 
 DocumentId = Annotated[uuid.UUID, Path(alias="id")]
 
@@ -142,3 +149,37 @@ async def retry_document(
     service: DocumentService = Depends(get_document_service),
 ) -> DocumentDetailResponse:
     return _detail(await service.retry(user, document_id))
+
+
+@router.get("/documents/{id}/events")
+async def document_events(
+    document_id: DocumentId,
+    request: Request,
+    user: User = Depends(current_user),
+    db: AsyncSession = Depends(get_session),
+) -> StreamingResponse:
+    """Processing progress as server-sent events; ends with `done`."""
+    sessions = get_sessionmaker()
+    owner_id = user.id
+    if await read_snapshot(sessions, owner_id, document_id) is None:
+        # Same answer whether it does not exist or belongs to someone else.
+        raise ApiError(404, "DOCUMENT_NOT_FOUND", "Document not found.")
+    # The stream can stay open for a long time and reads through short sessions
+    # of its own, so the request's database connection is released now.
+    await db.close()
+
+    async def body() -> AsyncIterator[str]:
+        events = document_event_stream(
+            lambda: read_snapshot(sessions, owner_id, document_id),
+            interval=EVENT_POLL_SECONDS,
+            is_disconnected=request.is_disconnected,
+        )
+        async for event in events:
+            yield format_sse(event)
+
+    return StreamingResponse(
+        body(),
+        media_type="text/event-stream",
+        # Tell proxies not to hold events back.
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
