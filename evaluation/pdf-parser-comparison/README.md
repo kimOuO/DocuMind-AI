@@ -5,7 +5,7 @@
 - 實驗日期：2026-11-05
 - 受測文件：`sample-documents/2410.05779v3.pdf`（LightRAG 論文，16 頁，單欄）
 - 補充文件：arXiv:1810.04805v2（BERT 論文，16 頁，雙欄），只用來測雙欄的閱讀順序，不放進專案
-- 完整數據：[`results.md`](results.md)、`results.json`、`results_reading_order.json`
+- 完整數據：每個比較對象一個檔，`<套件>/<設定>.json`（`pymupdf/default.json`、`pymupdf/sorted.json`、`pypdf/default.json`、`pypdf/layout.json`、`pdfplumber/default.json`、`pdfplumber/x-tolerance-1.json`）。檔內先是 `config`（套件、版本、呼叫方式、授權、相依），再是單欄論文與雙欄論文的結果
 
 ## 為什麼做這個實驗
 
@@ -13,7 +13,7 @@
 
 ## 方法
 
-**標準答案與受測的解析器無關。** 取自 arXiv 提供的同一版論文的 LaTeX 原始檔，由 `build_ground_truth.py` 產生 `ground_truth.json`：
+**標準答案與受測的解析器無關。** 取自 arXiv 提供的同一版論文的 LaTeX 原始檔，由 `../ground-truth/build_paper_structure.py` 產生 `../ground-truth/paper-structure.json`：
 
 | 項目 | 內容 | 數量 |
 |---|---|---|
@@ -21,7 +21,16 @@
 | 標題 | 章與節的標題，依文件順序，含編號 | 22 個 |
 | 段落錨點 | 每個內文段落取一段連續 8 個單字，依文件順序 | 70 個 |
 
-**每個套件測兩種設定**：預設呼叫，以及一個合理的調整（見 `results.md` 的「受測設定」）。
+**每個套件測兩種設定**：預設呼叫，以及一個合理的調整：
+
+| 設定 | 呼叫方式 |
+|---|---|
+| `pymupdf/default` | `page.get_text()` |
+| `pymupdf/sorted` | `page.get_text(sort=True)` |
+| `pypdf/default` | `page.extract_text()` |
+| `pypdf/layout` | `page.extract_text(extraction_mode="layout")` |
+| `pdfplumber/default` | `page.extract_text()` |
+| `pdfplumber/x-tolerance-1` | `page.extract_text(x_tolerance=1)` |
 
 **檢查項目**
 
@@ -43,12 +52,12 @@
 
 | 設定 | 段落找得到 | 單字完整 | 順序錯置 | 標題文字完整 | Table 2 數值位置正確 | Table 2 整列在同一行 | 時間（毫秒） |
 |---|---|---|---|---|---|---|---|
-| pymupdf-default | 70/70 | 69/70 | 0 | 22/22 | 128/128 | 0/16 | 48 |
-| pymupdf-sorted | 69/70 | 68/70 | 0 | 22/22 | 128/128 | 16/16 | 398 |
-| **pypdf-default** | **70/70** | **69/70** | **0** | **0/22** | **128/128** | **16/16** | **488** |
-| pypdf-layout | 68/70 | 67/70 | 0 | 21/22 | 61/128 | 7/16 | 477 |
-| pdfplumber-default | 69/70 | 11/70 | 0 | 7/22 | 128/128 | 16/16 | 1722 |
-| pdfplumber-xtol1 | 69/70 | 68/70 | 0 | 22/22 | 128/128 | 16/16 | 1785 |
+| pymupdf/default | 70/70 | 69/70 | 0 | 22/22 | 128/128 | 0/16 | 48 |
+| pymupdf/sorted | 69/70 | 68/70 | 0 | 22/22 | 128/128 | 16/16 | 398 |
+| **pypdf/default** | **70/70** | **69/70** | **0** | **0/22** | **128/128** | **16/16** | **488** |
+| pypdf/layout | 68/70 | 67/70 | 0 | 21/22 | 61/128 | 7/16 | 477 |
+| pdfplumber/default | 69/70 | 11/70 | 0 | 7/22 | 128/128 | 16/16 | 1722 |
+| pdfplumber/x-tolerance-1 | 69/70 | 68/70 | 0 | 22/22 | 128/128 | 16/16 | 1785 |
 
 - **頁碼**：六種設定都是 16 頁，22 個標題在所有設定中都落在同一頁。第 1 頁頁尾的比對不符，是因為頁面側邊的 arXiv 浮水印被排在頁碼之後，不是頁碼錯誤。
 - **所有設定都少 1 個「單字完整」**：`LightRAGfurther gathers…`。PDF 本身就少一個空白（LaTeX 巨集吃掉了空白），不是解析器的錯誤。
@@ -58,12 +67,12 @@
 
 | 設定 | 段落找得到 | 單字完整 | 順序錯置 |
 |---|---|---|---|
-| pymupdf-default | 66/66 | 66/66 | 2 |
-| pymupdf-sorted | 17/66 | 15/66 | 4 |
-| **pypdf-default** | **66/66** | **66/66** | **2** |
-| pypdf-layout | 13/66 | 11/66 | 3 |
-| pdfplumber-default | 16/66 | 6/66 | 4 |
-| pdfplumber-xtol1 | 16/66 | 13/66 | 4 |
+| pymupdf/default | 66/66 | 66/66 | 2 |
+| pymupdf/sorted | 17/66 | 15/66 | 4 |
+| **pypdf/default** | **66/66** | **66/66** | **2** |
+| pypdf/layout | 13/66 | 11/66 | 3 |
+| pdfplumber/default | 16/66 | 6/66 | 4 |
+| pdfplumber/x-tolerance-1 | 16/66 | 13/66 | 4 |
 
 - PyMuPDF 與 pypdf 的預設模式依 PDF 內部的內容順序輸出，雙欄讀得正確。兩者錯置的是同樣的 2 個段落（都在第 5 頁）；原因沒有進一步查證。
 - pdfplumber 與兩個「依位置排序」的模式是由上到下、由左到右逐行輸出，會把左右兩欄的同一行接在一起，段落因此被打散。
@@ -119,13 +128,16 @@
 # 三個套件裝到獨立的目錄，不裝進專案的 venv
 .venv/bin/pip install --target /tmp/pdf-libs -r evaluation/pdf-parser-comparison/requirements.txt
 
-# 標準答案（已附在 ground_truth.json；要重新產生時才需要 LaTeX 原始檔）
-curl -L -o /tmp/lightrag-src.tar.gz https://arxiv.org/e-print/2410.05779v3
-mkdir -p /tmp/lightrag-src && tar -xzf /tmp/lightrag-src.tar.gz -C /tmp/lightrag-src --wildcards '*.tex'
-.venv/bin/python evaluation/pdf-parser-comparison/build_ground_truth.py /tmp/lightrag-src
+# 標準答案已附在 ../ground-truth/paper-structure.json；重新產生的方式見 ../ground-truth/README.md
 
-# 比較
+# 比較（只有單欄論文）
 .venv/bin/python evaluation/pdf-parser-comparison/compare_parsers.py sample-documents/2410.05779v3.pdf --libs /tmp/pdf-libs
-```
 
-雙欄的補充測試用 `check_reading_order.py`，需要另外下載該論文的 PDF 與 LaTeX 原始檔，用法見腳本開頭。
+# 加上雙欄論文的閱讀順序檢查：另外下載該論文的 PDF 與 LaTeX 原始檔，依 main.tex 的 \\input 順序列出內文的 .tex
+curl -L -o /tmp/bert.pdf https://arxiv.org/pdf/1810.04805v2
+curl -L -o /tmp/bert-src.tar.gz https://arxiv.org/e-print/1810.04805v2
+mkdir -p /tmp/bert-src && tar -xzf /tmp/bert-src.tar.gz -C /tmp/bert-src --wildcards '*.tex'
+.venv/bin/python evaluation/pdf-parser-comparison/compare_parsers.py sample-documents/2410.05779v3.pdf --libs /tmp/pdf-libs \\
+  --two-column-pdf /tmp/bert.pdf \\
+  --two-column-tex /tmp/bert-src/intro.tex /tmp/bert-src/related.tex /tmp/bert-src/bert.tex /tmp/bert-src/experiment.tex /tmp/bert-src/ablation.tex /tmp/bert-src/conclusion.tex
+```

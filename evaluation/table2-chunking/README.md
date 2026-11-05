@@ -1,14 +1,36 @@
-# Table 2 的切塊基準
+# 切塊方法對 Table 2 的影響
 
-題目的第三題（`Performance of ablated versions of LightRAG`）要從論文的 Table 2 回答。固定長度切塊會把這張表切開。這裡記錄目前的切塊結果，作為 P3 處理驗收條件 AC-14 時的比較基準。
+題目的第三題（`Performance of ablated versions of LightRAG`）要從論文的 Table 2 回答。固定長度切塊會把這張表切開。這個實驗量測每一種切塊方法把 Table 2 的 16 列切成什麼樣，作為 P3 處理驗收條件 AC-14 時的比較依據。
+
+## 量測什麼
+
+統一的量測程式 `measure_table2_rows.py` 對每一種方法算三個數字（Table 2 共 16 列）：
+
+| 量測 | 意義 |
+|---|---|
+| 整列完整出現在至少一個切塊 | 數字沒有被切斷 |
+| 整列與它的區塊標題同塊 | 看得出這一列屬於 LightRAG、-High、-Low 還是 -Origin |
+| 整列與資料集標題同塊 | 看得出每一欄是 Agriculture、CS、Legal 還是 Mix |
+
+三個都是 16/16 才算這個方法對 Table 2 沒有破壞。
+
+## 方法與結果
+
+每種方法一個結果檔 `<方法>.table2-rows.json`，檔內先是 `method`（說明與參數），再是 `measurements` 與該頁的切塊全文。
+
+| 方法 | 檔案 | 整列完整 | 與區塊標題同塊 | 與資料集標題同塊 | 狀態 |
+|---|---|---|---|---|---|
+| 固定長度 400 tokens、重疊 80、逐頁（P2 的實作） | `fixed-size-400-80.table2-rows.json` | 16/16 | 14/16 | 6/16 | 目前的基準 |
+| 檢索到的切塊連同前後相鄰的切塊一起交給 LLM | 待 P3 | | | | 規格第 5 節的候選做法 1 |
+| 表格區域不切開、獨立成一塊 | 待 P3 | | | | 候選做法 2 |
+| 表格另存逐列改寫的文字 | 待 P3 | | | | 候選做法 3 |
 
 - 記錄日期：2026-11-05
 - 設定：每塊 400 tokens、重疊 80、逐頁不跨頁；PDF 以 pypdf 解析
-- 完整的切塊文字：`page_chunks.json`
-- 標準答案（128 格）：`../pdf-parser-comparison/ground_truth.json`
-- 重新產生：`python evaluation/table2-chunking/dump_table2_chunks.py`
+- 標準答案（128 格）：`../ground-truth/paper-structure.json`
+- 重新產生目前方法的結果：`.venv/bin/python evaluation/table2-chunking/measure_table2_rows.py`（讀 `.env` 的 `CHUNK_SIZE`、`CHUNK_OVERLAP`）
 
-## 目前的結果
+## 目前基準的細節
 
 論文切成 48 塊。Table 2 在第 8 頁，這一頁有 5 塊，表格落在前 3 塊：
 
@@ -36,4 +58,4 @@
 
 ## 之後怎麼用
 
-P2-C 不因此修改切塊方式。P3 的 AC-14 必須通過，不延後到 P4；規格列出的候選做法由小到大是：連同相鄰切塊一起交給 LLM、表格區域不切開、表格另存逐列改寫的文字。採用哪一個做法後，重跑這支腳本，上面三個數字應該改善到 16/16。
+P2-C 不因此修改切塊方式。P3 的 AC-14 必須通過，不延後到 P4。P3 每試一種做法就產生一個結果檔，填進上面的表；採用的做法三個數字都應該是 16/16。

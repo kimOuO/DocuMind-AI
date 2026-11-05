@@ -1,0 +1,557 @@
+{
+ "status": "draft, awaiting the user's confirmation (2026-11-05)",
+ "document": "sample-documents/2410.05779v3.pdf",
+ "table2_ground_truth": "evaluation/ground-truth/paper-structure.json",
+ "common_rules": [
+  "Every number in the answer must appear in the text of a cited page (AC-26).",
+  "Every claim carries a source index whose page really contains the claim (AC-05).",
+  "The answer is in the language of the question; Chinese questions are answered in Traditional Chinese."
+ ],
+ "questions": [
+  {
+   "id": "Q1",
+   "question": "summary this document.",
+   "type": "summary",
+   "acceptance": "AC-12",
+   "required_min": "all",
+   "required": [
+    {
+     "id": "S1",
+     "fact": "Problem: existing RAG relies on flat data representations and lacks contextual awareness, giving fragmented answers",
+     "pages": [
+      1
+     ],
+     "evidence": "existing RAG systems have significant limitations, including reliance on flat data representations and inadequate contextual awareness",
+     "keywords_any": [
+      "flat",
+      "fragmented",
+      "inter-dependenc",
+      "平面",
+      "片段",
+      "相互依賴",
+      "上下文"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S2",
+     "fact": "Method: LightRAG incorporates graph structures into text indexing and retrieval",
+     "pages": [
+      1
+     ],
+     "evidence": "we propose LightRAG, which incorporates graph structures into text indexing and retrieval processes",
+     "keywords_any": [
+      "graph",
+      "圖"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S3",
+     "fact": "Core: dual-level retrieval, low-level (entities, relations) and high-level (topics, themes)",
+     "pages": [
+      1,
+      2
+     ],
+     "evidence": "a dual-level retrieval system",
+     "keywords_any": [
+      "dual-level",
+      "low-level",
+      "high-level",
+      "雙層",
+      "低層",
+      "高層",
+      "雙級"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S4",
+     "fact": "Incremental update without rebuilding the whole index",
+     "pages": [
+      1,
+      2
+     ],
+     "evidence": "an incremental update algorithm that ensures the timely integration of new data",
+     "keywords_any": [
+      "incremental",
+      "增量",
+      "更新"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S5",
+     "fact": "Result: improvements in retrieval accuracy and efficiency over existing approaches",
+     "pages": [
+      1,
+      7
+     ],
+     "evidence": "Extensive experimental validation demonstrates considerable improvements in retrieval accuracy and efficiency",
+     "keywords_any": [
+      "outperform",
+      "improve",
+      "優於",
+      "提升",
+      "勝",
+      "改善"
+     ],
+     "numbers": []
+    }
+   ],
+   "bonus": [
+    {
+     "id": "S6",
+     "fact": "Graph structures combined with vector representations",
+     "pages": [
+      1
+     ],
+     "evidence": "the integration of graph structures with vector representations",
+     "keywords_any": [
+      "vector",
+      "向量"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S7",
+     "fact": "Four datasets (Agriculture, CS, Legal, Mix) and four dimensions (Comprehensiveness, Diversity, Empowerment, Overall)",
+     "pages": [
+      6,
+      7
+     ],
+     "evidence": "Table 1",
+     "keywords_any": [
+      "Agriculture",
+      "Comprehensiveness",
+      "Diversity",
+      "Empowerment"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S8",
+     "fact": "Retrieval cost: LightRAG under 100 tokens and 1 API call vs GraphRAG about 610,000 tokens",
+     "pages": [
+      9
+     ],
+     "evidence": "using fewer than 100 tokens for keyword generation and retrieval, requiring only a single API call",
+     "keywords_any": [
+      "100",
+      "610"
+     ],
+     "numbers": [
+      "100",
+      "610,000",
+      "610"
+     ]
+    },
+    {
+     "id": "S9",
+     "fact": "Open source at https://github.com/HKUDS/LightRAG",
+     "pages": [
+      1
+     ],
+     "evidence": "We have made our LightRAG open-source",
+     "keywords_any": [
+      "github",
+      "open-source",
+      "開源"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "S10",
+     "fact": "Three challenges: comprehensive retrieval, retrieval efficiency, rapid adaptation to new data",
+     "pages": [
+      2
+     ],
+     "evidence": "three key challenges",
+     "keywords_any": [
+      "challenge",
+      "挑戰"
+     ],
+     "numbers": []
+    }
+   ],
+   "must_not": [
+    {
+     "id": "S-X1",
+     "text": "Attributing cited works (R-Eval, GraphRAG, RQ-RAG, HyDE) to this paper",
+     "check": "manual; flag 'R-Eval'/'R-eval' described as proposed by the paper"
+    },
+    {
+     "id": "S-X2",
+     "text": "Covering only the first or only the second half of the paper",
+     "check": "manual"
+    },
+    {
+     "id": "S-X3",
+     "text": "Numbers or conclusions not in the paper",
+     "check": "numbers verified against cited pages"
+    }
+   ]
+  },
+  {
+   "id": "Q2",
+   "question": "compare lightRAG with GraphRAG",
+   "type": "retrieval",
+   "acceptance": "AC-13",
+   "required_min": 2,
+   "required": [
+    {
+     "id": "C1",
+     "fact": "Both graph-based; LightRAG outperforms GraphRAG, especially on the larger Agriculture, CS and Legal datasets",
+     "pages": [
+      7
+     ],
+     "evidence": "LightRAG consistently outperforms GraphRAG, particularly in larger datasets with complex language contexts",
+     "keywords_any": [
+      "outperform",
+      "larger",
+      "優於",
+      "勝過",
+      "較大",
+      "大型"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "C2",
+     "fact": "LightRAG's clearest advantage is Diversity, attributed to dual-level retrieval",
+     "pages": [
+      7
+     ],
+     "evidence": "LightRAG demonstrates a significant advantage in the Diversity metric",
+     "keywords_any": [
+      "Diversity",
+      "多樣"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "C3",
+     "fact": "Retrieval cost: GraphRAG 1,399 communities, 610 level-2 used, ~1,000 tokens each, ~610,000 tokens, hundreds of API calls; LightRAG under 100 tokens, one API call",
+     "pages": [
+      9
+     ],
+     "evidence": "total token consumption of 610,000 tokens",
+     "keywords_any": [
+      "610",
+      "100",
+      "API"
+     ],
+     "numbers": [
+      "610,000",
+      "610",
+      "1,399",
+      "1,000",
+      "100"
+     ]
+    },
+    {
+     "id": "C4",
+     "fact": "Incremental update: GraphRAG dismantles and regenerates communities, about 1,399 x 2 x 5,000 tokens; LightRAG integrates new entities and relations without full reconstruction",
+     "pages": [
+      10
+     ],
+     "evidence": "GraphRAG must dismantle its existing community structure",
+     "keywords_any": [
+      "incremental",
+      "update",
+      "rebuild",
+      "reconstruct",
+      "增量",
+      "更新",
+      "重建"
+     ],
+     "numbers": [
+      "1,399",
+      "5,000"
+     ]
+    },
+    {
+     "id": "C5",
+     "fact": "Mechanism: GraphRAG traverses community reports (brute-force); LightRAG uses dual-level retrieval over graph and vector representations",
+     "pages": [
+      6,
+      10
+     ],
+     "evidence": "existing methods often rely on brute-force searches for each generated community",
+     "keywords_any": [
+      "communit",
+      "brute",
+      "dual-level",
+      "社群",
+      "雙層"
+     ],
+     "numbers": []
+    }
+   ],
+   "bonus": [
+    {
+     "id": "C6",
+     "fact": "Table 1 Overall win rates GraphRAG vs LightRAG: Agriculture 45.2/54.8, CS 48.0/52.0, Legal 47.2/52.8, Mix 50.4/49.6",
+     "pages": [
+      7
+     ],
+     "evidence": "Table 1",
+     "keywords_any": [
+      "45.2",
+      "54.8"
+     ],
+     "numbers": [
+      "45.2%",
+      "54.8%",
+      "48.0%",
+      "52.0%",
+      "47.2%",
+      "52.8%",
+      "50.4%",
+      "49.6%"
+     ]
+    },
+    {
+     "id": "C7",
+     "fact": "Exception: on Mix, GraphRAG slightly wins Comprehensiveness, Empowerment and Overall",
+     "pages": [
+      7
+     ],
+     "evidence": "Table 1",
+     "keywords_any": [
+      "Mix"
+     ],
+     "numbers": [
+      "50.4%",
+      "49.6%",
+      "50.8%",
+      "49.2%"
+     ]
+    },
+    {
+     "id": "C8",
+     "fact": "Case study (Table 3): the LLM judge prefers LightRAG on all four dimensions",
+     "pages": [
+      8,
+      9
+     ],
+     "evidence": "LightRAG outperforms in all evaluation dimensions assessed by the LLM judge",
+     "keywords_any": [
+      "case",
+      "judge",
+      "案例",
+      "評審"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "C9",
+     "fact": "Similar extraction overhead for both during incremental updates",
+     "pages": [
+      10
+     ],
+     "evidence": "both models exhibit similar overhead for entity and relationship extraction",
+     "keywords_any": [
+      "similar overhead",
+      "相近",
+      "相似"
+     ],
+     "numbers": []
+    }
+   ],
+   "must_not": [
+    {
+     "id": "C-X1",
+     "text": "Claiming LightRAG wins on every dataset and dimension (Mix is an exception)",
+     "check": "manual"
+    },
+    {
+     "id": "C-X2",
+     "text": "Using NaiveRAG, RQ-RAG or HyDE numbers as GraphRAG's",
+     "check": "numbers verified against Table 1 block"
+    },
+    {
+     "id": "C-X3",
+     "text": "Comparisons the paper does not make",
+     "check": "manual"
+    }
+   ]
+  },
+  {
+   "id": "Q3",
+   "question": "Performance of ablated versions of LightRAG",
+   "type": "retrieval",
+   "acceptance": "AC-14",
+   "required_min": "all",
+   "required": [
+    {
+     "id": "A1",
+     "fact": "-High removes high-level retrieval (low-level only); -Low removes low-level (high-level only); -Origin removes original text from retrieval",
+     "pages": [
+      8
+     ],
+     "evidence": "The -High variant removes high-order retrieval",
+     "keywords_any": [
+      "-High",
+      "-Low",
+      "-Origin"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A2",
+     "fact": "-High: significant decline across nearly all datasets and metrics; too focused on entities and immediate neighbours",
+     "pages": [
+      8
+     ],
+     "evidence": "leading to a significant performance decline across nearly all datasets and metrics",
+     "keywords_any": [
+      "decline",
+      "drop",
+      "下降",
+      "降低"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A3",
+     "fact": "-Low: advantage in comprehensiveness, less depth on specific entities",
+     "pages": [
+      8
+     ],
+     "evidence": "offers a significant advantage in comprehensiveness",
+     "keywords_any": [
+      "comprehensive",
+      "depth",
+      "全面",
+      "深度"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A4",
+     "fact": "-Origin: no significant decline; improvements on Agriculture and Mix; graph indexing already captured key information, original text adds noise",
+     "pages": [
+      8
+     ],
+     "evidence": "does not exhibit significant performance declines across all four datasets",
+     "keywords_any": [
+      "Agriculture",
+      "Mix",
+      "noise",
+      "雜訊",
+      "提升",
+      "improve"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A5",
+     "fact": "Full (hybrid) LightRAG combines both levels: breadth and depth, balanced performance",
+     "pages": [
+      8
+     ],
+     "evidence": "The hybrid mode, or the full version of LightRAG",
+     "keywords_any": [
+      "hybrid",
+      "full",
+      "balanced",
+      "完整",
+      "混合",
+      "平衡"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A6",
+     "fact": "At least one set of per-variant numbers, each exactly matching its Table 2 cell",
+     "pages": [
+      8
+     ],
+     "evidence": "Table 2",
+     "keywords_any": [],
+     "numbers": [
+      "%"
+     ]
+    }
+   ],
+   "overall_row": {
+    "Agriculture": {
+     "LightRAG": "67.6%",
+     "-High": "64.8%",
+     "-Low": "65.2%",
+     "-Origin": "74.4%"
+    },
+    "CS": {
+     "LightRAG": "61.2%",
+     "-High": "56.0%",
+     "-Low": "56.4%",
+     "-Origin": "60.8%"
+    },
+    "Legal": {
+     "LightRAG": "84.8%",
+     "-High": "78.0%",
+     "-Low": "81.2%",
+     "-Origin": "84.4%"
+    },
+    "Mix": {
+     "LightRAG": "60.0%",
+     "-High": "57.6%",
+     "-Low": "64.8%",
+     "-Origin": "55.6%"
+    }
+   },
+   "bonus": [
+    {
+     "id": "A7",
+     "fact": "Table 2 reports win rates against NaiveRAG over four datasets and four dimensions",
+     "pages": [
+      8
+     ],
+     "evidence": "using NaiveRAG as reference",
+     "keywords_any": [
+      "NaiveRAG"
+     ],
+     "numbers": []
+    },
+    {
+     "id": "A8",
+     "fact": "Numbers from the other rows also match Table 2",
+     "pages": [
+      8
+     ],
+     "evidence": "paper-structure.json",
+     "keywords_any": [],
+     "numbers": []
+    }
+   ],
+   "must_not": [
+    {
+     "id": "A-X1",
+     "text": "A number assigned to the wrong dataset, metric or variant",
+     "check": "every cited number must match the Table 2 cell for the stated dataset/metric/variant"
+    },
+    {
+     "id": "A-X2",
+     "text": "Trends only, without any number",
+     "check": "at least one percentage present"
+    },
+    {
+     "id": "A-X3",
+     "text": "Numbers that are not in Table 2",
+     "check": "every percentage must be a Table 2 value"
+    },
+    {
+     "id": "A-X4",
+     "text": "Cost numbers from page 9 (610,000; 1,399; 5,000) presented as ablation results",
+     "check": "flag those numbers in a Q3 answer"
+    },
+    {
+     "id": "A-X5",
+     "text": "Only full LightRAG vs NaiveRAG, without the three ablated variants",
+     "check": "each of -High, -Low, -Origin must be discussed"
+    }
+   ]
+  }
+ ]
+}

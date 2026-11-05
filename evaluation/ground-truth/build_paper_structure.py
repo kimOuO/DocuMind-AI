@@ -1,13 +1,14 @@
-"""Build the ground truth for the PDF parser comparison from the paper's LaTeX source.
+"""Build the structural ground truth of the paper from its LaTeX source.
 
-The ground truth must not depend on any of the PDF parsers under test, so it is
-derived from the LaTeX source that arXiv publishes for the same version of the
-paper (https://arxiv.org/e-print/2410.05779v3).
+The ground truth must not depend on any PDF parser, so it is derived from the
+LaTeX source that arXiv publishes for the same version of the paper
+(https://arxiv.org/e-print/2410.05779v3). It is shared by the experiments under
+evaluation/ and by the heading tests of P3 (AC-53).
 
 Usage:
-    python build_ground_truth.py <directory containing the extracted .tex files>
+    python build_paper_structure.py <directory containing the extracted .tex files>
 
-Writes ground_truth.json next to this script, containing:
+Writes paper-structure.json next to this script, containing:
   - table2:   every cell of Table 2 (block, metric, dataset, system, value)
   - headings: section and subsection titles in document order
   - anchors:  one short phrase per body paragraph, in document order
@@ -145,7 +146,7 @@ def main() -> None:
         "headings": read_headings(tex_dir),
         "anchors": read_anchors(tex_dir),
     }
-    out = Path(__file__).with_name("ground_truth.json")
+    out = Path(__file__).with_name("paper-structure.json")
     out.write_text(
         json.dumps(truth, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
     )

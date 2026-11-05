@@ -1,13 +1,14 @@
-"""Record how the current chunking splits Table 2 of the LightRAG paper.
+"""Measure how a chunking method splits Table 2 of the LightRAG paper.
 
 Table 2 is what the third required question ("Performance of ablated versions
 of LightRAG") must be answered from. Fixed-size chunking cuts it into several
-chunks; this script saves the chunks of that page and summarises, for every
-table row, whether a chunk holds the whole row together with the headers needed
-to read it. The output is the baseline for acceptance criterion AC-14 (P3).
+chunks; this script measures, for every table row, whether some chunk holds the whole
+row together with the headers needed to read it, and saves the chunks of that
+page. One output file per method, <method>.table2-rows.json, so that the
+methods tried for acceptance criterion AC-14 (P3) can be compared side by side.
 
 Usage (from the repository root, inside the project's virtual environment):
-    python evaluation/table2-chunking/dump_table2_chunks.py
+    python evaluation/table2-chunking/measure_table2_rows.py
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ from app.ingestion.parsing import parse_document
 from app.llm.tokenizer import Qwen3TokenCounter
 
 PAPER = ROOT / "sample-documents" / "2410.05779v3.pdf"
-TRUTH = ROOT / "evaluation" / "pdf-parser-comparison" / "ground_truth.json"
+TRUTH = ROOT / "evaluation" / "ground-truth" / "paper-structure.json"
 DATASET_HEADER = "Agriculture CS Legal Mix"
 
 
@@ -72,18 +73,38 @@ def main() -> None:
             }
         )
 
+    method = f"fixed-size-{settings.chunk_size}-{settings.chunk_overlap}"
     result = {
-        "chunk_size": settings.chunk_size,
-        "chunk_overlap": settings.chunk_overlap,
-        "total_chunks": len(chunks),
-        "table_page": table_page,
+        "method": {
+            "name": method,
+            "description": "Fixed-size chunks measured in tokens, page by page, "
+            "consecutive chunks overlapping.",
+            "chunk_size_tokens": settings.chunk_size,
+            "overlap_tokens": settings.chunk_overlap,
+            "pdf_parser": "pypdf default",
+            "implementation": "app/ingestion/chunking.py",
+        },
+        "measurements": {
+            "total_chunks": len(chunks),
+            "table_page": table_page,
+            "rows_total": len(summary),
+            "rows_whole_in_some_chunk": sum(
+                bool(r["chunks_with_whole_row"]) for r in summary
+            ),
+            "rows_with_block_header": sum(
+                bool(r["with_block_header"]) for r in summary
+            ),
+            "rows_with_dataset_header": sum(
+                bool(r["with_dataset_header"]) for r in summary
+            ),
+            "rows": summary,
+        },
         "page_chunks": [
             {"ordinal": c.ordinal, "token_count": c.token_count, "text": c.text}
             for c in page_chunks
         ],
-        "rows": summary,
     }
-    (HERE / "page_chunks.json").write_text(
+    (HERE / f"{method}.table2-rows.json").write_text(
         json.dumps(result, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 

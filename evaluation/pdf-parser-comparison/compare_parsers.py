@@ -3,10 +3,13 @@
 Only the parsing layer is compared: no chunking, no embedding, no LLM.
 
 Usage:
-    python compare_parsers.py <pdf> [--libs <directory the three libraries are installed in>]
+    python compare_parsers.py <pdf> [--libs <dir>]
+        [--two-column-pdf <pdf> --two-column-tex <file.tex> ...]
 
-Reads ground_truth.json (see build_ground_truth.py) and writes results.json and
-results.md next to this script.
+Reads ../ground-truth/paper-structure.json. Writes one file per configuration,
+<library>/<variant>.json, holding the configuration and all its results. The
+optional two-column paper (with its LaTeX body files, in order) adds a
+reading-order check that the single-column paper cannot provide.
 """
 
 from __future__ import annotations
@@ -24,6 +27,7 @@ from importlib import metadata
 from pathlib import Path
 
 HERE = Path(__file__).parent
+GROUND_TRUTH = HERE.parent / "ground-truth"
 TIMING_RUNS = 5
 LIGATURES = "ﬀﬁﬂﬃﬄﬅﬆ"
 
@@ -74,18 +78,26 @@ def pdfplumber_tight(pdf: str) -> list[str]:
         return [page.extract_text(x_tolerance=1) or "" for page in doc.pages]
 
 
-CONFIGS: dict[str, tuple[str, str, Callable[[str], list[str]]]] = {
-    "pymupdf-default": ("pymupdf", "page.get_text()", pymupdf_default),
-    "pymupdf-sorted": ("pymupdf", "page.get_text(sort=True)", pymupdf_sorted),
-    "pypdf-default": ("pypdf", "page.extract_text()", pypdf_default),
-    "pypdf-layout": (
+CONFIGS: dict[str, tuple[str, str, str, Callable[[str], list[str]]]] = {
+    # key: (library, variant, how the text is extracted, extractor)
+    "pymupdf/default": ("pymupdf", "default", "page.get_text()", pymupdf_default),
+    "pymupdf/sorted": ("pymupdf", "sorted", "page.get_text(sort=True)", pymupdf_sorted),
+    "pypdf/default": ("pypdf", "default", "page.extract_text()", pypdf_default),
+    "pypdf/layout": (
         "pypdf",
+        "layout",
         'page.extract_text(extraction_mode="layout")',
         pypdf_layout,
     ),
-    "pdfplumber-default": ("pdfplumber", "page.extract_text()", pdfplumber_default),
-    "pdfplumber-xtol1": (
+    "pdfplumber/default": (
         "pdfplumber",
+        "default",
+        "page.extract_text()",
+        pdfplumber_default,
+    ),
+    "pdfplumber/x-tolerance-1": (
+        "pdfplumber",
+        "x-tolerance-1",
         "page.extract_text(x_tolerance=1)",
         pdfplumber_tight,
     ),
@@ -466,243 +478,65 @@ def summarise(name: str, result: dict) -> dict:
     }
 
 
-def render_markdown(report: dict) -> str:
-    configs = report["configs"]
-    names = list(configs)
-    lines = [
-        "# PDF 解析器比較：實驗結果",
-        "",
-        f"由 `compare_parsers.py` 產生。文件：`{report['pdf']}`（{report['page_count']} 頁）。",
-        "標準答案來自論文的 LaTeX 原始檔，與受測的解析器無關。",
-        "",
-        "## 受測設定",
-        "",
-        "| 設定 | 呼叫方式 | 套件版本 |",
-        "|---|---|---|",
+def reading_order_summary(rows: list[dict], in_document: list[bool]) -> dict:
+    usable = [row for row, present in zip(rows, in_document) if present]
+    found = [row for row in usable if row["position"] >= 0]
+    unique = [row["position"] for row in found if row["occurrences"] == 1]
+    return {
+        "anchors": len(usable),
+        "found": len(found),
+        "intact": sum(row["intact"] for row in usable),
+        "out_of_order": len(unique) - longest_increasing(unique),
+        "not_found": [row["phrase"] for row in usable if row["position"] < 0][:5],
+    }
+
+
+def mark_in_document(all_rows: dict[str, list[dict]]) -> list[bool]:
+    """An anchor no configuration finds is text that is not in the PDF body."""
+    count = len(next(iter(all_rows.values())))
+    present = [
+        any(rows[i]["position"] >= 0 for rows in all_rows.values())
+        for i in range(count)
     ]
-    for name in names:
-        library = configs[name]["library"]
-        lines.append(
-            f"| {name} | `{configs[name]['call']}` | {library} {report['packages'][library]['package']['version']} |"
-        )
-
-    def table(title: str, header: list[str], rows: list[list]) -> None:
-        lines.extend(
-            [
-                "",
-                f"## {title}",
-                "",
-                "| " + " | ".join(header) + " |",
-                "|" + "---|" * len(header),
-            ]
-        )
-        lines.extend(
-            "| " + " | ".join(str(cell) for cell in row) + " |" for row in rows
-        )
-
-    table(
-        "內文：段落是否完整、順序是否正確",
-        [
-            "設定",
-            "段落找得到",
-            "單字邊界完整",
-            "順序錯置",
-            "標題找得到",
-            "標題文字完整",
-        ],
-        [
-            [
-                n,
-                f"{s['anchors_found']}/{s['anchors_total']}",
-                f"{s['anchors_intact']}/{s['anchors_total']}",
-                s["anchors_out_of_order"],
-                f"{s['headings_found']}/{s['headings_total']}",
-                f"{s['headings_intact']}/{s['headings_total']}",
-            ]
-            for n in names
-            for s in [configs[n]["summary"]]
-        ],
-    )
-    table(
-        "Table 2：數值與列、欄的對應",
-        [
-            "設定",
-            "頁碼",
-            "數值出現在頁面上",
-            "數值在正確的列與欄位置",
-            "完整的列",
-            "整列在同一行",
-            "區塊標題正確",
-            "資料集標題正確",
-            "整張表順序完全正確",
-        ],
-        [
-            [
-                n,
-                t.get("page"),
-                f"{t.get('values_present_anywhere', 0)}/{t.get('total_cells', 128)}",
-                f"{t.get('cells_in_correct_position', 0)}/{t.get('total_cells', 128)}",
-                f"{t.get('rows_intact', 0)}/{t.get('total_rows', 16)}",
-                f"{t.get('rows_on_one_line', 0)}/{t.get('total_rows', 16)}",
-                f"{t.get('block_headers_correct', 0)}/4",
-                "是" if t.get("dataset_header_correct") else "否",
-                "是" if t.get("whole_sequence_correct") else "否",
-            ]
-            for n in names
-            for t in [configs[n]["table2"]]
-        ],
-    )
-    table(
-        "頁碼",
-        ["設定", "頁數", "頁尾印的頁碼與頁序相符", "不相符的頁"],
-        [
-            [
-                n,
-                p["page_count"],
-                f"{p['footer_matches']}/{p['page_count']}",
-                p["mismatched_pages"] or "無",
-            ]
-            for n in names
-            for p in [configs[n]["page_numbers"]]
-        ],
-    )
-    table(
-        "文字品質與解析時間",
-        [
-            "設定",
-            "字元數",
-            "無法解碼的字元",
-            "未展開的連字",
-            "(cid:) 佔位",
-            "超過 30 字元的字串",
-            "解析時間中位數（毫秒）",
-            "最短–最長",
-        ],
-        [
-            [
-                n,
-                q["characters"],
-                q["replacement_characters"],
-                q["ligature_characters"],
-                q["cid_placeholders"],
-                q["tokens_longer_than_30"],
-                t["median_ms"],
-                f"{t['min_ms']}–{t['max_ms']}",
-            ]
-            for n in names
-            for q, t in [(configs[n]["quality"], configs[n]["timing"])]
-        ],
-    )
-    table(
-        "表格偵測 API（補充）",
-        ["方法", "偵測到的表格數", "還原成「指標＋8 個數值」的列"],
-        [
-            [
-                name,
-                r.get("tables_found", "—"),
-                f"{r['rows_recovered']}/{r['total_rows']}"
-                if "rows_recovered" in r
-                else r.get("note") or r.get("error"),
-            ]
-            for name, r in report["table_apis"].items()
-        ],
-    )
-    table(
-        "授權與安裝大小",
-        ["套件", "版本", "授權", "連同相依的安裝大小（MB）", "相依套件（授權）"],
-        [
-            [
-                p["package"]["name"],
-                p["package"]["version"],
-                p["package"]["licence"],
-                p["total_size_mb"],
-                "；".join(
-                    f"{d['name']} {d['version']}（{d['licence']}）"
-                    for d in p["dependencies"]
-                )
-                or "無",
-            ]
-            for p in report["packages"].values()
-        ],
-    )
-
-    lines.extend(["", "## 各設定的細節", ""])
-    for name in names:
-        result = configs[name]
-        missing = [
-            r["phrase"]
-            for r in result["anchors"]["rows"]
-            if r["in_document"] and r["position"] < 0
-        ]
-        broken = [
-            r["phrase"]
-            for r in result["anchors"]["rows"]
-            if r["in_document"] and r["position"] >= 0 and not r["intact"]
-        ]
-        bad_headings = [
-            r["heading"] for r in result["headings"]["rows"] if not r["intact"]
-        ]
-        lines.append(f"### {name}")
-        lines.append("")
-        lines.append(
-            f"- 找不到的段落（{len(missing)}）："
-            + ("；".join(f"`{m}`" for m in missing[:5]) or "無")
-        )
-        lines.append(
-            f"- 單字邊界不完整的段落（{len(broken)}）："
-            + ("；".join(f"`{b}`" for b in broken[:5]) or "無")
-        )
-        lines.append(
-            f"- 文字不完整的標題（{len(bad_headings)}）："
-            + ("；".join(f"`{h}`" for h in bad_headings[:6]) or "無")
-        )
-        mismatch = result["table2"].get("first_mismatch")
-        if mismatch:
-            lines.append(
-                f"- Table 2 第一個不符的位置：第 {mismatch['index']} 個字串，預期 `{mismatch['expected']}`，實際 `{mismatch['found']}`"
-            )
-        examples = result["quality"]["longest_token_examples"]
-        if examples:
-            lines.append(
-                "- 過長字串的例子：" + "；".join(f"`{e[:60]}`" for e in examples)
-            )
-        lines.append("")
-
-    disagreements = report["heading_page_disagreements"]
-    lines.extend(["## 各設定之間的頁碼一致性", ""])
-    if disagreements:
-        lines.extend(f"- `{d['heading']}`：{d['pages']}" for d in disagreements)
-    else:
-        lines.append("每個找得到的標題，在所有設定中都落在同一頁。")
-    excluded = report["anchors_not_in_document"]
-    lines.extend(["", "## 排除的錨點", ""])
-    lines.append(
-        f"{len(excluded)} 個錨點在所有設定中都找不到，視為 LaTeX 原始檔中有、但未出現在 PDF 內文的文字，不列入計分："
-        + ("；".join(f"`{e}`" for e in excluded) or "無")
-    )
-    return "\n".join(lines) + "\n"
+    for rows in all_rows.values():
+        for row, in_document in zip(rows, present):
+            row["in_document"] = in_document
+    return present
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("pdf")
+    parser.add_argument("pdf", help="the single-column paper (LightRAG)")
     parser.add_argument(
-        "--libs",
-        help="directory the three libraries were installed into with pip --target",
+        "--libs", help="directory the three libraries were installed into"
+    )
+    parser.add_argument(
+        "--two-column-pdf", help="a two-column paper for the reading-order check"
+    )
+    parser.add_argument(
+        "--two-column-tex", nargs="*", default=[], help="its LaTeX body files, in order"
     )
     args = parser.parse_args()
     if args.libs:
         sys.path.insert(0, args.libs)
+    sys.path.insert(0, str(GROUND_TRUTH))
+    from build_paper_structure import anchors_from_files
 
-    truth = json.loads((HERE / "ground_truth.json").read_text(encoding="utf-8"))
+    truth = json.loads(
+        (GROUND_TRUTH / "paper-structure.json").read_text(encoding="utf-8")
+    )
     datasets = list(dict.fromkeys(cell["dataset"] for cell in truth["table2"]))
+    two_column_anchors = (
+        anchors_from_files([Path(f) for f in args.two_column_tex])
+        if args.two_column_pdf
+        else []
+    )
 
-    configs: dict[str, dict] = {}
-    for name, (library, call, extract) in CONFIGS.items():
+    single: dict[str, dict] = {}
+    two_column_rows: dict[str, list[dict]] = {}
+    for key, (library, variant, call, extract) in CONFIGS.items():
         pages = extract(args.pdf)
-        configs[name] = {
-            "library": library,
-            "call": call,
+        single[key] = {
             "anchors": check_anchors(pages, truth["anchors"]),
             "headings": check_headings(pages, truth["headings"]),
             "page_numbers": check_page_numbers(pages),
@@ -710,58 +544,78 @@ def main() -> None:
             "quality": check_quality(pages),
             "timing": time_extraction(extract, args.pdf),
         }
+        if args.two_column_pdf:
+            two_column_rows[key] = check_anchors(
+                extract(args.two_column_pdf), two_column_anchors
+            )["rows"]
 
-    # An anchor that no configuration can find is text that is in the LaTeX
-    # source but not in the PDF body; it says nothing about the parsers.
-    anchor_count = len(truth["anchors"])
-    in_document = [
-        any(configs[n]["anchors"]["rows"][i]["position"] >= 0 for n in configs)
-        for i in range(anchor_count)
-    ]
-    for result in configs.values():
-        for row, present in zip(result["anchors"]["rows"], in_document):
-            row["in_document"] = present
-    for name, result in configs.items():
-        result["summary"] = summarise(name, result)
-
-    disagreements = []
-    for index, heading in enumerate(configs[next(iter(configs))]["headings"]["rows"]):
-        pages_by_config = {
-            n: configs[n]["headings"]["rows"][index]["page"] for n in configs
-        }
-        if len({p for p in pages_by_config.values() if p is not None}) > 1:
-            disagreements.append(
-                {"heading": heading["heading"], "pages": pages_by_config}
-            )
-
-    table_page = configs["pymupdf-default"]["table2"].get("page") or 8
-    report = {
-        "pdf": Path(args.pdf).name,
-        "page_count": configs["pymupdf-default"]["page_numbers"]["page_count"],
-        "ground_truth_source": truth["source"],
-        "configs": configs,
-        "heading_page_disagreements": disagreements,
-        "anchors_not_in_document": [
-            a["phrase"]
-            for a, present in zip(truth["anchors"], in_document)
-            if not present
-        ],
-        "table_apis": check_table_apis(args.pdf, table_page, truth["table2"]),
-        "packages": {
-            library: describe_package(library)
-            for library in ("pymupdf", "pypdf", "pdfplumber")
-        },
+    mark_in_document({key: result["anchors"]["rows"] for key, result in single.items()})
+    two_column_present = mark_in_document(two_column_rows) if two_column_rows else []
+    table_page = single["pypdf/default"]["table2"].get("page") or 8
+    table_apis = check_table_apis(args.pdf, table_page, truth["table2"])
+    packages = {
+        library: describe_package(library)
+        for library in ("pymupdf", "pypdf", "pdfplumber")
     }
-    (HERE / "results.json").write_text(
-        json.dumps(report, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
+
+    print(
+        f"{'configuration':26} {'anchors':>9} {'intact':>7} {'order':>5} {'headings':>9} {'table2 cells':>13} {'rows/line':>9} {'ms':>6}  two-column"
     )
-    (HERE / "results.md").write_text(render_markdown(report), encoding="utf-8")
-    for name, result in configs.items():
+    for key, (library, variant, call, _) in CONFIGS.items():
+        result = single[key]
+        summary = summarise(key, result)
+        two_column = (
+            reading_order_summary(two_column_rows[key], two_column_present)
+            if two_column_rows
+            else None
+        )
+        report = {
+            "config": {
+                "library": library,
+                "variant": variant,
+                "call": call,
+                "package": packages[library]["package"],
+                "dependencies": packages[library]["dependencies"],
+                "total_size_mb": packages[library]["total_size_mb"],
+            },
+            "single_column_paper": {
+                "pdf": Path(args.pdf).name,
+                "page_count": result["page_numbers"]["page_count"],
+                "ground_truth": truth["source"],
+                "summary": summary,
+                **result,
+            },
+            "two_column_paper": (
+                {"pdf": Path(args.two_column_pdf).name, "summary": two_column}
+                if two_column is not None
+                else None
+            ),
+            # Table detection APIs belong to the library, so they are reported once, on its default variant.
+            "table_detection_api": (
+                {
+                    name: value
+                    for name, value in table_apis.items()
+                    if name.startswith(library)
+                }
+                if variant == "default"
+                else None
+            ),
+        }
+        out = HERE / library / f"{variant}.json"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(
+            json.dumps(report, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+        t2 = result["table2"]
+        two_text = (
+            f"{two_column['found']}/{two_column['anchors']} found, {two_column['out_of_order']} out of order"
+            if two_column
+            else "-"
+        )
         print(
-            name,
-            result["summary"],
-            {k: v for k, v in result["table2"].items() if k != "first_mismatch"},
-            result["timing"],
+            f"{key:26} {summary['anchors_found']:>3}/{summary['anchors_total']:<5} {summary['anchors_intact']:>7} {summary['anchors_out_of_order']:>5} "
+            f"{summary['headings_intact']:>4}/{summary['headings_total']:<4} {t2.get('cells_in_correct_position', 0):>7}/{t2.get('total_cells', 128):<5} "
+            f"{t2.get('rows_on_one_line', 0):>5}/16 {result['timing']['median_ms']:>6}  {two_text}"
         )
 
 

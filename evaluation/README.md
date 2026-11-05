@@ -1,14 +1,21 @@
-# evaluation — 檢索與回答品質的評測
+# evaluation — 實驗、標準答案與評測
 
-用一組標準問題量測系統回答得好不好，讓 chunk size、Top-K、是否用 Hybrid Search 等選擇有實驗數據依據。
+讓參數與選型的決定有實驗數據可引用（`CLAUDE.md`：參數類決定必須引用這裡的數據）。
 
-目前有：
+## 內容
 
-- `pdf-parser-comparison/`：PDF 解析套件的比較實驗（PyMuPDF、pypdf、pdfplumber），是選用 pypdf 的依據。
-- `table2-chunking/`：目前的切塊方式如何切開論文的 Table 2，是 AC-14（P3）的比較基準。
+| 資料夾 | 是什麼 | 結論／用途 | 依據 |
+|---|---|---|---|
+| `ground-truth/` | 共用的標準答案：論文的 Table 2（128 格）與 22 個章節標題；三個必答題的關鍵事實 | 所有實驗與 P3、P4 的驗收都對照它 | 取自論文的 LaTeX 原始檔；關鍵事實待使用者確認 |
+| `pdf-parser-comparison/` | 實驗：三個 PDF 解析套件、六種設定的抽取品質 | 採用 pypdf 預設模式 | ADR 0005、決策日誌 D54 |
+| `table2-chunking/` | 實驗：切塊方法對 Table 2 的影響 | 目前的固定長度切塊是 AC-14 的比較基準；P3 的新方法在這裡對照 | 決策日誌 D57 |
 
-P4 階段會加入：
+P4 會加入：題庫與評測腳本（`retrieval-parameters/`：chunk size × Top-K × Vector／Hybrid）。
 
-- 題庫：必答三題、細節事實題、表格數字題、跨文件題、無答案題。
-- 評測腳本與實驗設定。
-- 實驗報告：Recall@K、來源命中率、回答正確性、拒答率、10K 合規率。
+## 命名規則
+
+- **一個實驗一個資料夾**。資料夾內：`README.md`（方法、彙整表、結論）、一支統一的測試程式、`requirements.txt`（只有實驗用、不進專案的套件時）。
+- **每個比較對象一個結果檔**，檔名說出比較對象：同一個套件的不同設定放在以套件命名的子資料夾（`pypdf/default.json`、`pypdf/layout.json`）；同一種量測、不同方法的結果用 `<方法>.<量測內容>.json`（`fixed-size-400-80.table2-rows.json`）。
+- **結果檔自己說明自己**：第一段是設定（`config` 或 `method`：套件、版本、呼叫方式或參數），之後才是數據。
+- 結果檔都能由統一的測試程式重新產生；重現方式寫在各資料夾的 `README.md`。
+- 標準答案放 `ground-truth/`，不放在任何實驗底下。
