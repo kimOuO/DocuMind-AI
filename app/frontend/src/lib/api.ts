@@ -87,8 +87,53 @@ export const logout = () => request<void>('POST', '/auth/logout')
 
 export const listDocuments = () => request<DocumentItem[]>('GET', '/documents')
 export const deleteDocument = (id: string) => request<void>('DELETE', `/documents/${id}`)
+export const retryDocument = (id: string) =>
+  request<DocumentItem>('POST', `/documents/${id}/retry`)
 export function uploadDocument(file: File) {
   const form = new FormData()
   form.append('file', file)
   return request<DocumentItem>('POST', '/documents', form)
+}
+
+export interface DocumentProgress {
+  kind: string
+  stage: 'parsing' | 'chunking' | 'embedding' | 'summarizing' | null
+  current: number | null
+  total: number | null
+}
+
+export interface DocumentWatcher {
+  onStatus: (status: DocumentStatus) => void
+  onProgress: (progress: DocumentProgress) => void
+  /** Processing ended, or the stream could not continue. Time to reload the list. */
+  onDone: () => void
+}
+
+/**
+ * Follow the processing of one document through server-sent events.
+ * Returns a function that stops watching.
+ */
+export function watchDocument(id: string, watcher: DocumentWatcher): () => void {
+  if (typeof EventSource === 'undefined') return () => {}
+  const source = new EventSource(`${API}/documents/${id}/events`)
+  const finish = () => {
+    // Close first: an EventSource reconnects by itself when the server ends the stream.
+    source.close()
+    watcher.onDone()
+  }
+  source.addEventListener('status', (event) => {
+    watcher.onStatus((JSON.parse((event as MessageEvent<string>).data) as { status: DocumentStatus }).status)
+  })
+  source.addEventListener('progress', (event) => {
+    watcher.onProgress(JSON.parse((event as MessageEvent<string>).data) as DocumentProgress)
+  })
+  source.addEventListener('done', finish)
+  source.addEventListener('error', (event) => {
+    // The server also sends an event named "error" (with data) when processing
+    // failed; `done` follows it. Without data it is a connection problem: the
+    // browser retries by itself unless it has given up.
+    const fromServer = typeof (event as MessageEvent<string>).data === 'string'
+    if (!fromServer && source.readyState === EventSource.CLOSED) finish()
+  })
+  return () => source.close()
 }

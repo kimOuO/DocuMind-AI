@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { formatSize } from '../../lib/format'
 import { DocumentPanel } from './DocumentPanel'
 
@@ -39,6 +39,42 @@ function mockApi(routes: Record<string, Reply | Reply[]>) {
   return calls
 }
 
+/** Stands in for the browser's EventSource; tests push events through it. */
+class FakeEventSource {
+  static readonly CLOSED = 2
+  static instances: FakeEventSource[] = []
+  readonly url: string
+  readyState = 1
+  private listeners = new Map<string, ((event: unknown) => void)[]>()
+
+  constructor(url: string) {
+    this.url = url
+    FakeEventSource.instances.push(this)
+  }
+
+  addEventListener(name: string, listener: (event: unknown) => void) {
+    this.listeners.set(name, [...(this.listeners.get(name) ?? []), listener])
+  }
+
+  close() {
+    this.readyState = FakeEventSource.CLOSED
+  }
+
+  /** Deliver a server-sent event; without data it is a plain connection error. */
+  emit(name: string, data?: unknown) {
+    const event = data === undefined ? {} : { data: JSON.stringify(data) }
+    for (const listener of this.listeners.get(name) ?? []) listener(event)
+  }
+}
+
+const streamFor = (id: string) =>
+  FakeEventSource.instances.find((source) => source.url === `/api/v1/documents/${id}/events`)
+
+beforeEach(() => {
+  FakeEventSource.instances = []
+  vi.stubGlobal('EventSource', FakeEventSource)
+})
+
 afterEach(() => {
   vi.unstubAllGlobals()
 })
@@ -52,7 +88,10 @@ test('shows an empty state when there are no documents', async () => {
 
 test('lists my documents with their size and status', async () => {
   mockApi({
-    'GET /api/v1/documents': { status: 200, body: [PAPER, { ...NOTES, status: 'ready' }] },
+    'GET /api/v1/documents': {
+      status: 200,
+      body: [PAPER, { ...NOTES, status: 'ready', page_count: 1, chunk_count: 1 }],
+    },
   })
   render(<DocumentPanel />)
 
@@ -60,7 +99,7 @@ test('lists my documents with their size and status', async () => {
   expect(within(paper).getByText(/1\.1 MB/)).toBeInTheDocument()
   expect(within(paper).getByText('已上傳，等待處理')).toBeInTheDocument()
   const notes = screen.getByText('notes.txt').closest('li')!
-  expect(within(notes).getByText('可以提問')).toBeInTheDocument()
+  expect(within(notes).getByText('可以提問 · 1 頁 · 1 個片段')).toBeInTheDocument()
 })
 
 test('uploading a file sends it and refreshes the list', async () => {
@@ -160,6 +199,87 @@ test('pressing Escape closes the dialog without deleting', async () => {
 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(calls.every((c) => !c.key.startsWith('DELETE'))).toBe(true)
+})
+
+test('follows a document that is being processed and shows its progress', async () => {
+  mockApi({
+    'GET /api/v1/documents': [
+      { status: 200, body: [PAPER] },
+      { status: 200, body: [{ ...PAPER, status: 'ready', page_count: 16, chunk_count: 48 }] },
+    ],
+  })
+  render(<DocumentPanel />)
+  await screen.findByText('已上傳，等待處理')
+  const stream = streamFor(PAPER.id)!
+
+  act(() => stream.emit('status', { status: 'processing', summary_status: 'none' }))
+  act(() => stream.emit('progress', { kind: 'index', stage: 'embedding', current: 16, total: 48 }))
+  expect(screen.getByText('處理中：建立索引 16/48')).toBeInTheDocument()
+
+  act(() => stream.emit('done', { status: 'ready', summary_status: 'none' }))
+
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段')).toBeInTheDocument()
+  expect(stream.readyState).toBe(FakeEventSource.CLOSED)
+})
+
+test('does not follow documents that are already finished', async () => {
+  mockApi({ 'GET /api/v1/documents': { status: 200, body: [{ ...NOTES, status: 'ready' }] } })
+  render(<DocumentPanel />)
+
+  await screen.findByText('notes.txt')
+
+  expect(FakeEventSource.instances).toHaveLength(0)
+})
+
+test('a failed document shows why and can be retried', async () => {
+  const failed = { ...NOTES, status: 'failed', error: 'The embedding service answered 500.' }
+  const calls = mockApi({
+    'GET /api/v1/documents': [
+      { status: 200, body: [failed] },
+      { status: 200, body: [{ ...NOTES, status: 'processing' }] },
+    ],
+    [`POST /api/v1/documents/${NOTES.id}/retry`]: { status: 202, body: { ...NOTES, status: 'processing' } },
+  })
+  render(<DocumentPanel />)
+
+  expect(await screen.findByText('處理失敗')).toBeInTheDocument()
+  expect(screen.getByText('原因：The embedding service answered 500.')).toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: '重試 notes.txt' }))
+
+  expect(await screen.findByRole('status')).toHaveTextContent('已重新排入處理')
+  expect(calls.map((c) => c.key)).toContain(`POST /api/v1/documents/${NOTES.id}/retry`)
+  expect(screen.queryByRole('button', { name: '重試 notes.txt' })).not.toBeInTheDocument()
+  // The retried document is followed again.
+  expect(streamFor(NOTES.id)).toBeDefined()
+})
+
+test('a processing failure reported by the stream shows the reason after reloading', async () => {
+  mockApi({
+    'GET /api/v1/documents': [
+      { status: 200, body: [PAPER] },
+      { status: 200, body: [{ ...PAPER, status: 'failed', error: 'No text could be extracted.' }] },
+    ],
+  })
+  render(<DocumentPanel />)
+  await screen.findByText('已上傳，等待處理')
+  const stream = streamFor(PAPER.id)!
+
+  // The server's own "error" event carries data and is followed by "done".
+  act(() => stream.emit('error', { kind: 'index', detail: 'No text could be extracted.' }))
+  expect(stream.readyState).not.toBe(FakeEventSource.CLOSED)
+  act(() => stream.emit('done', { status: 'failed', summary_status: 'none' }))
+
+  expect(await screen.findByText('原因：No text could be extracted.')).toBeInTheDocument()
+})
+
+test('stops following when the panel goes away', async () => {
+  mockApi({ 'GET /api/v1/documents': { status: 200, body: [PAPER] } })
+  const { unmount } = render(<DocumentPanel />)
+  await screen.findByText('已上傳，等待處理')
+
+  unmount()
+
+  expect(streamFor(PAPER.id)!.readyState).toBe(FakeEventSource.CLOSED)
 })
 
 test('formats file sizes', () => {
