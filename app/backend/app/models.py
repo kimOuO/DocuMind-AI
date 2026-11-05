@@ -32,6 +32,7 @@ JOB_STATUSES = ("queued", "running", "completed", "failed")
 MESSAGE_ROLES = ("user", "assistant")
 MESSAGE_STATUSES = ("pending", "streaming", "completed", "failed", "interrupted")
 LLM_CALL_STATUSES = ("pending", "completed", "failed", "interrupted")
+LLM_FINISH_REASONS = ("stop", "output_limit", "context_exhausted", "client_disconnect", "unknown")
 
 
 def _in(column: str, values: tuple[str, ...]) -> str:
@@ -194,6 +195,9 @@ class LLMCall(Base):
     __tablename__ = "llm_calls"
     __table_args__ = (
         CheckConstraint(_in("status", LLM_CALL_STATUSES), name="ck_llm_calls_status"),
+        CheckConstraint(
+            _in("finish_reason", LLM_FINISH_REASONS), name="ck_llm_calls_finish_reason"
+        ),
     )
 
     id: Mapped[uuid.UUID] = _pk()
@@ -219,6 +223,8 @@ class LLMCall(Base):
     prompt_tokens: Mapped[int | None] = mapped_column(Integer)
     completion_tokens: Mapped[int | None] = mapped_column(Integer)
     received_output_tokens_estimated: Mapped[int | None] = mapped_column(Integer)
+    # How the call ended, when it did end normally or was interrupted. NULL for a failed call.
+    finish_reason: Mapped[str | None] = mapped_column(Text)
     error: Mapped[str | None] = mapped_column(Text)
     duration_ms: Mapped[int | None] = mapped_column(Integer)
     created_at: Mapped[datetime] = _created()

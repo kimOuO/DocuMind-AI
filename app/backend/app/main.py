@@ -16,6 +16,7 @@ from app.documents.storage import FileStorage
 from app.ingestion.indexing import IndexJobRunner
 from app.ingestion.repository import RESTART_REASON, IngestionRepository
 from app.ingestion.scheduler import InProcessScheduler
+from app.llm import ledger
 from app.llm.embedding import OllamaEmbedder
 from app.llm.tokenizer import get_token_counter
 from app.monitoring import router as monitoring
@@ -42,6 +43,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Nothing is running yet, so a job still marked unfinished was interrupted.
     async with sessions() as session, session.begin():
         interrupted = await IngestionRepository(session).fail_unfinished_jobs(RESTART_REASON)
+        await ledger.LedgerRepository(session).fail_pending(ledger.RESTART_REASON)
     if interrupted:
         logger.warning("Marked %d interrupted processing job(s) as failed", interrupted)
 
