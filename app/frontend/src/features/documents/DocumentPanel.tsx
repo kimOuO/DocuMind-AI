@@ -61,7 +61,12 @@ function describe(error: unknown): string {
   return '無法連線到伺服器，請稍後再試。'
 }
 
-export function DocumentPanel() {
+export function DocumentPanel({
+  onChange,
+}: {
+  /** Told whenever the list of documents changes, so other panels can use it. */
+  onChange?: (documents: DocumentItem[]) => void
+} = {}) {
   const [documents, setDocuments] = useState<DocumentItem[] | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -97,6 +102,10 @@ export function DocumentPanel() {
       setError(describe(caught))
     }
   }
+
+  useEffect(() => {
+    if (documents !== null) onChange?.(documents)
+  }, [documents, onChange])
 
   // Follow every document that is waiting or being processed, and stop
   // following those that are finished or gone.

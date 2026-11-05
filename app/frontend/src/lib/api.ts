@@ -137,3 +137,123 @@ export function watchDocument(id: string, watcher: DocumentWatcher): () => void 
   })
   return () => source.close()
 }
+
+export interface Conversation {
+  id: string
+  title: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Source {
+  index: number
+  kind: 'chunk' | 'summary'
+  document_id: string
+  filename: string
+  page_start: number
+  page_end: number
+  section_title: string | null
+  snippet: string
+  score: number | null
+}
+
+export type MessageStatus = 'pending' | 'streaming' | 'completed' | 'failed' | 'interrupted'
+
+export interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  status: MessageStatus
+  answered: boolean | null
+  sources: Source[]
+  created_at: string
+}
+
+export interface ConversationDetail extends Conversation {
+  messages: ChatMessage[]
+}
+
+export interface SearchScope {
+  mode: 'all' | 'selected'
+  document_ids: string[]
+}
+
+export interface Usage {
+  prompt_tokens: number | null
+  completion_tokens: number | null
+  limit: number
+}
+
+/** The events of an answer stream, in the order they arrive. */
+export type AskEvent =
+  | { name: 'start'; data: { user_message_id: string; assistant_message_id: string; scope: SearchScope } }
+  | { name: 'route'; data: { type: string; standalone_question: string } }
+  | { name: 'sources'; data: Source[] }
+  | { name: 'delta'; data: { text: string } }
+  | { name: 'usage'; data: Usage }
+  | {
+      name: 'done'
+      data: { status: MessageStatus; answered: boolean | null; cited: number[]; finish_reason: string }
+    }
+  | { name: 'error'; data: { code: string; detail: string } }
+
+export const listConversations = () => request<Conversation[]>('GET', '/conversations')
+export const createConversation = (title?: string) =>
+  request<Conversation>('POST', '/conversations', { title: title ?? null })
+export const getConversation = (id: string) =>
+  request<ConversationDetail>('GET', `/conversations/${id}`)
+export const deleteConversation = (id: string) => request<void>('DELETE', `/conversations/${id}`)
+
+/**
+ * Ask a question. A question that is refused throws an ApiError before any
+ * event; otherwise `onEvent` is called for each event until the answer ends.
+ */
+export async function askQuestion(
+  conversationId: string,
+  question: string,
+  documentIds: string[],
+  onEvent: (event: AskEvent) => void,
+): Promise<void> {
+  const response = await fetch(`${API}/conversations/${conversationId}/messages`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question, document_ids: documentIds }),
+  })
+  if (!response.ok || response.body === null) {
+    let code = 'HTTP_ERROR'
+    let detail = `Backend responded with HTTP ${response.status}`
+    try {
+      const payload = (await response.json()) as { code?: string; detail?: unknown }
+      code = payload.code ?? code
+      if (typeof payload.detail === 'string') detail = payload.detail
+    } catch {
+      // Not a JSON error body; keep the defaults.
+    }
+    throw new ApiError(response.status, code, detail)
+  }
+
+  const reader = response.body.getReader()
+  const decoder = new TextDecoder()
+  let buffer = ''
+  const flush = () => {
+    // Events are separated by a blank line: "event: <name>\ndata: <json>".
+    let end = buffer.indexOf('\n\n')
+    while (end !== -1) {
+      const block = buffer.slice(0, end)
+      buffer = buffer.slice(end + 2)
+      const name = /^event: (.*)$/m.exec(block)?.[1]
+      const data = /^data: (.*)$/m.exec(block)?.[1]
+      if (name && data) onEvent({ name, data: JSON.parse(data) } as AskEvent)
+      end = buffer.indexOf('\n\n')
+    }
+  }
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    flush()
+  }
+  buffer += decoder.decode()
+  flush()
+}

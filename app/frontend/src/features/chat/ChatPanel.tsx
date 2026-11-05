@@ -1,0 +1,380 @@
+import { useEffect, useState, type FormEvent } from 'react'
+import { ConfirmDialog } from '../../components/ConfirmDialog'
+import {
+  ApiError,
+  askQuestion,
+  createConversation,
+  deleteConversation,
+  getConversation,
+  listConversations,
+  type ChatMessage,
+  type Conversation,
+  type DocumentItem,
+  type MessageStatus,
+  type SearchScope,
+  type Source,
+  type Usage,
+} from '../../lib/api'
+
+const MESSAGES: Record<string, string> = {
+  QUESTION_TOO_LONG: '問題太長，請縮短後再送出。',
+  EMPTY_QUESTION: '請輸入問題。',
+  NO_READY_DOCUMENT: '還沒有可以提問的文件。請先上傳文件並等待處理完成。',
+  DOCUMENT_NOT_READY: '選取的文件還沒有處理完成。',
+  DOCUMENT_NOT_FOUND: '找不到選取的文件，可能已經被刪除。',
+  CONVERSATION_NOT_FOUND: '找不到這個對話，可能已經被刪除。',
+  ORIGIN_NOT_ALLOWED: '這個網址不在允許的來源清單內，請從設定的網址開啟。',
+  INPUT_EXCEEDS_CONTEXT: '這次提問的內容超過模型的長度上限，沒有產生回答。',
+  LLM_UNAVAILABLE: '語言模型目前無法使用，請稍後再試。',
+  EMBEDDING_UNAVAILABLE: '嵌入模型目前無法使用，請稍後再試。',
+}
+
+/** An answer that is not `completed` must never look like a finished one. */
+const UNFINISHED_LABEL: Partial<Record<MessageStatus, string>> = {
+  pending: '回答產生中…',
+  streaming: '回答產生中…',
+  interrupted: '回答未完成',
+  failed: '回答失敗',
+}
+
+function describe(error: unknown): string {
+  if (error instanceof ApiError) return MESSAGES[error.code] ?? error.message
+  return '無法連線到伺服器，請稍後再試。'
+}
+
+function SourceList({ sources }: { sources: Source[] }) {
+  if (sources.length === 0) return null
+  return (
+    <ul className="mt-2 list-none p-0 text-sm">
+      {sources.map((source) => (
+        <li key={source.index} className="border-t border-border py-1">
+          <details>
+            <summary className="cursor-pointer">
+              [{source.index}] {source.filename} · 第 {source.page_start} 頁
+              {source.score !== null && (
+                <span className="text-muted"> · 相似度 {source.score.toFixed(2)}</span>
+              )}
+            </summary>
+            <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
+          </details>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function MessageView({ message }: { message: ChatMessage }) {
+  if (message.role === 'user') {
+    return (
+      <li className="border-t border-border py-2">
+        <p className="text-sm text-muted">你</p>
+        <p className="whitespace-pre-wrap break-words">{message.content}</p>
+      </li>
+    )
+  }
+  const unfinished = UNFINISHED_LABEL[message.status]
+  return (
+    <li className="border-t border-border py-2">
+      <p className="text-sm text-muted">
+        回答
+        {unfinished && (
+          <span
+            className={`ml-2 font-medium ${message.status === 'failed' ? 'text-danger' : 'text-accent'}`}
+          >
+            {unfinished}
+          </span>
+        )}
+        {message.status === 'completed' && message.answered === false && (
+          <span className="ml-2 font-medium text-accent">文件中找不到答案</span>
+        )}
+      </p>
+      <p className="whitespace-pre-wrap break-words">{message.content}</p>
+      <SourceList sources={message.sources} />
+    </li>
+  )
+}
+
+/** Ask questions about the user's ready documents, in a conversation. */
+export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
+  const ready = documents.filter((document) => document.status === 'ready')
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [activeId, setActiveId] = useState<string | null>(null)
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [selected, setSelected] = useState<string[]>([])
+  const [question, setQuestion] = useState('')
+  const [asking, setAsking] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [scope, setScope] = useState<SearchScope | null>(null)
+  const [usage, setUsage] = useState<Usage | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
+
+  useEffect(() => {
+    let active = true
+    listConversations()
+      .then((items) => {
+        if (active) setConversations(items)
+      })
+      .catch((caught: unknown) => {
+        if (active) setError(describe(caught))
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  // A document that is no longer ready (deleted, for example) cannot stay selected.
+  const readyIds = ready.map((document) => document.id)
+  const scopeIds = selected.filter((id) => readyIds.includes(id))
+
+  async function open(id: string | null) {
+    setActiveId(id)
+    setScope(null)
+    setUsage(null)
+    setError(null)
+    if (id === null) {
+      setMessages([])
+      return
+    }
+    try {
+      setMessages((await getConversation(id)).messages)
+    } catch (caught) {
+      setError(describe(caught))
+      setMessages([])
+    }
+  }
+
+  async function reload(id: string) {
+    try {
+      const [detail, list] = await Promise.all([getConversation(id), listConversations()])
+      setMessages(detail.messages)
+      setConversations(list)
+    } catch (caught) {
+      setError(describe(caught))
+    }
+  }
+
+  async function handleAsk(event: FormEvent) {
+    event.preventDefault()
+    const text = question.trim()
+    if (!text || asking) return
+    setAsking(true)
+    setError(null)
+    setScope(null)
+    setUsage(null)
+    let conversationId = activeId
+    try {
+      if (conversationId === null) {
+        const created = await createConversation()
+        conversationId = created.id
+        setActiveId(created.id)
+        setConversations((current) => [created, ...current])
+      }
+      const updateAnswer = (change: (answer: ChatMessage) => ChatMessage) =>
+        setMessages((current) =>
+          current.map((message, index) => (index === current.length - 1 ? change(message) : message)),
+        )
+      let started = false
+      await askQuestion(conversationId, text, scopeIds, (askEvent) => {
+        switch (askEvent.name) {
+          case 'start': {
+            started = true
+            const now = new Date().toISOString()
+            setQuestion('')
+            setScope(askEvent.data.scope)
+            setMessages((current) => [
+              ...current,
+              {
+                id: askEvent.data.user_message_id,
+                role: 'user',
+                content: text,
+                status: 'completed',
+                answered: null,
+                sources: [],
+                created_at: now,
+              },
+              {
+                id: askEvent.data.assistant_message_id,
+                role: 'assistant',
+                content: '',
+                status: 'streaming',
+                answered: null,
+                sources: [],
+                created_at: now,
+              },
+            ])
+            break
+          }
+          case 'sources':
+            updateAnswer((answer) => ({ ...answer, sources: askEvent.data }))
+            break
+          case 'delta':
+            updateAnswer((answer) => ({ ...answer, content: answer.content + askEvent.data.text }))
+            break
+          case 'usage':
+            setUsage(askEvent.data)
+            break
+          case 'done':
+            updateAnswer((answer) => ({
+              ...answer,
+              status: askEvent.data.status,
+              answered: askEvent.data.answered,
+            }))
+            break
+          case 'error':
+            updateAnswer((answer) => ({ ...answer, status: 'failed' }))
+            setError(MESSAGES[askEvent.data.code] ?? askEvent.data.detail)
+            break
+        }
+      })
+      // The stored conversation is the authority: reload it, and its title.
+      if (started) await reload(conversationId)
+    } catch (caught) {
+      setError(describe(caught))
+      // The stream broke before it ended: show what the server kept.
+      if (conversationId !== null && !(caught instanceof ApiError)) await reload(conversationId)
+    } finally {
+      setAsking(false)
+    }
+  }
+
+  async function handleDelete(conversation: Conversation) {
+    setPendingDelete(null)
+    try {
+      await deleteConversation(conversation.id)
+      setConversations((current) => current.filter((item) => item.id !== conversation.id))
+      if (activeId === conversation.id) await open(null)
+    } catch (caught) {
+      setError(describe(caught))
+    }
+  }
+
+  const active = conversations.find((conversation) => conversation.id === activeId) ?? null
+  const scopeText =
+    scope === null
+      ? null
+      : scope.mode === 'all'
+        ? `所有可用文件（${scope.document_ids.length} 份）`
+        : scope.document_ids
+            .map((id) => documents.find((document) => document.id === id)?.filename ?? id)
+            .join('、')
+
+  return (
+    <section className="mt-4 rounded-lg border border-border bg-surface p-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-semibold">提問</h2>
+        <div className="flex items-center gap-2">
+          <label className="text-sm">
+            <span className="sr-only">對話</span>
+            <select
+              className="rounded-md border border-border bg-surface px-2 py-1 text-sm"
+              value={activeId ?? ''}
+              disabled={asking}
+              onChange={(event) => open(event.target.value || null)}
+            >
+              <option value="">新對話</option>
+              {conversations.map((conversation) => (
+                <option key={conversation.id} value={conversation.id}>
+                  {conversation.title || '（未命名的對話）'}
+                </option>
+              ))}
+            </select>
+          </label>
+          {active && (
+            <button
+              type="button"
+              className="rounded-md border border-border px-2 py-1 text-sm text-danger"
+              disabled={asking}
+              onClick={() => setPendingDelete(active)}
+            >
+              刪除對話
+            </button>
+          )}
+        </div>
+      </div>
+
+      {ready.length === 0 ? (
+        <p className="mt-2 text-muted">還沒有可以提問的文件。上傳文件並等待處理完成後就能提問。</p>
+      ) : (
+        <fieldset className="mt-2 text-sm">
+          <legend className="text-muted">
+            搜尋範圍：{scopeIds.length === 0 ? '所有可用文件' : `已選 ${scopeIds.length} 份`}
+          </legend>
+          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+            {ready.map((document) => (
+              <label key={document.id} className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={scopeIds.includes(document.id)}
+                  disabled={asking}
+                  onChange={(event) =>
+                    setSelected(
+                      event.target.checked
+                        ? [...scopeIds, document.id]
+                        : scopeIds.filter((id) => id !== document.id),
+                    )
+                  }
+                />
+                {document.filename}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+
+      {messages.length > 0 && (
+        <ul className="mt-3 list-none p-0" aria-label="對話內容">
+          {messages.map((message) => (
+            <MessageView key={message.id} message={message} />
+          ))}
+        </ul>
+      )}
+
+      {scopeText !== null && <p className="mt-2 text-sm text-muted">這次搜尋的範圍：{scopeText}</p>}
+      {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
+        <p className="text-sm text-muted">
+          這次呼叫的 token：輸入 {usage.prompt_tokens.toLocaleString()} + 回答{' '}
+          {usage.completion_tokens.toLocaleString()} ={' '}
+          {(usage.prompt_tokens + usage.completion_tokens).toLocaleString()} /{' '}
+          {usage.limit.toLocaleString()}
+        </p>
+      )}
+      {error && (
+        <p role="alert" className="mt-2 text-sm text-danger">
+          {error}
+        </p>
+      )}
+
+      <form className="mt-3 flex gap-2" onSubmit={handleAsk}>
+        <label className="flex-1">
+          <span className="sr-only">問題</span>
+          <textarea
+            className="w-full rounded-md border border-border bg-surface px-2 py-1"
+            rows={2}
+            placeholder="針對文件提問，例如：summary this document."
+            value={question}
+            disabled={asking || ready.length === 0}
+            onChange={(event) => setQuestion(event.target.value)}
+          />
+        </label>
+        <button
+          type="submit"
+          className="self-end rounded-md bg-accent px-3 py-1 text-sm font-medium text-surface disabled:opacity-50"
+          disabled={asking || ready.length === 0 || question.trim() === ''}
+        >
+          {asking ? '回答中…' : '送出'}
+        </button>
+      </form>
+
+      {pendingDelete && (
+        <ConfirmDialog
+          title="刪除對話"
+          message={`確定要刪除「${pendingDelete.title || '未命名的對話'}」嗎？對話中的問題與回答會一併刪除，無法復原。`}
+          confirmLabel="確定刪除"
+          danger
+          onConfirm={() => handleDelete(pendingDelete)}
+          onCancel={() => setPendingDelete(null)}
+        />
+      )}
+    </section>
+  )
+}

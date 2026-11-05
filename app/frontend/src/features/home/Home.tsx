@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { fetchHealth, type DependencyStatus, type Health, type User } from '../../lib/api'
+import {
+  fetchHealth,
+  type DependencyStatus,
+  type DocumentItem,
+  type Health,
+  type User,
+} from '../../lib/api'
+import { ChatPanel } from '../chat/ChatPanel'
 import { DocumentPanel } from '../documents/DocumentPanel'
 
 type HealthState =
@@ -19,9 +26,10 @@ function StatusRow({ label, status }: { label: string; status: DependencyStatus 
   )
 }
 
-/** The signed-in area: who is logged in, their documents, and whether the system is up. */
+/** The signed-in area: who is logged in, their documents, questions, and whether the system is up. */
 export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
   const [state, setState] = useState<HealthState>({ kind: 'loading' })
+  const [documents, setDocuments] = useState<DocumentItem[]>([])
 
   useEffect(() => {
     fetchHealth()
@@ -46,7 +54,8 @@ export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
         </button>
       </div>
 
-      <DocumentPanel />
+      <DocumentPanel onChange={setDocuments} />
+      <ChatPanel documents={documents} />
 
       <section className="mt-4 rounded-lg border border-border bg-surface p-4">
         <h2 className="font-semibold">系統狀態</h2>
