@@ -197,3 +197,42 @@ async def test_a_question_the_paper_cannot_answer_is_refused_before_any_llm_call
     assert by_name["sources"] == []
     assert "usage" not in by_name
     assert db.execute("SELECT count(*) FROM llm_calls").fetchone() == (0,)
+
+
+async def test_the_comparison_question_is_answered_with_differences_and_sources(
+    client: TestClient, db: psycopg.Connection
+) -> None:
+    """Q2 (AC-13) with the real models, printed for checking against the key facts."""
+    register_and_login(client, "kim")
+    settings = get_settings()
+    uploaded = client.post(
+        "/api/v1/documents", files={"file": ("2410.05779v3.pdf", SAMPLE_PDF.read_bytes())}
+    ).json()
+    runner = IndexJobRunner(
+        sessions=get_sessionmaker(),
+        storage=FileStorage(settings.data_dir),
+        tokenizer=Qwen3TokenCounter(),
+        embedder=OllamaEmbedder(settings),
+        settings=settings,
+    )
+    assert await runner.run(uuid.UUID(uploaded["jobs"][0]["id"])) is JobOutcome.COMPLETED
+    conversation = client.post("/api/v1/conversations", json={}).json()["id"]
+
+    response = client.post(
+        f"/api/v1/conversations/{conversation}/messages",
+        json={"question": "compare lightRAG with GraphRAG"},
+    )
+
+    stream = []
+    for block in response.text.strip().split("\n\n"):
+        name, data = block.split("\n", 1)
+        stream.append((name.removeprefix("event: "), json.loads(data.removeprefix("data: "))))
+    by_name = dict(stream)
+    answer = "".join(data["text"] for name, data in stream if name == "delta")
+    found = [(s["index"], s["page_start"], s["score"], s["origin"]) for s in by_name["sources"]]
+    print(f"\nsources: {found}")
+    print(f"usage: {by_name['usage']}  done: {by_name['done']}")
+    print(f"answer:\n{answer}")
+    assert by_name["done"]["status"] == "completed" and by_name["done"]["answered"] is True
+    usage = by_name["usage"]
+    assert usage["prompt_tokens"] + usage["completion_tokens"] <= settings.llm_context_limit

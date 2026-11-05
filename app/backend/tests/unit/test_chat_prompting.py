@@ -104,6 +104,17 @@ def test_the_instructions_fit_their_budget(counter: Qwen3TokenCounter) -> None:
     assert counter.count(prompt) <= 500
 
 
+def test_the_instructions_ask_for_findings_first_labelled_figures_and_exceptions() -> None:
+    """D63: general principles for experimental results, nothing about any one document."""
+    prompt, _ = build_answer_prompt("q", [], WordCounter(), 5_500)
+
+    assert "state the main findings first" in prompt
+    assert "Do not list every number" in prompt
+    assert "which method or variant, which dataset, which metric, and its unit" in prompt
+    assert "go against the overall trend, say so explicitly" in prompt
+    assert "LightRAG" not in prompt and "Origin" not in prompt and "page 8" not in prompt
+
+
 def test_a_source_payload_carries_what_the_interface_shows(counter: Qwen3TokenCounter) -> None:
     source = chunk("Table 2: Performance of ablated versions", page=8, score=0.612345)
 

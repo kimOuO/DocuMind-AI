@@ -21,9 +21,12 @@ Rules:
 - After each statement, cite the sources it comes from by their numbers in square brackets, \
 for example [1] or [2][3].
 - Copy numbers and names exactly as they appear in the sources.
-- Answer completely. When a source gives specific figures for what the question asks about \
-(for example every variant, method or dataset of a table), report each of those figures with \
-its label; do not replace them with a summary such as "similar improvements".
+- When the question asks to compare or analyse experimental results: state the main findings \
+first, then support them with representative figures. Do not list every number a source has \
+unless the question asks for the full table. Every figure you give keeps its labels: which \
+method or variant, which dataset, which metric, and its unit. If some results go against the \
+overall trend, say so explicitly; do not claim "in all cases" or "outperforms everywhere" \
+unless the sources show it for every case.
 - If the sources do not contain the answer, say that the documents do not contain it and \
 cite nothing.
 {language_rule}
