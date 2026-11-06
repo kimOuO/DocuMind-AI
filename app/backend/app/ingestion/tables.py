@@ -181,6 +181,37 @@ def _linear_row(
     return f"{label} — " + "; ".join(parts)
 
 
+_LINEAR_ROW = re.compile(r"^(?P<label>[^—]+?) — (?P<rest>.+)$")
+
+
+def cells_of(line: str) -> list[tuple[str, tuple[str, ...]]]:
+    """The figures of a row written by linearize_table, each with its labels.
+
+    "Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%" gives
+    ("35.2%", ("Overall", "Agriculture", "NaiveRAG")) and so on; a row of a
+    single-header table gives (value, (row label, column)). Any other line gives
+    nothing.
+    """
+    match = _LINEAR_ROW.match(line.strip())
+    if match is None:
+        return []
+    label, rest = match.group("label").strip(), match.group("rest")
+    cells: list[tuple[str, tuple[str, ...]]] = []
+    for segment in rest.split("; "):
+        group, separator, body = segment.partition(": ")
+        if not separator or not group.strip() or not body.strip():
+            return []
+        for cell in body.split(", "):
+            words = cell.split()
+            if not words or not _NUMBER_TOKEN.match(words[-1]):
+                return []
+            if len(words) == 1:
+                cells.append((words[-1], (label, group.strip())))
+            else:
+                cells.append((words[-1], (label, group.strip(), " ".join(words[:-1]))))
+    return cells
+
+
 def is_table_chunk(text: str) -> bool:
     """A chunk that is a table region: a caption first, and at least one row."""
     lines = text.splitlines()

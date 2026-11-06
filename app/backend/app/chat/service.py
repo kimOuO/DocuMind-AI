@@ -36,7 +36,13 @@ from app.chat.prompting import (
 )
 from app.chat.repository import ChatRepository
 from app.chat.routing import question_type
-from app.chat.verification import NumberCheck, PageText, check_note, verify_numbers
+from app.chat.verification import (
+    NumberCheck,
+    PageText,
+    check_note,
+    label_note,
+    verify_numbers,
+)
 from app.conversations.repository import ConversationRepository
 from app.conversations.service import ConversationService
 from app.core.env_loader import Settings
@@ -190,6 +196,7 @@ class ChatService:
                         "cited": [],
                         "unverified_numbers": [],
                         "verified_numbers": [],
+                        "mislabelled_numbers": [],
                         "finish_reason": None,
                     },
                 )
@@ -228,13 +235,15 @@ class ChatService:
             # A stream that ended normally is not necessarily a finished answer:
             # only a natural stop is. Anything else is kept, marked interrupted.
             complete = result.finish_reason.is_complete
-            check = NumberCheck([], [])
+            check = NumberCheck([], [], [])
             if complete:
                 check = await self._check_numbers(prepared, "".join(received), evidence, cited)
                 language = question_language(prepared.question)
                 notes = [evidence.note] if evidence.note else []
                 if check.unverified:
                     notes.append(check_note(check.unverified, language))
+                if check.mislabelled:
+                    notes.append(label_note(check.mislabelled, language))
                 for note in notes:
                     # Said after the answer, as part of it: documents whose summary was
                     # not available, and numbers that could not be checked.
@@ -268,6 +277,15 @@ class ChatService:
                             "snippet": v.snippet,
                         }
                         for v in check.verified
+                    ],
+                    "mislabelled_numbers": [
+                        {
+                            "number": m.number,
+                            "answer_labels": m.answer_labels,
+                            "source_labels": m.source_labels,
+                            "sentence": m.sentence,
+                        }
+                        for m in check.mislabelled
                     ],
                     "finish_reason": result.finish_reason.value,
                 },

@@ -211,6 +211,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "cited": [1],
         "unverified_numbers": [],
         "verified_numbers": [],
+        "mislabelled_numbers": [],
         "finish_reason": "stop",
     }
     # What the model was given: the rules, the numbered source, the question.
@@ -261,6 +262,46 @@ async def test_every_source_snippet_is_on_the_cited_page_of_the_paper(
         assert source["page_start"] == source["page_end"]
         assert source["snippet"] and source["snippet"] in pages[source["page_start"]]
     assert stream["done"]["cited"] == [1, 2]
+
+
+ABLATION_TABLE = (
+    "Table 2: Win rates of the variants.\n"
+    "Agriculture Mix\n"
+    "LightRAG -High LightRAG -High\n"
+    "Comprehensiveness 67.6% 65.2% 61.2% 59.6%\n"
+    "Overall 67.6% 64.8% 60.0% 57.6%\n"
+    "The -High variant removes high-level retrieval."
+)
+
+
+async def test_a_table_figure_under_the_wrong_label_is_reported_after_the_answer(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-26 (D64): 59.6% is on the page, but it is -High's Comprehensiveness, not Overall."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    use_model(
+        kim, tokenizer, StubOllama(["In Mix, the Overall score falls", " from 60.0% to 59.6% [1]."])
+    )
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    deltas = [data["text"] for name, data in stream if name == "delta"]
+    assert deltas[-1] == (
+        "\n\nFigures whose labels differ from the source table: "
+        "59.6% (answer: Overall, Mix; source: Comprehensiveness, Mix, -High)."
+    )
+    assert by_name["done"]["unverified_numbers"] == []
+    assert by_name["done"]["mislabelled_numbers"] == [
+        {
+            "number": "59.6%",
+            "answer_labels": ["Overall", "Mix"],
+            "source_labels": [["Comprehensiveness", "Mix", "-High"]],
+            "sentence": "In Mix, the Overall score falls from 60.0% to 59.6%.",
+        }
+    ]
+    # The note is part of the stored answer, as the reader saw it.
+    assert one(db, "SELECT content FROM messages WHERE role = 'assistant'")[0].endswith(deltas[-1])
 
 
 async def test_only_the_selected_document_is_used(
@@ -362,6 +403,7 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
         "cited": [],
         "unverified_numbers": [],
         "verified_numbers": [],
+        "mislabelled_numbers": [],
         "finish_reason": None,
     }
     assert in_chinese[3][1] == {"text": "文件中找不到與這個問題相關的內容。"}

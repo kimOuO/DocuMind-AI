@@ -7,7 +7,7 @@ the page and a snippet of the original text; an unverified one is reported.
 
 import uuid
 
-from app.chat.verification import PageText, numbers_in, verify_numbers
+from app.chat.verification import PageText, label_note, numbers_in, verify_numbers
 
 DOC = uuid.uuid4()
 
@@ -89,3 +89,123 @@ def test_a_different_value_that_shares_digits_is_not_a_match() -> None:
 def test_an_answer_without_numbers_verifies_nothing() -> None:
     result = verify_numbers("LightRAG builds a graph [1].", [PageText(DOC, 1, "graph 2024")])
     assert (result.verified, result.unverified) == ([], [])
+
+
+# --- Labels: a figure from a table must be attributed as the table attributes it ------
+#
+# The pages hold the table as the chunker rewrote it, one row per line with every
+# figure next to its labels. The model may copy a figure correctly and still put it
+# under the wrong metric or variant (D64); the check compares the labels nearest to
+# the figure in its sentence with the labels of the cells holding that value.
+
+TABLE_PAGE = PageText(
+    DOC,
+    8,
+    "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\n"
+    "Agriculture CS Legal Mix\n"
+    "NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\n"
+    "Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, "
+    "LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\n"
+    "Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; "
+    "Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\n"
+    "NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\n"
+    "Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, "
+    "-High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6%\n"
+    "Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; "
+    "Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6%\n"
+    "The -High variant removes high-order retrieval.",
+)
+
+
+def test_a_figure_put_under_the_wrong_metric_is_reported_with_both_sets_of_labels() -> None:
+    answer = (
+        "Removing high-level retrieval hurts. In the Mix dataset, the Overall score "
+        "decreases from 60.0% (LightRAG) to 59.6% (-High) [1]."
+    )
+
+    result = verify_numbers(answer, [TABLE_PAGE])
+
+    assert result.unverified == []  # both figures are on the page...
+    [wrong] = result.mislabelled  # ...but 59.6% is the -High Comprehensiveness figure
+    assert wrong.number == "59.6%"
+    assert wrong.answer_labels == ["Overall", "Mix", "-High"]
+    assert wrong.source_labels == [["Comprehensiveness", "Mix", "-High"]]
+    assert wrong.sentence.startswith("In the Mix dataset, the Overall score")
+
+
+def test_figures_attributed_as_the_table_attributes_them_pass() -> None:
+    answer = (
+        "For example, in the Agriculture dataset, the Comprehensiveness score drops from "
+        "67.6% (LightRAG) to 65.2% (LightRAG -High), and in the Mix dataset the Overall "
+        "score goes from 60.0% to 57.6% [1]."
+    )
+
+    assert verify_numbers(answer, [TABLE_PAGE]).mislabelled == []
+
+
+def test_the_label_nearest_to_the_figure_counts_and_case_does_not_matter() -> None:
+    # "LightRAG" is mentioned, but "-High" stands next to the figure; "overall" is lower case.
+    answer = "LightRAG keeps its lead: the overall win rate in Mix is 57.6% for -High [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).mislabelled == []
+
+
+def test_a_value_that_several_cells_share_passes_when_any_of_them_fits() -> None:
+    # 67.6% is LightRAG's figure for Comprehensiveness and for Overall in Agriculture.
+    answer = "In Agriculture, LightRAG reaches 67.6% in Comprehensiveness and 67.6% Overall [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).mislabelled == []
+
+
+def test_a_sentence_that_names_no_labels_is_not_checked_for_them() -> None:
+    assert verify_numbers("Scores range from 32.4% to 84.8% [1].", [TABLE_PAGE]).mislabelled == []
+
+
+def test_a_wrong_variant_is_reported_even_when_metric_and_dataset_are_right() -> None:
+    answer = "In Legal, Comprehensiveness is 83.6% for the -High variant [1]."
+
+    [wrong] = verify_numbers(answer, [TABLE_PAGE]).mislabelled
+
+    assert wrong.answer_labels == ["Comprehensiveness", "Legal", "-High"]
+    assert wrong.source_labels == [["Comprehensiveness", "Legal", "LightRAG"]]
+
+
+def test_a_possessive_and_a_comparison_bind_each_figure_to_its_own_side() -> None:
+    # Real answers (D64): "compared to NaiveRAG's 34.8%" must not hand NaiveRAG to 65.2%.
+    answer = (
+        "For Agriculture, the -High variant achieves 65.2% in Comprehensiveness, compared "
+        "to NaiveRAG's 34.8% [1]. In Mix, its Overall score is 57.6% versus 60.0% for LightRAG."
+    )
+
+    assert verify_numbers(answer, [TABLE_PAGE]).mislabelled == []
+
+
+def test_in_a_list_of_figures_a_label_after_a_comma_belongs_to_the_next_figure() -> None:
+    answer = (
+        "In Agriculture, LightRAG achieves 67.6% comprehensiveness, 67.6% overall; "
+        "NaiveRAG 32.4%, LightRAG 67.6% in Comprehensiveness [1]."
+    )
+
+    assert verify_numbers(answer, [TABLE_PAGE]).mislabelled == []
+
+
+def test_numbers_that_are_not_table_cells_are_left_to_the_page_check() -> None:
+    pages = [TABLE_PAGE, PageText(DOC, 9, "a total of 610,000 tokens for 610 communities")]
+
+    result = verify_numbers("GraphRAG spends 610,000 tokens Overall in Legal [2].", pages)
+
+    assert result.mislabelled == [] and result.unverified == []
+
+
+def test_the_label_note_names_each_figure_with_the_labels_from_both_sides() -> None:
+    [wrong] = verify_numbers(
+        "In the Mix dataset, the Overall score is 59.6% (-High) [1].", [TABLE_PAGE]
+    ).mislabelled
+
+    assert label_note([wrong], "other") == (
+        "Figures whose labels differ from the source table: "
+        "59.6% (answer: Overall, Mix, -High; source: Comprehensiveness, Mix, -High)."
+    )
+    assert label_note([wrong], "zh") == (
+        "以下數字的標籤與原文表格不符：59.6%（答案：Overall、Mix、-High；原文：Comprehensiveness、Mix、-High）。"
+    )

@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from app.ingestion.parsing import parse_document
-from app.ingestion.tables import find_table_regions, linearize_table, split_table
+from app.ingestion.tables import cells_of, find_table_regions, linearize_table, split_table
 
 SAMPLE_PAPER = Path(__file__).resolve().parents[4] / "sample-documents" / "2410.05779v3.pdf"
 
@@ -152,3 +152,31 @@ def test_rows_that_do_not_match_the_header_shape_are_kept_as_they_are() -> None:
 def test_a_table_without_a_readable_header_is_left_unchanged() -> None:
     text = "Table 9: No header.\n1 2 3\n4 5 6"
     assert linearize_table(text) == text
+
+
+# --- Reading the cells back: every figure with its labels (AC-26 label check) --------
+
+
+def test_the_cells_of_a_grouped_row_carry_row_group_and_sub_column_labels() -> None:
+    line = "Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; Mix: NaiveRAG 42.4%, -High 57.6%"
+
+    assert cells_of(line) == [
+        ("35.2%", ("Overall", "Agriculture", "NaiveRAG")),
+        ("64.8%", ("Overall", "Agriculture", "-High")),
+        ("42.4%", ("Overall", "Mix", "NaiveRAG")),
+        ("57.6%", ("Overall", "Mix", "-High")),
+    ]
+
+
+def test_the_cells_of_a_single_header_row_carry_row_and_column_labels() -> None:
+    assert cells_of("Agriculture — Documents: 12; Tokens: 2,017,886") == [
+        ("12", ("Agriculture", "Documents")),
+        ("2,017,886", ("Agriculture", "Tokens")),
+    ]
+
+
+def test_lines_that_are_not_linearised_rows_have_no_cells() -> None:
+    assert cells_of("Table 2: Performance of ablated versions of LightRAG.") == []
+    assert cells_of("NaiveRAG -High NaiveRAG -High") == []
+    assert cells_of("Overall 35.2% 64.8% 44.0% 56.0%") == []
+    assert cells_of("A sentence — with a dash: but no figures at all") == []
