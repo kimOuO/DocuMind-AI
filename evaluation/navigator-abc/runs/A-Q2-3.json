@@ -1,0 +1,163 @@
+{
+ "arm": "A",
+ "answer_mode": "roles",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "run": 3,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.45
+ },
+ "elapsed_seconds": 18.5,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "586d31fc-3085-40c8-877b-a65d1552a7df",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handling large\ntoken counts and complex queries that require a thorough understanding of the dataset’s context,\ngraph-based RAG systems like LightRAG and GraphRAG consistently outperform purely chunk-\nbased retrieval methods such as NaiveRAG, HyDE, and RQRAG. This performance gap becomes\nparticularly pronounced as the dataset size increases. For instance, in the largest dataset (Legal), the\ndisparity widens significantly, with baseline methods achieving only about 20% win rates compared\nto the dominance of LightRAG. This trend underscores the advantages of graph-enhanced RAG\nsystems in capturing complex semantic dependencies within large-scale corpora, facilitating a more\ncomprehensive understanding of knowledge and leading to improved generalization performance.\nEnhancing Response Diversity with LightRAG: Compared to various baselines, LightRAG demon-\nstrates a significant advantage in the Diversity metric, particularly within the larger Legal dataset.\nIts consistent lead in this area underscores LightRAG’s effectiveness in generating a wider range\nof responses, especially in scenarios where diverse content is essential. We attribute this advantage\nto LightRAG’s dual-level retrieval paradigm, which facilitates comprehensive information retrieval\nfrom both low-level and high-level dimensions. This approach effectively leverages graph-based text\nindexing to consistently capture the full context in response to queries.\nLightRAG’s Superiority over GraphRAG: While both LightRAG and GraphRAG use graph-based\nretrieval mechanisms, LightRAG consistently outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of",
+   "score": 0.6455,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "586d31fc-3085-40c8-877b-a65d1552a7df",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+   "score": 0.6299,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "586d31fc-3085-40c8-877b-a65d1552a7df",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+   "score": 0.6265,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "586d31fc-3085-40c8-877b-a65d1552a7df",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+   "score": 0.6123,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "586d31fc-3085-40c8-877b-a65d1552a7df",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "which seamlessly integrates graph structures and vectorized representations for information retrieval,\nthereby eliminating the need to process large volumes of information upfront.\nIn the incremental data update phase, designed to address changes in dynamic real-world scenarios,\nboth models exhibit similar overhead for entity and relationship extraction. However, GraphRAG\nshows significant inefficiency in managing newly added data. When a new dataset of the same\nsize as the legal dataset is introduced, GraphRAG must dismantle its existing community structure\nto incorporate new entities and relationships, followed by complete regeneration. This process\nincurs a substantial token cost of approximately 5,000 tokens per community report. Given 1,399\ncommunities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstruct both the\noriginal and new community reports—an exorbitant expense that underscores its inefficiency. In\ncontrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing\ngraph without the need for full reconstruction. This approach results in significantly lower overhead\nduring incremental updates, demonstrating its superior efficiency and cost-effectiveness.\n5 R ELATED WORK\n5.1 R ETRIEVAL -AUGMENTED GENERATION WITH LLM S\nRetrieval-Augmented Generation (RAG) systems enhance LLM inputs by retrieving relevant infor-\nmation from external sources, grounding responses in factual, domain-specific knowledge Ram et al.\n(2023); Fan et al. (2024). Current RAG approaches Gao et al. (2022; 2023); Chan et al. (2024); Yu\net al. (2024) typically embed queries in a vector space to find the nearest context vectors. However,\nmany of these methods rely on fragmented text chunks and only retrieve the top-k contexts, limiting\ntheir ability to capture comprehensive global information needed for effective",
+   "score": 0.6049,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "**Navigator:**  \nThe sections, tables, and figures relevant to comparing LightRAG with GraphRAG are:  \n- Section: EVALUATION (pages 5-10)  \n- Table 1 (page 7): Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.  \n- Table 3 (page 9): Case Study: Comparison Between LightRAG and the Baseline Method GraphRAG.  \n- Figure 2 (page 9): Comparison of Cost in Terms of Tokens and API Calls for GraphRAG and LightRAG on the Legal Dataset.  \n- Section: CONCLUSION (page 10)  \n\n---\n\n**Analyst:**  \nLightRAG consistently outperforms GraphRAG in several key areas. First, in larger datasets with complex language contexts such as Agriculture, CS, and Legal, LightRAG shows a clear advantage, significantly surpassing GraphRAG [1]. This is attributed to its dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, thereby improving response diversity and comprehensiveness [2]. \n\nIn the case study presented in Table 3, LightRAG outperforms GraphRAG in all evaluation dimensions assessed, including comprehensiveness, diversity, empowerment, and overall quality [4]. Specifically, LightRAG covers a broader range of relevant information and provides more diverse and empowering content, which is linked to its hierarchical retrieval mechanism and effective graph-based indexing [4].\n\nAdditionally, LightRAG demonstrates superior efficiency and cost-effectiveness during incremental data updates. As shown in Figure 2, GraphRAG must reconstruct its community structure when new data is added, leading to significantly higher token and API call costs compared to LightRAG, which seamlessly integrates new information without full reconstruction [3].\n\nHowever, there are no explicit results in the sources provided that contradict this trend. Therefore, the conclusion is that LightRAG outperforms GraphRAG in performance, diversity, comprehensiveness, and cost-efficiency, especially in large-scale and complex datasets [1][2][3][4].\n\nNumbers that could not be checked against the cited pages of the original text: 10.\n\nA claim the source table does not bear out: \"LightRAG consistently outperforms GraphRAG in several key areas.\" — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).",
+ "usage": {
+  "prompt_tokens": 2644,
+  "completion_tokens": 437,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2,
+   4,
+   3
+  ],
+  "unverified_numbers": [
+   "10"
+  ],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [
+   {
+    "sentence": "LightRAG consistently outperforms GraphRAG in several key areas.",
+    "method": "LightRAG",
+    "compared": [
+     "GraphRAG"
+    ],
+    "higher": 61,
+    "lower": 3,
+    "examples": [
+     "Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)",
+     "Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7)",
+     "Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)"
+    ],
+    "status": "contradicted",
+    "reason": null
+   }
+  ],
+  "doubtful_citations": [
+   {
+    "sentence": "Additionally, LightRAG demonstrates superior efficiency and cost-effectiveness during incremental data updates.",
+    "cited": [
+     3
+    ],
+    "closer": [
+     5
+    ],
+    "coverage_cited": 0.12,
+    "coverage_closer": 0.88
+   },
+   {
+    "sentence": "As shown in Figure 2, GraphRAG must reconstruct its community structure when new data is added, leading to significantly higher token and API call costs compared to LightRAG, which seamlessly integrates new information without full reconstruction.",
+    "cited": [
+     3
+    ],
+    "closer": [
+     5
+    ],
+    "coverage_cited": 0.2,
+    "coverage_closer": 0.6
+   }
+  ],
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2644,
+   "completion_tokens": 437,
+   "estimated_prompt_tokens": 2660,
+   "finish_reason": "stop",
+   "duration_ms": 18165
+  }
+ ]
+}
