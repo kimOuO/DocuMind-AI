@@ -43,30 +43,55 @@ tokenizer = chat_tests.tokenizer
 ANSWER = "In Mix, the Comprehensiveness score of LightRAG falls from 61.2% to 59.6% for -High [1]."
 QUESTION = "Performance of the ablated variants"
 
+
 # A paper-like text file: numbered sections and subsections, long enough for several
 # chunks, with the ablation material inside subsection 4.2 and a table at its end.
-_FILLER = (
-    "The weather station on the hill records temperature, humidity and wind every "
-    "minute, and the readings are averaged over the hour before they are written to the "
-    "log. Visitors often ask why the readings differ from the valley; the answer is the "
-    "altitude and the exposure of the ridge. "
-)
+FILLERS = {
+    "weather": (
+        "The weather station on the hill records temperature, humidity and wind every minute, "
+        "and the readings are averaged over the hour before they are written to the log. "
+    ),
+    "garden": (
+        "Tomatoes, beans and courgettes were planted in raised beds along the south wall, and "
+        "the gardener waters them at dusk when the soil has cooled. "
+    ),
+    "railway": (
+        "The branch line timetable lists eleven departures on weekdays, with a longer gap "
+        "around noon when the single carriage is cleaned and refuelled at the depot. "
+    ),
+    "harbour": (
+        "Fishing boats return to the harbour before the tide turns, unloading crates of "
+        "mackerel onto the quay while gulls circle the mast lights. "
+    ),
+    "observatory": (
+        "The observatory dome opens after sunset so that the telescope mirror reaches the "
+        "night air temperature before the first exposures of the galaxy survey begin. "
+    ),
+}
+
+
+def _filler(theme: str) -> str:
+    return FILLERS[theme]
+
+
+# Each section gets filler of its own vocabulary, so that chunks of different sections do
+# not read as repeats of one another (D74 drops a supplementary chunk that repeats one).
 PAPER = (
     "1 INTRODUCTION\n"
-    + _FILLER * 12
+    + _filler("weather") * 12
     + "\n4 EVALUATION\n"
     + "4.1 EXPERIMENTAL SETTINGS\n"
     + "We use four datasets of documents and generate questions for each. " * 20
-    + _FILLER * 10
+    + _filler("garden") * 10
     + "\n4.2 ABLATION STUDIES\n"
     + "The -High variant removes high-level retrieval and keeps only the low level. " * 12
-    + _FILLER * 14
+    + _filler("railway") * 14
     + "The -Low variant removes low-level retrieval and keeps only the high level. " * 12
-    + _FILLER * 14
+    + _filler("harbour") * 14
     + "\n"
     + ABLATION_TABLE
     + "\n5 CONCLUSION\n"
-    + _FILLER * 12
+    + _filler("observatory") * 12
 )
 KEYWORDS = ("ablat", "variant")
 DATASET_WORDS = ("dataset",)
@@ -227,14 +252,33 @@ async def test_navigate_mode_plans_locates_and_then_answers_without_repeating_so
     ]
     assert navigation["items"][0]["label"] == "Table 2" and navigation["items"][1]["label"] is None
     assert navigation["located"] == 2
-    assert navigation["fetched"] >= 2 and navigation["kept"] == 0
+    # D74: the table's chunk is among the retrieved sources with its rows, so the target is
+    # covered and fetches nothing; the page target can only be judged by its page.
+    assert [i["coverage"] for i in navigation["items"]] == ["covered", "not_located", "unknown"]
+    assert navigation["items"][0]["candidates"] == 0
+    assert navigation["fetched"] >= 1 and navigation["kept"] == 0
     assert all(
         e["reason"] == "already among the retrieved sources"
         for e in navigation["log"]
         if not e["kept"]
     )
     assert navigation["excluded_budget"] == 0
-    assert navigation["embedding"] == {"texts": 2, "failed": None}
+    # Table 9 is required but not in the document: named as unmet. "page 1" is not: its
+    # chunks were all among the retrieved sources already.
+    assert navigation["unmet_required"] == ["Table 9"]
+    assert navigation["embedding"] == {"texts": 1, "failed": None}  # a covered need is not embedded
+    assert navigation["matrix"]["tables"] == ["Table 2 [1]"]
+    assert (
+        "Evidence matrix" in model.prompts[1]
+        and "Table 2 [1] (p. 1), higher is better" in model.prompts[1]
+    )
+    assert by_name["done"]["completeness"]["status"] in ("not_applicable", "complete", "incomplete")
+    assert by_name["done"]["analysis_status"] in (
+        "UNCERTAIN",
+        "SUPPORTED_AND_COMPLETE",
+        "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+        "FACTUALLY_INCORRECT",
+    )
     assert all(s["origin"] == "retrieval" for s in by_name["sources"])
     # The analyst saw the targets as candidates, and answered from the sources.
     assert "A Navigator proposed where to look and what is needed there" in model.prompts[1]
@@ -298,35 +342,74 @@ async def test_targets_rank_the_chunks_of_their_subsection_by_the_need_and_take_
     section, table = settings_items[1], settings_items[2]
     assert [i["located"] for i in settings_items] == [True, True, True]
     assert section["label"] == "4.2 ABLATION STUDIES" and table["label"] == "Table 2"
-    # The table came first (structural), then the subsection's relevant chunks.
+    # The table came first (structural) unless the Top-1 was the table itself, in which
+    # case the target is covered and fetched nothing (D74).
     table_ordinal = next(o for o, text in chunks.items() if text.startswith("Table 2:"))
     kept = [e for e in navigation["log"] if e["kept"] and e["target"] is not None]
-    assert kept[0]["ordinal"] == table_ordinal or table_ordinal in {
-        e["ordinal"]
-        for e in navigation["log"]
-        if e["reason"] == "already among the retrieved sources"
-    }
+    if table["coverage"] == "covered":
+        assert table["candidates"] == 0 and table["selected"] == []
+    else:
+        assert kept[0]["ordinal"] == table_ordinal and table["selected"][0] == table_ordinal
     assert section["selected"] and all(o in about for o in section["selected"])
     assert len(section["selected"]) <= 3
     low = [e for e in navigation["log"] if e["reason"] == "low relevance"]
     assert low and all(e["ordinal"] not in about for e in low)
     assert all(e["score"] is not None and e["score"] < 0.45 for e in low)
     # 4.1: its need (the datasets) picked the chunks about the datasets, not the filler
-    # before them, and the supplementary target went after the required ones each round.
+    # before them; being supplementary it went after every required target, and took at
+    # most the two chunks the supplementary cap allows (D74).
+    assert settings_items[0]["coverage"] in ("missing", "partial")  # the Top-1 may sit on its edge
     assert settings_items[0]["selected"] and all(
         o in datasets for o in settings_items[0]["selected"]
     )
-    assert any(x["reason"] == "low relevance" for x in settings_items[0]["excluded"])
-    first = {t: next(i for i, e in enumerate(kept) if e["target"] == t) for t in (0, 1, 2)}
-    assert first[0] > first[1] and first[0] > first[2]
+    assert len(settings_items[0]["selected"]) <= 2 == navigation["supplementary_used"] or (
+        navigation["supplementary_used"] == len(settings_items[0]["selected"])
+    )
+    first_supplementary = next(i for i, e in enumerate(kept) if e["target"] == 0)
+    assert all(e["target"] != 0 for e in kept[:first_supplementary])
+    assert len(kept[:first_supplementary]) >= 1
     assert len(added) == navigation["kept"] == sum(len(i["selected"]) for i in settings_items)
-    # The question's embedding was reused; the two distinct needs cost one batched call.
-    assert navigation["embedding"] == {"texts": 3, "failed": None}
-    assert [len(call) for call in embedder.calls[-2:]] == [1, 3]
+    # The question's embedding was reused; the needs of the targets that were fetched cost
+    # one batched call (a covered required target's need is not embedded).
+    assert navigation["embedding"]["failed"] is None
+    assert navigation["embedding"]["texts"] == len(embedder.calls[-1]) in (2, 3)
+    assert len(embedder.calls[-2]) == 1
     assert navigation["evidence_tokens"] <= 5_500 and navigation["budget"] > 0
     assert (
         "- Section 4.2 ABLATION STUDIES: definitions of the ablation variants" in model.prompts[1]
     )
+
+
+async def test_a_required_table_already_retrieved_stops_every_addition(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D74 (the G1 case): the Top-K already holds the table the question needs with its
+    rows; the target is covered, so nothing is fetched for it and the supplementary
+    targets are skipped — the Analyst answers from the retrieved sources alone."""
+    await add_paper(kim, tokenizer, KeywordEmbedder())
+    model = NavigatingOllama(
+        "- Table 2 | need: the win rates of the variants | priority: required | status: covered\n"
+        "- Section 4.1 | need: the datasets | priority: supplementary | status: missing\n"
+        "- Section 1 INTRODUCTION | need: background | priority: supplementary | status: missing"
+    )
+    use_model(kim, tokenizer, model)
+    mode(kim, "navigate", top_k=6)  # every chunk about the variants, the table among them
+
+    stream = events(ask(kim, new_conversation(kim), QUESTION))
+
+    by_name = dict(stream)
+    navigation = by_name["done"]["navigation"]
+    table, settings, intro = navigation["items"]
+    assert table["coverage"] == "covered" and table["candidates"] == 0
+    assert navigation["kept"] == 0 and navigation["supplementary_used"] == 0
+    assert all(s["origin"] != "navigation" for s in by_name["sources"])
+    assert settings["candidates"] == 0 and intro["candidates"] == 0
+    assert navigation["embedding"] == {"texts": 0, "failed": None}
+    assert navigation["unmet_required"] == []
+    # The matrix of the retrieved table still goes to the Analyst.
+    assert navigation["matrix"]["cells"] > 0 and "Evidence matrix" in model.prompts[1]
+    assert "Method definitions found in the sources" in model.prompts[1]
+    assert one(db, "SELECT count(*) FROM llm_calls") == (2,)
 
 
 async def test_when_the_need_embeddings_fail_the_question_alone_ranks_the_candidates(

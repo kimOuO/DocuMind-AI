@@ -12,7 +12,9 @@ Two experimental answer modes exist beside the default single call:
   located on the map, its candidate chunks are ranked by similarity to the question and
   to the need within the located range (tables and figures are taken by structure),
   and the targets take turns at the remaining evidence budget behind the original
-  Top-K; a second call answers from the merged sources.
+  Top-K — a required target the retrieved sources already cover fetches nothing, and
+  supplementary targets get at most two chunks in all (D74); a second call answers from
+  the merged sources.
 
 The document map is built from what the system already stores: the heading lines
 found in the chunks (sections and subsections with their chunk ranges), the section
@@ -38,6 +40,19 @@ from app.summarization.repository import StoredSummary
 NAVIGATION_MAX_OUTPUT_TOKENS = 400
 NAVIGATION_MIN_OUTPUT_TOKENS = 200
 CHUNKS_PER_TARGET = 3  # D73: at most this many chunks per target
+SUPPLEMENTARY_CAP = 2  # D74: at most this many supplementary chunks for the whole question
+OVERLAP_MAX = (
+    0.5  # D74: a supplementary chunk sharing this share of words with one selected repeats it
+)
+# D74: how far the retrieved sources already cover a target, judged by structure.
+COVERED, PARTIAL, MISSING, UNKNOWN, NOT_LOCATED = (
+    "covered",
+    "partial",
+    "missing",
+    "unknown",
+    "not_located",
+)
+_CONTENT_WORD = re.compile(r"[A-Za-z][A-Za-z-]{3,}")
 _CAPTION = re.compile(r"^\s*((?:Table|Figure|Fig\.)\s*(\d+))\s*[.:]\s*(.*)$", re.IGNORECASE)
 _NUMBERED_HEADING = re.compile(r"^(?P<number>\d{1,2}(?:\.\d{1,2})*)\s+(?P<title>\S.*)$")
 _PLAN_LINE = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s*(.+?)\s*$")
@@ -392,6 +407,47 @@ def _locate(line: str, entries: Sequence[MapEntry]) -> MapEntry | None:
     return best[1] if best else None
 
 
+def coverage_of(item: PlanItem, base: Sequence[RetrievedChunk]) -> tuple[str, str]:
+    """How far the retrieved sources already hold a target, by structure (D74): a table or
+    figure by its caption's chunk — with rows, or caption only; a section by how many of
+    its chunks are present. A place known only by its pages cannot be judged: it is
+    UNKNOWN, which is not COVERED. Nothing here reads the text for keywords."""
+    if not item.located:
+        return NOT_LOCATED, "not on the document map"
+    entry = item.entry
+    if entry is not None and entry.ordinal_start is not None and entry.ordinal_end is not None:
+        present = {
+            c.ordinal
+            for c in base
+            if c.document_id == entry.document_id
+            and entry.ordinal_start <= c.ordinal <= entry.ordinal_end
+        }
+        if entry.kind in ("table", "figure"):
+            chunk = next(
+                (
+                    c
+                    for c in base
+                    if c.document_id == entry.document_id and c.ordinal == entry.ordinal_start
+                ),
+                None,
+            )
+            if chunk is None:
+                return MISSING, f"the {entry.kind}'s chunk is not among the sources"
+            if entry.kind == "figure" or is_table_chunk(chunk.text):
+                return COVERED, f"the {entry.kind}'s chunk, with its rows, is among the sources"
+            return PARTIAL, "only the caption's chunk is among the sources, without table rows"
+        size = entry.ordinal_end - entry.ordinal_start + 1
+        if len(present) == size:
+            return COVERED, f"all {size} chunks of the section are among the sources"
+        if present:
+            return PARTIAL, f"{len(present)} of the section's {size} chunks are among the sources"
+        return MISSING, "none of the section's chunks is among the sources"
+    on_pages = any(c.page in item.pages for c in base)
+    if on_pages:
+        return UNKNOWN, "only the pages are known; a source on the page may not hold the target"
+    return MISSING, "no source on the target's pages"
+
+
 # --- selecting the evidence ------------------------------------------------------------
 
 
@@ -424,6 +480,7 @@ class EvidenceCandidate:
 class TargetCandidates:
     item: PlanItem
     candidates: list[EvidenceCandidate]  # best first
+    coverage: str = UNKNOWN  # D74: coverage_of the target by the retrieved sources
 
 
 @dataclass(frozen=True)
@@ -432,6 +489,24 @@ class Selection:
     log: list[dict[str, Any]]  # one entry per chunk considered
     targets: list[dict[str, Any]]  # one record per target
     evidence_tokens: int = 0
+    unmet_required: list[str] = field(default_factory=list)  # required targets that got nothing
+    supplementary_used: int = 0
+
+
+def _content_words(text: str) -> set[str]:
+    return {w.lower() for w in _CONTENT_WORD.findall(text)}
+
+
+def repeats(chunk: RetrievedChunk, selected: Sequence[RetrievedChunk]) -> bool:
+    """Whether the chunk's content words largely repeat one of the selected chunks."""
+    words = _content_words(chunk.text)
+    if not words:
+        return False
+    for other in selected:
+        theirs = _content_words(other.text)
+        if theirs and len(words & theirs) / len(words | theirs) >= OVERLAP_MAX:
+            return True
+    return False
 
 
 @dataclass
@@ -457,12 +532,15 @@ def select_evidence(
     budget: int,
     floor: float,
     per_target: int = CHUNKS_PER_TARGET,
+    supplementary_cap: int = SUPPLEMENTARY_CAP,
 ) -> Selection:
-    """The original Top-K whole; then the targets take turns adding their best remaining
-    candidate while the budget lasts — required targets before supplementary ones, and
-    within those the target whose next candidate scores highest (a named table first).
-    A candidate below the relevance floor, already present, or over the budget is
-    logged and skipped; a target adds at most `per_target` chunks."""
+    """The original Top-K whole; then the required targets take turns adding their best
+    remaining candidate while the budget lasts (the target whose next candidate scores
+    highest first, a named table before any score); then, with what budget is left, the
+    supplementary targets take turns up to `supplementary_cap` chunks in all — none when
+    every required target is already covered by the retrieved sources (D74). A candidate
+    below the relevance floor, already present, repeating selected text (supplementary),
+    or over the budget is logged and skipped; a target adds at most `per_target` chunks."""
     chunks: list[RetrievedChunk] = list(base)
     log: list[dict[str, Any]] = [
         {
@@ -483,6 +561,7 @@ def select_evidence(
             "need": t.item.need,
             "priority": t.item.priority,
             "status": t.item.status,
+            "coverage": t.coverage,
             "located": t.item.located,
             "label": t.item.entry.label if t.item.entry else None,
             "candidates": len(t.candidates),
@@ -507,69 +586,101 @@ def select_evidence(
         )
         records[turn.index]["excluded"].append({"ordinal": c.ordinal, "reason": reason})
 
+    required = [t for t in turns if t.target.item.priority == "required"]
+    supplementary = [t for t in turns if t.target.item.priority != "required"]
+    all_required_covered = bool(required) and all(t.target.coverage == COVERED for t in required)
+
     # Candidates that cannot be taken whatever the budget are settled first, so that the
     # turns only ever look at live candidates.
     for turn in turns:
         live = []
         for candidate in turn.queue:
-            if not candidate.clears(floor):
+            if turn.target.coverage == COVERED and turn in required:
+                drop(turn, candidate, "target already covered by the retrieved sources")
+            elif turn in supplementary and all_required_covered:
+                drop(turn, candidate, "all required evidence already covered")
+            elif not candidate.clears(floor):
                 drop(turn, candidate, "low relevance")
             else:
                 live.append(candidate)
         turn.queue = live
 
-    while any(t.queue for t in turns):
-        progressed = False
-        for turn in sorted((t for t in turns if t.queue), key=lambda t: t.rank):
-            candidate = turn.queue.pop(0)
-            c = candidate.chunk
-            if turn.taken >= per_target:
-                drop(turn, candidate, "target quota reached")
-                continue
-            if c.chunk_id in present:
-                owner = present[c.chunk_id]
-                drop(
-                    turn,
-                    candidate,
-                    "already among the retrieved sources"
-                    if owner is None
-                    else "already selected for another target",
+    supplementary_used = 0
+
+    def take_turns(group: list[_Turn], *, is_supplementary: bool) -> None:
+        nonlocal spent, supplementary_used
+        while any(t.queue for t in group):
+            for turn in sorted((t for t in group if t.queue), key=lambda t: t.rank):
+                candidate = turn.queue.pop(0)
+                c = candidate.chunk
+                if turn.taken >= per_target:
+                    drop(turn, candidate, "target quota reached")
+                    continue
+                if is_supplementary and supplementary_used >= supplementary_cap:
+                    drop(turn, candidate, "supplementary cap reached")
+                    continue
+                if c.chunk_id in present:
+                    drop(
+                        turn,
+                        candidate,
+                        "already among the retrieved sources"
+                        if present[c.chunk_id] is None
+                        else "already selected for another target",
+                    )
+                    continue
+                if is_supplementary and repeats(c, chunks):
+                    drop(turn, candidate, "repeats evidence already selected")
+                    continue
+                if spent + c.token_count > budget:
+                    drop(turn, candidate, "over the evidence budget")
+                    continue
+                chunks.append(
+                    RetrievedChunk(
+                        c.chunk_id,
+                        c.document_id,
+                        c.filename,
+                        c.page,
+                        c.ordinal,
+                        c.text,
+                        c.token_count,
+                        candidate.relevance,
+                        "navigation",
+                    )
                 )
-                continue
-            if spent + c.token_count > budget:
-                drop(turn, candidate, "over the evidence budget")
-                continue
-            chunks.append(
-                RetrievedChunk(
-                    c.chunk_id,
-                    c.document_id,
-                    c.filename,
-                    c.page,
-                    c.ordinal,
-                    c.text,
-                    c.token_count,
-                    candidate.relevance,
-                    "navigation",
+                present[c.chunk_id] = turn.index
+                spent += c.token_count
+                turn.taken += 1
+                if is_supplementary:
+                    supplementary_used += 1
+                log.append(
+                    {
+                        "ordinal": c.ordinal,
+                        "page": c.page,
+                        "kept": True,
+                        "reason": f"plan: {turn.target.item.location}",
+                        "target": turn.index,
+                        "score": candidate.relevance,
+                    }
                 )
-            )
-            present[c.chunk_id] = turn.index
-            spent += c.token_count
-            turn.taken += 1
-            progressed = True
-            log.append(
-                {
-                    "ordinal": c.ordinal,
-                    "page": c.page,
-                    "kept": True,
-                    "reason": f"plan: {turn.target.item.location}",
-                    "target": turn.index,
-                    "score": candidate.relevance,
-                }
-            )
-            records[turn.index]["selected"].append(c.ordinal)
-        if not progressed and not any(t.queue for t in turns):
-            break
-    return Selection(chunks, log, records, spent)
+                records[turn.index]["selected"].append(c.ordinal)
+
+    take_turns(required, is_supplementary=False)
+    take_turns(supplementary, is_supplementary=True)
+    # Required evidence that did not reach the prompt (not located, low relevance, over
+    # the budget): named so that nobody mistakes it for covered. A target whose every
+    # candidate was already among the sources did reach the prompt, by another road.
+    already = ("already among the retrieved sources", "already selected for another target")
+    unmet = [
+        t.target.item.location
+        for t in required
+        if t.target.coverage != COVERED
+        and not records[t.index]["selected"]
+        and not (
+            records[t.index]["excluded"]
+            and all(x["reason"] in already for x in records[t.index]["excluded"])
+        )
+    ]
+    return Selection(chunks, log, records, spent, unmet, supplementary_used)
 
 
 # --- the prompts -----------------------------------------------------------------------

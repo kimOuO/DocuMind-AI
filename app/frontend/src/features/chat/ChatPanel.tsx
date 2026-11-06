@@ -62,6 +62,14 @@ const REVISION_LABEL = {
   unverified: '核對仍有疑點',
 }
 
+const COVERAGE_LABEL: Record<string, string> = {
+  covered: '原始來源已涵蓋',
+  partial: '原始來源部分涵蓋',
+  missing: '原始來源未涵蓋',
+  unknown: '涵蓋與否無法判定',
+  not_located: '',
+}
+
 /** The Navigator's reading plan (D71 navigate mode): candidates checked against the document map. */
 function NavigationNote({ navigation }: { navigation: Navigation }) {
   if (navigation.skipped) {
@@ -72,12 +80,14 @@ function NavigationNote({ navigation }: { navigation: Navigation }) {
       <summary className="cursor-pointer text-muted">
         Navigator 計畫：{navigation.items.length} 項，定位 {navigation.located} 項，補充 {navigation.kept} 個片段
         {navigation.excluded_budget > 0 && `（${navigation.excluded_budget} 個因預算未納入）`}
+        {navigation.unmet_required && navigation.unmet_required.length > 0 && `；必要證據未納入：${navigation.unmet_required.join('、')}`}
       </summary>
       <ul className="mt-1 list-none p-0">
         {navigation.items.map((item) => (
           <li key={item.text} className={item.located ? '' : 'text-muted'}>
             {item.location ? `${item.location}：${item.need ?? ''}` : item.text}
             {item.located ? `（第 ${item.pages[0]}${item.pages.length > 1 ? `–${item.pages[item.pages.length - 1]}` : ''} 頁）` : '（文件中找不到）'}
+            {item.coverage && item.coverage !== 'not_located' && `，${COVERAGE_LABEL[item.coverage]}`}
             {item.selected && item.selected.length > 0 && `，補充 ${item.selected.length} 個片段`}
           </li>
         ))}

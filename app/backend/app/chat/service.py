@@ -14,13 +14,24 @@ import logging
 import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import partial
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.chat.citation_check import DoubtfulCitation, SourceText, check_citations
+from app.chat.evidence import (
+    MATRIX_TOKEN_BUDGET,
+    Completeness,
+    DirectionIssue,
+    analysis_preamble,
+    build_matrix,
+    check_completeness,
+    check_directions,
+    method_definitions,
+    overall_status,
+)
 from app.chat.memory import (
     MEMORY_TOKEN_BUDGET,
     HistoryMessage,
@@ -30,6 +41,7 @@ from app.chat.memory import (
 )
 from app.chat.navigation import (
     CHUNKS_PER_TARGET,
+    COVERED,
     EvidenceCandidate,
     MapEntry,
     PlanItem,
@@ -37,6 +49,7 @@ from app.chat.navigation import (
     analyst_preamble,
     build_map,
     build_navigation_prompt,
+    coverage_of,
     describe_retrieved,
     parse_plan,
     roles_preamble,
@@ -123,6 +136,12 @@ class Assessment:
     check: NumberCheck
     doubts: list[DoubtfulCitation]
     triggers: list[Trigger]
+    # D74: the direction of two-figure comparisons, and whether a question about variants
+    # got every variant under one condition; both read off the tables of the cited pages.
+    directions: list[DirectionIssue] = field(default_factory=list)
+    completeness: Completeness = field(
+        default_factory=lambda: Completeness("not_applicable", [], [], None)
+    )
 
 
 @dataclass(frozen=True)
@@ -246,6 +265,20 @@ class ChatService:
                         extra_calls.append(nav_result)
                     if items:
                         preamble = analyst_preamble(items)
+                    if kind != "summary" and nav_result is not None:
+                        # D74: the structured evidence of what the Analyst will read,
+                        # numbered as the answer prompt will number it.
+                        indexed = list(enumerate([*(chunks or []), *added], start=1))
+                        cells = build_matrix(indexed)
+                        definitions = method_definitions(indexed, {c.column for c in cells})
+                        preamble += analysis_preamble(
+                            cells, definitions, self._counter, budget=MATRIX_TOKEN_BUDGET
+                        )
+                        navigation["matrix"] = {
+                            "cells": len(cells),
+                            "tables": sorted({f"{c.table} [{c.source_index}]" for c in cells}),
+                            "definitions": [d.method for d in definitions],
+                        }
             evidence = (
                 await self._summary_evidence(
                     prepared, question, preamble=preamble, added=added, navigation=navigation
@@ -278,6 +311,9 @@ class ChatService:
                         "unresolved_numbers": [],
                         "overstated_claims": [],
                         "doubtful_citations": [],
+                        "direction_issues": [],
+                        "completeness": _completeness_payload(None),
+                        "analysis_status": None,
                         "finish_reason": None,
                         "revision": None,
                         "navigation": navigation,
@@ -329,8 +365,16 @@ class ChatService:
             complete = result.finish_reason.is_complete
             check = NumberCheck([], [], [], [], [])
             doubts = []
+            directions: list[DirectionIssue] = []
+            completeness: Completeness | None = None
             if complete:
-                check = await self._check_numbers(prepared, "".join(received), evidence, cited)
+                text = "".join(received)
+                pages = await self._pages(prepared, evidence, cited)
+                check = verify_numbers(text, pages)
+                # D74: the direction of two-figure comparisons, and whether a question
+                # about variants got every variant under one condition.
+                directions = check_directions(text, pages)
+                completeness = check_completeness(question, text, pages)
                 # AC-13 (D68): statements whose citation points at the wrong source.
                 doubts = check_citations(
                     "".join(received),
@@ -434,6 +478,20 @@ class ChatService:
                         }
                         for d in doubts
                     ],
+                    "direction_issues": [
+                        {
+                            "sentence": d.sentence,
+                            "left": d.left,
+                            "right": d.right,
+                            "status": d.status,
+                            "detail": d.detail,
+                        }
+                        for d in directions
+                    ],
+                    "completeness": _completeness_payload(completeness),
+                    "analysis_status": overall_status(check, directions, completeness)
+                    if completeness is not None
+                    else None,
                     "finish_reason": result.finish_reason.value,
                     "revision": None,
                     "navigation": navigation,
@@ -496,12 +554,6 @@ class ChatService:
             return prepared.question
         return rewritten
 
-    async def _check_numbers(
-        self, prepared: PreparedQuestion, answer: str, evidence: Evidence, cited: list[int]
-    ) -> NumberCheck:
-        """AC-26: look the answer's numbers up on the pages of the cited sources."""
-        return verify_numbers(answer, await self._pages(prepared, evidence, cited))
-
     async def _pages(
         self, prepared: PreparedQuestion, evidence: Evidence, cited: list[int]
     ) -> list[PageText]:
@@ -548,7 +600,15 @@ class ChatService:
             missing=missing,
             soft=self._settings.revision_soft_triggers,
         )
-        return Assessment(text, cited, check, doubts, triggers)
+        return Assessment(
+            text,
+            cited,
+            check,
+            doubts,
+            triggers,
+            check_directions(text, pages),
+            check_completeness(question, text, pages),
+        )
 
     def _notes(self, check: NumberCheck, evidence: Evidence, language: str) -> list[str]:
         notes = [evidence.note] if evidence.note else []
@@ -763,6 +823,26 @@ class ChatService:
                 }
                 for d in doubts
             ],
+            "direction_issues": [
+                {
+                    "sentence": d.sentence,
+                    "left": d.left,
+                    "right": d.right,
+                    "status": d.status,
+                    "detail": d.detail,
+                }
+                for d in (assessment.directions if assessment else [])
+            ],
+            "completeness": _completeness_payload(assessment.completeness if assessment else None),
+            "analysis_status": overall_status(
+                check,
+                assessment.directions if assessment else [],
+                assessment.completeness
+                if assessment
+                else Completeness("not_applicable", [], [], None),
+            )
+            if assessment
+            else None,
             "finish_reason": finish_reason,
             "revision": revision,
             "navigation": navigation,
@@ -942,9 +1022,30 @@ class ChatService:
         info["plan"] = result.text
         info["located"] = sum(1 for i in items if i.located)
 
+        # D74: what the retrieved sources already cover, by structure. A required target
+        # that is covered fetches nothing; when every required target is covered, the
+        # supplementary ones fetch nothing either.
+        coverage = {id(item): coverage_of(item, chunks) for item in items}
+        required_items = [i for i in items if i.priority == "required"]
+        all_required_covered = bool(required_items) and all(
+            coverage[id(i)][0] == COVERED for i in required_items
+        )
+        info["coverage"] = [
+            {"location": i.location, "status": coverage[id(i)][0], "reason": coverage[id(i)][1]}
+            for i in items
+        ]
         # One embedding call for every distinct need; when it fails, the question alone
         # ranks the candidates (and a question without an embedding leaves document order).
-        needs = list(dict.fromkeys(i.need for i in items if i.located and i.need))
+        needs = list(
+            dict.fromkeys(
+                i.need
+                for i in items
+                if i.located
+                and i.need
+                and not (i.priority == "required" and coverage[id(i)][0] == COVERED)
+                and not (i.priority != "required" and all_required_covered)
+            )
+        )
         need_vectors: dict[str, list[float]] = {}
         if needs:
             info["embedding"]["texts"] = len(needs)
@@ -959,6 +1060,7 @@ class ChatService:
         async with self._sessions() as session:
             repository = RetrievalRepository(session)
             for item in items:
+                status = coverage[id(item)][0]
                 document_id = (
                     item.entry.document_id
                     if item.entry
@@ -966,7 +1068,12 @@ class ChatService:
                 )
                 if not item.located or document_id is None:
                     # Not on the map, or an explicit page with several documents in scope.
-                    targets.append(TargetCandidates(item, []))
+                    targets.append(TargetCandidates(item, [], status))
+                    continue
+                if (item.priority == "required" and status == COVERED) or (
+                    item.priority != "required" and all_required_covered
+                ):
+                    targets.append(TargetCandidates(item, [], status))
                     continue
                 need_vector = need_vectors.get(item.need)
                 vectors = [v for v in (embedding, need_vector) if v is not None]
@@ -1015,7 +1122,7 @@ class ChatService:
                     )
                     candidates = [EvidenceCandidate(c, *scored(sc)) for c, sc in ranked]
                 info["fetched"] += len(candidates)
-                targets.append(TargetCandidates(item, candidates))
+                targets.append(TargetCandidates(item, candidates, status))
         selection = select_evidence(
             chunks,
             targets,
@@ -1033,6 +1140,8 @@ class ChatService:
             1 for e in selection.log if e["reason"] == "over the evidence budget"
         )
         info["evidence_tokens"] = selection.evidence_tokens
+        info["unmet_required"] = selection.unmet_required
+        info["supplementary_used"] = selection.supplementary_used
         return info, items, added, result
 
     async def _finish(
@@ -1067,6 +1176,16 @@ _UNAVAILABLE = {
         "closing": "摘要完成後可再問一次，或改問文件內容的具體問題。",
     },
 }
+
+
+def _completeness_payload(completeness: Completeness | None) -> dict[str, Any]:
+    c = completeness or Completeness("not_applicable", [], [], None)
+    return {
+        "status": c.status,
+        "required": c.required,
+        "missing": c.missing,
+        "condition": c.condition,
+    }
 
 
 def _scored(

@@ -216,6 +216,27 @@ export interface Revision {
 export type Stage = 'navigating' | 'generating' | 'verifying' | 'revising' | 'finalizing'
 
 /** What the experimental navigate mode did (D71); null in the other modes. */
+export interface DirectionIssue {
+  sentence: string
+  left: string
+  right: string
+  status: 'inconsistent' | 'uncertain' | 'incomparable'
+  detail: string
+}
+
+export interface Completeness {
+  status: 'complete' | 'incomplete' | 'not_applicable'
+  required: string[]
+  missing: string[]
+  condition: string | null
+}
+
+export type AnalysisStatus =
+  | 'SUPPORTED_AND_COMPLETE'
+  | 'FACTUALLY_CORRECT_BUT_INCOMPLETE'
+  | 'FACTUALLY_INCORRECT'
+  | 'UNCERTAIN'
+
 export interface NavigationTarget {
   text: string
   located: boolean
@@ -225,6 +246,8 @@ export interface NavigationTarget {
   need?: string
   priority?: 'required' | 'supplementary'
   status?: 'covered' | 'missing' | null
+  /** D74: how far the retrieved sources already held the target, judged by structure. */
+  coverage?: 'covered' | 'partial' | 'missing' | 'unknown' | 'not_located'
   label?: string | null
   candidates?: number
   selected?: number[]
@@ -243,6 +266,10 @@ export interface Navigation {
   budget?: number
   evidence_tokens?: number
   embedding?: { texts: number; failed: string | null }
+  coverage?: { location: string; status: string; reason: string }[]
+  unmet_required?: string[]
+  supplementary_used?: number
+  matrix?: { cells: number; tables: string[]; definitions: string[] }
   log?: { ordinal: number; page: number; kept: boolean; reason: string; target?: number | null; score?: number | null }[]
 }
 
@@ -315,6 +342,10 @@ export type AskEvent =
         finish_reason: string | null
         revision: Revision | null
         navigation?: Navigation | null
+        /** D74: two-figure comparisons checked against the tables, and completeness. */
+        direction_issues?: DirectionIssue[]
+        completeness?: Completeness
+        analysis_status?: AnalysisStatus | null
       }
     }
   | { name: 'error'; data: { code: string; detail: string } }
