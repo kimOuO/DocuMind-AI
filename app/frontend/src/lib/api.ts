@@ -15,6 +15,7 @@ export interface Health {
 }
 
 export type DocumentStatus = 'uploaded' | 'processing' | 'ready' | 'failed'
+export type SummaryStatus = 'none' | 'processing' | 'ready' | 'failed'
 
 export interface DocumentItem {
   id: string
@@ -22,7 +23,7 @@ export interface DocumentItem {
   media_type: string
   file_size: number
   status: DocumentStatus
-  summary_status: 'none' | 'processing' | 'ready' | 'failed'
+  summary_status: SummaryStatus
   error: string | null
   page_count: number | null
   chunk_count: number
@@ -103,7 +104,7 @@ export interface DocumentProgress {
 }
 
 export interface DocumentWatcher {
-  onStatus: (status: DocumentStatus) => void
+  onStatus: (status: { status: DocumentStatus; summary_status: SummaryStatus }) => void
   onProgress: (progress: DocumentProgress) => void
   /** Processing ended, or the stream could not continue. Time to reload the list. */
   onDone: () => void
@@ -122,7 +123,12 @@ export function watchDocument(id: string, watcher: DocumentWatcher): () => void 
     watcher.onDone()
   }
   source.addEventListener('status', (event) => {
-    watcher.onStatus((JSON.parse((event as MessageEvent<string>).data) as { status: DocumentStatus }).status)
+    watcher.onStatus(
+      JSON.parse((event as MessageEvent<string>).data) as {
+        status: DocumentStatus
+        summary_status: SummaryStatus
+      },
+    )
   })
   source.addEventListener('progress', (event) => {
     watcher.onProgress(JSON.parse((event as MessageEvent<string>).data) as DocumentProgress)
@@ -186,6 +192,28 @@ export interface Usage {
   limit: number
 }
 
+/** A figure of the answer found on a cited page, with the original text around it (AC-26). */
+export interface VerifiedNumber {
+  number: string
+  document_id: string
+  page: number
+  snippet: string
+}
+
+/** A table figure whose labels in the answer differ from the source table (D64). */
+export interface MislabelledNumber {
+  number: string
+  answer_labels: string[]
+  source_labels: string[][]
+  sentence: string
+}
+
+export interface NumberCheck {
+  verified_numbers: VerifiedNumber[]
+  unverified_numbers: string[]
+  mislabelled_numbers: MislabelledNumber[]
+}
+
 /** The events of an answer stream, in the order they arrive. */
 export type AskEvent =
   | { name: 'start'; data: { user_message_id: string; assistant_message_id: string; scope: SearchScope } }
@@ -195,7 +223,12 @@ export type AskEvent =
   | { name: 'usage'; data: Usage }
   | {
       name: 'done'
-      data: { status: MessageStatus; answered: boolean | null; cited: number[]; finish_reason: string }
+      data: NumberCheck & {
+        status: MessageStatus
+        answered: boolean | null
+        cited: number[]
+        finish_reason: string | null
+      }
     }
   | { name: 'error'; data: { code: string; detail: string } }
 

@@ -70,7 +70,11 @@ function sse(events: [string, unknown][]): Reply {
   }
 }
 
-function answerStream(overrides: { done?: object; scope?: object; pieces?: string[] } = {}) {
+const NO_NUMBERS = { unverified_numbers: [], verified_numbers: [], mislabelled_numbers: [] }
+
+function answerStream(
+  overrides: { done?: object; scope?: object; pieces?: string[]; sources?: object[]; route?: object } = {},
+) {
   const pieces = overrides.pieces ?? ['The ablated versions', ' perform worse [1].']
   return sse([
     [
@@ -81,25 +85,45 @@ function answerStream(overrides: { done?: object; scope?: object; pieces?: strin
         scope: overrides.scope ?? { mode: 'all', document_ids: [PAPER.id, NOTES.id] },
       },
     ],
-    ['route', { type: 'retrieval', standalone_question: QUESTION }],
-    ['sources', [SOURCE]],
+    ['route', overrides.route ?? { type: 'retrieval', standalone_question: QUESTION }],
+    ['sources', overrides.sources ?? [SOURCE]],
     ...pieces.map((text): [string, unknown] => ['delta', { text }]),
     ['usage', { prompt_tokens: 2099, completion_tokens: 298, limit: 10000 }],
     [
       'done',
-      { status: 'completed', answered: true, cited: [1], finish_reason: 'stop', ...overrides.done },
+      {
+        status: 'completed',
+        answered: true,
+        cited: [1],
+        finish_reason: 'stop',
+        ...NO_NUMBERS,
+        ...overrides.done,
+      },
     ],
   ])
 }
 
-function stored(status = 'completed', answered: boolean | null = true) {
+function stored(status = 'completed', answered: boolean | null = true, sources: object[] = [SOURCE]) {
   return {
     ...CONVERSATION,
     title: QUESTION.slice(0, 40),
     messages: [
       { id: 'u1', role: 'user', content: QUESTION, status: 'completed', answered: null, sources: [], created_at: '2026-11-05T09:00:01Z' },
-      { id: 'a1', role: 'assistant', content: 'The ablated versions perform worse [1].', status, answered, sources: [SOURCE], created_at: '2026-11-05T09:00:02Z' },
+      { id: 'a1', role: 'assistant', content: 'The ablated versions perform worse [1].', status, answered, sources, created_at: '2026-11-05T09:00:02Z' },
     ],
+  }
+}
+
+/** The routes every answer test needs: a new conversation, the stream, the stored result. */
+function routesFor(stream: Reply, storedDetail: object = stored()) {
+  return {
+    'GET /api/v1/conversations': [
+      { status: 200, body: [] },
+      { status: 200, body: [{ ...CONVERSATION, title: QUESTION.slice(0, 40) }] },
+    ],
+    'POST /api/v1/conversations': { status: 201, body: CONVERSATION },
+    [ASK]: stream,
+    [`GET /api/v1/conversations/${CONVERSATION.id}`]: { status: 200, body: storedDetail },
   }
 }
 
@@ -140,6 +164,84 @@ test('asking creates a conversation and shows the answer with its sources, scope
   expect(screen.getByLabelText('問題')).toHaveValue('')
   // The new conversation is selected, under the title the server gave it.
   expect(await screen.findByRole('option', { name: QUESTION.slice(0, 40) })).toBeInTheDocument()
+})
+
+test('summary sources show their section and page range, and added context is labelled', async () => {
+  const whole = { ...SOURCE, kind: 'summary', page_start: 1, page_end: 16, snippet: 'LightRAG combines…', score: null, origin: 'summary' }
+  const section = { ...whole, index: 2, page_start: 7, page_end: 9, section_title: '4 Evaluation', snippet: 'LightRAG wins 83.6%…' }
+  const context = { ...SOURCE, index: 3, origin: 'table_context', score: null, snippet: 'The -High variant removes…' }
+  const sources = [whole, section, context]
+  mockApi(
+    routesFor(
+      answerStream({ sources, route: { type: 'summary', standalone_question: 'summary this document.' } }),
+      stored('completed', true, sources),
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask('summary this document.')
+
+  const conversation = await screen.findByRole('list', { name: '對話內容' })
+  const headings = within(conversation)
+    .getAllByText((_, element) => element?.tagName === 'SUMMARY')
+    .map((element) => element.textContent)
+  expect(headings).toEqual([
+    '[1] paper.pdf · 第 1–16 頁 · 全文摘要',
+    '[2] paper.pdf · 第 7–9 頁 · 章節摘要：4 Evaluation',
+    '[3] paper.pdf · 第 8 頁 · 表格之後的討論',
+  ])
+  expect(screen.getByText('問題類型：摘要')).toBeInTheDocument()
+})
+
+test('the number check lists the figures found on the cited pages and flags the rest', async () => {
+  mockApi(
+    routesFor(
+      answerStream({
+        done: {
+          unverified_numbers: ['12,345'],
+          verified_numbers: [{ number: '83.6%', document_id: PAPER.id, page: 7, snippet: '…LightRAG 83.6%…' }],
+          mislabelled_numbers: [
+            {
+              number: '59.6%',
+              answer_labels: ['Overall', 'Mix'],
+              source_labels: [['Comprehensiveness', 'Mix', '-High']],
+              sentence: 'In Mix, the Overall score is 59.6%.',
+            },
+          ],
+        },
+      }),
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  expect(await screen.findByText('數字核對：1 個在引用的頁面找到、1 個找不到、1 個標籤不符')).toBeInTheDocument()
+  expect(screen.getByText(/83\.6% · 第 7 頁/)).toBeInTheDocument()
+  expect(screen.getByText('…LightRAG 83.6%…')).toBeInTheDocument()
+  expect(screen.getByText('找不到：12,345')).toBeInTheDocument()
+  expect(screen.getByText('標籤不符：59.6%（答案：Overall、Mix；原文：Comprehensiveness、Mix、-High）')).toBeInTheDocument()
+})
+
+test('an answer without numbers shows no number check', async () => {
+  mockApi(routesFor(answerStream()))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  await screen.findByRole('list', { name: '對話內容' })
+  expect(screen.queryByText(/數字核對/)).not.toBeInTheDocument()
+})
+
+test('a follow-up question that was rewritten shows the standalone question', async () => {
+  const rewritten = 'LightRAG 的雙層檢索的缺點是什麼？'
+  mockApi(routesFor(answerStream({ route: { type: 'retrieval', standalone_question: rewritten } })))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask('那它的缺點呢？')
+
+  expect(await screen.findByText(`改寫後的問題：${rewritten}`)).toBeInTheDocument()
+  expect(screen.getByText('問題類型：檢索')).toBeInTheDocument()
 })
 
 test('the answer is rendered as formatted text, with citations kept literally', async () => {

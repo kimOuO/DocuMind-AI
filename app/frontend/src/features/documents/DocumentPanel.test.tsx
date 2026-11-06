@@ -99,7 +99,7 @@ test('lists my documents with their size and status', async () => {
   expect(within(paper).getByText(/1\.1 MB/)).toBeInTheDocument()
   expect(within(paper).getByText('已上傳，等待處理')).toBeInTheDocument()
   const notes = screen.getByText('notes.txt').closest('li')!
-  expect(within(notes).getByText('可以提問 · 1 頁 · 1 個片段')).toBeInTheDocument()
+  expect(within(notes).getByText('可以提問 · 1 頁 · 1 個片段 · 尚無摘要')).toBeInTheDocument()
 })
 
 test('uploading a file sends it and refreshes the list', async () => {
@@ -218,8 +218,52 @@ test('follows a document that is being processed and shows its progress', async 
 
   act(() => stream.emit('done', { status: 'ready', summary_status: 'none' }))
 
-  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段')).toBeInTheDocument()
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 尚無摘要')).toBeInTheDocument()
   expect(stream.readyState).toBe(FakeEventSource.CLOSED)
+})
+
+test('follows the summary after indexing and shows its progress and outcome', async () => {
+  const ready = { ...PAPER, status: 'ready', page_count: 16, chunk_count: 48 }
+  mockApi({
+    'GET /api/v1/documents': [
+      { status: 200, body: [PAPER] },
+      { status: 200, body: [{ ...ready, summary_status: 'processing' }] },
+      { status: 200, body: [{ ...ready, summary_status: 'ready' }] },
+    ],
+  })
+  render(<DocumentPanel />)
+  await screen.findByText('已上傳，等待處理')
+  const stream = streamFor(PAPER.id)!
+
+  // Indexing is done: the document can be asked about while its summary is being made.
+  act(() => stream.emit('status', { status: 'ready', summary_status: 'processing' }))
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')).toBeInTheDocument()
+  act(() => stream.emit('progress', { kind: 'summary', stage: 'summarizing', current: 3, total: 9 }))
+  expect(screen.getByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中 3/9')).toBeInTheDocument()
+
+  act(() => stream.emit('done', { status: 'ready', summary_status: 'ready' }))
+
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要已完成')).toBeInTheDocument()
+  expect(stream.readyState).toBe(FakeEventSource.CLOSED)
+})
+
+test('a ready document whose summary is still being made is followed', async () => {
+  const ready = { ...PAPER, status: 'ready', summary_status: 'processing', page_count: 16, chunk_count: 48 }
+  mockApi({ 'GET /api/v1/documents': { status: 200, body: [ready] } })
+  render(<DocumentPanel />)
+
+  await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')
+
+  expect(streamFor(PAPER.id)).toBeDefined()
+})
+
+test('a failed summary is said so next to the document', async () => {
+  const ready = { ...PAPER, status: 'ready', summary_status: 'failed', page_count: 16, chunk_count: 48 }
+  mockApi({ 'GET /api/v1/documents': { status: 200, body: [ready] } })
+  render(<DocumentPanel />)
+
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要失敗')).toBeInTheDocument()
+  expect(FakeEventSource.instances).toHaveLength(0)
 })
 
 test('does not follow documents that are already finished', async () => {

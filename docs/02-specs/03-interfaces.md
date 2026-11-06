@@ -125,6 +125,8 @@
 | `progress` | `{"kind": "index", "stage": "embedding", "current": 2, "total": 5}` |
 | `status` | `{"status": "ready", "summary_status": "processing"}` |
 | `done` | `{"status": "ready", "summary_status": "ready"}` |
+
+前端依 `status.summary_status` 與 `kind=summary` 的 `progress` 顯示摘要的狀態與進度（例：「可以提問 · 16 頁 · 46 個片段 · 摘要產生中 3/9」）；索引完成（`status` 變 `ready`）時即可提問，不必等摘要（AC-11）。摘要仍在產生的文件，前端重新整理後會繼續跟進度。
 | `error` | `{"kind": "summary", "detail": "…"}` |
 
 ### 1.5 對話與提問
@@ -199,6 +201,9 @@
 ```
 
 - 前端必須顯示這次的搜尋範圍：`scope.mode` 為 `all` 時顯示「所有可用文件」，為 `selected` 時列出所選的文件。
+- 前端對每筆來源顯示檔名、頁碼（範圍以「第 7–9 頁」表示）與來歷：檢索結果顯示相似度，`table_context` 標「表格之後的討論」，摘要來源標「全文摘要」或「章節摘要：標題」；點開看片段（AC-11，2026-11-06）。
+- 前端顯示 `route`：問題類型（檢索／摘要），改寫後的問題與原問題不同時一併顯示（AC-16 的可見化）。
+- 前端在回答後顯示數字核對的結果：找到的數字附頁碼與原文片段、找不到的數字、標籤不符的數字與兩邊的標籤（AC-26）。這些結果只隨 `done` 事件送出，不存入訊息；重新開啟對話時只剩回答文字內附的說明。
 - `kind=chunk`：原文切塊，`page_start` 與 `page_end` 相同，`score` 為相似度。
 - `kind=summary`：章節摘要，帶章節標題與頁碼範圍，`score` 為 `null`。
 - `origin`（2026-11-06 補入，D62）：來源怎麼來的。`retrieval` 是向量檢索的 Top-K；`table_context` 是檢索結果含表格時，依文件結構補上的、緊接在該表格之後且屬於同一章節的討論段（最多兩塊，`score` 為 `null`，排在檢索結果之後，一樣受證據預算約束）；`summary` 是摘要類回答的來源。P4 比較不同 Top-K 時以 `origin=retrieval` 的來源為準。

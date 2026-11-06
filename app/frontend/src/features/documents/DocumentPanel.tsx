@@ -9,6 +9,7 @@ import {
   type DocumentItem,
   type DocumentProgress,
   type DocumentStatus,
+  type SummaryStatus,
 } from '../../lib/api'
 import { ConfirmDialog } from '../../components/ConfirmDialog'
 import { formatSize } from '../../lib/format'
@@ -34,6 +35,22 @@ const STAGE_LABEL: Record<string, string> = {
   summarizing: '產生摘要',
 }
 
+const SUMMARY_LABEL: Record<SummaryStatus, string> = {
+  none: '尚無摘要',
+  processing: '摘要產生中',
+  ready: '摘要已完成',
+  failed: '摘要失敗',
+}
+
+/** Still being worked on: indexing, or the summary that follows it (AC-11). */
+function isUnfinished(document: DocumentItem): boolean {
+  return (
+    document.status === 'uploaded' ||
+    document.status === 'processing' ||
+    document.summary_status === 'processing'
+  )
+}
+
 /** What a document is doing right now, or what became of it. */
 function describeState(document: DocumentItem, progress: DocumentProgress | undefined): string {
   if (document.status === 'processing' && progress?.stage) {
@@ -42,7 +59,13 @@ function describeState(document: DocumentItem, progress: DocumentProgress | unde
   }
   if (document.status === 'ready') {
     const pages = document.page_count === null ? '' : ` · ${document.page_count} 頁`
-    return `${STATUS_LABEL.ready}${pages} · ${document.chunk_count} 個片段`
+    const chunks = document.chunk_count ? ` · ${document.chunk_count} 個片段` : ''
+    // The summary is made after indexing; its sections are counted as they are done.
+    const counted =
+      document.summary_status === 'processing' && progress?.kind === 'summary' && progress.total
+        ? ` ${progress.current ?? 0}/${progress.total}`
+        : ''
+    return `${STATUS_LABEL.ready}${pages}${chunks} · ${SUMMARY_LABEL[document.summary_status]}${counted}`
   }
   return STATUS_LABEL[document.status]
 }
@@ -107,15 +130,11 @@ export function DocumentPanel({
     if (documents !== null) onChange?.(documents)
   }, [documents, onChange])
 
-  // Follow every document that is waiting or being processed, and stop
-  // following those that are finished or gone.
+  // Follow every document that is waiting, being indexed or being summarised,
+  // and stop following those that are finished or gone.
   useEffect(() => {
     const open = watchers.current
-    const unfinished = new Set(
-      (documents ?? [])
-        .filter((d) => d.status === 'uploaded' || d.status === 'processing')
-        .map((d) => d.id),
-    )
+    const unfinished = new Set((documents ?? []).filter(isUnfinished).map((d) => d.id))
     for (const [id, stop] of open) {
       if (!unfinished.has(id)) {
         stop()
@@ -125,10 +144,20 @@ export function DocumentPanel({
     for (const id of unfinished) {
       if (open.has(id)) continue
       const stop = watchDocument(id, {
-        onStatus: (status) =>
+        onStatus: ({ status, summary_status }) => {
           setDocuments((current) =>
-            current === null ? current : current.map((d) => (d.id === id ? { ...d, status } : d)),
-          ),
+            current === null
+              ? current
+              : current.map((d) => (d.id === id ? { ...d, status, summary_status } : d)),
+          )
+          // Indexed: the list now has the page and chunk counts, and the document can
+          // be asked about while its summary is still being made.
+          if (status === 'ready') {
+            listDocuments()
+              .then(setDocuments)
+              .catch((caught: unknown) => setError(describe(caught)))
+          }
+        },
         onProgress: (update) => setProgress((current) => ({ ...current, [id]: update })),
         onDone: () => {
           open.delete(id)

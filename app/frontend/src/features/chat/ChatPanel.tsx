@@ -13,6 +13,7 @@ import {
   type Conversation,
   type DocumentItem,
   type MessageStatus,
+  type NumberCheck,
   type SearchScope,
   type Source,
   type Usage,
@@ -44,24 +45,73 @@ function describe(error: unknown): string {
   return '無法連線到伺服器，請稍後再試。'
 }
 
+const ROUTE_LABEL: Record<string, string> = { retrieval: '檢索', summary: '摘要' }
+
+function pageRange(first: number, last: number): string {
+  return first === last ? `第 ${first} 頁` : `第 ${first}–${last} 頁`
+}
+
+/** Where a source came from: a search hit with its similarity, a table's discussion, or a summary. */
+function describeOrigin(source: Source): string {
+  if (source.kind === 'summary') {
+    return source.section_title === null ? '全文摘要' : `章節摘要：${source.section_title}`
+  }
+  if (source.origin === 'table_context') return '表格之後的討論'
+  return source.score === null ? '' : `相似度 ${source.score.toFixed(2)}`
+}
+
 function SourceList({ sources }: { sources: Source[] }) {
   if (sources.length === 0) return null
   return (
     <ul className="mt-2 list-none p-0 text-sm">
-      {sources.map((source) => (
-        <li key={source.index} className="border-t border-border py-1">
-          <details>
-            <summary className="cursor-pointer">
-              [{source.index}] {source.filename} · 第 {source.page_start} 頁
-              {source.score !== null && (
-                <span className="text-muted"> · 相似度 {source.score.toFixed(2)}</span>
-              )}
-            </summary>
-            <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
-          </details>
-        </li>
-      ))}
+      {sources.map((source) => {
+        const origin = describeOrigin(source)
+        return (
+          <li key={source.index} className="border-t border-border py-1">
+            <details>
+              <summary className="cursor-pointer">
+                [{source.index}] {source.filename} · {pageRange(source.page_start, source.page_end)}
+                {origin && <span className="text-muted"> · {origin}</span>}
+              </summary>
+              <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
+            </details>
+          </li>
+        )
+      })}
     </ul>
+  )
+}
+
+/** How the answer's figures compare with the original text of the cited pages (AC-26). */
+function NumberCheckView({ check }: { check: NumberCheck }) {
+  const { verified_numbers: verified, unverified_numbers: unverified, mislabelled_numbers: mislabelled } = check
+  if (verified.length + unverified.length + mislabelled.length === 0) return null
+  const parts = [`${verified.length} 個在引用的頁面找到`]
+  if (unverified.length > 0) parts.push(`${unverified.length} 個找不到`)
+  if (mislabelled.length > 0) parts.push(`${mislabelled.length} 個標籤不符`)
+  return (
+    <details className="mt-2 text-sm">
+      <summary className="cursor-pointer text-muted">數字核對：{parts.join('、')}</summary>
+      {verified.length > 0 && (
+        <ul className="mt-1 list-none p-0">
+          {verified.map((item) => (
+            <li key={`${item.number}-${item.page}`} className="py-1">
+              <span>
+                {item.number} · 第 {item.page} 頁
+              </span>
+              <p className="whitespace-pre-wrap break-words text-muted">{item.snippet}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+      {unverified.length > 0 && <p className="text-danger">找不到：{unverified.join('、')}</p>}
+      {mislabelled.map((item) => (
+        <p key={item.number} className="text-danger">
+          標籤不符：{item.number}（答案：{item.answer_labels.join('、')}；原文：
+          {item.source_labels.map((labels) => labels.join('、')).join(' / ')}）
+        </p>
+      ))}
+    </details>
   )
 }
 
@@ -118,7 +168,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const [asking, setAsking] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [scope, setScope] = useState<SearchScope | null>(null)
+  const [route, setRoute] = useState<{ type: string; standalone_question: string; asked: string } | null>(null)
   const [usage, setUsage] = useState<Usage | null>(null)
+  const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
 
   useEffect(() => {
@@ -142,7 +194,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   async function open(id: string | null) {
     setActiveId(id)
     setScope(null)
+    setRoute(null)
     setUsage(null)
+    setCheck(null)
     setError(null)
     if (id === null) {
       setMessages([])
@@ -173,7 +227,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     setAsking(true)
     setError(null)
     setScope(null)
+    setRoute(null)
     setUsage(null)
+    setCheck(null)
     let conversationId = activeId
     try {
       if (conversationId === null) {
@@ -217,6 +273,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
             ])
             break
           }
+          case 'route':
+            setRoute({ ...askEvent.data, asked: text })
+            break
           case 'sources':
             updateAnswer((answer) => ({ ...answer, sources: askEvent.data }))
             break
@@ -232,6 +291,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
               status: askEvent.data.status,
               answered: askEvent.data.answered,
             }))
+            setCheck(askEvent.data)
             break
           case 'error':
             updateAnswer((answer) => ({ ...answer, status: 'failed' }))
@@ -343,6 +403,12 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
       )}
 
       {scopeText !== null && <p className="mt-2 text-sm text-muted">這次搜尋的範圍：{scopeText}</p>}
+      {route !== null && (
+        <p className="text-sm text-muted">問題類型：{ROUTE_LABEL[route.type] ?? route.type}</p>
+      )}
+      {route !== null && route.standalone_question !== route.asked && (
+        <p className="text-sm text-muted">改寫後的問題：{route.standalone_question}</p>
+      )}
       {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
         <p className="text-sm text-muted">
           這次呼叫的 token：輸入 {usage.prompt_tokens.toLocaleString()} + 回答{' '}
@@ -351,6 +417,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
           {usage.limit.toLocaleString()}
         </p>
       )}
+      {check !== null && <NumberCheckView check={check} />}
       {error && (
         <p role="alert" className="mt-2 text-sm text-danger">
           {error}
