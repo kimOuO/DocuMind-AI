@@ -278,3 +278,19 @@ def test_the_analysts_step_numbering_is_stripped_from_the_answer() -> None:
     )
     # A single parenthesised number is not a step list.
     assert strip_step_numbering("(1) is the first equation.") == "(1) is the first equation."
+
+
+def test_the_compared_figure_after_a_correct_one_is_not_rewritten() -> None:
+    """The real case from the summary batch: "Removing high-level retrieval (-High) leads to
+    a drop in Comprehensiveness (65.2% vs. 67.6%)" — 65.2% is -High's, 67.6% is the figure
+    it is compared with. The second figure is not a claim about -High, so nothing is
+    swapped, least of all the method's name."""
+    text = (
+        "Removing high-level retrieval (-High) leads to a drop in Comprehensiveness "
+        "(65.2% vs. 67.6%) and Diversity (72.8% vs. 76.4%) in Agri."
+    )
+
+    result = correct(text, pages(ABLATION), aliases=ALIASES)
+
+    assert result.text == text and result.edits == [] and result.reverted == []
+    assert result.remaining == []

@@ -221,7 +221,14 @@ def _answers(runs: list[dict]) -> str:
 
 
 def main() -> None:
-    runs = [json.loads(p.read_text()) for p in sorted((HERE / "runs").glob("*.json"))]
+    runs = [
+        run
+        for run in (
+            json.loads(p.read_text()) for p in sorted((HERE / "runs").glob("*.json"))
+        )
+        if isinstance(run, dict)
+        and "question" in run  # not the summary-verification records
+    ]
     rows = [analyse(run) for run in runs]
     (HERE / "analysis.json").write_text(
         json.dumps(rows, indent=1, ensure_ascii=False) + "\n"

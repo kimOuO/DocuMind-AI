@@ -132,6 +132,7 @@ class Correction:
     removed: list[str] = field(default_factory=list)  # text taken out
     remaining: list[str] = field(default_factory=list)  # faults the pass could not fix
     uncertain: list[DirectionIssue] = field(default_factory=list)  # not decidable, left alone
+    reverted: list[dict[str, Any]] = field(default_factory=list)  # edits undone: no net gain
 
 
 @dataclass(frozen=True)
@@ -287,6 +288,12 @@ def _figure_edit(
     return name_edit or figure_edit
 
 
+def _compatible(first: Sequence[str | None], second: Sequence[str | None]) -> bool:
+    """The second figure's labels do not contradict the first's: each is the same or not
+    given (the figure after "vs." often has no label of its own)."""
+    return all(b is None or a == b for a, b in zip(first, second, strict=False))
+
+
 def _contradicted(outcomes: Sequence[LabelOutcome], text: str) -> list[LabelOutcome]:
     """The contradicted figures that are a statement of their own: a figure right after a
     comparison bridge ("34.8% vs. 67.6%") with the same labels as the one before it is
@@ -294,10 +301,13 @@ def _contradicted(outcomes: Sequence[LabelOutcome], text: str) -> list[LabelOutc
     kept: list[LabelOutcome] = []
     previous: LabelOutcome | None = None
     for outcome in outcomes:
+        # Whatever the first figure's own status: "(65.2% vs. 67.6%)" under one method
+        # names the method's figure first and the figure it is compared with second.
         partner = (
             previous is not None
             and previous.sentence_span == outcome.sentence_span
-            and previous.claim == outcome.claim
+            and _compatible(previous.claim, outcome.claim)
+            and previous.comparator == outcome.comparator
             and _BRIDGE.match(text[previous.end : outcome.position]) is not None
         )
         if outcome.status == "contradicted" and not partner:
@@ -329,6 +339,7 @@ def correct(
         removed.append(cut)
     if not cells:
         return Correction(working, edits, removed, [], [])
+    unverified_removed = working
 
     planned: list[_Edit] = []
     seen: set[tuple[int, int]] = set()
@@ -379,6 +390,17 @@ def correct(
     edits.reverse()
 
     # The checks run again on the result; what still fails is reported, not fixed again.
+    # Edits that leave as many faults as before are undone: the checks' own reading was
+    # not good enough to act on, and the text goes back to what the model wrote (the
+    # removals of figures found nowhere stay).
+    def faults(candidate: str) -> int:
+        return len(_contradicted(label_outcomes(candidate, pages, aliases), candidate)) + sum(
+            1 for i in check_directions(candidate, pages, aliases) if i.status == "inconsistent"
+        )
+
+    reverted: list[dict[str, Any]] = []
+    if edits and faults(working) >= faults(unverified_removed):
+        reverted, edits, working = edits, [], unverified_removed
     remaining = [
         f"{o.number} ({', '.join(o.answer_labels)})"
         for o in _contradicted(label_outcomes(working, pages, aliases), working)
@@ -388,4 +410,4 @@ def correct(
         f'"{i.cue}" ({i.left} / {i.right})' for i in after if i.status == "inconsistent"
     )
     uncertain = [i for i in after if i.status == "uncertain"]
-    return Correction(working, edits, removed, remaining, uncertain)
+    return Correction(working, edits, removed, remaining, uncertain, reverted)

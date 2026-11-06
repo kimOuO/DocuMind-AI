@@ -556,6 +556,7 @@ async def test_navigate_mode_leaves_a_correct_answer_untouched(
         "edits": [],
         "removed": [],
         "remaining": [],
+        "reverted": [],
         "uncertain": [],
         "step_numbering_stripped": False,
     }

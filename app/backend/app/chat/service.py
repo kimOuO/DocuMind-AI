@@ -691,6 +691,7 @@ class ChatService:
             "edits": fixed.edits,
             "removed": fixed.removed,
             "remaining": fixed.remaining,
+            "reverted": fixed.reverted,
             "uncertain": [
                 {"sentence": i.sentence, "cue": i.cue, "left": i.left, "right": i.right}
                 for i in fixed.uncertain

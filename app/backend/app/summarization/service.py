@@ -229,6 +229,7 @@ class SummaryJobRunner:
                 "edits": fixed.edits,
                 "removed": fixed.removed,
                 "remaining": fixed.remaining,
+                "reverted": fixed.reverted,
                 "mislabelled_after": [m.number for m in after.mislabelled],
                 "changed": fixed.text != text,
             }
