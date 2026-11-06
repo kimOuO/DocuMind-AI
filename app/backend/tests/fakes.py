@@ -61,10 +61,17 @@ class RecordingScheduler:
 class StubSummariser:
     """Plays the model for summary calls: answers from what the prompt asked for."""
 
-    def __init__(self, *, fail_on_call: int | None = None, cut_short: bool = False) -> None:
+    def __init__(
+        self,
+        *,
+        fail_on_call: int | None = None,
+        cut_short: bool = False,
+        cut_short_calls: frozenset[int] = frozenset(),
+    ) -> None:
         self.prompts: list[str] = []
         self.fail_on_call = fail_on_call
-        self.cut_short = cut_short
+        self.cut_short = cut_short  # every call is cut short
+        self.cut_short_calls = cut_short_calls  # only these calls (by index) are cut short
         self.pause: asyncio.Event | None = None
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
@@ -84,13 +91,14 @@ class StubSummariser:
             text = "Condensed: " + " ".join(re.findall(r"Summary of ([^:]+):", prompt))
         else:
             text = "Overall: the document proposes LightRAG; results 67.6% (p. 8)."
+        cut = self.cut_short or (len(self.prompts) - 1) in self.cut_short_calls
         return httpx.Response(
             200,
             json={
                 "response": text,
                 "done": True,
-                "done_reason": "length" if self.cut_short else "stop",
+                "done_reason": "length" if cut else "stop",
                 "prompt_eval_count": 1_200,
-                "eval_count": 300 if self.cut_short else 40,
+                "eval_count": 300 if cut else 40,
             },
         )

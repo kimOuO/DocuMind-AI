@@ -230,6 +230,28 @@ async def test_a_failing_summary_leaves_the_document_ready_and_can_be_retried(
     assert len([r for r in summaries(db, document_id) if r[0] == "section"]) == 8
 
 
+async def test_a_summary_cut_short_once_is_retried_once_and_the_retry_is_stored(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D75: the first section call runs past the output limit; the job asks once more, with
+    a reminder, and stores the complete retry. Both calls are in the ledger."""
+    model = StubSummariser(cut_short_calls=frozenset({0}))
+    _, _, dispatcher = runners(tokenizer, model)
+    document_id, job_id = upload(user, "notes.md", NOTE)
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    assert "ran past the length limit" in model.prompts[1]
+    assert model.prompts[1].startswith(model.prompts[0])
+    assert any(row[0] == "section" for row in summaries(db, document_id))
+    assert jobs(db, document_id)[-1][1] == "completed"
+    finish = db.execute(
+        "SELECT finish_reason FROM llm_calls WHERE purpose = 'section_summary' ORDER BY created_at"
+    ).fetchall()
+    reasons = [f for (f,) in finish]
+    assert reasons[0] in ("output_limit", "context_exhausted") and reasons[1] == "stop"
+
+
 async def test_a_summary_the_model_cut_short_is_not_stored(
     user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:

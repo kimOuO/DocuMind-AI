@@ -42,6 +42,10 @@ from app.summarization.prompting import (
 logger = logging.getLogger(__name__)
 
 MAX_REASON_LENGTH = 500
+RETRY_REMINDER = (
+    "\n\n(The previous attempt ran past the length limit and was discarded. Keep to the word "
+    "limit above: a compact summary, not a list of every item.)\n"
+)
 
 
 class SummaryOutcome(StrEnum):
@@ -243,6 +247,16 @@ class SummaryJobRunner:
         result = await self._gateway.generate(
             prompt, purpose=purpose, max_output_tokens=SUMMARY_MAX_OUTPUT_TOKENS, context=context
         )
+        if not result.finish_reason.is_complete:
+            # The model ran past the output limit (seen twice on one appendix unit, D75):
+            # one more attempt, told so; the text that was cut is never used.
+            logger.info("Summary of %s ran past the output limit; retrying once", what)
+            result = await self._gateway.generate(
+                prompt + RETRY_REMINDER,
+                purpose=purpose,
+                max_output_tokens=SUMMARY_MAX_OUTPUT_TOKENS,
+                context=context,
+            )
         if not result.finish_reason.is_complete:
             raise IncompleteSummary(
                 f"The model stopped before finishing the summary of {what} "
