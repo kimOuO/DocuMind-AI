@@ -1,0 +1,592 @@
+{
+ "arm": "A",
+ "question": "Q3",
+ "question_text": "Performance of ablated versions of LightRAG",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": false
+  }
+ },
+ "elapsed_seconds": 93.9,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Performance of ablated versions of LightRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.6268,
+   "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as referenc"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6038,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language cont"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.574,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Liangh"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.5588,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe at"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.5575,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: htt"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "table_context",
+   "score": null,
+   "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, lead"
+  }
+ ],
+ "final_answer": "The performance of ablated versions of LightRAG is evaluated using NaiveRAG as a reference and is detailed in Table 2 [1]. The ablation studies focus on analyzing the impact of the dual-level retrieval paradigm and the effectiveness of graph-based text indexing in LightRAG [2].\n\n### Main Findings\n1. **Low-level-only Retrieval (LightRAG -High)**: Removing high-order retrieval leads to a significant performance decline across nearly all datasets and metrics. This variant emphasizes specific information and entities, which can limit its ability to address complex queries requiring comprehensive insights [6].\n2. **High-level-only Retrieval (LightRAG -Low)**: This variant prioritizes broader content by leveraging entity-wise relationships. While it excels in comprehensiveness, it sacrifices depth in examining specific entities, which can limit its ability to provide highly detailed insights [6].\n3. **Hybrid Mode (Full LightRAG)**: Combining the strengths of both low-level and high-level retrieval methods, the hybrid mode ensures balanced performance across multiple dimensions by retrieving a broader set of relationships while conducting in-depth exploration of specific entities [6].\n4. **Semantic Graph-based Indexing (LightRAG -Origin)**: Eliminating the use of original text in the retrieval process does not significantly degrade performance. In some cases, such as the Agriculture and Mix datasets, this variant even shows improvements. This is attributed to the effective extraction of key information during the graph-based indexing process [6].\n\n### Representative Figures\n- **Comprehensiveness**:\n  - Agriculture: LightRAG (67.6%) vs. NaiveRAG (32.4%); LightRAG -High (65.2%) vs. NaiveRAG (34.8%); LightRAG -Low (64.0%) vs. NaiveRAG (36.0%); LightRAG -Origin (75.2%) vs. NaiveRAG (24.8%) [1].\n  - CS: LightRAG (61.6%) vs. NaiveRAG (38.4%); LightRAG -High (57.2%) vs. NaiveRAG (42.8%); LightRAG -Low (56.8%) vs. NaiveRAG (43.2%); LightRAG -Origin (60.8%) vs. NaiveRAG (39.2%) [1].\n  - Legal: LightRAG (83.6%) vs. NaiveRAG (16.4%); LightRAG -High (76.4%) vs. NaiveRAG (23.6%); LightRAG -Low (80.8%) vs. NaiveRAG (19.2%); LightRAG -Origin (83.6%) vs. NaiveRAG (16.4%) [1].\n  - Mix: LightRAG (61.2%) vs. NaiveRAG (38.8%); LightRAG -High (59.6%) vs. NaiveRAG (40.4%); LightRAG -Low (64.0%) vs. NaiveRAG (36.0%); LightRAG -Origin (55.6%) vs. NaiveRAG (44.4%) [1].\n\n- **Diversity**:\n  - Agriculture: LightRAG (76.4%) vs. NaiveRAG (23.6%); LightRAG -High (72.8%) vs. NaiveRAG (27.2%); LightRAG -Low (72.0%) vs. NaiveRAG (28.0%); LightRAG -Origin (73.6%) vs. NaiveRAG (26.4%) [1].\n  - CS: LightRAG (62.0%) vs. NaiveRAG (38.0%); LightRAG -High (63.2%) vs. NaiveRAG (36.8%); LightRAG -Low (60.4%) vs. NaiveRAG (39.6%); LightRAG -Origin (55.2%) vs. NaiveRAG (44.8%) [1].\n  - Legal: LightRAG (86.4%) vs. NaiveRAG (13.6%); LightRAG -High (83.2%) vs. NaiveRAG (16.8%); LightRAG -Low (86.4%) vs. NaiveRAG (13.6%); LightRAG -Origin (85.6%) vs. NaiveRAG (14.4%) [1].\n  - Mix: LightRAG (67.6%) vs. NaiveRAG (32.4%); LightRAG -High (64.0%) vs. NaiveRAG (36.0%); LightRAG -Low (66.8%) vs. NaiveRAG (33.2%); LightRAG -Origin (74.4%) vs. NaiveRAG (25.6%) [1].\n\n- **Empowerment**:\n  - Agriculture: LightRAG (67.6%) vs. NaiveRAG (32.4%); LightRAG -High (64.0%) vs. NaiveRAG (36.0%); LightRAG -Low (65.2%) vs. NaiveRAG (34.8%); LightRAG -Origin (68.0%) vs. NaiveRAG (32.0%) [1].\n  - CS: LightRAG (61.2%) vs. NaiveRAG (38.8%); LightRAG -High (57.6%) vs. NaiveRAG (42.4%); LightRAG -Low (57.2%) vs. NaiveRAG (42.8%); LightRAG -Origin (56.8%) vs. NaiveRAG (43.2%) [1].\n  - Legal: LightRAG (83.6%) vs. NaiveRAG (16.4%); LightRAG -High (77.2%) vs. NaiveRAG (22.8%); LightRAG -Low (83.6%) vs. NaiveRAG (16.4%); LightRAG -Origin (82.8%) vs. NaiveRAG (17.2%) [1].\n  - Mix: LightRAG (57.2%) vs. NaiveRAG (42.8%); LightRAG -High (52.4%) vs. NaiveRAG (47.6%); LightRAG -Low (64.8%) vs. NaiveRAG (35.2%); LightRAG -Origin (54.8%) vs. NaiveRAG (45.2%) [1].\n\n- **Overall**:\n  - Agriculture: LightRAG (67.6%) vs. NaiveRAG (32.4%); LightRAG -High (64.8%) vs. NaiveRAG (35.2%); LightRAG -Low (65.2%) vs. NaiveRAG (34.8%); LightRAG -Origin (74.4%) vs. NaiveRAG (25.6%) [1].\n  - CS: LightRAG (61.2%) vs. NaiveRAG (38.8%); LightRAG -High (56.0%) vs. NaiveRAG (44.0%); LightRAG -Low (56.4%) vs. NaiveRAG (43.6%); LightRAG -Origin (60.8%) vs. NaiveRAG (39.2%) [1].\n  - Legal: LightRAG (84.8%) vs. NaiveRAG (15.2%); LightRAG -High (78.0%) vs. NaiveRAG (22.0%); LightRAG -Low (81.2%) vs. NaiveRAG (18.8%); LightRAG -Origin (84.4%) vs. NaiveRAG (15.6%) [1].\n  - Mix: LightRAG (60.0%) vs. NaiveRAG (40.0%); LightRAG -High (57.6%) vs. NaiveRAG (42.4%); LightRAG -Low (64.8%) vs. NaiveRAG (35.2%); LightRAG -Origin (55.6%) vs. NaiveRAG (44.4%) [1].\n\n### Results That Go Against the Trend\n- **LightRAG -Low in Mix for Empowerment**: LightRAG -Low (64.8%) outperforms NaiveRAG (35.2%), which aligns with the general trend, but the performance gain is notable compared to its lower performance in other metrics [1].\n- **LightRAG -Origin in Mix for Overall**: LightRAG -Origin (55.6%) outperforms NaiveRAG (44.4%), showing an improvement in this case [1].\n\n### Conclusion\nThe ablation studies demonstrate that the full LightRAG model, which combines both low-level and high-level retrieval methods, achieves balanced performance across multiple dimensions. Variants that remove either retrieval level (LightRAG -High or LightRAG -Low) show performance declines in certain metrics, while the semantic graph-based indexing variant (LightRAG -Origin) maintains or even improves performance in some cases. These findings highlight the importance of the dual-level retrieval paradigm and the effectiveness of graph-based text indexing in LightRAG.",
+ "usage": {
+  "prompt_tokens": 3697,
+  "completion_tokens": 2158,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2,
+   6
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "67.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+   },
+   {
+    "number": "32.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…G NaiveRAG LightRAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, Lig…"
+   },
+   {
+    "number": "65.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…RAG -High NaiveRAG -High Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: Naiv…"
+   },
+   {
+    "number": "34.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…G -High NaiveRAG -High NaiveRAG -High Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.…"
+   },
+   {
+    "number": "64.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%,…"
+   },
+   {
+    "number": "36.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS:…"
+   },
+   {
+    "number": "75.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 4…"
+   },
+   {
+    "number": "24.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73…"
+   },
+   {
+    "number": "61.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ess — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Div…"
+   },
+   {
+    "number": "38.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…G Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, Li…"
+   },
+   {
+    "number": "57.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+   },
+   {
+    "number": "42.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: Naiv…"
+   },
+   {
+    "number": "56.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…hensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity —…"
+   },
+   {
+    "number": "43.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…-Low Comprehensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0%…"
+   },
+   {
+    "number": "60.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8% Diversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightR…"
+   },
+   {
+    "number": "39.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RQ-RAG 38.8%, LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8% Diversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-R…"
+   },
+   {
+    "number": "83.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "16.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+   },
+   {
+    "number": "76.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…aiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix…"
+   },
+   {
+    "number": "23.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…AG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, Lig…"
+   },
+   {
+    "number": "80.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low…"
+   },
+   {
+    "number": "19.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…re: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG…"
+   },
+   {
+    "number": "61.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+   },
+   {
+    "number": "38.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: Na…"
+   },
+   {
+    "number": "59.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6% Diversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 38.8%, LightRAG 6…"
+   },
+   {
+    "number": "40.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6% Diversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 3…"
+   },
+   {
+    "number": "55.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…rigin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Or…"
+   },
+   {
+    "number": "44.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…veRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: Naiv…"
+   },
+   {
+    "number": "72.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…Mix: NaiveRAG 40.4%, -High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: Naiv…"
+   },
+   {
+    "number": "27.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…-High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.…"
+   },
+   {
+    "number": "72.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveR…"
+   },
+   {
+    "number": "28.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%;…"
+   },
+   {
+    "number": "73.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG LightRAG GraphRAG L…"
+   },
+   {
+    "number": "26.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ulture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG Lig…"
+   },
+   {
+    "number": "62.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+   },
+   {
+    "number": "38.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, Li…"
+   },
+   {
+    "number": "63.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+   },
+   {
+    "number": "36.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…-High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64…"
+   },
+   {
+    "number": "60.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8% Empowerment…"
+   },
+   {
+    "number": "39.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%…"
+   },
+   {
+    "number": "55.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…rsity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empow…"
+   },
+   {
+    "number": "44.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…igin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Ori…"
+   },
+   {
+    "number": "86.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…tRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture: NaiveRAG 32.4%,…"
+   },
+   {
+    "number": "13.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…eRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture:…"
+   },
+   {
+    "number": "83.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "….2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -H…"
+   },
+   {
+    "number": "16.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: Naive…"
+   },
+   {
+    "number": "85.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0% HyDE LightRAG HyDE LightRAG HyDE LightRAG Hy…"
+   },
+   {
+    "number": "14.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0% HyDE LightRAG HyDE LightRAG…"
+   },
+   {
+    "number": "66.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8% Empowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low…"
+   },
+   {
+    "number": "33.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…S: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8% Empowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG…"
+   },
+   {
+    "number": "74.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…rigin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -…"
+   },
+   {
+    "number": "25.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…veRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: Na…"
+   },
+   {
+    "number": "68.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…aiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix:…"
+   },
+   {
+    "number": "32.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…n 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Orig…"
+   },
+   {
+    "number": "57.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6% Overall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG…"
+   },
+   {
+    "number": "42.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RQ-RAG 36.4%, LightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6% Overall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG…"
+   },
+   {
+    "number": "77.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…raphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix…"
+   },
+   {
+    "number": "22.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…AG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, Lig…"
+   },
+   {
+    "number": "82.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8% Overall — Agriculture: NaiveRAG 25.6%, -Ori…"
+   },
+   {
+    "number": "17.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…iveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8% Overall — Agriculture: Naive…"
+   },
+   {
+    "number": "52.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 5…"
+   },
+   {
+    "number": "47.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 4…"
+   },
+   {
+    "number": "64.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+   },
+   {
+    "number": "35.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.…"
+   },
+   {
+    "number": "54.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…ent — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Ove…"
+   },
+   {
+    "number": "45.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…G 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, Li…"
+   },
+   {
+    "number": "56.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG…"
+   },
+   {
+    "number": "44.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57…"
+   },
+   {
+    "number": "56.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…tRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, Lig…"
+   },
+   {
+    "number": "43.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…hRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: Gra…"
+   },
+   {
+    "number": "84.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG Lig…"
+   },
+   {
+    "number": "15.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% RQ-RAG LightRAG RQ-RAG Lig…"
+   },
+   {
+    "number": "78.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "….2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low Nai…"
+   },
+   {
+    "number": "22.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG -Low NaiveRAG -Low Naiv…"
+   },
+   {
+    "number": "81.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8% NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Or…"
+   },
+   {
+    "number": "18.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…re: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8% NaiveRAG -Origin NaiveRAG -Origin…"
+   },
+   {
+    "number": "84.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6% • Low-level-only Retrieval: The -High varia…"
+   },
+   {
+    "number": "15.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…iveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6% • Low-level-only Retrieval:…"
+   },
+   {
+    "number": "60.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG Comprehensivene…"
+   },
+   {
+    "number": "40.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": "stop",
+  "revision": null
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3697,
+   "completion_tokens": 2158,
+   "estimated_prompt_tokens": 3713,
+   "finish_reason": "stop",
+   "duration_ms": 93495
+  }
+ ]
+}

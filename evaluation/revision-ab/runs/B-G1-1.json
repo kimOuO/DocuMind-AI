@@ -1,0 +1,38 @@
+{
+ "arm": "B",
+ "question": "G1",
+ "question_text": "How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?",
+ "document": "graphrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": true
+  }
+ },
+ "elapsed_seconds": 0.1,
+ "stages": [],
+ "route": {
+  "type": "summary",
+  "standalone_question": "How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?"
+ },
+ "sources": [],
+ "final_answer": "The summary of \"2404.16130v2.pdf\" is not available (not started yet), so it was left out.\nAsk again once the summary is ready, or ask a specific question about the content instead.",
+ "usage": null,
+ "done": {
+  "status": "completed",
+  "answered": false,
+  "cited": [],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": null,
+  "revision": null
+ },
+ "llm_calls": []
+}

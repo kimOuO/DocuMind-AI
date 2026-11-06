@@ -1,0 +1,125 @@
+{
+ "arm": "A",
+ "question": "FACT",
+ "question_text": "How many tokens does GraphRAG consume in the retrieval phase on the Legal dataset?",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": false
+  }
+ },
+ "elapsed_seconds": 4.9,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "How many tokens does GraphRAG consume in the retrieval phase on the Legal dataset?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 9,
+   "page_end": 9,
+   "origin": "retrieval",
+   "score": 0.7088,
+   "snippet": "00\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG "
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 13,
+   "page_end": 13,
+   "origin": "retrieval",
+   "score": 0.6969,
+   "snippet": "Table 4 presents statistical information for four datasets: Agriculture, CS, Leg"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 10,
+   "page_end": 10,
+   "origin": "retrieval",
+   "score": 0.6313,
+   "snippet": "which seamlessly integrates graph structures and vectorized representations for "
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6179,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handli"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 5,
+   "page_end": 5,
+   "origin": "retrieval",
+   "score": 0.5885,
+   "snippet": "WORK\nIn this section, we analyze the complexity of our proposed LightRAG framewo"
+  }
+ ],
+ "final_answer": "In the retrieval phase on the Legal dataset, GraphRAG generates 1,399 communities, with 610 level-2 communities actively utilized for retrieval. Each community report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens [1].",
+ "usage": {
+  "prompt_tokens": 2149,
+  "completion_tokens": 67,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "1,399",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 9,
+    "snippet": "…remental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract Cextract…"
+   },
+   {
+    "number": "610",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 9,
+    "snippet": "…etrieval Phase Incremental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 ×…"
+   },
+   {
+    "number": "1,000",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 9,
+    "snippet": "…al Phase Incremental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextr…"
+   },
+   {
+    "number": "610,000",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 9,
+    "snippet": "…mmunity report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per community). Additionally, GraphRAG’s…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": "stop",
+  "revision": null
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2149,
+   "completion_tokens": 67,
+   "estimated_prompt_tokens": 2165,
+   "finish_reason": "stop",
+   "duration_ms": 4613
+  }
+ ]
+}

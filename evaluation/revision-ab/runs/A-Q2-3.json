@@ -1,0 +1,126 @@
+{
+ "arm": "A",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "run": 3,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": false
+  }
+ },
+ "elapsed_seconds": 13.1,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6455,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handli"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6299,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language cont"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 9,
+   "page_end": 9,
+   "origin": "retrieval",
+   "score": 0.6265,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recal"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.6123,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe at"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 10,
+   "page_end": 10,
+   "origin": "retrieval",
+   "score": 0.6049,
+   "snippet": "which seamlessly integrates graph structures and vectorized representations for "
+  }
+ ],
+ "final_answer": "LightRAG consistently outperforms GraphRAG, especially in larger datasets with complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage over GraphRAG, significantly surpassing it and highlighting its strength in comprehensive information understanding within diverse environments [2]. \n\nIn terms of response diversity, LightRAG demonstrates a significant advantage, particularly within the larger Legal dataset. This is attributed to its dual-level retrieval paradigm, which facilitates comprehensive information retrieval from both low-level and high-level dimensions [1]. This mechanism allows LightRAG to generate a wider range of responses, especially in scenarios where diverse content is essential [1].\n\nFurthermore, in a case study comparing the two methods, LightRAG outperformed GraphRAG in all evaluation dimensions assessed by the LLM judge, including comprehensiveness, diversity, empowerment, and overall quality. LightRAG's hierarchical retrieval paradigm combines in-depth explorations of related entities through low-level retrieval with broader explorations via high-level retrieval, thereby improving answer diversity and comprehensiveness [4].\n\nIn terms of cost and efficiency during incremental data updates, LightRAG exhibits superior performance compared to GraphRAG. While GraphRAG must dismantle and regenerate its community structure to incorporate new data, incurring a significant token cost, LightRAG seamlessly integrates new entities and relationships into the existing graph without the need for full reconstruction. This results in significantly lower overhead and demonstrates LightRAG's superior efficiency and cost-effectiveness [3].",
+ "usage": {
+  "prompt_tokens": 2179,
+  "completion_tokens": 310,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2,
+   1,
+   4,
+   3
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [
+   {
+    "sentence": "While GraphRAG must dismantle and regenerate its community structure to incorporate new data, incurring a significant token cost, LightRAG seamlessly integrates new entities and relationships into the existing graph without the need for full reconstruction.",
+    "cited": [
+     3
+    ],
+    "closer": [
+     5
+    ],
+    "coverage_cited": 0.06,
+    "coverage_closer": 0.88
+   },
+   {
+    "sentence": "This results in significantly lower overhead and demonstrates LightRAG's superior efficiency and cost-effectiveness.",
+    "cited": [
+     3
+    ],
+    "closer": [
+     5
+    ],
+    "coverage_cited": 0.0,
+    "coverage_closer": 1.0
+   }
+  ],
+  "finish_reason": "stop",
+  "revision": null
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2179,
+   "completion_tokens": 310,
+   "estimated_prompt_tokens": 2195,
+   "finish_reason": "stop",
+   "duration_ms": 12751
+  }
+ ]
+}

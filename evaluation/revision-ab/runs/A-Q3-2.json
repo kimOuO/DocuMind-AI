@@ -1,0 +1,188 @@
+{
+ "arm": "A",
+ "question": "Q3",
+ "question_text": "Performance of ablated versions of LightRAG",
+ "document": "lightrag",
+ "run": 2,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": false
+  }
+ },
+ "elapsed_seconds": 23.4,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Performance of ablated versions of LightRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.6268,
+   "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as referenc"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6038,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language cont"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.574,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Liangh"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.5588,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe at"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.5575,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: htt"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "table_context",
+   "score": null,
+   "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, lead"
+  }
+ ],
+ "final_answer": "The performance of ablated versions of LightRAG was evaluated using four variants: -High (removing high-level retrieval), -Low (removing low-level retrieval), -Origin (using only graph-based indexing without original text), and the full version, LightRAG. The results are presented in Table 2 of the source document.\n\n- **Low-level-only Retrieval (-High variant)**: This variant removes high-level retrieval and experiences a significant performance decline across nearly all datasets and metrics. For example, in the \"Comprehensiveness\" metric for the Agriculture dataset, the -High variant scores 65.2% compared to 67.6% for the full LightRAG [1]. The drop is attributed to the overemphasis on specific entities and their immediate neighbors, limiting the ability to address complex queries requiring comprehensive insights [4].\n\n- **High-level-only Retrieval (-Low variant)**: This variant prioritizes a broader range of content by leveraging entity-wise relationships but lacks depth in specific entity analysis. For instance, in the \"Empowerment\" metric for the Legal dataset, the -Low variant scores 83.6%, while LightRAG scores 83.6% as well, but the -Low variant may struggle with precise, detailed answers [1]. This trade-off results in strong comprehensiveness but reduced depth [4].\n\n- **Hybrid Mode (Full LightRAG)**: The full version of LightRAG combines the strengths of both low-level and high-level retrieval, achieving balanced performance across multiple dimensions. For example, in the \"Overall\" metric for the CS dataset, LightRAG scores 61.2%, significantly outperforming -High (56.0%) and -Low (56.4%) [1]. This dual-level approach ensures both breadth and depth in data analysis [4].\n\n- **Semantic Graph Indexing (-Origin variant)**: The -Origin variant eliminates the use of original text and relies solely on graph-based indexing. Surprisingly, it does not exhibit significant performance declines and shows improvements in some cases, such as the \"Comprehensiveness\" metric for the Agriculture dataset (75.2% for -Origin vs. 67.6% for LightRAG) [1]. This is attributed to the effective extraction of key information during graph-based indexing, which reduces noise from irrelevant text [4].\n\nIn conclusion, the ablation studies demonstrate that the hybrid mode of LightRAG, which integrates low-level and high-level retrieval, performs best overall. Variants that remove one retrieval level or rely solely on graph-based indexing show either reduced performance or specific trade-offs in depth or comprehensiveness [1][4].",
+ "usage": {
+  "prompt_tokens": 3697,
+  "completion_tokens": 552,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   4
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "65.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…RAG -High NaiveRAG -High Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: Naiv…"
+   },
+   {
+    "number": "67.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+   },
+   {
+    "number": "83.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "61.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+   },
+   {
+    "number": "56.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG…"
+   },
+   {
+    "number": "56.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "….8% Overall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8% NaiveRAG -O…"
+   },
+   {
+    "number": "75.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…rigin NaiveRAG -Origin Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix:…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "65.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "For example, in the \"Comprehensiveness\" metric for the Agriculture dataset, the -High variant scores 65.2% compared to 67.6% for the full LightRAG.",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "For example, in the \"Comprehensiveness\" metric for the Agriculture dataset, the -High variant scores 65.2% compared to 67.6% for the full LightRAG.",
+    "reason": "ambiguous"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": "stop",
+  "revision": null
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3697,
+   "completion_tokens": 552,
+   "estimated_prompt_tokens": 3713,
+   "finish_reason": "stop",
+   "duration_ms": 23016
+  }
+ ]
+}

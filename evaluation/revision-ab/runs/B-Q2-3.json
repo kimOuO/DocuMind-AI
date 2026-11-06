@@ -1,0 +1,153 @@
+{
+ "arm": "B",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "run": 3,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": true
+  }
+ },
+ "elapsed_seconds": 28.0,
+ "stages": [
+  "generating",
+  "verifying",
+  "revising",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6455,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handli"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6299,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language cont"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 9,
+   "page_end": 9,
+   "origin": "retrieval",
+   "score": 0.6265,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recal"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.6123,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe at"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 10,
+   "page_end": 10,
+   "origin": "retrieval",
+   "score": 0.6049,
+   "snippet": "which seamlessly integrates graph structures and vectorized representations for "
+  }
+ ],
+ "final_answer": "LightRAG consistently outperforms GraphRAG, particularly in larger datasets with complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [2]. This superiority is attributed to LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, thereby boosting response diversity and enhancing the ability to handle complex queries [1].\n\nIn terms of cost and efficiency, during the incremental data update phase, GraphRAG shows significant inefficiency in managing newly added data. When a new dataset of the same size as the legal dataset is introduced, GraphRAG must dismantle its existing community structure to incorporate new entities and relationships, followed by complete regeneration. This process incurs a substantial token cost of approximately 5,000 tokens per community report [5]. Given 1,399 communities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstruct both the original and new community reports. In contrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without the need for full reconstruction, resulting in significantly lower overhead during incremental updates and demonstrating its superior efficiency and cost-effectiveness [5].",
+ "usage": {
+  "prompt_tokens": 4698,
+  "completion_tokens": 562,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2,
+   1,
+   5
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "5,000",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 10,
+    "snippet": "…ete regeneration. This process incurs a substantial token cost of approximately 5,000 tokens per community report. Given 1,399 communities, GraphRAG would require ar…"
+   },
+   {
+    "number": "1,399",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 10,
+    "snippet": "…ubstantial token cost of approximately 5,000 tokens per community report. Given 1,399 communities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstr…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": "stop",
+  "revision": {
+   "mode": "conditional",
+   "triggered": true,
+   "draft_triggers": [
+    {
+     "kind": "doubtful_citation",
+     "severity": "soft",
+     "feedback": "The statement \"When a new dataset of the same size as the legal dataset is introduced, GraphRAG must dismantle its existing community structure to incorporate new entities and relationships, followed by complete regeneration.\" cites [3], which hardly contains it; [5] states it. Cite the source that states each statement."
+    },
+    {
+     "kind": "doubtful_citation",
+     "severity": "soft",
+     "feedback": "The statement \"In contrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without the need for full reconstruction, resulting in significantly lower overhead during incremental updates and demonstrating its superior efficiency and cost-effectiveness.\" cites [3], which hardly contains it; [5] states it. Cite the source that states each statement."
+    }
+   ],
+   "revision_triggers": [],
+   "skipped": null,
+   "draft_text": "LightRAG consistently outperforms GraphRAG, particularly in larger datasets with complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [2]. This superiority is attributed to LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, thereby boosting response diversity and enhancing the ability to handle complex queries [1].\n\nIn terms of cost and efficiency, during the incremental data update phase, GraphRAG shows significant inefficiency in managing newly added data. When a new dataset of the same size as the legal dataset is introduced, GraphRAG must dismantle its existing community structure to incorporate new entities and relationships, followed by complete regeneration. This process incurs a substantial token cost of approximately 5,000 tokens per community report. Given 1,399 communities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstruct both the original and new community reports. In contrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without the need for full reconstruction, resulting in significantly lower overhead during incremental updates and demonstrating its superior efficiency and cost-effectiveness [3].",
+   "revision_text": "LightRAG consistently outperforms GraphRAG, particularly in larger datasets with complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [2]. This superiority is attributed to LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, thereby boosting response diversity and enhancing the ability to handle complex queries [1].\n\nIn terms of cost and efficiency, during the incremental data update phase, GraphRAG shows significant inefficiency in managing newly added data. When a new dataset of the same size as the legal dataset is introduced, GraphRAG must dismantle its existing community structure to incorporate new entities and relationships, followed by complete regeneration. This process incurs a substantial token cost of approximately 5,000 tokens per community report [5]. Given 1,399 communities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstruct both the original and new community reports. In contrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without the need for full reconstruction, resulting in significantly lower overhead during incremental updates and demonstrating its superior efficiency and cost-effectiveness [5].",
+   "chosen": "revision",
+   "status": "verified",
+   "reason": "the revision removed soft faults"
+  }
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2179,
+   "completion_tokens": 280,
+   "estimated_prompt_tokens": 2195,
+   "finish_reason": "stop",
+   "duration_ms": 13568
+  },
+  {
+   "purpose": "revise",
+   "status": "completed",
+   "prompt_tokens": 2519,
+   "completion_tokens": 282,
+   "estimated_prompt_tokens": 2535,
+   "finish_reason": "stop",
+   "duration_ms": 14080
+  }
+ ]
+}

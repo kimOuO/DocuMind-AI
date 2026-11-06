@@ -1,0 +1,38 @@
+{
+ "arm": "A",
+ "question": "NOANS",
+ "question_text": "What is the capital of France?",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": false
+  }
+ },
+ "elapsed_seconds": 0.3,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "What is the capital of France?"
+ },
+ "sources": [],
+ "final_answer": "The documents do not contain content related to this question.",
+ "usage": null,
+ "done": {
+  "status": "completed",
+  "answered": false,
+  "cited": [],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": null,
+  "revision": null
+ },
+ "llm_calls": []
+}

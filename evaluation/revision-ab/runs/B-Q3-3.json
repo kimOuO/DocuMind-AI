@@ -1,0 +1,250 @@
+{
+ "arm": "B",
+ "question": "Q3",
+ "question_text": "Performance of ablated versions of LightRAG",
+ "document": "lightrag",
+ "run": 3,
+ "settings": {
+  "model": "qwen3:32b",
+  "top_k": 5,
+  "chunk_size": 400,
+  "overrides": {
+   "answer_revision": true
+  }
+ },
+ "elapsed_seconds": 22.9,
+ "stages": [
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Performance of ablated versions of LightRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.6268,
+   "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as referenc"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "page_start": 7,
+   "page_end": 7,
+   "origin": "retrieval",
+   "score": 0.6038,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language cont"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.574,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Liangh"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "retrieval",
+   "score": 0.5588,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe at"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "page_start": 1,
+   "page_end": 1,
+   "origin": "retrieval",
+   "score": 0.5575,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: htt"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "page_start": 8,
+   "page_end": 8,
+   "origin": "table_context",
+   "score": null,
+   "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, lead"
+  }
+ ],
+ "final_answer": "The performance of ablated versions of LightRAG is analyzed in detail in the ablation studies presented in Table 2 and discussed in the following text [1][2].\n\nKey findings include:\n\n1. **Effectiveness of Dual-Level Retrieval Paradigm**:\n   - The ablated versions that omit either the low-level or high-level retrieval components show significant performance drops across nearly all datasets and metrics.\n   - **Low-level-only retrieval** (denoted by the \"-High\" variant) performs poorly due to an overemphasis on specific entities and their immediate neighbors, limiting the ability to handle complex queries that require broader insights.\n   - **High-level-only retrieval** (denoted by the \"-Low\" variant) performs better in terms of comprehensiveness and diversity but struggles with detailed, precise answers due to reduced depth in entity analysis.\n   - **Hybrid mode** (the full version of LightRAG) combines the strengths of both low-level and high-level retrieval, achieving a balanced performance across multiple dimensions [1][2].\n\n2. **Representative Figures**:\n   - In the **Agriculture** dataset, the \"-High\" variant achieves **65.2% comprehensiveness**, while the \"-Low\" variant achieves **64.0% comprehensiveness**, compared to the full LightRAG’s **67.6% comprehensiveness**.\n   - In the **Legal** dataset, the \"-High\" variant achieves **76.4% comprehensiveness**, the \"-Low\" variant achieves **80.8% comprehensiveness**, and the full LightRAG achieves **83.6% comprehensiveness** [1].\n\n3. **Exceptions**:\n   - The \"-Origin\" variant, which eliminates the use of original text in the retrieval process, performs surprisingly well in some cases. For example, in the **Agriculture** dataset, it achieves **75.2% comprehensiveness**, which is better than the full LightRAG's **67.6% comprehensiveness**. Similarly, in the **Mix** dataset, it achieves **55.6% comprehensiveness**, compared to the full LightRAG's **61.2% comprehensiveness** [1].\n\n4. **Conclusion**:\n   - The dual-level retrieval paradigm is crucial for achieving balanced performance across multiple dimensions. While ablated versions can perform well in specific contexts (e.g., \"-Origin\" in Agriculture), they generally underperform compared to the full LightRAG. The full version consistently outperforms the ablated versions in most datasets and metrics [1][2].",
+ "usage": {
+  "prompt_tokens": 3697,
+  "completion_tokens": 538,
+  "limit": null,
+  "calls": 1
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "65.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…RAG -High NaiveRAG -High Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: Naiv…"
+   },
+   {
+    "number": "64.0%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%,…"
+   },
+   {
+    "number": "67.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+   },
+   {
+    "number": "76.4%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…aiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix…"
+   },
+   {
+    "number": "80.8%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low…"
+   },
+   {
+    "number": "83.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "75.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 4…"
+   },
+   {
+    "number": "55.6%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 8,
+    "snippet": "…rigin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Or…"
+   },
+   {
+    "number": "61.2%",
+    "document_id": "05c9edb5-afd0-43e4-b995-7905d42a7047",
+    "page": 7,
+    "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "76.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "- In the **Legal** dataset, the \"-High\" variant achieves **76.4% comprehensiveness**, the \"-Low\" variant achieves **80.8% comprehensiveness**, and the full LightRAG achieves **83.6% comprehensiveness**.",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "80.8%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "- In the **Legal** dataset, the \"-High\" variant achieves **76.4% comprehensiveness**, the \"-Low\" variant achieves **80.8% comprehensiveness**, and the full LightRAG achieves **83.6% comprehensiveness**.",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "75.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "For example, in the **Agriculture** dataset, it achieves **75.2% comprehensiveness**, which is better than the full LightRAG's **67.6% comprehensiveness**.",
+    "reason": "missing"
+   },
+   {
+    "number": "55.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "Similarly, in the **Mix** dataset, it achieves **55.6% comprehensiveness**, compared to the full LightRAG's **61.2% comprehensiveness**.",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "finish_reason": "stop",
+  "revision": {
+   "mode": "conditional",
+   "triggered": false,
+   "draft_triggers": [],
+   "revision_triggers": [],
+   "skipped": null,
+   "draft_text": "The performance of ablated versions of LightRAG is analyzed in detail in the ablation studies presented in Table 2 and discussed in the following text [1][2].\n\nKey findings include:\n\n1. **Effectiveness of Dual-Level Retrieval Paradigm**:\n   - The ablated versions that omit either the low-level or high-level retrieval components show significant performance drops across nearly all datasets and metrics.\n   - **Low-level-only retrieval** (denoted by the \"-High\" variant) performs poorly due to an overemphasis on specific entities and their immediate neighbors, limiting the ability to handle complex queries that require broader insights.\n   - **High-level-only retrieval** (denoted by the \"-Low\" variant) performs better in terms of comprehensiveness and diversity but struggles with detailed, precise answers due to reduced depth in entity analysis.\n   - **Hybrid mode** (the full version of LightRAG) combines the strengths of both low-level and high-level retrieval, achieving a balanced performance across multiple dimensions [1][2].\n\n2. **Representative Figures**:\n   - In the **Agriculture** dataset, the \"-High\" variant achieves **65.2% comprehensiveness**, while the \"-Low\" variant achieves **64.0% comprehensiveness**, compared to the full LightRAG’s **67.6% comprehensiveness**.\n   - In the **Legal** dataset, the \"-High\" variant achieves **76.4% comprehensiveness**, the \"-Low\" variant achieves **80.8% comprehensiveness**, and the full LightRAG achieves **83.6% comprehensiveness** [1].\n\n3. **Exceptions**:\n   - The \"-Origin\" variant, which eliminates the use of original text in the retrieval process, performs surprisingly well in some cases. For example, in the **Agriculture** dataset, it achieves **75.2% comprehensiveness**, which is better than the full LightRAG's **67.6% comprehensiveness**. Similarly, in the **Mix** dataset, it achieves **55.6% comprehensiveness**, compared to the full LightRAG's **61.2% comprehensiveness** [1].\n\n4. **Conclusion**:\n   - The dual-level retrieval paradigm is crucial for achieving balanced performance across multiple dimensions. While ablated versions can perform well in specific contexts (e.g., \"-Origin\" in Agriculture), they generally underperform compared to the full LightRAG. The full version consistently outperforms the ablated versions in most datasets and metrics [1][2].",
+   "revision_text": null,
+   "chosen": "draft",
+   "status": "verified",
+   "reason": "no revision"
+  }
+ },
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3697,
+   "completion_tokens": 538,
+   "estimated_prompt_tokens": 3713,
+   "finish_reason": "stop",
+   "duration_ms": 22505
+  }
+ ]
+}

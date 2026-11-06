@@ -45,3 +45,6 @@ docs/*
 !docs/02-specs/
 docs/02-specs/archive/
 !docs/03-decisions/
+
+# Second sample paper (6.9 MB, above the repository file limit): download it, see sample-documents/README.md
+sample-documents/2404.16130v2.pdf
