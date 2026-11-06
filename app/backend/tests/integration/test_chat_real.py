@@ -232,6 +232,8 @@ async def test_the_comparison_question_is_answered_with_differences_and_sources(
     answer = "".join(data["text"] for name, data in stream if name == "delta")
     found = [(s["index"], s["page_start"], s["score"], s["origin"]) for s in by_name["sources"]]
     print(f"\nsources: {found}")
+    for source in by_name["sources"]:
+        print(f"  [{source['index']}] p{source['page_start']} {source['snippet'][:70]!r}")
     print(f"usage: {by_name['usage']}  done: {by_name['done']}")
     print(f"answer:\n{answer}")
     print(f"mislabelled numbers: {by_name['done']['mislabelled_numbers']}")
