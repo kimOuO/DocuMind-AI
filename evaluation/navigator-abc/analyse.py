@@ -117,6 +117,16 @@ def analyse(run: dict) -> dict:
         "matrix_cells": (navigation.get("matrix") or {}).get("cells"),
         "analysis_status": (run.get("done") or {}).get("analysis_status"),
         "direction_issues": len((run.get("done") or {}).get("direction_issues") or []),
+        # D75 (B4): what the deterministic correction did before the answer was sent.
+        "correction_edits": len(
+            ((run.get("done") or {}).get("correction") or {}).get("edits") or []
+        ),
+        "correction_removed": len(
+            ((run.get("done") or {}).get("correction") or {}).get("removed") or []
+        ),
+        "correction_remaining": len(
+            ((run.get("done") or {}).get("correction") or {}).get("remaining") or []
+        ),
         "calls": len(run.get("llm_calls", [])),
         "tokens": sum(
             c["prompt_tokens"] + c["completion_tokens"]
@@ -178,6 +188,13 @@ def _answers(runs: list[dict]) -> str:
                 f"條件 {completeness.get('condition')}）；方向核對 "
                 f"{[(d['status'], d['left'], d['right']) for d in done.get('direction_issues') or []]}"
             )
+        if done.get("correction"):
+            c = done["correction"]
+            lines.append(
+                f"- 修正：{[(e['kind'], e['before'], e['after']) for e in c.get('edits', [])]}；"
+                f"刪除 {c.get('removed')}；仍不符 {c.get('remaining')}；"
+                f"方向待定 {[(u['cue'], u['left'], u['right']) for u in c.get('uncertain', [])]}"
+            )
         if navigation.get("coverage") is not None:
             lines.append(
                 "- 涵蓋判定："
@@ -221,9 +238,11 @@ def main() -> None:
     print(
         "| arm | Q | n | recall retrieved | recall plan | recall final | coverage final | "
         "plan located/items | added | redundant | low relevance | over budget | "
-        "required covered | supp. used | matrix cells | calls | tokens | s |"
+        "required covered | supp. used | matrix cells | corrections (edit/remove/left) | calls | tokens | s |"
     )
-    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    print(
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"
+    )
     for (arm, q), rs in sorted(groups.items(), key=lambda kv: (kv[0][1], kv[0][0])):
         located = sum(r["plan_located"] or 0 for r in rs)
         items = sum(r["plan_items"] for r in rs)
@@ -236,6 +255,8 @@ def main() -> None:
             f"{sum(r['required_covered'] for r in rs)}/{sum(r['required_targets'] for r in rs)} | "
             f"{sum(r['supplementary_used'] or 0 for r in rs)} | "
             f"{sum(r['matrix_cells'] or 0 for r in rs)} | "
+            f"{sum(r['correction_edits'] for r in rs)}/{sum(r['correction_removed'] for r in rs)}/"
+            f"{sum(r['correction_remaining'] for r in rs)} | "
             f"{mean([r['calls'] for r in rs])} | {mean([r['tokens'] for r in rs])} | "
             f"{mean([r['elapsed_seconds'] for r in rs])} |"
         )

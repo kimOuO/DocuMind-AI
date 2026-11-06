@@ -13,9 +13,14 @@ import asyncio
 import logging
 import uuid
 from enum import StrEnum
+from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.chat.correction import correct
+from app.chat.evidence import build_matrix, method_aliases, method_definitions
+from app.chat.verification import PageText as CheckedPage
+from app.chat.verification import verify_numbers
 from app.documents.storage import FileStorage
 from app.ingestion.headings import find_headings
 from app.ingestion.parsing import DocumentParseError, parse_document
@@ -23,6 +28,7 @@ from app.ingestion.repository import ClaimedSummaryJob, IngestionRepository, Sum
 from app.ingestion.sections import SummaryUnit, plan_summary_units
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway
 from app.llm.tokenizer import TokenCounter
+from app.retrieval.repository import RetrievedChunk
 from app.summarization.prompting import (
     SECTION_INPUT_BUDGET,
     SUMMARY_MAX_OUTPUT_TOKENS,
@@ -63,6 +69,9 @@ class SummaryJobRunner:
         self._counter = counter
         self._gateway = gateway
         self._input_budget = input_budget
+        # D75: what the number check found in each summary and what was corrected; kept in
+        # memory for the experiment's records and the tests, not stored.
+        self.verification_reports: list[dict[str, Any]] = []
 
     async def run(self, job_id: uuid.UUID) -> SummaryOutcome:
         async with self._sessions() as session, session.begin():
@@ -89,6 +98,9 @@ class SummaryJobRunner:
                     chunk_ids = await IngestionRepository(session).chunk_ids_for_pages(
                         claimed.document_id, unit.page_start, unit.page_end
                     )
+                text = await self._verified(
+                    claimed, unit.title, text, unit.page_start, unit.page_end
+                )
                 sections.append(
                     SummaryRecord(
                         level="section",
@@ -105,6 +117,13 @@ class SummaryJobRunner:
             if not await self._progress(job_id, len(units), total):
                 return SummaryOutcome.ABANDONED
             document_text = await self._summarise_document(claimed, sections, context)
+            document_text = await self._verified(
+                claimed,
+                "document",
+                document_text,
+                min(s.page_start for s in sections),
+                max(s.page_end for s in sections),
+            )
             document_summary = SummaryRecord(
                 level="document",
                 ordinal=0,
@@ -162,6 +181,63 @@ class SummaryJobRunner:
         return await self._generate(
             document_prompt(claimed.filename, items), "document_summary", context, "document"
         )
+
+    async def _verified(
+        self, claimed: ClaimedSummaryJob, what: str, text: str, page_start: int, page_end: int
+    ) -> str:
+        """D75: the summary checked against the chunks of its pages — a figure under labels
+        the tables contradict is corrected when the table gives one reading and removed
+        otherwise, a figure found nowhere on the pages is removed; the result is checked
+        again and the outcome recorded. No model call."""
+        async with self._sessions() as session:
+            rows = await IngestionRepository(session).chunk_texts_for_pages(
+                claimed.document_id, page_start, page_end
+            )
+        if not rows:
+            return text
+        by_page: dict[int, list[str]] = {}
+        for page, chunk_text in rows:
+            by_page.setdefault(page, []).append(chunk_text)
+        pages = [
+            CheckedPage(claimed.document_id, page, "\n".join(texts))
+            for page, texts in sorted(by_page.items())
+        ]
+        indexed = [
+            (
+                i,
+                RetrievedChunk(
+                    uuid.uuid4(), claimed.document_id, claimed.filename, page, i, t, 0, None
+                ),
+            )
+            for i, (page, t) in enumerate(rows, start=1)
+        ]
+        cells = build_matrix(indexed)
+        aliases = method_aliases(method_definitions(indexed, {c.column for c in cells}))
+        before = verify_numbers(text, pages, aliases)
+        fixed = correct(text, pages, aliases=aliases, unverified=before.unverified)
+        after = verify_numbers(fixed.text, pages, aliases)
+        self.verification_reports.append(
+            {
+                "summary": what,
+                "pages": [page_start, page_end],
+                "mislabelled_before": [m.number for m in before.mislabelled],
+                "unverified_before": before.unverified,
+                "edits": fixed.edits,
+                "removed": fixed.removed,
+                "remaining": fixed.remaining,
+                "mislabelled_after": [m.number for m in after.mislabelled],
+                "changed": fixed.text != text,
+            }
+        )
+        if fixed.text != text:
+            logger.info(
+                "Summary of %s corrected: %d edits, %d removals, %d remaining",
+                what,
+                len(fixed.edits),
+                len(fixed.removed),
+                len(fixed.remaining),
+            )
+        return fixed.text
 
     async def _generate(self, prompt: str, purpose: str, context: CallContext, what: str) -> str:
         result = await self._gateway.generate(

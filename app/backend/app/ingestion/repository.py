@@ -214,6 +214,23 @@ class IngestionRepository:
         )
         return list(result)
 
+    async def chunk_texts_for_pages(
+        self, document_id: uuid.UUID, page_start: int, page_end: int
+    ) -> list[tuple[int, str]]:
+        """(page, text) of the document's chunks on the pages, in document order (D75: the
+        source the summary of those pages is checked against; tables come rewritten cell
+        by cell as the chunker left them)."""
+        rows = await self._db.execute(
+            select(Chunk.page, Chunk.text)
+            .where(
+                Chunk.document_id == document_id,
+                Chunk.page >= page_start,
+                Chunk.page <= page_end,
+            )
+            .order_by(Chunk.ordinal)
+        )
+        return [(row.page, row.text) for row in rows]
+
     async def complete_summary_job(
         self, job_id: uuid.UUID, *, sections: list[SummaryRecord], document_summary: SummaryRecord
     ) -> bool:

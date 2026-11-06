@@ -21,6 +21,7 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.chat.citation_check import DoubtfulCitation, SourceText, check_citations
+from app.chat.correction import Correction, correct, strip_step_numbering
 from app.chat.evidence import (
     MATRIX_TOKEN_BUDGET,
     Completeness,
@@ -29,6 +30,7 @@ from app.chat.evidence import (
     build_matrix,
     check_completeness,
     check_directions,
+    method_aliases,
     method_definitions,
     overall_status,
 )
@@ -75,6 +77,7 @@ from app.chat.revision import (
 )
 from app.chat.routing import question_type
 from app.chat.verification import (
+    Aliases,
     NumberCheck,
     PageText,
     check_note,
@@ -317,6 +320,7 @@ class ChatService:
                         "finish_reason": None,
                         "revision": None,
                         "navigation": navigation,
+                        "correction": None,
                     },
                 )
                 return
@@ -325,6 +329,14 @@ class ChatService:
                 # Experimental two-call mode (D69): nothing is streamed; the draft is
                 # checked, revised once when faulted, and the chosen text sent at the end.
                 async for event in self._answer_in_two_calls(
+                    prepared, question, evidence, received, navigation, extra_calls
+                ):
+                    yield event
+                return
+            if mode == "navigate" and navigation is not None:
+                # D75: the Analyst's answer is checked against the tables and corrected
+                # deterministically before it is sent; no streaming, no extra call.
+                async for event in self._answer_with_correction(
                     prepared, question, evidence, received, navigation, extra_calls
                 ):
                     yield event
@@ -495,6 +507,7 @@ class ChatService:
                     "finish_reason": result.finish_reason.value,
                     "revision": None,
                     "navigation": navigation,
+                    "correction": None,
                 },
             )
         except (asyncio.CancelledError, GeneratorExit):
@@ -569,12 +582,18 @@ class ChatService:
         return [PageText(*row) for row in rows]
 
     async def _assess(
-        self, prepared: PreparedQuestion, question: str, text: str, evidence: Evidence
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        text: str,
+        evidence: Evidence,
+        aliases: Aliases | None = None,
     ) -> "Assessment":
-        """Every deterministic check on one candidate answer, and what faults it (D69)."""
+        """Every deterministic check on one candidate answer, and what faults it (D69).
+        Method aliases (D75) let the checks recognise a method by its stated operation."""
         cited = cited_indexes(text, len(evidence.sources))
         pages = await self._pages(prepared, evidence, cited)
-        check = verify_numbers(text, pages)
+        check = verify_numbers(text, pages, aliases)
         doubts = check_citations(
             text,
             [
@@ -606,7 +625,7 @@ class ChatService:
             check,
             doubts,
             triggers,
-            check_directions(text, pages),
+            check_directions(text, pages, aliases),
             check_completeness(question, text, pages),
         )
 
@@ -619,6 +638,112 @@ class ChatService:
         if any(c.status == "contradicted" for c in check.overstated):
             notes.append(claim_note(check.overstated, language))
         return notes
+
+    async def _answer_with_correction(
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        evidence: Evidence,
+        received: list[str],
+        navigation: dict[str, Any],
+        earlier_calls: Sequence[LLMResult] = (),
+    ) -> AsyncIterator[ChatEvent]:
+        """D75 navigate mode: one answer call, then the deterministic checks and the
+        deterministic correction of what the tables contradict (one pass, re-checked), then
+        the text is sent in pieces. The answer is held in memory until then."""
+        assert evidence.prompt is not None
+        context = CallContext(
+            owner_id=prepared.actor.id,
+            conversation_id=prepared.conversation_id,
+            message_id=prepared.assistant_message_id,
+        )
+        language = question_language(prepared.question)
+        yield ChatEvent("stage", {"stage": "generating"})
+        result = await self._gateway.generate(
+            evidence.prompt,
+            purpose="answer",
+            max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
+            context=context,
+        )
+        calls = [*earlier_calls, result]
+        if not result.finish_reason.is_complete:
+            received.append(result.text)
+            yield ChatEvent("stage", {"stage": "finalizing"})
+            yield ChatEvent("delta", {"text": result.text})
+            await self._finish(prepared, status="interrupted", content=result.text, answered=None)
+            yield self._usage(calls)
+            yield ChatEvent(
+                "done",
+                self._done_payload(
+                    "interrupted", None, None, result.finish_reason.value, None, navigation
+                ),
+            )
+            return
+
+        yield ChatEvent("stage", {"stage": "verifying"})
+        aliases = self._aliases(evidence)
+        text = strip_step_numbering(result.text.strip())
+        cited = cited_indexes(text, len(evidence.sources))
+        pages = await self._pages(prepared, evidence, cited)
+        fixed: Correction = correct(text, pages, aliases=aliases)
+        info: dict[str, Any] = {
+            "changed": fixed.text != text,
+            "edits": fixed.edits,
+            "removed": fixed.removed,
+            "remaining": fixed.remaining,
+            "uncertain": [
+                {"sentence": i.sentence, "cue": i.cue, "left": i.left, "right": i.right}
+                for i in fixed.uncertain
+            ],
+            "step_numbering_stripped": text != result.text.strip(),
+        }
+        if info["changed"]:
+            yield ChatEvent("stage", {"stage": "correcting"})
+        final = await self._assess(prepared, question, fixed.text, evidence, aliases)
+
+        yield ChatEvent("stage", {"stage": "finalizing"})
+        for start in range(0, len(final.text), DELIVERY_PIECE):
+            piece = final.text[start : start + DELIVERY_PIECE]
+            received.append(piece)
+            yield ChatEvent("delta", {"text": piece})
+        for note in self._notes(final.check, evidence, language):
+            received.append("\n\n" + note)
+            yield ChatEvent("delta", {"text": "\n\n" + note})
+        answered = bool(final.cited)
+        await self._finish(
+            prepared, status="completed", content="".join(received), answered=answered
+        )
+        yield self._usage(calls)
+        yield ChatEvent(
+            "done",
+            self._done_payload(
+                "completed", answered, final, result.finish_reason.value, None, navigation, info
+            ),
+        )
+
+    @staticmethod
+    def _aliases(evidence: Evidence) -> Aliases:
+        """Method aliases read from the definitions in the evidence's chunk sources (D75)."""
+        indexed = [
+            (
+                s["index"],
+                RetrievedChunk(
+                    uuid.uuid4(),
+                    uuid.UUID(s["document_id"]),
+                    s["filename"],
+                    s["page_start"],
+                    0,
+                    s["snippet"] or "",
+                    0,
+                    None,
+                    s["origin"],
+                ),
+            )
+            for s in evidence.sources
+            if s["kind"] == "chunk"
+        ]
+        cells = build_matrix(indexed)
+        return method_aliases(method_definitions(indexed, {c.column for c in cells}))
 
     async def _answer_in_two_calls(
         self,
@@ -764,6 +889,7 @@ class ChatService:
         finish_reason: str | None,
         revision: dict[str, Any] | None,
         navigation: dict[str, Any] | None = None,
+        correction: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         check = assessment.check if assessment else NumberCheck([], [], [], [], [])
         doubts = assessment.doubts if assessment else []
@@ -846,6 +972,7 @@ class ChatService:
             "finish_reason": finish_reason,
             "revision": revision,
             "navigation": navigation,
+            "correction": correction,
         }
 
     async def _search(

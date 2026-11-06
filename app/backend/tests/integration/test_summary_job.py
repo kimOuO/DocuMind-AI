@@ -292,3 +292,53 @@ async def test_deleting_a_document_while_it_is_summarised_leaves_nothing_behind(
         assert db.execute(f"SELECT count(*) FROM {table}").fetchone() == (0,)
     # The two calls that were made stay in the ledger, with the document reference cleared.
     assert db.execute("SELECT count(*), count(document_id) FROM llm_calls").fetchone() == (2, 0)
+
+
+class MisattributingSummariser(StubSummariser):
+    """Plays a model whose section summary credits one method with another's figure."""
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        response = super().__call__(request)
+        body = response.json()
+        if "Summary of" in body.get("response", ""):
+            body["response"] = (
+                "The -High variant, which removes high-level retrieval, reaches 67.6% in "
+                "Agriculture Comprehensiveness, while LightRAG reaches 67.6% (p. 1)."
+            )
+            return httpx.Response(200, json=body)
+        return response
+
+
+ABLATION_TABLE = (
+    "Table 2: Win rates of the variants.\n"
+    "Agriculture Mix\n"
+    "LightRAG -High LightRAG -High\n"
+    "Comprehensiveness 67.6% 65.2% 61.2% 59.6%\n"
+    "Diversity 60.0% 62.0% 50.0% 52.0%\n"
+    "Overall 67.6% 64.8% 60.0% 57.6%\n"
+    "The -High variant removes high-level retrieval."
+)
+
+
+async def test_a_section_summary_that_credits_another_methods_figure_is_corrected_before_storage(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D75 (the Q1 case): the summary gives -High the full model's 67.6%; the table of the
+    section's chunks has -High at 65.2% under those labels, so the figure is replaced —
+    read from the table, never invented — and the corrected summary is what is stored."""
+    model = MisattributingSummariser()
+    _, summary, dispatcher = runners(tokenizer, model)
+    document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    stored = summaries(db, document_id)
+    section = next(row for row in stored if row[0] == "section")
+    assert "reaches 65.2% in Agriculture Comprehensiveness" in section[5]
+    assert "67.6%" in section[5]  # LightRAG's own figure stays
+    report = summary.verification_reports[0]
+    assert report["mislabelled_before"] == ["67.6%"]
+    assert [(e["kind"], e["before"], e["after"]) for e in report["edits"]] == [
+        ("figure", "67.6%", "65.2%")
+    ]
+    assert report["mislabelled_after"] == [] and report["changed"] is True

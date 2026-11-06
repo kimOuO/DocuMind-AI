@@ -213,7 +213,7 @@ export interface Revision {
   reason?: string
 }
 
-export type Stage = 'navigating' | 'generating' | 'verifying' | 'revising' | 'finalizing'
+export type Stage = 'navigating' | 'generating' | 'verifying' | 'correcting' | 'revising' | 'finalizing'
 
 /** What the experimental navigate mode did (D71); null in the other modes. */
 export interface DirectionIssue {
@@ -346,6 +346,13 @@ export type AskEvent =
         direction_issues?: DirectionIssue[]
         completeness?: Completeness
         analysis_status?: AnalysisStatus | null
+        /** D75: what the deterministic correction changed before the answer was sent. */
+        correction?: {
+          changed: boolean
+          edits: { kind: string; before: string; after: string }[]
+          removed: string[]
+          remaining: string[]
+        } | null
       }
     }
   | { name: 'error'; data: { code: string; detail: string } }

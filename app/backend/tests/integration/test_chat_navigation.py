@@ -151,7 +151,18 @@ class NavigatingOllama:
                     "eval_count": 30,
                 },
             )
-        assert body["stream"]  # the answer is still streamed in these modes
+        if not body["stream"]:
+            # D75: the navigate mode holds the answer back, checks and corrects it first.
+            return httpx.Response(
+                200,
+                json={
+                    "response": self.answer,
+                    "done": True,
+                    "done_reason": "stop",
+                    "prompt_eval_count": 400,
+                    "eval_count": 40,
+                },
+            )
 
         def lines():  # type: ignore[no-untyped-def]
             yield (json.dumps({"response": self.answer, "done": False}) + "\n").encode()
@@ -239,7 +250,13 @@ async def test_navigate_mode_plans_locates_and_then_answers_without_repeating_so
     by_name = dict(stream)
     names = [n for n, _ in stream]
     assert names.index("stage") < names.index("sources") < names.index("delta")
-    assert [d["stage"] for n, d in stream if n == "stage"] == ["navigating"]
+    # D75: the answer is held back, checked and (if needed) corrected before it is sent.
+    assert [d["stage"] for n, d in stream if n == "stage"] == [
+        "navigating",
+        "generating",
+        "verifying",
+        "finalizing",
+    ]
     navigation = by_name["done"]["navigation"]
     assert navigation["plan"].startswith("Reading plan:")
     assert [
@@ -476,3 +493,69 @@ async def test_the_summary_route_keeps_the_summaries_first_and_adds_targets_behi
     assert "".join(d["text"] for n, d in stream if n == "delta").startswith(ANSWER)
     purposes = db.execute("SELECT purpose FROM llm_calls ORDER BY created_at").fetchall()
     assert [p for (p,) in purposes][-2:] == ["navigate", "answer"]
+
+
+async def test_navigate_mode_corrects_a_comparison_word_the_table_contradicts_before_sending(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D75: the Analyst's answer is held back, checked against the table and corrected
+    deterministically; the user gets the corrected text, and `done.correction` says what
+    changed. The wrong word here is an ordering word: arithmetic alone decides it."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    wrong = (
+        "In Mix, Comprehensiveness rises from 61.2% for LightRAG to 59.6% for -High [1]. "
+        "(1) The -High variant removes high-level retrieval [1]."
+    )
+    model = NavigatingOllama("- Table 2 | need: the values | priority: required", answer=wrong)
+    use_model(kim, tokenizer, model)
+    mode(kim, "navigate")
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    stages = [d["stage"] for n, d in stream if n == "stage"]
+    assert stages == ["navigating", "generating", "verifying", "correcting", "finalizing"]
+    delivered = "".join(d["text"] for n, d in stream if n == "delta")
+    assert delivered.startswith(
+        "In Mix, Comprehensiveness falls from 61.2% for LightRAG to 59.6% for -High [1]."
+    )
+    correction = by_name["done"]["correction"]
+    assert correction["changed"] is True
+    assert [(e["kind"], e["before"], e["after"]) for e in correction["edits"]] == [
+        ("ordering", "rises", "falls")
+    ]
+    assert correction["remaining"] == [] and correction["removed"] == []
+    assert by_name["done"]["direction_issues"] == []  # re-checked after the correction
+    # The stored answer is the corrected one; both calls are in the ledger.
+    assert one(db, "SELECT content FROM messages WHERE role = 'assistant'")[0].startswith(
+        "In Mix, Comprehensiveness falls"
+    )
+    assert one(db, "SELECT count(*) FROM llm_calls") == (2,)
+
+
+async def test_navigate_mode_leaves_a_correct_answer_untouched(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    model = NavigatingOllama("- Table 2 | need: the values | priority: required")
+    use_model(kim, tokenizer, model)
+    mode(kim, "navigate")
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    assert [d["stage"] for n, d in stream if n == "stage"] == [
+        "navigating",
+        "generating",
+        "verifying",
+        "finalizing",
+    ]
+    assert "".join(d["text"] for n, d in stream if n == "delta").startswith(ANSWER)
+    assert by_name["done"]["correction"] == {
+        "changed": False,
+        "edits": [],
+        "removed": [],
+        "remaining": [],
+        "uncertain": [],
+        "step_numbering_stripped": False,
+    }

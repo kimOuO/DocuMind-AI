@@ -54,6 +54,7 @@ const STAGE_LABEL: Record<Stage, string> = {
   navigating: 'Navigator 規劃要看的章節與表格中',
   generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
   verifying: '核對中',
+  correcting: '依表格修正數字與比較用語',
   revising: '依核對結果修正中',
   finalizing: '整理最終回答',
 }

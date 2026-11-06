@@ -27,9 +27,11 @@ from itertools import pairwise
 
 from app.chat.verification import (
     _CITATION,
+    _CLAUSE_BREAK,
     _NUMBER,
     _PAGE_REFERENCE,
     _SENTENCE_END,
+    Aliases,
     NumberCheck,
     PageText,
     _is_worth_checking,
@@ -61,18 +63,30 @@ _SENTENCE = re.compile(r"(?<=[.!?])\s+")
 _ABLATION_QUESTION = re.compile(r"ablat|variant|消融|變體", re.IGNORECASE)
 # A column that is a variant of the method it is paired with: "-High", "w/o text".
 _VARIANT_LABEL = re.compile(r"^(?:[-–]\w|w/o\b|without\b)", re.IGNORECASE)
-_POSITIVE_CUE = re.compile(
-    r"\b(?:outperform\w*|better|higher|exceed\w*|surpass\w*|improv\w*|above|beat\w*|"
-    r"rise\w*|rose|increas\w*|grow\w*|gain\w*)\b|優於|勝過|高於|超過|提升",
+# D75: words that state the numeric ordering of two figures need no definition of the
+# metric; words that state a performance conclusion do.
+_ORDERING_UP = re.compile(
+    r"\b(?:higher|exceed\w*|above|rise\w*|rose|increas\w*|grow\w*|grew|larger|greater|"
+    r"more\s+than)\b|高於|上升|增加",
     re.IGNORECASE,
 )
-_NEGATIVE_CUE = re.compile(
-    r"\b(?:worse|lower|below|drop\w*|fall\w*|fell|declin\w*|decreas\w*|reduc\w*|underperform\w*)\b"
-    r"|低於|劣於|下降|降低",
+_ORDERING_DOWN = re.compile(
+    r"\b(?:lower|below|drop\w*|fall\w*|fell|declin\w*|decreas\w*|reduc\w*|smaller|"
+    r"less\s+than|shrink\w*|shrank)\b|低於|下降|降低|減少",
     re.IGNORECASE,
 )
+_PERFORMANCE_UP = re.compile(
+    r"\b(?:outperform\w*|better|improv\w*|surpass\w*|beat\w*|superior|gain\w*|"
+    r"advantage\w*|stronger)\b|優於|勝過|提升|較好",
+    re.IGNORECASE,
+)
+_PERFORMANCE_DOWN = re.compile(
+    r"\b(?:underperform\w*|worse|degrad\w*|regress\w*|inferior|deteriorat\w*|weaker|"
+    r"trail\w*|lag\w*\s+behind)\b|劣於|退步|較差",
+    re.IGNORECASE,
+)
+_PAIR_BRIDGE = re.compile(r"\b(?:to|vs\.?|versus|against|→)\b|→", re.IGNORECASE)
 _FROM = re.compile(r"\bfrom\s*$", re.IGNORECASE)
-_TO = re.compile(r"\bto\b", re.IGNORECASE)
 
 
 # --- the matrix ------------------------------------------------------------------------
@@ -91,10 +105,15 @@ class MatrixCell:
     value: str
     unit: str  # "%" or ""
     direction: str  # "higher" | "lower" | "unknown": which way the metric is better
+    # D75: where the direction came from ("caption"; "complementary shares; metric stated in
+    # the sources"; "unknown"), and whether the table's pairs sum to 100% — an auxiliary
+    # signal that on its own never decides the direction.
+    direction_basis: str = "unknown"
+    complementary: bool = False
 
 
-def _direction(caption: str, rows: Iterable[str]) -> str:
-    text = " ".join([caption, *rows])
+def _stated(text: str) -> str:
+    """The direction a text states for its metric, by generic measurement words."""
     higher = _HIGHER_IS_BETTER.search(text) is not None
     lower = _LOWER_IS_BETTER.search(text) is not None
     if higher and not lower:
@@ -102,6 +121,36 @@ def _direction(caption: str, rows: Iterable[str]) -> str:
     if lower and not higher:
         return "lower"
     return "unknown"
+
+
+def stated_direction(texts: Iterable[str]) -> str:
+    """What the sources as a whole say about their metric: "higher", "lower" or "unknown"."""
+    return _stated(" ".join(texts))
+
+
+def _complementary(parsed: Sequence[tuple[tuple[str, ...], str, int]]) -> bool:
+    """Whether the table's pairs of percentages sum to 100: an auxiliary signal only."""
+    pairs: dict[tuple[str, str, int], list[float]] = {}
+    for labels, value, block in parsed:
+        if len(labels) == 3 and value.endswith("%"):
+            number = _as_float(value)
+            if number is not None:
+                pairs.setdefault((labels[0], labels[1], block), []).append(number)
+    sums = [sum(v) for v in pairs.values() if len(v) == 2]
+    return len(sums) >= 2 and sum(1 for t in sums if abs(t - 100) <= 0.3) / len(sums) >= 0.8
+
+
+def _direction(
+    caption: str, rows: Iterable[str], complementary: bool, stated: str
+) -> tuple[str, str]:
+    """The direction of the table's metric and its basis: the caption's own words first;
+    else complementary pairs together with a direction the sources state; else unknown."""
+    own = _stated(" ".join([caption, *rows]))
+    if own != "unknown":
+        return own, "caption"
+    if complementary and stated == "higher":
+        return "higher", "complementary shares; metric stated in the sources"
+    return "unknown", "unknown"
 
 
 def _parsed_cells(text: str) -> tuple[str, list[tuple[tuple[str, ...], str, int]]]:
@@ -125,13 +174,18 @@ def _parsed_cells(text: str) -> tuple[str, list[tuple[tuple[str, ...], str, int]
     return caption, cells
 
 
-def _cells_from_text(text: str, source_index: int, page: int) -> list[MatrixCell]:
+def _cells_from_text(
+    text: str, source_index: int, page: int, stated: str = "unknown"
+) -> list[MatrixCell]:
     caption, parsed = _parsed_cells(text)
     if not parsed:
         return []
     match = _CAPTION.match(caption)
     table = match.group(1).title() if match else f"table on page {page}"
-    direction = _direction(caption, {labels[0] for labels, _, _ in parsed})
+    complementary = _complementary(parsed)
+    direction, basis = _direction(
+        caption, {labels[0] for labels, _, _ in parsed}, complementary, stated
+    )
     # The columns that share a row, group and block pair up when there are two of them.
     groups: dict[tuple[str, str, int], list[str]] = {}
     for labels, _, block in parsed:
@@ -156,20 +210,27 @@ def _cells_from_text(text: str, source_index: int, page: int) -> list[MatrixCell
                 value,
                 "%" if value.endswith("%") else "",
                 direction,
+                basis,
+                complementary,
             )
         )
     return cells
 
 
 def build_matrix(sources: Sequence[tuple[int, RetrievedChunk]]) -> list[MatrixCell]:
-    """Every figure of every table chunk among the numbered sources, with its labels."""
+    """Every figure of every table chunk among the numbered sources, with its labels. The
+    sources' own text may state the metric's direction (D75)."""
+    stated = stated_direction(chunk.text for _, chunk in sources)
     cells: list[MatrixCell] = []
     for index, chunk in sources:
-        cells.extend(_cells_from_text(chunk.text, index, chunk.page))
+        cells.extend(_cells_from_text(chunk.text, index, chunk.page, stated))
     return cells
 
 
-def _matrix_cells_of_pages(pages: Sequence[PageText]) -> list[MatrixCell]:
+def matrix_cells_of_pages(pages: Sequence[PageText]) -> list[MatrixCell]:
+    """The matrix read from page texts (the cited pages of an answer, or the chunks of a
+    summarised section), each table starting at its caption."""
+    stated = stated_direction(page.text for page in pages)
     cells: list[MatrixCell] = []
     for page in pages:
         # A page may hold several tables; each caption starts one.
@@ -177,17 +238,21 @@ def _matrix_cells_of_pages(pages: Sequence[PageText]) -> list[MatrixCell]:
         for line in [*page.text.splitlines(), None]:
             if line is None or (_CAPTION.match(line.strip()) and current):
                 if current:
-                    cells.extend(_cells_from_text("\n".join(current), 0, page.page))
+                    cells.extend(_cells_from_text("\n".join(current), 0, page.page, stated))
                 current = [] if line is None else [line]
             else:
                 current.append(line)
     return cells
 
 
+_matrix_cells_of_pages = matrix_cells_of_pages
+
+
 _DIRECTION_PHRASE = {
     "higher": "higher is better",
     "lower": "lower is better",
-    "unknown": "direction of the metric unknown",
+    "unknown": "direction of the metric unknown — compare values as higher or lower, "
+    "not as better or worse",
 }
 
 
@@ -204,9 +269,11 @@ def matrix_text(
     left_out: list[str] = []
     spent = 0
     for (table, index), members in by_table.items():
-        lines = [
-            f"{table} [{index}] (p. {members[0].page}), {_DIRECTION_PHRASE[members[0].direction]}:"
-        ]
+        head = members[0]
+        basis = (
+            "" if head.direction_basis in ("caption", "unknown") else f" ({head.direction_basis})"
+        )
+        lines = [f"{table} [{index}] (p. {head.page}), {_DIRECTION_PHRASE[head.direction]}{basis}:"]
         order: dict[tuple[str, str], list[MatrixCell]] = {}
         for c in members:
             order.setdefault((c.group, c.row), []).append(c)
@@ -217,8 +284,8 @@ def matrix_text(
             shown = "; ".join(
                 " | ".join(f"{c.column} {c.value}" for c in pair) for pair in pairs.values()
             )
-            head = f"{group} / {row}" if group else row
-            lines.append(f"  {head}: {shown}")
+            heading = f"{group} / {row}" if group else row
+            lines.append(f"  {heading}: {shown}")
         block = "\n".join(lines)
         cost = counter.count(block)
         if spent + cost > budget:
@@ -264,6 +331,50 @@ def method_definitions(
     return [d for _, d in sorted(found.values(), key=lambda pair: pair[0])]
 
 
+_ALIAS_STOP = re.compile(
+    r"^(?:and|or|which|that|while|whereas|but|to|in|for|from|with|by|as|so|if|when|than)$",
+    re.IGNORECASE,
+)
+_ALIAS_WORD = re.compile(r"[A-Za-z][\w-]*")
+_REMOVAL_VERB = r"(?:remov|eliminat|omit|exclud|dropp?|without|disabl)\w*"
+_ONLY_VERB = r"(?:keep|keeps|keeping|kept|use|uses|using|used|retain\w*)\s+only"
+_OPERATION_SPLIT = re.compile(
+    rf"({_REMOVAL_VERB}|{_ONLY_VERB})\s+(?:the\s+|its\s+|any\s+|all\s+)?(?:use\s+of\s+(?:the\s+)?)?",
+    re.IGNORECASE,
+)
+
+
+def method_aliases(definitions: Sequence[MethodDefinition]) -> dict[str, list[re.Pattern[str]]]:
+    """Other ways a text may name a method, read from its definition: "the -High variant
+    removes high-level retrieval" lets "removing high-level retrieval" count as -High. The
+    operation's object (up to four words, to the next conjunction or punctuation) must
+    follow the same kind of operation word; a name alone is never inferred."""
+    aliases: dict[str, list[re.Pattern[str]]] = {}
+    for d in definitions:
+        for match in _OPERATION_SPLIT.finditer(d.sentence):
+            rest = d.sentence[match.end() :]
+            words: list[str] = []
+            for token in re.split(r"\s+", rest):
+                word = _ALIAS_WORD.match(token)
+                if word is None or _ALIAS_STOP.match(word.group()) or len(words) == 4:
+                    break
+                words.append(word.group())
+                if not token.endswith(word.group()):  # punctuation closes the object
+                    break
+            if not words:
+                continue
+            verb = (
+                _ONLY_VERB if re.search(r"only$", match.group(1), re.IGNORECASE) else _REMOVAL_VERB
+            )
+            body = r"[\s-]+".join(re.escape(w).replace(r"\-", "[-\\s]") for w in words)
+            pattern = re.compile(
+                rf"{verb}\s+(?:the\s+|its\s+|any\s+|all\s+)?(?:use\s+of\s+(?:the\s+)?)?{body}(?!\w)",
+                re.IGNORECASE,
+            )
+            aliases.setdefault(d.method, []).append(pattern)
+    return aliases
+
+
 # --- the Analyst's preamble ------------------------------------------------------------
 
 
@@ -276,8 +387,10 @@ against a reference as a test between those two methods; (4) name the improvemen
 regressions and every exception; (5) check that each "higher", "lower", "outperforms" or \
 "drops" agrees with the figures it stands next to; (6) cite the table's source for a figure \
 and the defining passage for a definition; (7) check that nothing the question asks for is \
-missing. You may begin with a compact comparison table of the figures you use, then the \
-analysis. Do not describe these steps; write the answer.
+missing. Where a table's direction is marked unknown, say only which figure is higher or lower; \
+do not call either better, worse, improved or degraded. You may begin with a compact comparison \
+table of the figures you use, then the analysis. Do not describe these steps, and do not number \
+your paragraphs after them; write the answer as prose.
 """
 
 
@@ -338,6 +451,10 @@ class DirectionIssue:
     right: str  # the second figure
     status: str  # "inconsistent" | "uncertain" | "incomparable"
     detail: str
+    kind: str = "ordering"  # "ordering" (numeric size) | "performance" (needs the direction)
+    cue: str = ""  # the word that states the relation
+    cue_span: tuple[int, int] = (0, 0)  # where the cue is in the answer
+    first_is_up: bool | None = None  # what the figures say: the first is the larger
 
 
 def _blank(answer: str) -> str:
@@ -347,40 +464,95 @@ def _blank(answer: str) -> str:
 
 
 def _resolve(
-    side: str, whole: str, vocabulary: Sequence[set[str]], value: str, cells: Sequence[MatrixCell]
+    side: str,
+    scopes: Sequence[str],
+    vocabulary: Sequence[set[str]],
+    value: str,
+    cells: Sequence[MatrixCell],
+    aliases: Aliases | None,
 ) -> MatrixCell | None:
-    """The one cell with this value whose labels the side of the sentence names: for each
-    kind of label, the single mention on that side, else the single mention in the whole
-    sentence; two mentions on the side are an ambiguity, not a choice."""
+    """The one cell with this value whose labels the side of the clause names: for each
+    kind of label, the single mention on that side, else the single mention in the clause,
+    then in the sentence; two mentions on the side are an ambiguity, not a choice. When the
+    inferred column fits no cell, the row and group alone may still name one cell."""
     given: list[str | None] = []
     for labels in vocabulary:
-        on_side = {label for _, _, label in _mentions(side, labels)}
+        on_side = {label for _, _, label in _mentions(side, labels, aliases)}
+        if len(on_side) > 1:
+            return None
         if len(on_side) == 1:
             given.append(on_side.pop())
-        elif len(on_side) > 1:
-            return None
-        else:
-            in_sentence = {label for _, _, label in _mentions(whole, labels)}
-            given.append(in_sentence.pop() if len(in_sentence) == 1 else None)
+            continue
+        found = None
+        for scope in scopes:
+            in_scope = {label for _, _, label in _mentions(scope, labels, aliases)}
+            if len(in_scope) == 1:
+                found = in_scope.pop()
+                break
+            if len(in_scope) > 1:
+                break
+        given.append(found)
     row, group, column = given
-    fitting = [
-        c
-        for c in cells
-        if _key(c.value) == _key(value)
-        and (row is None or c.row == row)
-        and (group is None or c.group == group)
-        and (column is None or c.column == column)
-    ]
-    distinct = {(c.row, c.group, c.column, c.paired_with, c.direction) for c in fitting}
-    return fitting[0] if len(distinct) == 1 else None
+
+    def fitting(use_column: bool) -> MatrixCell | None:
+        matches = [
+            c
+            for c in cells
+            if _key(c.value) == _key(value)
+            and (row is None or c.row == row)
+            and (group is None or c.group == group)
+            and (not use_column or column is None or c.column == column)
+        ]
+        distinct = {(c.row, c.group, c.column, c.paired_with, c.direction) for c in matches}
+        return matches[0] if len(distinct) == 1 else None
+
+    return fitting(True) or (fitting(False) if column is not None else None)
 
 
-def check_directions(answer: str, pages: Sequence[PageText]) -> list[DirectionIssue]:
-    """Comparisons of two figures in one sentence ("A outperforms B", "falls from A to
-    B") checked against the matrix of the cited pages: inconsistent when the figures go
-    the other way, uncertain when the metric's direction is unknown, incomparable when
-    the figures are of different datasets, metrics or pairings."""
-    cells = _matrix_cells_of_pages(pages)
+def _comparable(left: MatrixCell, right: MatrixCell) -> str | None:
+    """Why two cells cannot be compared, or None when they can: the same column group,
+    and either the same row or the same column; and the same pairing — or each other's."""
+    if left.group != right.group or (left.row == right.row) == (left.column == right.column):
+        return (
+            f"{left.group or left.table} / {left.row} / {left.column} against "
+            f"{right.group or right.table} / {right.row} / {right.column}: different conditions"
+        )
+    each_others = left.paired_with == right.column and right.paired_with == left.column
+    if left.paired_with != right.paired_with and not each_others:
+        return (
+            f"paired with {left.paired_with} against paired with {right.paired_with}: "
+            "different pairings"
+        )
+    return None
+
+
+def _cue_before(text: str) -> tuple[re.Match[str], str, bool] | None:
+    """The last ordering or performance cue in the text, its kind and whether it says up."""
+    found: list[tuple[int, re.Match[str], str, bool]] = []
+    for pattern, kind, up in (
+        (_ORDERING_UP, "ordering", True),
+        (_ORDERING_DOWN, "ordering", False),
+        (_PERFORMANCE_UP, "performance", True),
+        (_PERFORMANCE_DOWN, "performance", False),
+    ):
+        for m in pattern.finditer(text):
+            found.append((m.start(), m, kind, up))
+    if not found:
+        return None
+    _, m, kind, up = max(found)
+    return m, kind, up
+
+
+def check_directions(
+    answer: str, pages: Sequence[PageText], aliases: Aliases | None = None
+) -> list[DirectionIssue]:
+    """Comparisons of two figures in one clause checked against the matrix of the cited
+    pages. Two forms: "A <cue> B" ("67.6% is higher than 65.2%", "A outperforms B"), and a
+    change from the first figure to the second ("drops from A to B", "drops (A vs B)") with
+    the cue before the pair. An ordering cue is checked by arithmetic alone; a performance
+    cue needs the metric's direction and is uncertain without it. Figures of different
+    conditions are incomparable."""
+    cells = matrix_cells_of_pages(pages)
     if not cells:
         return []
     vocabulary = [
@@ -392,85 +564,125 @@ def check_directions(answer: str, pages: Sequence[PageText]) -> list[DirectionIs
     issues: list[DirectionIssue] = []
     for s_start, s_end in _pieces(blanked, _SENTENCE_END):
         sentence = blanked[s_start:s_end]
+        clauses = _pieces(sentence, _CLAUSE_BREAK)
         figures = [m for m in _NUMBER.finditer(sentence) if _is_worth_checking(m.group())]
         for first, second in pairwise(figures):
-            between = sentence[first.end() : second.start()]
-            from_to = _FROM.search(sentence[: first.start()]) is not None and _TO.search(between)
-            cue_text = sentence[: second.start()] if from_to else between
-            positive = _POSITIVE_CUE.search(cue_text)
-            negative = _NEGATIVE_CUE.search(cue_text)
-            if positive is None and negative is None:
-                continue
-            split = (
-                first.end() + _TO.search(between).start()  # type: ignore[union-attr]
-                if from_to
-                else first.end() + (positive or negative).start()  # type: ignore[union-attr]
+            clause = next(
+                (c for c in clauses if c[0] <= first.start() and second.end() <= c[1]), None
             )
-            left = _resolve(sentence[:split], sentence, vocabulary, first.group(), cells)
-            right = _resolve(sentence[split:], sentence, vocabulary, second.group(), cells)
+            if clause is None:
+                continue  # the two figures are in different clauses
+            c_start, c_end = clause
+            between = sentence[first.end() : second.start()]
+            bridge = _PAIR_BRIDGE.search(between)
+            inner = _cue_before(between)  # "A higher than B": the cue between the figures
+            change = None
+            if inner is None and bridge is not None and not _NUMBER.search(between):
+                # "drops from A to B", "drops (A vs B)": the cue before the pair.
+                before = sentence[c_start : first.start()]
+                change = _cue_before(before)
+                if change is not None and _FROM.search(before) is None and "(" not in before[-3:]:
+                    # Without "from" or an opening parenthesis the pair is a plain "A vs B"
+                    # comparison: the cue before it says which side is up, as "A <cue> B".
+                    pass
+            found = inner or change
+            if found is None:
+                continue
+            cue_match, kind, says_up = found
+            cue_offset = first.end() if inner is not None else c_start
+            split = first.end() + (
+                bridge.start() if inner is None and bridge else cue_match.start()
+            )
+            left_text = sentence[c_start:split]
+            right_text = sentence[split:c_end]
+            scopes = [sentence[c_start:c_end], sentence]
+            left = _resolve(left_text, scopes, vocabulary, first.group(), cells, aliases)
+            right = _resolve(right_text, scopes, vocabulary, second.group(), cells, aliases)
             if left is None or right is None:
                 continue
+            # "drops (A vs B) for X": the cue is about the clause's subject X, whichever
+            # side of the pair X's figure is on. Without one named subject — or with
+            # "from A to B" — the pair reads as a change from the first to the second.
+            subject_first: bool | None = None
+            if inner is None and _FROM.search(sentence[c_start : first.start()]) is None:
+                outside = sentence[c_start : first.start()] + " " + sentence[second.end() : c_end]
+                subjects = {label for _, _, label in _mentions(outside, vocabulary[2], aliases)}
+                if len(subjects) == 1:
+                    subject = subjects.pop()
+                    if (left.column == subject) != (right.column == subject):
+                        subject_first = left.column == subject
             shown = _tidy(answer[s_start:s_end])
-            # Comparable: the same column group, and the same row or the same column (a
-            # table may put the methods in its rows or in its columns).
-            same_group = left.group == right.group
-            one_axis = (left.row == right.row) != (left.column == right.column)
-            if not same_group or not one_axis:
+            cue_span = (
+                s_start + cue_offset + cue_match.start(),
+                s_start + cue_offset + cue_match.end(),
+            )
+            cue = cue_match.group()
+            reason = _comparable(left, right)
+            if reason is not None:
                 issues.append(
                     DirectionIssue(
                         shown,
                         first.group(),
                         second.group(),
                         "incomparable",
-                        f"{first.group()} is {left.group or left.table} / {left.row} / "
-                        f"{left.column}, {second.group()} is {right.group or right.table} / "
-                        f"{right.row} / {right.column}: different conditions",
-                    )
-                )
-                continue
-            if left.paired_with != right.paired_with:
-                issues.append(
-                    DirectionIssue(
-                        shown,
-                        first.group(),
-                        second.group(),
-                        "incomparable",
-                        f"{first.group()} is paired with {left.paired_with}, "
-                        f"{second.group()} with {right.paired_with}: different pairings",
-                    )
-                )
-                continue
-            if left.direction == "unknown":
-                issues.append(
-                    DirectionIssue(
-                        shown,
-                        first.group(),
-                        second.group(),
-                        "uncertain",
-                        f"the direction of {left.row} is not known, so the comparison "
-                        "cannot be checked",
+                        reason,
+                        kind,
+                        cue,
+                        cue_span,
                     )
                 )
                 continue
             a, b = _as_float(first.group()), _as_float(second.group())
             if a is None or b is None or a == b:
                 continue
-            # Which figure the sentence says is better: normally the first ("A better than
-            # B"); in "falls from A to B" the first, in "rises from A to B" the second.
-            first_is_better = (negative is not None) if from_to else (positive is not None)
-            better_is_higher = left.direction == "higher"
-            first_higher = a > b
-            consistent = (first_higher == better_is_higher) == first_is_better
-            if not consistent:
+            first_is_up = a > b
+            # What the sentence says about the first figure: in "A <cue> B" the cue is about
+            # A; in a change from A to B an upward cue means B is up, so A is down; with a
+            # named subject the cue is about the subject's figure.
+            if inner is not None:
+                first_said_up = says_up
+            elif subject_first is not None:
+                first_said_up = says_up if subject_first else not says_up
+            else:
+                first_said_up = not says_up
+            if kind == "performance":
+                if left.direction == "unknown":
+                    issues.append(
+                        DirectionIssue(
+                            shown,
+                            first.group(),
+                            second.group(),
+                            "uncertain",
+                            f"the direction of {left.row} is not stated in the sources, so "
+                            f'"{cue}" cannot be checked; the figures only say that '
+                            f"{first.group()} is {'higher' if first_is_up else 'lower'}",
+                            kind,
+                            cue,
+                            cue_span,
+                            first_is_up,
+                        )
+                    )
+                    continue
+                first_said_up = first_said_up if left.direction == "higher" else not first_said_up
+            if first_said_up != first_is_up:
                 issues.append(
                     DirectionIssue(
                         shown,
                         first.group(),
                         second.group(),
                         "inconsistent",
-                        f"{left.row} / {left.group or left.table}: "
-                        f"{_DIRECTION_PHRASE[left.direction]}, but {first.group()} "
-                        f"{'>' if first_higher else '<'} {second.group()}",
+                        f"{left.row} / {left.group or left.table}: {first.group()} "
+                        f"{'>' if first_is_up else '<'} {second.group()}"
+                        + (
+                            f", {_DIRECTION_PHRASE[left.direction]}"
+                            if kind == "performance"
+                            else ""
+                        )
+                        + f', but the sentence says "{cue}"',
+                        kind,
+                        cue,
+                        cue_span,
+                        first_is_up,
                     )
                 )
     return issues

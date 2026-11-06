@@ -24,7 +24,7 @@ unresolved: the check does not guess, and says so.
 
 import re
 import uuid
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from itertools import pairwise
 
@@ -43,6 +43,7 @@ _STRUCTURE_LABEL = re.compile(
 _CITATION = re.compile(r"\[\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*\]")
 _PAGE_REFERENCE = re.compile(r"\(pp?\.\s*\d+(?:\s*[-–]\s*\d+)?\)")
 _SNIPPET_RADIUS = 80
+Aliases = Mapping[str, Sequence[re.Pattern[str]]]  # label -> other ways the text names it
 # Where one sentence ends: a full stop followed by space, unless it is an abbreviation.
 _SENTENCE_END = re.compile(
     r"(?<!\be\.g\.)(?<!\bi\.e\.)(?<!\bvs\.)(?<!\betc\.)(?<=[.!?。！？])\s+|\n+"
@@ -182,7 +183,9 @@ def _snippet(text: str, start: int, end: int) -> str:
     return f"{'…' if left > 0 else ''}{piece}{'…' if right < len(text) else ''}"
 
 
-def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
+def verify_numbers(
+    answer: str, pages: Sequence[PageText], aliases: Aliases | None = None
+) -> NumberCheck:
     """Look every number of the answer up on the given pages, in their order, and
     compare the labels of the table figures among them."""
     wanted = numbers_in(answer)
@@ -206,7 +209,7 @@ def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
             verified.append(
                 VerifiedNumber(number, page.document_id, page.page, _snippet(page.text, start, end))
             )
-    mislabelled, unresolved = check_labels(answer, pages)
+    mislabelled, unresolved = check_labels(answer, pages, aliases)
     return NumberCheck(
         verified, unverified, mislabelled, unresolved, check_universal_claims(answer, pages)
     )
@@ -261,16 +264,19 @@ Span = tuple[int, int]
 Mention = tuple[int, int, str]  # start, end, label
 
 
-def _mentions(text: str, labels: Iterable[str]) -> list[Mention]:
+def _mentions(text: str, labels: Iterable[str], aliases: Aliases | None = None) -> list[Mention]:
     """Where the labels of one category are mentioned in the text.
 
     Two labels directly after one another ("LightRAG -High") are one compound
-    name, and the later one is the name that counts.
+    name, and the later one is the name that counts. An alias (D75: "removing
+    high-level retrieval" for the variant whose definition says so) counts as a
+    mention of its label.
     """
     found = sorted(
         (m.start(), m.end(), label)
         for label in labels
-        for m in _label_pattern(label).finditer(text)
+        for pattern in [_label_pattern(label), *(aliases or {}).get(label, ())]
+        for m in pattern.finditer(text)
     )
     merged: list[Mention] = []
     for start, end, label in found:
@@ -323,6 +329,7 @@ def _claims(
     vocabulary: Sequence[set[str]],
     inherited: Sequence[str | None],
     heading: Sequence[str | None] = (),
+    aliases: Aliases | None = None,
 ) -> list[_Claim]:
     """What the sentence claims about each table figure in it, by role.
 
@@ -341,7 +348,7 @@ def _claims(
     keeps_setting = bool(_SAME_AS_BEFORE.search(sentence))
     method = len(vocabulary) - 1
     claims: list[_Claim] = []
-    per_category = [_mentions(sentence, labels) for labels in vocabulary]
+    per_category = [_mentions(sentence, labels, aliases) for labels in vocabulary]
     owner: dict[Mention, Span | None] = {
         m: next((f for f in figures if _attached(sentence, m, f, figures)), None)
         for mentions in per_category
@@ -451,9 +458,15 @@ class LabelOutcome:
     sentence: str
     reason: str | None  # unresolved only: "missing" or "ambiguous"
     position: int  # where the figure starts in the answer
+    end: int = 0  # where the figure ends in the answer
+    claim: tuple[str | None, ...] = ()  # the label of each category the sentence gave
+    comparator: str | None = None
+    sentence_span: tuple[int, int] = (0, 0)
 
 
-def label_outcomes(answer: str, pages: Sequence[PageText]) -> list[LabelOutcome]:
+def label_outcomes(
+    answer: str, pages: Sequence[PageText], aliases: Aliases | None = None
+) -> list[LabelOutcome]:
     """One outcome per table figure of the answer, in order of appearance."""
     cells = _table_cells(pages)
     if not cells:
@@ -475,7 +488,7 @@ def label_outcomes(answer: str, pages: Sequence[PageText]) -> list[LabelOutcome]
     for s_start, s_end in _pieces(blanked, _SENTENCE_END):
         sentence = blanked[s_start:s_end]
         shown_sentence = _tidy(answer[s_start:s_end])
-        mentions = [_mentions(sentence, labels) for labels in vocabulary]
+        mentions = [_mentions(sentence, labels, aliases) for labels in vocabulary]
         if _is_heading(sentence, mentions):
             # "- Comprehensiveness:" labels the list items that follow it.
             heading = [
@@ -485,7 +498,7 @@ def label_outcomes(answer: str, pages: Sequence[PageText]) -> list[LabelOutcome]
             continue
         if not _LIST_ITEM.match(sentence):
             heading = [None] * categories
-        for claim in _claims(sentence, vocabulary, inherited, heading):
+        for claim in _claims(sentence, vocabulary, inherited, heading, aliases):
             start, end = claim.figure
             number = sentence[start:end]
             candidates = cells.get(_key(number))
@@ -511,6 +524,10 @@ def label_outcomes(answer: str, pages: Sequence[PageText]) -> list[LabelOutcome]
                     shown_sentence,
                     reason,
                     s_start + start,
+                    s_start + end,
+                    tuple(claim.labels),
+                    claim.comparator,
+                    (s_start, s_end),
                 )
             )
         # What the next sentence may inherit: the one label of each kind this one states.
@@ -533,14 +550,14 @@ def _is_heading(sentence: str, mentions: Sequence[Sequence[Mention]]) -> bool:
 
 
 def check_labels(
-    answer: str, pages: Sequence[PageText]
+    answer: str, pages: Sequence[PageText], aliases: Aliases | None = None
 ) -> tuple[list[MislabelledNumber], list[UnresolvedNumber]]:
     """The table figures of the answer that the table contradicts, and those it can
     neither confirm nor contradict; each figure with the same labels once."""
     mislabelled: list[MislabelledNumber] = []
     unresolved: list[UnresolvedNumber] = []
     seen: set[tuple[str, tuple[str, ...]]] = set()
-    for outcome in label_outcomes(answer, pages):
+    for outcome in label_outcomes(answer, pages, aliases):
         key = (outcome.number, tuple(outcome.answer_labels))
         if outcome.status in ("supported", "unchecked") or key in seen:
             continue
