@@ -1,6 +1,6 @@
-# navigator-abc — 單輪 vs. 同 prompt 雙角色 vs. 導航取證的 A/B/C 實驗（D71），與兩次只重測 B 的單臂實測（D73 的 B2、D74 的 B3）
+# navigator-abc — 單輪 vs. 同 prompt 雙角色 vs. 導航取證的 A/B/C 實驗（D71），與只重測 B 的單臂實測（D73 的 B2、D74 的 B3、D75 的 B4／B4b）
 
-三批紀錄在同一個 `runs/`：`C-*`、`A-*`、`B-*` 是 D71 的同期 A/B/C（45 次）；`B2-*` 是 D73 只重測改良取證後的 B（15 次）；`B3-*` 是 D74 再加涵蓋判定與結構化證據分析後的 B（15 次）。`analyse.py` 與 `answers.md` 同時涵蓋三批。
+五批紀錄在同一個 `runs/`：`C-*`、`A-*`、`B-*` 是 D71 的同期 A/B/C（45 次）；`B2-*` 是 D73 只重測改良取證後的 B（15 次）；`B3-*` 是 D74 再加涵蓋判定與結構化證據分析後的 B（15 次）；`B4-*` 是 D75 加事實核對與確定性修正、摘要驗證後的 B（15 次），`B4b-*` 是修正器修復後的重跑（15 次）；`*-summaries.json` 是各批摘要驗證的紀錄。`analyse.py` 與 `answers.md` 涵蓋全部。
 
 問題：D69 的條件修正只對檢查看得到的錯有效；D70 顯示模型能初步定位「要看哪一節、哪個表」。使用者提出假設：先讓模型當 **Navigator** 指出證據位置、再當 **Analyst** 依證據分析，可能比單輪更完整、更正確；並要求分離兩個變因——**角色分工本身**（A 對 C）與**中途重新取證**（B 對 A）。ADR 0009。
 
@@ -323,3 +323,82 @@ Q3 的證據三臂都齊（Coverage 1.00，Table 2 切塊在 Top-5 中）；失�
 ### 結論（供使用者決定）
 
 任務書問的是「減少多餘證據、建立正確的資料對應關係，能否在不增加呼叫的前提下提高正確性與完整性」。答案分三段：**完整性有**（Q3 三次同條件四版本、歷史零次）；**資料對應有**（Q3 160 個數字全對、Q2 兩次 32 格全對、G2 零錯），但模型仍能無視配對欄把 NaiveRAG 寫成 GraphRAG；**多餘證據沒有明顯減少**（89%），因為涵蓋判定依賴表格切塊與整節命中。剩下的錯集中在 Analyst 的方向措辭與摘要原句，前者是生成端、後者是摘要端。下一步若繼續：(1) 方向核對加「成對百分比合為 100 → 勝率、higher」的通用推法，讓 Q3 的方向錯能被標出；(2) 摘要產生時也跑數字標籤核對（Q1 兩批都錯在摘要句）；(3) 檢索端能做的已不多。單輪仍為預設。
+
+
+---
+
+## D75 Analyst 事實核對與確定性修正、摘要驗證，只重測 B4 與 B4b（2026-11-06）
+
+使用者的任務書（決策日誌 D75）：把數值大小、指標方向、效能結論分開核對；修正不得造數；摘要存入前驗證；分開記 Overall Pass、Factual Correctness、Completeness、Validator 偵測／誤判／漏判、Correction Success、Token、Latency。改動：方向核對分大小詞（算術）與效能詞（需方向）、三種句型；指標方向多「成對合 100 ＋ 來源量測詞」一個來源；方法別名由定義句抽出；`correction.py` 以規則修正（反義詞、換名、換值、刪括號或整句，一輪再核對）；navigate 模式先產生、核對、修正、再送出；章節與全文摘要存入前同一套核對與修正。**只重跑 B4；歷史批次為跨批次探索性對照。**
+
+### 執行紀錄
+
+- 第一、二次執行都在前置的摘要工作失敗：GraphRAG「Conclusion (part 3/3)」的章節摘要寫滿 1,500 tokens 未停（`output_limit`）。系統失敗，不是答案錯誤；B2、B3 同流程未遇到。修法：摘要呼叫未自然停止時重試一次並提醒字數上限（`8b78f0f`）。第三次執行完成：15 次、549 秒。
+- **B4 的判定發現修正器兩個缺陷**（見下），修復後（`22754d2`）重跑一批記為 B4b。
+
+### B4（修正器修復前）：機制指標與人工判定
+
+| 題 | 臂 | required 判 covered | 補充塊 | 多餘 | supp. 用 | Matrix 格 | 修正 edit／remove／left | tokens | 秒 |
+|---|---|---|---|---|---|---|---|---|---|
+| Q1 | B3 | 0/14 | 9 | 8 | 0 | — | — | 6,867 | 29.1 |
+| Q1 | **B4** | 0/15 | 10 | 9 | 0 | — | 0/0/0 | 7,342 | 31.7 |
+| Q2 | B3 | 0/10 | 13 | 9 | 4 | 512 | — | 8,267 | 44.1 |
+| Q2 | **B4** | 0/11 | 15 | 11 | 4 | 512 | 1/0/0 | 8,542 | 42.6 |
+| Q3 | B3 | 6/6 | 0 | 0 | 0 | 384 | — | 7,343 | 72.6 |
+| Q3 | **B4** | 6/6 | 0 | 0 | 0 | 384 | 0/0/0 | 7,071 | 59.7 |
+| G1 | B3 | 0/12 | 21 | 21 | 6 | 0 | — | 8,059 | 28.6 |
+| G1 | **B4** | 0/12 | 20 | 20 | 6 | 0 | 0/0/0 | 7,883 | 25.5 |
+| G2 | B3 | 0/6 | 20 | 18 | 5 | 0 | — | 7,123 | 30.4 |
+| G2 | **B4** | 0/7 | 21 | 19 | 5 | 0 | 0/0/0 | 7,202 | 23.6 |
+
+B4 平均 7,608 tokens／36.6 秒（B3 7,532／40.9）；30 筆呼叫全 ≤ 10K，最大 7,056。Analyst 端修正只動了 1 次（B4-Q2-3 的 86.4%→73.6%，正確）；方向核對在 15 次中回報 0 條（含 uncertain）。
+
+| 題 | B3 整體 | **B4 整體** | B4 事實正確 | B4 完整 |
+|---|---|---|---|---|
+| Q1 | 1/3 | **0/3** | 0/3 | 3/3 |
+| Q2 | 2/3 | **0/3** | 0/3 | 3/3 |
+| Q3 | 0/3 | **1/3** | 2/3 | 2/3 |
+| G1 | 3/3 | **1/3** | 1/3 | 3/3 |
+| G2 | 1/3 | **1/3** | 2/3 | 1/3 |
+| 合計 | 7/15 | **3/15** | 5/15 | 12/15 |
+
+逐次：
+
+| 次 | 判定 | 原因 |
+|---|---|---|
+| B4-Q1-1～3 | 不通過 ×3 | 三次都照抄本批 EVALUATION 章節摘要的「84.8% win rate in Overall against RQ-RAG (15.2%)」——Table 1 的 RQ-RAG 區塊 Legal：Comprehensiveness 84.8／15.2、Overall 85.6／14.4，所以這一對是 Comprehensiveness 的值、標成 Overall。run 1 另有「67.6% win rates in Comprehensiveness, Diversity, and Empowerment」（Diversity 是 76.4%）。兩句都來自摘要原文（**Summary Quality**）；消融與成本的句子全對 |
+| B4-Q2-1 | 不通過 | Table 1 GraphRAG 區塊 32 格全對；但「The only exception is the Mix dataset in the Overall category」——自己的表裡 Mix 的 Comprehensiveness、Empowerment 也是 GraphRAG 較高（C-X1 型）。核對把「(50.4% vs. 49.6%)」的 49.6% 標為歸屬錯（**誤報**：句子說 GraphRAG 50.4 對 LightRAG 49.6 是對的），修正器的對照值規則擋住了改動 |
+| B4-Q2-2 | 不通過 | 沒拿到 Table 1；「LightRAG consistently outperforms GraphRAG across all evaluation dimensions and datasets」與「full version consistently outperforms its ablated versions」兩句全稱宣稱（核對抓到 3 處）；案例研究與 Table 2 的敘述對 |
+| B4-Q2-3 | 不通過 | **修正器把「73.6% in Diversity」從模型寫的 86.4%（對 NaiveRAG 的值）改成對 GraphRAG 的 73.6%——正確**；但「consistently outperforms GraphRAG in all datasets and evaluation dimensions」（核對抓到 3 處）、「wins 49.6% in Comprehensiveness」（49.6 是輸）仍在 |
+| B4-Q3-1 | **通過** | 四資料集 Comprehensiveness 四版本 32 格全對、A1–A6 齊、六句大小比較全對（含「-Origin 75.2% higher than LightRAG's 67.6%」），**歷史上第一次 Q3 通過**。瑕疵：開頭把變體寫成「NaiveRAG -High／-Low／-Origin」（照抄表格區塊標頭） |
+| B4-Q3-2 | 不通過（無錯誤） | Agriculture 四指標與 Legal 四指標的三變體對 NaiveRAG 共 32 個數字全對、配對全對；但完整版 LightRAG 的值一次都沒給，A6 缺。完整性核對判 complete 是**誤判**（83.6% 同時是 -Origin 與 LightRAG 的 Legal 值） |
+| B4-Q3-3 | 不通過 | 四組（資料集×指標）32 格全對、定義對、A6 達成；一處方向錯「performs better … Mix Overall (55.6% vs. 60.0% for LightRAG)」；方向核對沒抓到——主詞是「It」，子句裡唯一的方法名是 LightRAG，核對把線索算到 LightRAG 的數字上（**漏判**） |
+| B4-G1-1 | 不通過 | 八個數字對；自算「9x fewer units」「6x fewer units」錯（實 49×、58×），38×、43× 對 |
+| B4-G1-2 | 通過 | 八個數字全對 |
+| B4-G1-3 | 不通過 | TS 的四個值寫成別的條件的（367／225,756、555／352,641）；GraphRAG 的表不是表格切塊，核對無標籤可對（**漏判**） |
+| B4-G2-1 | 不通過（無錯誤） | Table 3 四個數字與差值對；沒列 Table 6 |
+| B4-G2-2 | 通過 | Table 6 進了（supplementary）：77.76／22.24、79.2／20.8（p<0.001）全對，引 [12] 第 26 頁 |
+| B4-G2-3 | 不通過 | 把 global approaches 的 72–83%、72–80% 寫成 C2 的；Podcast 的 SS 寫成 25.23（實 26.50） |
+
+### 摘要驗證在 B4 做了什麼（`runs/B4-summaries.json`）
+
+20 份摘要（LightRAG 9＋GraphRAG 11）只有 EVALUATION 章節摘要被改，4 處：
+
+| 修正 | 判定 |
+|---|---|
+| 「GraphRAG performs better … Legal (54.4% vs. 51.6%)」→ 48.4% | **正確**（Table 1 GraphRAG 區塊 Legal Comprehensiveness 48.4／51.6）；但該句的結論本來就錯（GraphRAG 較高的是 Mix），修正只對了數字 |
+| 「84.8% in Overall against RQ-RAG (14.4%)」→ 15.2% | **依錯誤推斷**：核對把 14.4% 的指標推成 Comprehensiveness，換成 Comprehensiveness 的 15.2%；原句 84.8 是 Comprehensiveness 的值、14.4 是 Overall 的值，改完仍是標錯指標的一對 |
+| 「Removing high-level retrieval (-High) … (65.2% vs. 67.6%)」：-High → LightRAG | **有害**：67.6% 是被比較的對象、沒有自己的標籤，修正器沒把它當對照值，反而把方法名換掉 |
+| 「Removing low-level retrieval (-Low) … (64.0% vs. 67.6%)」：-Low → LightRAG | **有害**，同上 |
+
+修正後核對仍有 6 處不符（比修正前多）。沒抓到的：「67.6% … Comprehensiveness, Diversity, and Empowerment」（一個數字配三個指標，核對判 unresolved）。**兩個缺陷**：對照值的判定要求兩個數字的宣稱完全相同，標籤部分缺失就漏；修正沒有「變差就回退」。已修（`22754d2`）：對照值改為「後者的標籤等於前者或未給」；一輪後不符總數沒減少就整體回退。
+
+### 核對器在 B4（Validator Detection／False Positive／False Negative）
+
+| | 抓到（真） | 誤報 | 漏掉 |
+|---|---|---|---|
+| 數字標籤 | Q2-3 的 86.4%（並修對） | Q2-1 的 49.6%（對照值） | Q1 的指標標錯一對、67.6% 配三指標；G1-3 的 TS 四值（無表格切塊）；G2-3 的 SS 25.23 |
+| 全稱宣稱 | Q2-2 ×2、Q2-3 ×3（皆真） | — | Q2-1「only exception」（寫法不含 all／consistently） |
+| 方向核對 | — | — | Q3-3 的「better (55.6 vs 60.0)」（主詞是代名詞）；Q1 摘要「drop」句無誤 |
+| 完整性 | Q3-1、Q3-3 complete 正確 | Q3-2 complete（83.6% 同值） | — |
+| 推算值 | — | — | G1-1 的 9×、6× |
