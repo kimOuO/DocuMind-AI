@@ -89,12 +89,19 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
     unverified_numbers: unverified,
     mislabelled_numbers: mislabelled,
     unresolved_numbers: unresolved,
+    overstated_claims: overstated,
+    doubtful_citations: doubtful,
   } = check
-  if (verified.length + unverified.length + mislabelled.length + unresolved.length === 0) return null
+  const contradicted = overstated.filter((claim) => claim.status === 'contradicted')
+  const total =
+    verified.length + unverified.length + mislabelled.length + unresolved.length + overstated.length + doubtful.length
+  if (total === 0) return null
   const parts = [`${verified.length} 個在引用的頁面找到`]
   if (unverified.length > 0) parts.push(`${unverified.length} 個找不到`)
   if (mislabelled.length > 0) parts.push(`${mislabelled.length} 個標籤不符`)
   if (unresolved.length > 0) parts.push(`${unresolved.length} 個未能判定`)
+  if (contradicted.length > 0) parts.push(`${contradicted.length} 個結論與表格不符`)
+  if (doubtful.length > 0) parts.push(`${doubtful.length} 個引用可疑`)
   return (
     <details className="mt-2 text-sm">
       <summary className="cursor-pointer text-muted">數字核對：{parts.join('、')}</summary>
@@ -123,6 +130,25 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
           未能判定：{item.number}（答案：{item.answer_labels.join('、')}；原文可能是：
           {item.source_labels.map((labels) => labels.join('、')).join(' / ')}；
           {item.reason === 'missing' ? '答案沒寫出全部標籤' : '答案裡有兩個候選標籤'}）
+        </p>
+      ))}
+      {overstated.map((claim) =>
+        claim.status === 'contradicted' ? (
+          <p key={claim.sentence} className="text-danger">
+            結論與表格不符：「{claim.sentence}」{claim.method} 在 {claim.higher} 格高於比較對象、{claim.lower}{' '}
+            格低於，例如 {claim.examples.slice(0, 3).join('；')}
+          </p>
+        ) : (
+          <p key={claim.sentence} className="text-muted">
+            結論未能核對：「{claim.sentence}」引用的表格裡沒有 {claim.method} 與
+            {claim.compared.length > 0 ? claim.compared.join('、') : '其他方法'}的共同格子
+          </p>
+        ),
+      )}
+      {doubtful.map((item) => (
+        // A doubt, not an error: the cited source hardly states the sentence, another source does.
+        <p key={item.sentence} className="text-muted">
+          引用可疑：「{item.sentence}」引用 [{item.cited.join('][')}]，但較接近的來源是 [{item.closer.join('][')}]
         </p>
       ))}
     </details>

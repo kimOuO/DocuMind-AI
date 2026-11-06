@@ -123,6 +123,9 @@ async def test_the_paper_is_summarised_within_the_budget_with_page_tags(
     print(f"answer:\n{answer}")
     print(f"unverified numbers: {by_name['done']['unverified_numbers']}")
     print(f"mislabelled numbers: {by_name['done']['mislabelled_numbers']}")
+    print(f"unresolved numbers: {len(by_name['done']['unresolved_numbers'])}")
+    print(f"overstated claims: {by_name['done']['overstated_claims']}")
+    print(f"doubtful citations: {by_name['done']['doubtful_citations']}")
     for v in by_name["done"]["verified_numbers"]:
         print(f"  {v['number']:>10} p{v['page']}: {v['snippet'][:100]}")
 

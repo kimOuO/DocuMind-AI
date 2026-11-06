@@ -19,6 +19,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.chat.citation_check import SourceText, check_citations
 from app.chat.memory import (
     MEMORY_TOKEN_BUDGET,
     HistoryMessage,
@@ -40,6 +41,7 @@ from app.chat.verification import (
     NumberCheck,
     PageText,
     check_note,
+    claim_note,
     label_note,
     verify_numbers,
 )
@@ -198,6 +200,8 @@ class ChatService:
                         "verified_numbers": [],
                         "mislabelled_numbers": [],
                         "unresolved_numbers": [],
+                        "overstated_claims": [],
+                        "doubtful_citations": [],
                         "finish_reason": None,
                     },
                 )
@@ -236,15 +240,33 @@ class ChatService:
             # A stream that ended normally is not necessarily a finished answer:
             # only a natural stop is. Anything else is kept, marked interrupted.
             complete = result.finish_reason.is_complete
-            check = NumberCheck([], [], [], [])
+            check = NumberCheck([], [], [], [], [])
+            doubts = []
             if complete:
                 check = await self._check_numbers(prepared, "".join(received), evidence, cited)
+                # AC-13 (D68): statements whose citation points at the wrong source.
+                doubts = check_citations(
+                    "".join(received),
+                    [
+                        SourceText(
+                            s["index"],
+                            s["snippet"],
+                            uuid.UUID(s["document_id"]),
+                            s["page_start"],
+                            s["page_end"],
+                        )
+                        for s in evidence.sources
+                        if s["kind"] == "chunk"  # a summary paraphrases: word overlap says little
+                    ],
+                )
                 language = question_language(prepared.question)
                 notes = [evidence.note] if evidence.note else []
                 if check.unverified:
                     notes.append(check_note(check.unverified, language))
                 if check.mislabelled:
                     notes.append(label_note(check.mislabelled, language))
+                if any(c.status == "contradicted" for c in check.overstated):
+                    notes.append(claim_note(check.overstated, language))
                 for note in notes:
                     # Said after the answer, as part of it: documents whose summary was
                     # not available, and numbers that could not be checked.
@@ -297,6 +319,29 @@ class ChatService:
                             "reason": u.reason,
                         }
                         for u in check.unresolved
+                    ],
+                    "overstated_claims": [
+                        {
+                            "sentence": c.sentence,
+                            "method": c.method,
+                            "compared": c.compared,
+                            "higher": c.higher,
+                            "lower": c.lower,
+                            "examples": c.examples,
+                            "status": c.status,
+                            "reason": c.reason,
+                        }
+                        for c in check.overstated
+                    ],
+                    "doubtful_citations": [
+                        {
+                            "sentence": d.sentence,
+                            "cited": d.cited,
+                            "closer": d.closer,
+                            "coverage_cited": d.coverage_cited,
+                            "coverage_closer": d.coverage_closer,
+                        }
+                        for d in doubts
                     ],
                     "finish_reason": result.finish_reason.value,
                 },

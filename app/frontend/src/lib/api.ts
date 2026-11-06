@@ -214,11 +214,34 @@ export interface UnresolvedNumber extends MislabelledNumber {
   reason: 'missing' | 'ambiguous'
 }
 
+/** A sentence claiming one method wins everywhere, checked cell by cell against the table (D68). */
+export interface OverstatedClaim {
+  sentence: string
+  method: string
+  compared: string[]
+  higher: number
+  lower: number
+  examples: string[]
+  status: 'contradicted' | 'unresolved'
+  reason: string | null
+}
+
+/** A statement whose citation points at a source that hardly states it, while another does (D68). */
+export interface DoubtfulCitation {
+  sentence: string
+  cited: number[]
+  closer: number[]
+  coverage_cited: number
+  coverage_closer: number
+}
+
 export interface NumberCheck {
   verified_numbers: VerifiedNumber[]
   unverified_numbers: string[]
   mislabelled_numbers: MislabelledNumber[]
   unresolved_numbers: UnresolvedNumber[]
+  overstated_claims: OverstatedClaim[]
+  doubtful_citations: DoubtfulCitation[]
 }
 
 /** The events of an answer stream, in the order they arrive. */

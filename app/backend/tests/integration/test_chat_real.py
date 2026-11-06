@@ -64,6 +64,9 @@ async def test_the_paper_is_indexed_and_a_question_gets_a_cited_streamed_answer(
     print(f"usage: {by_name['usage']}  done: {by_name['done']}")
     print(f"answer:\n{answer}")
     print(f"mislabelled numbers: {by_name['done']['mislabelled_numbers']}")
+    print(f"unresolved numbers: {len(by_name['done']['unresolved_numbers'])}")
+    print(f"overstated claims: {by_name['done']['overstated_claims']}")
+    print(f"doubtful citations: {by_name['done']['doubtful_citations']}")
 
     # Streamed in many pieces, finished naturally, and grounded in cited sources.
     assert sum(1 for name, _ in stream if name == "delta") > 5
@@ -237,6 +240,9 @@ async def test_the_comparison_question_is_answered_with_differences_and_sources(
     print(f"usage: {by_name['usage']}  done: {by_name['done']}")
     print(f"answer:\n{answer}")
     print(f"mislabelled numbers: {by_name['done']['mislabelled_numbers']}")
+    print(f"unresolved numbers: {len(by_name['done']['unresolved_numbers'])}")
+    print(f"overstated claims: {by_name['done']['overstated_claims']}")
+    print(f"doubtful citations: {by_name['done']['doubtful_citations']}")
     assert by_name["done"]["status"] == "completed" and by_name["done"]["answered"] is True
     usage = by_name["usage"]
     assert usage["prompt_tokens"] + usage["completion_tokens"] <= settings.llm_context_limit

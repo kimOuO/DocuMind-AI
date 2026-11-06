@@ -62,6 +62,27 @@ _COMPARISON_CUE = re.compile(
 _SAME_AS_BEFORE = re.compile(r"\bthe\s+same\s+\w+|同一", re.IGNORECASE)
 # A list item: the heading of a list ("- Comprehensiveness:") labels the items under it.
 _LIST_ITEM = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s")
+# A claim that holds everywhere, and a comparison: together, a universal comparison (D68).
+# "Consistently", "in all cases", "across all …" range over every cell; a bare "all" or
+# "every" may range over one slice only ("in all metrics", on some dataset left unsaid).
+_EVERYWHERE = re.compile(
+    r"\b(?:consistently|always|everywhere|across the board|in all cases|in every case"
+    r"|without exception|across all|across every|on all|on every|for all|for every|in all datasets"
+    r"|in every dataset)\b|全面|所有|一律|始終|全部|都",
+    re.IGNORECASE,
+)
+_UNIVERSAL = re.compile(r"\b(?:all|every)\b|全部|所有|都", re.IGNORECASE)
+_COMPARATIVE = re.compile(
+    r"\b(?:outperform\w*|surpass\w*|exceed\w*|beats?|better|higher|lower|superior|inferior|best|worst)\b"
+    r"|優於|勝過|領先|高於|低於|超過",
+    re.IGNORECASE,
+)
+_HEDGE = re.compile(
+    r"\b(?:most|many|nearly|almost|generally|typically|mostly|except|particularly|especially"
+    r"|in particular)\b|大多|多數|幾乎|除了|尤其|特別",
+    re.IGNORECASE,
+)
+_TABLE_CAPTION = re.compile(r"^\s*Table \d+[.:]")
 
 
 @dataclass(frozen=True)
@@ -97,11 +118,28 @@ class UnresolvedNumber:
 
 
 @dataclass(frozen=True)
+class OverstatedClaim:
+    """A sentence claiming one method wins everywhere, checked cell by cell (D68)."""
+
+    sentence: str
+    method: str  # the subject of the claim
+    compared: list[str]  # the methods it is compared with (named, or every other one)
+    higher: int  # shared cells where the method's value is above the other's
+    lower: int  # shared cells where it is below
+    examples: list[
+        str
+    ]  # the cells of the rarer direction, e.g. "Overall / Mix: A 60.0% vs B 64.8% (p. 8)"
+    status: str  # "contradicted": both directions occur; "unresolved": no shared cells
+    reason: str | None
+
+
+@dataclass(frozen=True)
 class NumberCheck:
     verified: list[VerifiedNumber]
     unverified: list[str]
     mislabelled: list[MislabelledNumber]  # contradicted by the table
     unresolved: list[UnresolvedNumber]  # neither confirmed nor contradicted
+    overstated: list[OverstatedClaim]  # universal claims the tables do not bear out
 
 
 def _normalise(number: str) -> str:
@@ -140,7 +178,7 @@ def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
     compare the labels of the table figures among them."""
     wanted = numbers_in(answer)
     if not wanted:
-        return NumberCheck([], [], [], [])
+        return NumberCheck([], [], [], [], check_universal_claims(answer, pages))
     # Where each value occurs: the first page that has it, with the match position.
     located: dict[str, tuple[PageText, int, int]] = {}
     for page in pages:
@@ -160,7 +198,9 @@ def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
                 VerifiedNumber(number, page.document_id, page.page, _snippet(page.text, start, end))
             )
     mislabelled, unresolved = check_labels(answer, pages)
-    return NumberCheck(verified, unverified, mislabelled, unresolved)
+    return NumberCheck(
+        verified, unverified, mislabelled, unresolved, check_universal_claims(answer, pages)
+    )
 
 
 @dataclass(frozen=True)
@@ -200,10 +240,12 @@ def _table_cells(pages: Iterable[PageText]) -> dict[str, list[_Cell]]:
 
 
 def _label_pattern(label: str) -> re.Pattern[str]:
-    # Whole words, case ignored; a label such as "-High" may follow a word directly.
+    # Whole words, case ignored; a label such as "-High" may follow a word directly; a
+    # space may be written inside a camel-case name ("Naive RAG" for "NaiveRAG").
     prefix = r"(?<!\w)" if label[0].isalnum() else ""
     suffix = r"(?!\w)" if label[-1].isalnum() else ""
-    return re.compile(prefix + re.escape(label) + suffix, re.IGNORECASE)
+    body = re.sub(r"(?<=[a-z])(?=[A-Z])", r"\\s?", re.escape(label))
+    return re.compile(prefix + body + suffix, re.IGNORECASE)
 
 
 Span = tuple[int, int]
@@ -340,12 +382,42 @@ def _claims(
             else:
                 labels.append(heading[position] if heading else None)
         cues = [m for m in per_category[method] if owner[m] is None and after_cue(m)]
-        for scope in ([m for m in cues if clause[0] <= m[0] < clause[1]], cues):
-            if len(_distinct(scope)) == 1:
-                comparator = scope[0][2]
-                break
+        # "83.6% against A, 88.4% against B": each comparator belongs to the figure before
+        # it. A figure without one takes the clause's (then the sentence's) single
+        # comparator, unless a comparison phrase names something the tables do not know.
+        following = [m for m in cues if m[0] > figure[1]]
+        next_figure = next((f[0] for f in figures if f[0] > figure[1]), len(sentence))
+        own_cue = [m for m in following if m[0] < next_figure]
+        if own_cue:
+            comparator = own_cue[0][2]
+        elif not _unknown_comparator(sentence, clause, per_category[method]):
+            for scope in ([m for m in cues if clause[0] <= m[0] < clause[1]], cues):
+                if len(_distinct(scope)) == 1:
+                    comparator = scope[0][2]
+                    break
         claims.append(_Claim(figure, labels, comparator, ambiguous))
     return claims
+
+
+_COMPARISON_PHRASE = re.compile(
+    r"\b(?:over|against|than|versus|vs\.?|compared\s+(?:to|with)|relative\s+to)\s+(?:the\s+)?"
+    r"|優於|勝過|相較於|對比",
+    re.IGNORECASE,
+)
+
+
+def _unknown_comparator(sentence: str, clause: Span, mentions: Sequence[Mention]) -> bool:
+    """Whether a comparison phrase in the clause is followed by something that is not a
+    known method name (or a figure): a comparator the tables cannot name."""
+    starts = {m[0] for m in mentions}
+    for phrase in _COMPARISON_PHRASE.finditer(sentence, clause[0], clause[1]):
+        rest = sentence[phrase.end() :]
+        if not rest.strip():
+            return True
+        if phrase.end() in starts or _NUMBER.match(rest) or rest[:1] == "(":
+            continue
+        return True
+    return False
 
 
 def _fits(claim: _Claim, cell: _Cell) -> bool:
@@ -481,6 +553,194 @@ def check_labels(
                 )
             )
     return mislabelled, unresolved
+
+
+Occurrence = tuple[str, str, int]  # sub-column, value, block of the table it is in
+
+
+@dataclass(frozen=True)
+class _Table:
+    page: int
+    cells: dict[tuple[str, str], list[Occurrence]]  # (row, group) -> the cells of that key
+
+
+def _tables(pages: Iterable[PageText]) -> list[_Table]:
+    """The tables of the pages as the chunker rewrote them, one per caption.
+
+    A table may repeat its rows in several blocks ("NaiveRAG -High", "NaiveRAG -Low"):
+    cells with the same row and group from different blocks are compared with one
+    another, since they measure the same thing; a sub-column that recurs in every
+    block (the reference) is taken from the block of the method it is compared with.
+    """
+    tables: list[_Table] = []
+    for page in pages:
+        current: _Table | None = None
+        block = 0
+        seen_in_block: set[tuple[str, str]] = set()
+        for line in page.text.splitlines():
+            if _TABLE_CAPTION.match(line):
+                current = _Table(page.page, {})
+                tables.append(current)
+                block, seen_in_block = 0, set()
+                continue
+            row = cells_of(line)
+            if not row:
+                continue
+            if current is None:
+                current = _Table(page.page, {})
+                tables.append(current)
+            keys = {(labels[0], labels[1]) for _, labels in row if len(labels) == 3}
+            if keys & seen_in_block:  # a row label comes round again: a new block
+                block += 1
+                seen_in_block = set()
+            for value, labels in row:
+                if len(labels) == 3:
+                    current.cells.setdefault((labels[0], labels[1]), []).append(
+                        (labels[2], value, block)
+                    )
+            seen_in_block |= keys
+    return [t for t in tables if t.cells]
+
+
+def _as_number(value: str) -> tuple[float, str] | None:
+    try:
+        return float(value.replace(",", "").rstrip("%")), "%" if value.endswith("%") else ""
+    except ValueError:
+        return None
+
+
+def check_universal_claims(answer: str, pages: Sequence[PageText]) -> list[OverstatedClaim]:
+    """Sentences that claim one method is above (or below) others everywhere, checked
+    against every table of the pages that holds that method."""
+    tables = _tables(pages)
+    if not tables:
+        return []
+    methods = {o[0] for t in tables for cells in t.cells.values() for o in cells}
+    rows = {key[0] for t in tables for key in t.cells}
+    groups = {key[1] for t in tables for key in t.cells}
+    blanked = _PAGE_REFERENCE.sub(
+        lambda m: " " * len(m.group()), _CITATION.sub(lambda m: " " * len(m.group()), answer)
+    ).replace("*", " ")
+    claims: list[OverstatedClaim] = []
+    for s_start, s_end in _pieces(blanked, _SENTENCE_END):
+        sentence = blanked[s_start:s_end]
+        everywhere = _EVERYWHERE.search(sentence) is not None
+        comparative = _COMPARATIVE.search(sentence)
+        if not (everywhere or _UNIVERSAL.search(sentence)) or not comparative:
+            continue
+        if _HEDGE.search(sentence):
+            continue
+        mentioned = _mentions(sentence, methods)
+        before = [m for m in mentioned if m[1] <= comparative.start()]
+        if not before:
+            continue  # no method is the subject of the comparison
+        method = before[-1][2]
+        compared = list(dict.fromkeys(label for _, _, label in mentioned if label != method))
+        row_scope = _distinct(_mentions(sentence, rows))
+        group_scope = _distinct(_mentions(sentence, groups))
+        above: list[str] = []
+        below: list[str] = []
+        # Per slice (one row, or one group) and per table: which way the method goes.
+        slices: dict[tuple[str, str], set[str]] = {}
+        for table in tables:
+            for (row, group), cells in table.cells.items():
+                if (row_scope and row not in row_scope) or (
+                    group_scope and group not in group_scope
+                ):
+                    continue
+                others = [o for o in cells if o[0] != method and (not compared or o[0] in compared)]
+                for sub, own_value, own_block in cells:
+                    if sub != method or (own := _as_number(own_value)) is None:
+                        continue
+                    for other in dict.fromkeys(o[0] for o in others):
+                        same = [o for o in others if o[0] == other and o[2] == own_block]
+                        for _, value, _ in same or [o for o in others if o[0] == other]:
+                            theirs = _as_number(value)
+                            if theirs is None or theirs[1] != own[1]:
+                                continue
+                            example = (
+                                f"{row} / {group}: {method} {own_value} vs {other} {value} "
+                                f"(p. {table.page})"
+                            )
+                            if own[0] > theirs[0]:
+                                above.append(example)
+                                direction = "above"
+                            elif own[0] < theirs[0]:
+                                below.append(example)
+                                direction = "below"
+                            else:
+                                continue
+                            slices.setdefault(("row", row), set()).add(direction)
+                            slices.setdefault(("group", group), set()).add(direction)
+        shown = _tidy(answer[s_start:s_end])
+        higher, lower = len(above), len(below)
+        # A bare "all metrics" may be about one dataset the sentence does not name: the
+        # claim stands if some slice is one-way. "Consistently" leaves no such room.
+        one_way_slice = any(len(directions) == 1 for directions in slices.values())
+        if higher and lower and (everywhere or not one_way_slice):
+            examples = _spread(below if lower <= higher else above)
+            claims.append(
+                OverstatedClaim(
+                    shown, method, compared, higher, lower, examples, "contradicted", None
+                )
+            )
+        elif not higher and not lower:
+            claims.append(
+                OverstatedClaim(
+                    shown,
+                    method,
+                    compared,
+                    0,
+                    0,
+                    [],
+                    "unresolved",
+                    "the cited tables pair this method with none of the compared ones",
+                )
+            )
+    return claims
+
+
+def _spread(examples: list[str]) -> list[str]:
+    """The examples with those from different pages first, so that a note that shows
+    three of them does not show one table only."""
+    by_page: dict[str, list[str]] = {}
+    for example in examples:
+        by_page.setdefault(example.rsplit("(p. ", 1)[-1], []).append(example)
+    spread: list[str] = []
+    queues = list(by_page.values())
+    while any(queues):
+        for queue in queues:
+            if queue:
+                spread.append(queue.pop(0))
+    return spread
+
+
+_CLAIM_NOTES = {
+    "other": "A claim the source table does not bear out: {}",
+    "zh": "以下結論與原文表格不符：{}",
+}
+
+
+def claim_note(claims: Sequence[OverstatedClaim], language: str) -> str:
+    """What the reader is told after the answer when a universal claim is contradicted."""
+    items = []
+    for c in claims:
+        if c.status != "contradicted":
+            continue
+        shown = c.examples[:3]
+        if language == "zh":
+            items.append(
+                f"「{c.sentence}」——{c.method} 在 {c.higher} 格高於比較對象、{c.lower} 格低於，"
+                f"例如 {'；'.join(shown)}"
+            )
+        else:
+            items.append(
+                f'"{c.sentence}" — {c.method} is above the compared methods in {c.higher} cells '
+                f"and below in {c.lower}, for example {'; '.join(shown)}"
+            )
+    joiner = "；" if language == "zh" else " / "
+    end = "。" if language == "zh" else "."
+    return _CLAIM_NOTES["zh" if language == "zh" else "other"].format(joiner.join(items) + end)
 
 
 def _pieces(text: str, boundary: re.Pattern[str]) -> list[Span]:

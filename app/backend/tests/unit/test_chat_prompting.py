@@ -108,11 +108,36 @@ def test_the_instructions_ask_for_findings_first_labelled_figures_and_exceptions
     """D63: general principles for experimental results, nothing about any one document."""
     prompt, _ = build_answer_prompt("q", [], WordCounter(), 5_500)
 
-    assert "state the main findings first" in prompt
+    assert "the main findings; representative figures" in prompt
     assert "Do not list every number" in prompt
-    assert "which method or variant, which dataset, which metric, and its unit" in prompt
-    assert "go against the overall trend, say so explicitly" in prompt
+    assert "which method or variant, which dataset, which metric, its unit, and what it" in prompt
+    assert "go against the trend, named explicitly" in prompt
+    # D68: the conclusion may not outrun the figures, and must carry any exception named.
+    assert "a conclusion that is no stronger than the figures you gave" in prompt
+    assert "If you named an exception, the conclusion must carry it too" in prompt
     assert "LightRAG" not in prompt and "Origin" not in prompt and "page 8" not in prompt
+
+
+def test_a_table_source_is_marked_as_one(counter: Qwen3TokenCounter) -> None:
+    """D68: the model sees which source is a table, so a figure is cited to it."""
+    table = chunk(
+        "Table 2: Win rates.\nAgriculture Mix\nLightRAG -High LightRAG -High\n"
+        "Overall 67.6% 64.8% 60.0% 57.6%",
+        page=8,
+    )
+    prompt, _ = build_answer_prompt("q", [table, chunk("Prose.", page=9)], counter, 5_500)
+
+    assert "[1] paper.pdf, page 8 (a table)\nTable 2: Win rates." in prompt
+    assert "[2] paper.pdf, page 9\nProse." in prompt
+
+
+def test_the_instructions_ask_for_the_source_that_states_each_statement() -> None:
+    """D68: a citation points at the source whose text states the statement."""
+    prompt, _ = build_answer_prompt("q", [], WordCounter(), 5_500)
+
+    assert "cite the source whose text states that statement" in prompt
+    assert "A source about the same topic is not enough" in prompt
+    assert "two neighbouring statements may need different sources" in prompt
 
 
 def test_a_source_payload_carries_what_the_interface_shows(counter: Qwen3TokenCounter) -> None:

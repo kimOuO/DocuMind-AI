@@ -213,6 +213,8 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "verified_numbers": [],
         "mislabelled_numbers": [],
         "unresolved_numbers": [],
+        "overstated_claims": [],
+        "doubtful_citations": [],
         "finish_reason": "stop",
     }
     # What the model was given: the rules, the numbered source, the question.
@@ -270,6 +272,7 @@ ABLATION_TABLE = (
     "Agriculture Mix\n"
     "LightRAG -High LightRAG -High\n"
     "Comprehensiveness 67.6% 65.2% 61.2% 59.6%\n"
+    "Diversity 60.0% 62.0% 50.0% 52.0%\n"
     "Overall 67.6% 64.8% 60.0% 57.6%\n"
     "The -High variant removes high-level retrieval."
 )
@@ -328,6 +331,78 @@ async def test_a_figure_whose_labels_do_not_pin_a_cell_is_reported_as_unresolved
             "reason": "missing",
         }
     ]
+
+
+async def test_a_claim_of_winning_everywhere_is_checked_against_the_table(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-14 (D68): -High is above LightRAG in Diversity, so "all metrics" is not borne out."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    use_model(
+        kim,
+        tokenizer,
+        StubOllama(
+            ["LightRAG consistently outperforms -High", " across all datasets and metrics [1]."]
+        ),
+    )
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    deltas = [data["text"] for name, data in stream if name == "delta"]
+    assert deltas[-1].startswith(
+        '\n\nA claim the source table does not bear out: "LightRAG consistently outperforms -High '
+        'across all datasets and metrics." — LightRAG is above the compared methods in 4 cells '
+        "and below in 2, for example Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)"
+    )
+    [claim] = by_name["done"]["overstated_claims"]
+    assert claim["status"] == "contradicted"
+    assert claim["method"] == "LightRAG" and claim["compared"] == ["-High"]
+    assert (claim["higher"], claim["lower"]) == (4, 2)
+    assert claim["examples"] == [
+        "Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)",
+        "Diversity / Mix: LightRAG 50.0% vs -High 52.0% (p. 1)",
+    ]
+
+
+COST_TEXT = (
+    "In the retrieval phase GraphRAG consumes about 610,000 tokens and hundreds of API calls "
+    "to read its community reports, while LightRAG needs fewer than 100 tokens and a single "
+    "API call because it retrieves entities and relations directly from the graph."
+)
+UPDATE_TEXT = (
+    "When new documents arrive, GraphRAG must dismantle its existing community structure and "
+    "regenerate every community report, whereas LightRAG merges the new entities and relations "
+    "into the existing graph without rebuilding the index."
+)
+COST_CLAIM = "GraphRAG reads community reports worth 610,000 tokens and hundreds of API calls [1]."
+UPDATE_CLAIM = (
+    "GraphRAG dismantles its community structure when new documents arrive, while LightRAG "
+    "merges the new entities into the existing graph without rebuilding [1]."
+)
+
+
+async def test_a_statement_cited_to_the_wrong_source_is_reported_as_doubtful(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-13 (D68): both statements cite [1]; the one that [2] states is doubted."""
+    await add_document(kim, tokenizer, "cost.txt", COST_TEXT.encode())
+    await add_document(kim, tokenizer, "update.txt", UPDATE_TEXT.encode())
+    use_model(kim, tokenizer, StubOllama([COST_CLAIM, " ", UPDATE_CLAIM]))
+
+    stream = events(ask(kim, new_conversation(kim), "How do GraphRAG and LightRAG differ?"))
+
+    by_name = dict(stream)
+    first_is_cost = by_name["sources"][0]["filename"] == "cost.txt"
+    wrong = UPDATE_CLAIM if first_is_cost else COST_CLAIM
+    [doubt] = by_name["done"]["doubtful_citations"]
+    assert doubt["sentence"] == wrong.replace(" [1]", "")
+    assert doubt["cited"] == [1] and doubt["closer"] == [2]
+    assert doubt["coverage_closer"] > doubt["coverage_cited"]
+    # No note is added to the answer for a doubt: it is shown in the detail only.
+    deltas = [data["text"] for name, data in stream if name == "delta"]
+    assert "".join(deltas).startswith(f"{COST_CLAIM} {UPDATE_CLAIM}")
+    assert not any("doubt" in text.lower() for text in deltas)
 
 
 async def test_only_the_selected_document_is_used(
@@ -431,6 +506,8 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
         "verified_numbers": [],
         "mislabelled_numbers": [],
         "unresolved_numbers": [],
+        "overstated_claims": [],
+        "doubtful_citations": [],
         "finish_reason": None,
     }
     assert in_chinese[3][1] == {"text": "文件中找不到與這個問題相關的內容。"}

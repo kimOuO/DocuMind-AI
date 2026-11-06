@@ -7,7 +7,13 @@ the page and a snippet of the original text; an unverified one is reported.
 
 import uuid
 
-from app.chat.verification import PageText, label_note, numbers_in, verify_numbers
+from app.chat.verification import (
+    PageText,
+    claim_note,
+    label_note,
+    numbers_in,
+    verify_numbers,
+)
 
 DOC = uuid.uuid4()
 
@@ -118,6 +124,9 @@ TABLE_PAGE = PageText(
     "NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\n"
     "Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; "
     "Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%\n"
+    "NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\n"
+    "Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, "
+    "-Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6%\n"
     "The -High variant removes high-order retrieval.",
 )
 
@@ -172,7 +181,10 @@ def test_a_wrong_variant_is_reported_even_when_metric_and_dataset_are_right() ->
     [wrong] = verify_numbers(answer, [TABLE_PAGE]).mislabelled
 
     assert wrong.answer_labels == ["Comprehensiveness", "Legal", "-High"]
-    assert wrong.source_labels == [["Comprehensiveness", "Legal", "LightRAG", "vs NaiveRAG"]]
+    assert wrong.source_labels == [
+        ["Comprehensiveness", "Legal", "LightRAG", "vs NaiveRAG"],
+        ["Comprehensiveness", "Legal", "-Origin", "vs NaiveRAG"],
+    ]
 
 
 def test_a_possessive_and_a_comparison_bind_each_figure_to_its_own_side() -> None:
@@ -455,3 +467,179 @@ def test_a_wrong_item_under_a_list_heading_is_contradicted() -> None:
     [wrong] = verify_numbers(answer, PAGES).mislabelled
 
     assert wrong.answer_labels == ["Diversity", "Legal", "LightRAG"]
+
+
+# --- D68: a claim that one method wins everywhere, checked against the table -----------
+#
+# "X consistently outperforms Y across all datasets and metrics" is checked cell by cell:
+# where X and Y share a row and column group, X is either above or below Y. Both ways in
+# the same table means the claim fails whichever direction counts as better; the check
+# assumes no direction. All one way is not contradicted (the direction is not known).
+
+CORRECT_FIGURES = (
+    "- Comprehensiveness:\n"
+    "  - Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; -High 65.2%; -Origin 75.2% [1].\n"
+    "  - Mix: NaiveRAG 38.8%, LightRAG 61.2%; -High 59.6%; -Origin 55.6% [1].\n\n"
+)
+
+
+def test_a_claim_of_winning_everywhere_is_contradicted_by_cells_that_go_the_other_way() -> None:
+    # The real Q3 regression answer (D68): every figure right, the closing sentence wrong.
+    answer = CORRECT_FIGURES + (
+        "In summary, the hybrid mode of LightRAG consistently outperforms the ablated versions "
+        "across all datasets and metrics [1]."
+    )
+
+    [claim] = verify_numbers(answer, [TABLE_PAGE]).overstated
+
+    assert claim.status == "contradicted"
+    assert claim.method == "LightRAG"
+    assert claim.sentence.startswith("In summary, the hybrid mode")
+    assert claim.higher > 0 and claim.lower > 0
+    assert (
+        "Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8)" in claim.examples
+    )
+    assert all("GraphRAG" not in example for example in claim.examples)  # not in this table
+
+
+def test_a_claim_with_a_hedge_is_not_a_universal_claim() -> None:
+    answer = CORRECT_FIGURES + "LightRAG outperforms the ablated versions in most cases [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).overstated == []
+
+
+def test_a_universal_claim_about_a_named_dataset_is_checked_only_there() -> None:
+    # In CS, LightRAG is above -High in both rows the table has: nothing to report.
+    answer = "In the CS dataset, LightRAG outperforms -High in all metrics [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).overstated == []
+
+
+def test_a_method_that_is_below_the_other_everywhere_is_not_contradicted() -> None:
+    # Whether lower is worse depends on the metric; the check does not assume it.
+    answer = "In the CS dataset, -High outperforms LightRAG in all metrics [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).overstated == []
+
+
+def test_a_universal_claim_against_a_method_the_tables_do_not_pair_is_unresolved() -> None:
+    # In this table -Low has only a Diversity row and LightRAG has none: no shared cell.
+    answer = "LightRAG consistently outperforms -Low in all cases [1]."
+
+    [claim] = verify_numbers(answer, [TABLE_PAGE]).overstated
+
+    assert claim.status == "unresolved" and claim.compared == ["-Low"]
+
+
+def test_a_sentence_without_a_method_as_subject_is_not_checked() -> None:
+    answer = "The dual-level design is better in all cases than a single level [1]."
+
+    assert verify_numbers(answer, [TABLE_PAGE]).overstated == []
+
+
+def test_a_chinese_universal_claim_is_checked_too() -> None:
+    answer = "LightRAG 在所有資料集與指標上都優於消融版本 [1]。"
+
+    [claim] = verify_numbers(answer, [TABLE_PAGE]).overstated
+
+    assert claim.status == "contradicted" and claim.method == "LightRAG"
+
+
+def test_the_claim_note_names_the_sentence_the_counts_and_an_example() -> None:
+    answer = CORRECT_FIGURES + (
+        "In summary, LightRAG consistently outperforms the ablated versions across all datasets "
+        "and metrics [1]."
+    )
+    [claim] = verify_numbers(answer, [TABLE_PAGE]).overstated
+
+    note = claim_note([claim], "other")
+    assert note.startswith('A claim the source table does not bear out: "In summary, LightRAG')
+    assert (
+        f"LightRAG is above the compared methods in {claim.higher} cells and below in {claim.lower}"
+        in note
+    )
+    assert "Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8)" in note
+    zh = claim_note([claim], "zh")
+    assert zh.startswith("以下結論與原文表格不符：「In summary, LightRAG")
+    assert f"LightRAG 在 {claim.higher} 格高於比較對象、{claim.lower} 格低於" in zh
+
+
+def test_a_hedged_comparison_is_not_a_universal_claim() -> None:
+    # The paper's own wording: "particularly in larger datasets" leaves the smaller one out.
+    answer = (
+        "LightRAG consistently outperforms GraphRAG, particularly in larger datasets with "
+        "complex language contexts [2]."
+    )
+
+    assert verify_numbers(answer, PAGES).overstated == []
+
+
+def test_a_bare_all_over_one_dimension_stands_when_some_slice_is_one_way() -> None:
+    # "in all evaluation dimensions" may be about one setting the sentence does not name
+    # (the case study); in Agriculture LightRAG is above GraphRAG in every row, so the
+    # claim is not contradicted. With "consistently" it would be: Mix goes the other way.
+    answer = "In case studies, LightRAG outperforms GraphRAG in all evaluation dimensions [4]."
+    assert verify_numbers(answer, PAGES).overstated == []
+
+    answer = "LightRAG consistently outperforms GraphRAG in all evaluation dimensions [4]."
+    [claim] = verify_numbers(answer, PAGES).overstated
+    assert claim.status == "contradicted"
+    assert claim.examples[0].startswith("Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4%")
+
+
+def test_examples_come_from_every_table_that_contradicts_the_claim() -> None:
+    answer = "LightRAG consistently outperforms all other methods across all datasets [1][2]."
+
+    [claim] = verify_numbers(answer, PAGES).overstated
+
+    pages = [example.rsplit("(p. ", 1)[-1] for example in claim.examples[:2]]
+    assert sorted(pages) == ["7)", "8)"]
+
+
+def test_each_comparator_belongs_to_the_figure_before_it() -> None:
+    # Real Q1 answer (D68): three figures, three comparators; the first one is written
+    # "Naive RAG", which is read as NaiveRAG.
+    answer = (
+        "In the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness against "
+        "Naive RAG, 88.4% against RQ-RAG, and 73.2% against HyDE [1]."
+    )
+    table1 = PageText(
+        DOC,
+        7,
+        TABLE1_PAGE.text + "\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\n"
+        "Comprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, "
+        "LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%\n"
+        "Diversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightRAG 60.8%; "
+        "Legal: RQ-RAG 11.6%, LightRAG 88.4%; Mix: RQ-RAG 30.8%, LightRAG 69.2%\n"
+        "HyDE LightRAG HyDE LightRAG HyDE LightRAG HyDE LightRAG\n"
+        "Comprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, "
+        "LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6%",
+    )
+
+    result = verify_numbers(answer, [table1])
+
+    # 88.4% is LightRAG's Diversity figure against RQ-RAG, not Comprehensiveness: wrong.
+    assert [(m.number, m.answer_labels) for m in result.mislabelled] == [
+        ("88.4%", ["Comprehensiveness", "Legal", "LightRAG", "vs RQ-RAG"])
+    ]
+    assert result.unresolved == []  # 83.6% vs NaiveRAG and 73.2% vs HyDE are right
+
+
+def test_a_comparator_the_tables_do_not_know_blocks_the_clause_wide_fallback() -> None:
+    # "against the baseline" names no method of the table: 83.6% gets no comparator, and
+    # the one RQ-RAG mention belongs to 88.4% only.
+    answer = (
+        "In Legal Comprehensiveness, LightRAG scores 83.6% against the baseline and 84.8% "
+        "against RQ-RAG [1]."
+    )
+    table1 = PageText(
+        DOC,
+        7,
+        TABLE1_PAGE.text + "\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\n"
+        "Comprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, "
+        "LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%",
+    )
+
+    result = verify_numbers(answer, [table1])
+
+    assert result.mislabelled == [] and result.unresolved == []

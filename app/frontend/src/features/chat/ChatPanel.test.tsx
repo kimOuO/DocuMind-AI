@@ -70,7 +70,14 @@ function sse(events: [string, unknown][]): Reply {
   }
 }
 
-const NO_NUMBERS = { unverified_numbers: [], verified_numbers: [], mislabelled_numbers: [], unresolved_numbers: [] }
+const NO_NUMBERS = {
+  unverified_numbers: [],
+  verified_numbers: [],
+  mislabelled_numbers: [],
+  unresolved_numbers: [],
+  overstated_claims: [],
+  doubtful_citations: [],
+}
 
 function answerStream(
   overrides: { done?: object; scope?: object; pieces?: string[]; sources?: object[]; route?: object } = {},
@@ -217,6 +224,27 @@ test('the number check lists the figures found on the cited pages and flags the 
               reason: 'missing',
             },
           ],
+          overstated_claims: [
+            {
+              sentence: 'LightRAG consistently outperforms -High across all datasets and metrics.',
+              method: 'LightRAG',
+              compared: ['-High'],
+              higher: 4,
+              lower: 2,
+              examples: ['Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)'],
+              status: 'contradicted',
+              reason: null,
+            },
+          ],
+          doubtful_citations: [
+            {
+              sentence: 'GraphRAG dismantles its community structure when new documents arrive.',
+              cited: [3],
+              closer: [5],
+              coverage_cited: 0.1,
+              coverage_closer: 0.7,
+            },
+          ],
         },
       }),
     ),
@@ -226,7 +254,9 @@ test('the number check lists the figures found on the cited pages and flags the 
   await ask()
 
   expect(
-    await screen.findByText('數字核對：1 個在引用的頁面找到、1 個找不到、1 個標籤不符、1 個未能判定'),
+    await screen.findByText(
+      '數字核對：1 個在引用的頁面找到、1 個找不到、1 個標籤不符、1 個未能判定、1 個結論與表格不符、1 個引用可疑',
+    ),
   ).toBeInTheDocument()
   expect(screen.getByText(/83\.6% · 第 7 頁/)).toBeInTheDocument()
   expect(screen.getByText('…LightRAG 83.6%…')).toBeInTheDocument()
@@ -240,6 +270,13 @@ test('the number check lists the figures found on the cited pages and flags the 
   )
   expect(unresolved).toHaveClass('text-muted')
   expect(unresolved).not.toHaveClass('text-danger')
+  // A universal claim the table contradicts is an error; a doubtful citation is only a doubt.
+  const claim = screen.getByText(/結論與表格不符：「LightRAG consistently outperforms -High/)
+  expect(claim).toHaveClass('text-danger')
+  expect(claim).toHaveTextContent('LightRAG 在 4 格高於比較對象、2 格低於，例如 Diversity / Agriculture')
+  const doubt = screen.getByText(/引用可疑：「GraphRAG dismantles its community structure/)
+  expect(doubt).toHaveClass('text-muted')
+  expect(doubt).toHaveTextContent('引用 [3]，但較接近的來源是 [5]')
 })
 
 test('an answer without numbers shows no number check', async () => {

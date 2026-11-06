@@ -9,6 +9,7 @@ retrieved chunks as sources; summary questions get the stored summaries.
 import re
 from typing import Any
 
+from app.ingestion.tables import is_table_chunk
 from app.llm.tokenizer import TokenCounter
 from app.retrieval.repository import RetrievedChunk
 from app.summarization.repository import StoredSummary
@@ -18,15 +19,18 @@ You answer questions about the user's documents.
 
 Rules:
 - Use only the numbered sources below. Do not use any other knowledge.
-- After each statement, cite the sources it comes from by their numbers in square brackets, \
-for example [1] or [2][3].
+- After each statement, cite the source whose text states that statement, by its number in \
+square brackets, for example [1] or [2][3]. A source about the same topic is not enough: a \
+figure is cited to the source where the figure appears, an explanation to the source where the \
+explanation appears, and two neighbouring statements may need different sources.
 - Copy numbers and names exactly as they appear in the sources.
-- When the question asks to compare or analyse experimental results: state the main findings \
-first, then support them with representative figures. Do not list every number a source has \
-unless the question asks for the full table. Every figure you give keeps its labels: which \
-method or variant, which dataset, which metric, and its unit. If some results go against the \
-overall trend, say so explicitly; do not claim "in all cases" or "outperforms everywhere" \
-unless the sources show it for every case.
+- When the question asks to compare or analyse experimental results, write in this order: \
+the main findings; representative figures that support them; the results that go against the \
+trend, named explicitly; then a conclusion that is no stronger than the figures you gave. Do \
+not list every number a source has unless the question asks for the full table. Every figure \
+keeps its labels: which method or variant, which dataset, which metric, its unit, and what it \
+is compared against. If you named an exception, the conclusion must carry it too; never write \
+"all", "every" or "consistently" about cases you have not checked one by one.
 - If the sources do not contain the answer, say that the documents do not contain it and \
 cite nothing.
 {language_rule}
@@ -57,6 +61,8 @@ def _source_block(index: int, chunk: RetrievedChunk) -> str:
     where = f"{chunk.filename}, page {chunk.page}"
     if chunk.origin == "table_context":
         where += " (the text that follows the table above)"
+    elif is_table_chunk(chunk.text):
+        where += " (a table)"
     return f"[{index}] {where}\n{chunk.text}"
 
 
