@@ -197,6 +197,7 @@ class ChatService:
                         "unverified_numbers": [],
                         "verified_numbers": [],
                         "mislabelled_numbers": [],
+                        "unresolved_numbers": [],
                         "finish_reason": None,
                     },
                 )
@@ -235,7 +236,7 @@ class ChatService:
             # A stream that ended normally is not necessarily a finished answer:
             # only a natural stop is. Anything else is kept, marked interrupted.
             complete = result.finish_reason.is_complete
-            check = NumberCheck([], [], [])
+            check = NumberCheck([], [], [], [])
             if complete:
                 check = await self._check_numbers(prepared, "".join(received), evidence, cited)
                 language = question_language(prepared.question)
@@ -286,6 +287,16 @@ class ChatService:
                             "sentence": m.sentence,
                         }
                         for m in check.mislabelled
+                    ],
+                    "unresolved_numbers": [
+                        {
+                            "number": u.number,
+                            "answer_labels": u.answer_labels,
+                            "source_labels": u.source_labels,
+                            "sentence": u.sentence,
+                            "reason": u.reason,
+                        }
+                        for u in check.unresolved
                     ],
                     "finish_reason": result.finish_reason.value,
                 },

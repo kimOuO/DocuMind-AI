@@ -208,10 +208,17 @@ export interface MislabelledNumber {
   sentence: string
 }
 
+/** A table figure the check could neither confirm nor contradict (D67): the labels the
+ *  answer gives it fit some cells, but a label is missing or two candidates are given. */
+export interface UnresolvedNumber extends MislabelledNumber {
+  reason: 'missing' | 'ambiguous'
+}
+
 export interface NumberCheck {
   verified_numbers: VerifiedNumber[]
   unverified_numbers: string[]
   mislabelled_numbers: MislabelledNumber[]
+  unresolved_numbers: UnresolvedNumber[]
 }
 
 /** The events of an answer stream, in the order they arrive. */

@@ -70,7 +70,7 @@ function sse(events: [string, unknown][]): Reply {
   }
 }
 
-const NO_NUMBERS = { unverified_numbers: [], verified_numbers: [], mislabelled_numbers: [] }
+const NO_NUMBERS = { unverified_numbers: [], verified_numbers: [], mislabelled_numbers: [], unresolved_numbers: [] }
 
 function answerStream(
   overrides: { done?: object; scope?: object; pieces?: string[]; sources?: object[]; route?: object } = {},
@@ -204,8 +204,17 @@ test('the number check lists the figures found on the cited pages and flags the 
             {
               number: '59.6%',
               answer_labels: ['Overall', 'Mix'],
-              source_labels: [['Comprehensiveness', 'Mix', '-High']],
+              source_labels: [['Comprehensiveness', 'Mix', '-High', 'vs NaiveRAG']],
               sentence: 'In Mix, the Overall score is 59.6%.',
+            },
+          ],
+          unresolved_numbers: [
+            {
+              number: '57.6%',
+              answer_labels: ['Overall', 'Mix'],
+              source_labels: [['Overall', 'Mix', '-High', 'vs NaiveRAG']],
+              sentence: 'In Mix, its Overall score is 57.6%.',
+              reason: 'missing',
             },
           ],
         },
@@ -216,11 +225,21 @@ test('the number check lists the figures found on the cited pages and flags the 
 
   await ask()
 
-  expect(await screen.findByText('數字核對：1 個在引用的頁面找到、1 個找不到、1 個標籤不符')).toBeInTheDocument()
+  expect(
+    await screen.findByText('數字核對：1 個在引用的頁面找到、1 個找不到、1 個標籤不符、1 個未能判定'),
+  ).toBeInTheDocument()
   expect(screen.getByText(/83\.6% · 第 7 頁/)).toBeInTheDocument()
   expect(screen.getByText('…LightRAG 83.6%…')).toBeInTheDocument()
   expect(screen.getByText('找不到：12,345')).toBeInTheDocument()
-  expect(screen.getByText('標籤不符：59.6%（答案：Overall、Mix；原文：Comprehensiveness、Mix、-High）')).toBeInTheDocument()
+  expect(
+    screen.getByText('標籤不符：59.6%（答案：Overall、Mix；原文：Comprehensiveness、Mix、-High、vs NaiveRAG）'),
+  ).toBeInTheDocument()
+  // An unresolved figure is explained, not shown as an error.
+  const unresolved = screen.getByText(
+    '未能判定：57.6%（答案：Overall、Mix；原文可能是：Overall、Mix、-High、vs NaiveRAG；答案沒寫出全部標籤）',
+  )
+  expect(unresolved).toHaveClass('text-muted')
+  expect(unresolved).not.toHaveClass('text-danger')
 })
 
 test('an answer without numbers shows no number check', async () => {

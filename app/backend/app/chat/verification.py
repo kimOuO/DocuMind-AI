@@ -8,20 +8,25 @@ kept as evidence. A number that is not found is reported, never let through
 silently. No LLM is involved.
 
 A figure that is found may still be attributed wrongly: the model copies a
-table value correctly and puts it under a neighbouring metric or variant (D64).
-Table chunks are written one row per line with every figure next to its labels
-(app.ingestion.tables), so each table value has a known set of labels. For
-every such figure in the answer, the labels mentioned nearest to it in its
-clause are compared with the labels of the cells holding that value; a figure
-whose mentioned labels fit none of them is reported as mislabelled. A label
-category the clause does not mention is not compared, so this finds wrong
-labels, not missing ones.
+table value correctly and puts it under a neighbouring metric or variant (D64),
+or on the wrong dataset (D67). Table chunks are written one row per line with
+every figure next to its labels (app.ingestion.tables), so each table value is a
+cell with known labels, and, where a row group pairs two columns, a known
+comparator (the other cell). Every such figure in the answer is read as a claim:
+the labels its sentence gives it, by role, never by distance. A label written
+with the figure is its own; otherwise the one label of that kind the clause,
+then the sentence, states; a method named right after "over", "against",
+"compared to" and the like is the comparator, not the owner. The claim is
+contradicted when no cell holding the value fits the labels it gives,
+supported when a cell fits every label and none is missing, and otherwise
+unresolved: the check does not guess, and says so.
 """
 
 import re
 import uuid
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
+from itertools import pairwise
 
 from app.ingestion.tables import cells_of
 
@@ -36,16 +41,27 @@ _SENTENCE_END = re.compile(
     r"(?<!\be\.g\.)(?<!\bi\.e\.)(?<!\bvs\.)(?<!\betc\.)(?<=[.!?。！？])\s+|\n+"
 )
 # Where one statement about figures ends and the next begins inside a sentence: a
-# semicolon, a connective, or a comparison whose two sides are different things.
-_CLAUSE_BREAK = re.compile(
-    r"\s*[;；]\s*|,\s+(?:and|but|while|whereas)\s+|,?\s+(?:compared (?:to|with)|versus|vs\.?)\s+"
-    r"|，(?:而|但|且)"
-)
+# semicolon or a connective after a comma.
+_CLAUSE_BREAK = re.compile(r"\s*[;；]\s*|,\s+(?:and|but|while|whereas)\s+|，(?:而|但|且)")
 # What may stand between a label and the figure it belongs to: "NaiveRAG 32.4%",
-# "NaiveRAG's 32.4%", "NaiveRAG: 32.4%", "32.4% (NaiveRAG)", "32.4% comprehensiveness".
-# A comma breaks the tie: in "67.6% comprehensiveness, 76.4%" the label is 67.6%'s.
-_BEFORE_FIGURE = re.compile(r"(?:['’]s)?[\s:(]{0,2}")
-_AFTER_FIGURE = re.compile(r"[\s(]{0,2}")
+# "NaiveRAG's 32.4%", "NaiveRAG: 32.4%", "32.4% (NaiveRAG)", "32.4% comprehensiveness",
+# "32.4% in Legal", "57.6% for the -High variant". A comma breaks the tie: in
+# "67.6% comprehensiveness, 76.4%" the label is 67.6%'s.
+# Up to four blanks: blanked emphasis markers ("**67.6%**") leave extra spaces.
+_BEFORE_FIGURE = re.compile(r"(?:['’]s)?[\s:(]{0,4}")
+_AFTER_FIGURE = re.compile(r"[\s(]{0,4}|\s+(?:in|for|on|of)\s+(?:the\s+)?")
+# Two figures joined into a range ("32.4%–38.8%") share their labels.
+_RANGE = re.compile(r"\s*[-–]\s*")
+# What stands right before the name of the method a figure is compared against.
+_COMPARISON_CUE = re.compile(
+    r"(?:\b(?:over|against|than|versus|vs\.?|compared\s+(?:to|with)|relative\s+to)\s+(?:the\s+)?"
+    r"|(?:優於|勝過|相較於|對比)\s*)$",
+    re.IGNORECASE,
+)
+# A sentence that explicitly keeps the setting of the previous one ("in the same dataset").
+_SAME_AS_BEFORE = re.compile(r"\bthe\s+same\s+\w+|同一", re.IGNORECASE)
+# A list item: the heading of a list ("- Comprehensiveness:") labels the items under it.
+_LIST_ITEM = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s")
 
 
 @dataclass(frozen=True)
@@ -72,10 +88,20 @@ class MislabelledNumber:
 
 
 @dataclass(frozen=True)
+class UnresolvedNumber:
+    number: str  # as written in the answer
+    answer_labels: list[str]  # the labels the answer gives it, in table order
+    source_labels: list[list[str]]  # the cells holding this value that those labels fit
+    sentence: str
+    reason: str  # "missing": a label the cells have is not given; "ambiguous": two are
+
+
+@dataclass(frozen=True)
 class NumberCheck:
     verified: list[VerifiedNumber]
     unverified: list[str]
-    mislabelled: list[MislabelledNumber]
+    mislabelled: list[MislabelledNumber]  # contradicted by the table
+    unresolved: list[UnresolvedNumber]  # neither confirmed nor contradicted
 
 
 def _normalise(number: str) -> str:
@@ -114,7 +140,7 @@ def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
     compare the labels of the table figures among them."""
     wanted = numbers_in(answer)
     if not wanted:
-        return NumberCheck([], [], [])
+        return NumberCheck([], [], [], [])
     # Where each value occurs: the first page that has it, with the match position.
     located: dict[str, tuple[PageText, int, int]] = {}
     for page in pages:
@@ -133,18 +159,43 @@ def verify_numbers(answer: str, pages: Sequence[PageText]) -> NumberCheck:
             verified.append(
                 VerifiedNumber(number, page.document_id, page.page, _snippet(page.text, start, end))
             )
-    return NumberCheck(verified, unverified, check_labels(answer, pages))
+    mislabelled, unresolved = check_labels(answer, pages)
+    return NumberCheck(verified, unverified, mislabelled, unresolved)
 
 
-def _table_cells(pages: Iterable[PageText]) -> dict[str, list[tuple[str, ...]]]:
-    """Normalised value -> the label tuples of the table cells holding it."""
-    cells: dict[str, list[tuple[str, ...]]] = {}
+@dataclass(frozen=True)
+class _Cell:
+    labels: tuple[str, ...]  # row label, column group[, sub-column]
+    comparator: str | None  # the other sub-column of a two-column group
+
+    def shown(self) -> list[str]:
+        return [*self.labels, f"vs {self.comparator}"] if self.comparator else list(self.labels)
+
+
+def _key(number: str) -> str:
+    """The value as the cells are keyed: without thousands separators, with the
+    percent sign, so that 64.0 and 64.0% are different figures."""
+    return number.replace(",", "")
+
+
+def _table_cells(pages: Iterable[PageText]) -> dict[str, list[_Cell]]:
+    """Value -> the table cells holding it, each with its labels and comparator."""
+    cells: dict[str, list[_Cell]] = {}
     for page in pages:
         for line in page.text.splitlines():
-            for value, labels in cells_of(line):
-                known = cells.setdefault(_normalise(value), [])
-                if labels not in known:
-                    known.append(labels)
+            row = cells_of(line)
+            groups: dict[tuple[str, ...], list[tuple[str, tuple[str, ...]]]] = {}
+            for value, labels in row:
+                groups.setdefault(labels[:2], []).append((value, labels))
+            for members in groups.values():
+                for index, (value, labels) in enumerate(members):
+                    comparator = None
+                    if len(members) == 2 and len(labels) == 3:
+                        comparator = members[1 - index][1][2]
+                    cell = _Cell(labels, comparator)
+                    known = cells.setdefault(_key(value), [])
+                    if cell not in known:
+                        known.append(cell)
     return cells
 
 
@@ -159,8 +210,8 @@ Span = tuple[int, int]
 Mention = tuple[int, int, str]  # start, end, label
 
 
-def _mentions(clause: str, labels: Iterable[str]) -> list[Mention]:
-    """Where the labels of one category are mentioned in the clause.
+def _mentions(text: str, labels: Iterable[str]) -> list[Mention]:
+    """Where the labels of one category are mentioned in the text.
 
     Two labels directly after one another ("LightRAG -High") are one compound
     name, and the later one is the name that counts.
@@ -168,7 +219,7 @@ def _mentions(clause: str, labels: Iterable[str]) -> list[Mention]:
     found = sorted(
         (m.start(), m.end(), label)
         for label in labels
-        for m in _label_pattern(label).finditer(clause)
+        for m in _label_pattern(label).finditer(text)
     )
     merged: list[Mention] = []
     for start, end, label in found:
@@ -179,109 +230,257 @@ def _mentions(clause: str, labels: Iterable[str]) -> list[Mention]:
     return merged
 
 
-def _attached(clause: str, mention: Mention, figure: Span, figures: Sequence[Span]) -> bool:
+def _attached(text: str, mention: Mention, figure: Span, figures: Sequence[Span]) -> bool:
     """A label written right before a figure ("LightRAG 67.6%") or right after it
-    ("67.6% (LightRAG)") is that figure's own; one that could be either goes with
-    the figure it precedes."""
+    ("67.6% (LightRAG)", "67.6% in Legal") is that figure's own; one that could be
+    either goes with the figure it precedes."""
     m_start, m_end, _ = mention
     start, end = figure
-    if m_end <= start and _BEFORE_FIGURE.fullmatch(clause[m_end:start]):
+    if m_end <= start and _BEFORE_FIGURE.fullmatch(text[m_end:start]):
         return True
-    if end <= m_start and _AFTER_FIGURE.fullmatch(clause[end:m_start]):
+    if end <= m_start and _AFTER_FIGURE.fullmatch(text[end:m_start]):
         return not any(
-            other_start >= m_end and _BEFORE_FIGURE.fullmatch(clause[m_end:other_start])
+            other_start >= m_end and _BEFORE_FIGURE.fullmatch(text[m_end:other_start])
             for other_start, _ in figures
             if other_start != start
         )
     return False
 
 
-def _nearest(mentions: Sequence[Mention], figure: Span) -> str | None:
-    start, end = figure
-    best: tuple[int, int, str] | None = None
-    for m_start, m_end, label in mentions:
-        distance = max(m_start - end, start - m_end, 0)
-        if best is None or (distance, -len(label)) < best[:2]:
-            best = (distance, -len(label), label)
-    return None if best is None else best[2]
+def _distinct(mentions: Iterable[Mention]) -> set[str]:
+    return {label for _, _, label in mentions}
 
 
-def _label_for(
-    clause: str, figure: Span, figures: Sequence[Span], mentions: Sequence[Mention]
-) -> str | None:
-    """The label of one category that the clause gives a figure: its own attached
-    label; otherwise the label the clause states for all its figures (one distinct
-    unattached mention), otherwise the nearest unattached one; None if the clause
-    names none."""
-    own = [m for m in mentions if _attached(clause, m, figure, figures)]
-    if own:
-        return _nearest(own, figure)
-    free = [
-        m for m in mentions if not any(_attached(clause, m, other, figures) for other in figures)
+@dataclass(frozen=True)
+class _Claim:
+    figure: Span
+    labels: list[str | None]  # one per label category, None when not given
+    comparator: str | None
+    ambiguous: bool  # some category had two candidate labels and none attached
+
+    @property
+    def empty(self) -> bool:
+        return all(label is None for label in self.labels) and self.comparator is None
+
+    def shown(self) -> list[str]:
+        given = [label for label in self.labels if label is not None]
+        return [*given, f"vs {self.comparator}"] if self.comparator else given
+
+
+def _claims(
+    sentence: str,
+    vocabulary: Sequence[set[str]],
+    inherited: Sequence[str | None],
+    heading: Sequence[str | None] = (),
+) -> list[_Claim]:
+    """What the sentence claims about each table figure in it, by role.
+
+    For every label category: the label written with the figure; else the one
+    label the figure's clause states freely (not with another figure, not as a
+    comparator); else the one label the sentence states; else, when the sentence
+    says it keeps the previous one's setting, that sentence's label; else the
+    label of the list heading the sentence is an item of. Two free candidates are
+    an ambiguity, not a choice. The last category names methods, and a method
+    right after a comparison word is the comparator.
+    """
+    figures = [
+        (m.start(), m.end()) for m in _NUMBER.finditer(sentence) if _is_worth_checking(m.group())
     ]
-    distinct = {label for _, _, label in free}
-    if len(distinct) == 1:
-        return distinct.pop()
-    return _nearest(free, figure)
+    clauses = _pieces(sentence, _CLAUSE_BREAK)
+    keeps_setting = bool(_SAME_AS_BEFORE.search(sentence))
+    method = len(vocabulary) - 1
+    claims: list[_Claim] = []
+    per_category = [_mentions(sentence, labels) for labels in vocabulary]
+    owner: dict[Mention, Span | None] = {
+        m: next((f for f in figures if _attached(sentence, m, f, figures)), None)
+        for mentions in per_category
+        for m in mentions
+    }
+
+    def after_cue(m: Mention) -> bool:
+        at = m[0] if owner[m] is None or owner[m][0] > m[0] else owner[m][0]  # type: ignore[index]
+        return _COMPARISON_CUE.search(sentence[:at]) is not None
+
+    # Figures joined by a dash form a range and are read as one: "32.4%–38.8%".
+    ranges: dict[Span, set[Span]] = {f: {f} for f in figures}
+    for previous, figure in pairwise(figures):
+        if _RANGE.fullmatch(sentence[previous[1] : figure[0]]):
+            joined = ranges[previous] | ranges[figure]
+            for member in joined:
+                ranges[member] = joined
+
+    for figure in figures:
+        clause = next((c for c in clauses if c[0] <= figure[0] < c[1]), (0, len(sentence)))
+        labels: list[str | None] = []
+        ambiguous = False
+        comparator: str | None = None
+        for position, mentions in enumerate(per_category):
+            is_method = position == method
+            own = [m for m in mentions if owner[m] in ranges[figure]]
+            if own:
+                labels.append(own[0][2])
+                continue
+            free = [m for m in mentions if owner[m] is None and not (is_method and after_cue(m))]
+            in_clause = _distinct(m for m in free if clause[0] <= m[0] < clause[1])
+            if len(in_clause) == 1:
+                labels.append(in_clause.pop())
+                continue
+            if len(in_clause) > 1:
+                ambiguous = True
+                labels.append(None)
+                continue
+            in_sentence = _distinct(free if is_method else mentions)
+            if len(in_sentence) == 1:
+                labels.append(in_sentence.pop())
+            elif len(in_sentence) > 1 and is_method:
+                ambiguous = True
+                labels.append(None)
+            elif keeps_setting and inherited[position] is not None:
+                labels.append(inherited[position])
+            else:
+                labels.append(heading[position] if heading else None)
+        cues = [m for m in per_category[method] if owner[m] is None and after_cue(m)]
+        for scope in ([m for m in cues if clause[0] <= m[0] < clause[1]], cues):
+            if len(_distinct(scope)) == 1:
+                comparator = scope[0][2]
+                break
+        claims.append(_Claim(figure, labels, comparator, ambiguous))
+    return claims
 
 
-def check_labels(answer: str, pages: Sequence[PageText]) -> list[MislabelledNumber]:
-    """The table figures of the answer whose labels fit no cell holding that value."""
+def _fits(claim: _Claim, cell: _Cell) -> bool:
+    return all(
+        given is None or given == label
+        for given, label in zip(claim.labels, cell.labels, strict=False)
+    ) and (claim.comparator is None or cell.comparator in (None, claim.comparator))
+
+
+def _complete(claim: _Claim, cell: _Cell) -> bool:
+    return all(label is not None for label in claim.labels[: len(cell.labels)])
+
+
+@dataclass(frozen=True)
+class LabelOutcome:
+    """What the table says about one figure of the answer, for evaluation and display."""
+
+    number: str
+    status: str  # "supported", "contradicted", "unresolved" or "unchecked" (no labels given)
+    answer_labels: list[str]
+    source_labels: list[list[str]]  # contradicted: every cell with the value; else the fitting ones
+    sentence: str
+    reason: str | None  # unresolved only: "missing" or "ambiguous"
+    position: int  # where the figure starts in the answer
+
+
+def label_outcomes(answer: str, pages: Sequence[PageText]) -> list[LabelOutcome]:
+    """One outcome per table figure of the answer, in order of appearance."""
     cells = _table_cells(pages)
     if not cells:
         return []
-    categories = max(len(labels) for known in cells.values() for labels in known)
+    categories = max(len(cell.labels) for known in cells.values() for cell in known)
     vocabulary: list[set[str]] = [set() for _ in range(categories)]
     for known in cells.values():
-        for labels in known:
-            for position, label in enumerate(labels):
+        for cell in known:
+            for position, label in enumerate(cell.labels):
                 vocabulary[position].add(label)
-    # Citation markers and page references are blanked, not removed, so that
-    # positions stay those of the answer.
+    # Citation markers, page references and emphasis markers are blanked, not
+    # removed, so that positions stay those of the answer.
     blanked = _PAGE_REFERENCE.sub(
         lambda m: " " * len(m.group()), _CITATION.sub(lambda m: " " * len(m.group()), answer)
-    )
-    reported: list[MislabelledNumber] = []
-    seen: set[tuple[str, tuple[str, ...]]] = set()
+    ).replace("*", " ")
+    outcomes: list[LabelOutcome] = []
+    inherited: list[str | None] = [None] * categories
+    heading: list[str | None] = [None] * categories
     for s_start, s_end in _pieces(blanked, _SENTENCE_END):
         sentence = blanked[s_start:s_end]
-        for c_start, c_end in _pieces(sentence, _CLAUSE_BREAK):
-            clause = sentence[c_start:c_end]
-            mentions = [_mentions(clause, labels) for labels in vocabulary]
-            figures = [
-                (m.start(), m.end())
-                for m in _NUMBER.finditer(clause)
-                if _is_worth_checking(m.group())
+        shown_sentence = _tidy(answer[s_start:s_end])
+        mentions = [_mentions(sentence, labels) for labels in vocabulary]
+        if _is_heading(sentence, mentions):
+            # "- Comprehensiveness:" labels the list items that follow it.
+            heading = [
+                next(iter(found)) if len(found := _distinct(found_mentions)) == 1 else None
+                for found_mentions in mentions
             ]
-            for start, end in figures:
-                number = clause[start:end]
-                candidates = cells.get(_normalise(number))
-                if not candidates:
-                    continue
-                given = [_label_for(clause, (start, end), figures, m) for m in mentions]
-                if all(label is None for label in given):
-                    continue
-                if any(
-                    all(
-                        given[position] is None or given[position] == label
-                        for position, label in enumerate(labels)
-                    )
-                    for labels in candidates
-                ):
-                    continue
-                answer_labels = [label for label in given if label is not None]
-                key = (number, tuple(answer_labels))
-                if key not in seen:
-                    seen.add(key)
-                    reported.append(
-                        MislabelledNumber(
-                            number,
-                            answer_labels,
-                            [list(labels) for labels in candidates],
-                            _tidy(answer[s_start:s_end]),
-                        )
-                    )
-    return reported
+            continue
+        if not _LIST_ITEM.match(sentence):
+            heading = [None] * categories
+        for claim in _claims(sentence, vocabulary, inherited, heading):
+            start, end = claim.figure
+            number = sentence[start:end]
+            candidates = cells.get(_key(number))
+            if not candidates:
+                continue
+            fitting = [cell for cell in candidates if _fits(claim, cell)]
+            if claim.empty:
+                status, reason, shown = "unchecked", None, fitting
+            elif not fitting:
+                status, reason, shown = "contradicted", None, candidates
+            elif claim.ambiguous:
+                status, reason, shown = "unresolved", "ambiguous", fitting
+            elif not any(_complete(claim, cell) for cell in fitting):
+                status, reason, shown = "unresolved", "missing", fitting
+            else:
+                status, reason, shown = "supported", None, fitting
+            outcomes.append(
+                LabelOutcome(
+                    number,
+                    status,
+                    claim.shown(),
+                    [cell.shown() for cell in shown],
+                    shown_sentence,
+                    reason,
+                    s_start + start,
+                )
+            )
+        # What the next sentence may inherit: the one label of each kind this one states.
+        inherited = [
+            next(iter(found)) if len(found := _distinct(found_mentions)) == 1 else None
+            for found_mentions in mentions
+        ]
+    return outcomes
+
+
+def _is_heading(sentence: str, mentions: Sequence[Sequence[Mention]]) -> bool:
+    """A line that is nothing but labels and punctuation, such as "- Comprehensiveness:"."""
+    if not any(mentions) or _NUMBER.search(sentence):
+        return False
+    rest = list(sentence)
+    for category in mentions:
+        for start, end, _ in category:
+            rest[start:end] = " " * (end - start)
+    return not re.search(r"\w", "".join(rest))
+
+
+def check_labels(
+    answer: str, pages: Sequence[PageText]
+) -> tuple[list[MislabelledNumber], list[UnresolvedNumber]]:
+    """The table figures of the answer that the table contradicts, and those it can
+    neither confirm nor contradict; each figure with the same labels once."""
+    mislabelled: list[MislabelledNumber] = []
+    unresolved: list[UnresolvedNumber] = []
+    seen: set[tuple[str, tuple[str, ...]]] = set()
+    for outcome in label_outcomes(answer, pages):
+        key = (outcome.number, tuple(outcome.answer_labels))
+        if outcome.status in ("supported", "unchecked") or key in seen:
+            continue
+        seen.add(key)
+        if outcome.status == "contradicted":
+            mislabelled.append(
+                MislabelledNumber(
+                    outcome.number, outcome.answer_labels, outcome.source_labels, outcome.sentence
+                )
+            )
+        else:
+            unresolved.append(
+                UnresolvedNumber(
+                    outcome.number,
+                    outcome.answer_labels,
+                    outcome.source_labels,
+                    outcome.sentence,
+                    outcome.reason or "missing",
+                )
+            )
+    return mislabelled, unresolved
 
 
 def _pieces(text: str, boundary: re.Pattern[str]) -> list[Span]:

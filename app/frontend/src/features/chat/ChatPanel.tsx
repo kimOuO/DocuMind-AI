@@ -84,11 +84,17 @@ function SourceList({ sources }: { sources: Source[] }) {
 
 /** How the answer's figures compare with the original text of the cited pages (AC-26). */
 function NumberCheckView({ check }: { check: NumberCheck }) {
-  const { verified_numbers: verified, unverified_numbers: unverified, mislabelled_numbers: mislabelled } = check
-  if (verified.length + unverified.length + mislabelled.length === 0) return null
+  const {
+    verified_numbers: verified,
+    unverified_numbers: unverified,
+    mislabelled_numbers: mislabelled,
+    unresolved_numbers: unresolved,
+  } = check
+  if (verified.length + unverified.length + mislabelled.length + unresolved.length === 0) return null
   const parts = [`${verified.length} 個在引用的頁面找到`]
   if (unverified.length > 0) parts.push(`${unverified.length} 個找不到`)
   if (mislabelled.length > 0) parts.push(`${mislabelled.length} 個標籤不符`)
+  if (unresolved.length > 0) parts.push(`${unresolved.length} 個未能判定`)
   return (
     <details className="mt-2 text-sm">
       <summary className="cursor-pointer text-muted">數字核對：{parts.join('、')}</summary>
@@ -109,6 +115,14 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
         <p key={item.number} className="text-danger">
           標籤不符：{item.number}（答案：{item.answer_labels.join('、')}；原文：
           {item.source_labels.map((labels) => labels.join('、')).join(' / ')}）
+        </p>
+      ))}
+      {unresolved.map((item) => (
+        // Not an error: the answer did not say enough for the check to decide (D67).
+        <p key={`${item.number}-${item.answer_labels.join()}`} className="text-muted">
+          未能判定：{item.number}（答案：{item.answer_labels.join('、')}；原文可能是：
+          {item.source_labels.map((labels) => labels.join('、')).join(' / ')}；
+          {item.reason === 'missing' ? '答案沒寫出全部標籤' : '答案裡有兩個候選標籤'}）
         </p>
       ))}
     </details>

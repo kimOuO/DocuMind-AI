@@ -212,6 +212,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "unverified_numbers": [],
         "verified_numbers": [],
         "mislabelled_numbers": [],
+        "unresolved_numbers": [],
         "finish_reason": "stop",
     }
     # What the model was given: the rules, the numbered source, the question.
@@ -289,19 +290,44 @@ async def test_a_table_figure_under_the_wrong_label_is_reported_after_the_answer
     deltas = [data["text"] for name, data in stream if name == "delta"]
     assert deltas[-1] == (
         "\n\nFigures whose labels differ from the source table: "
-        "59.6% (answer: Overall, Mix; source: Comprehensiveness, Mix, -High)."
+        "59.6% (answer: Overall, Mix; source: Comprehensiveness, Mix, -High, vs LightRAG)."
     )
     assert by_name["done"]["unverified_numbers"] == []
     assert by_name["done"]["mislabelled_numbers"] == [
         {
             "number": "59.6%",
             "answer_labels": ["Overall", "Mix"],
-            "source_labels": [["Comprehensiveness", "Mix", "-High"]],
+            "source_labels": [["Comprehensiveness", "Mix", "-High", "vs LightRAG"]],
             "sentence": "In Mix, the Overall score falls from 60.0% to 59.6%.",
         }
     ]
     # The note is part of the stored answer, as the reader saw it.
     assert one(db, "SELECT content FROM messages WHERE role = 'assistant'")[0].endswith(deltas[-1])
+
+
+async def test_a_figure_whose_labels_do_not_pin_a_cell_is_reported_as_unresolved_not_wrong(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-26 (D67): 59.6% fits -High's Mix Comprehensiveness cell, but the answer names no
+    method; the check neither confirms nor contradicts, and the answer gets no note."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    use_model(kim, tokenizer, StubOllama(["In Mix, Comprehensiveness falls to 59.6% [1]."]))
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    deltas = [data["text"] for name, data in stream if name == "delta"]
+    assert deltas == ["In Mix, Comprehensiveness falls to 59.6% [1]."]
+    assert by_name["done"]["mislabelled_numbers"] == []
+    assert by_name["done"]["unresolved_numbers"] == [
+        {
+            "number": "59.6%",
+            "answer_labels": ["Comprehensiveness", "Mix"],
+            "source_labels": [["Comprehensiveness", "Mix", "-High", "vs LightRAG"]],
+            "sentence": "In Mix, Comprehensiveness falls to 59.6%.",
+            "reason": "missing",
+        }
+    ]
 
 
 async def test_only_the_selected_document_is_used(
@@ -404,6 +430,7 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
         "unverified_numbers": [],
         "verified_numbers": [],
         "mislabelled_numbers": [],
+        "unresolved_numbers": [],
         "finish_reason": None,
     }
     assert in_chinese[3][1] == {"text": "文件中找不到與這個問題相關的內容。"}

@@ -180,7 +180,7 @@
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
 | `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000}` | Ollama 回報的實測用量 |
-| `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "mislabelled_numbers": [{"number": "59.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Comprehensiveness", "Mix", "-High"]], "sentence": "…"}], "finish_reason": "stop"}` | 結束 |
+| `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "mislabelled_numbers": [{"number": "59.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Comprehensiveness", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…"}], "unresolved_numbers": [{"number": "57.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Overall", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…", "reason": "missing"}], "finish_reason": "stop"}` | 結束 |
 | `error` | `{"detail": "…", "code": "…"}` | 失敗；助理訊息的狀態為 `failed` |
 
 來源的格式（原文切塊與摘要共用）：
@@ -203,13 +203,14 @@
 - 前端必須顯示這次的搜尋範圍：`scope.mode` 為 `all` 時顯示「所有可用文件」，為 `selected` 時列出所選的文件。
 - 前端對每筆來源顯示檔名、頁碼（範圍以「第 7–9 頁」表示）與來歷：檢索結果顯示相似度，`table_context` 標「表格之後的討論」，摘要來源標「全文摘要」或「章節摘要：標題」；點開看片段（AC-11，2026-11-06）。
 - 前端顯示 `route`：問題類型（檢索／摘要），改寫後的問題與原問題不同時一併顯示（AC-16 的可見化）。
-- 前端在回答後顯示數字核對的結果：找到的數字附頁碼與原文片段、找不到的數字、標籤不符的數字與兩邊的標籤（AC-26）。這些結果只隨 `done` 事件送出，不存入訊息；重新開啟對話時只剩回答文字內附的說明。
+- 前端在回答後顯示數字核對的結果：找到的數字附頁碼與原文片段、找不到的數字、標籤不符的數字與兩邊的標籤、未能判定的數字與它可能對應的格子（AC-26）。未能判定的不是錯誤，不用錯誤的樣式，也不在回答下方附說明（D67）。這些結果只隨 `done` 事件送出，不存入訊息；重新開啟對話時只剩回答文字內附的說明。
 - `kind=chunk`：原文切塊，`page_start` 與 `page_end` 相同，`score` 為相似度。
 - `kind=summary`：章節摘要，帶章節標題與頁碼範圍，`score` 為 `null`。
 - `origin`（2026-11-06 補入，D62）：來源怎麼來的。`retrieval` 是向量檢索的 Top-K；`table_context` 是檢索結果含表格時，依文件結構補上的、緊接在該表格之後且屬於同一章節的討論段（最多兩塊，`score` 為 `null`，排在檢索結果之後，一樣受證據預算約束）；`summary` 是摘要類回答的來源。P4 比較不同 Top-K 時以 `origin=retrieval` 的來源為準。
 - `done.answered=false` 表示判定為找不到答案；此時仍以 `delta` 送出一段固定的說明文字，`cited` 為空。
 - `done.unverified_numbers` 列出回答中無法在所引用頁面原文找到的數字（AC-26）；此時另以 `delta` 在回答後附一段說明，列出這些數字。`done.verified_numbers` 列出找得到的數字與其所在的文件、頁碼及該頁原文片段（架構規格第 7 節「來源附上該頁原文片段」的落實；2026-11-06 補入）。核對範圍是被引用來源的頁碼範圍，沒有引用時為全部來源；比對時忽略千分位逗號與百分號；一位數的整數（如「Table 2」）不核對。
-- `done.mislabelled_numbers`（2026-11-06 補入，D64）：回答中來自表格的數字，其在答案裡的標籤與原文表格不符者。表格切塊的每一行是「列標籤 — 欄位分組: 子欄 數值, …」（架構規格第 5 節），所以每個數字在原文中有一組標籤（列、分組、子欄）。核對時取答案中含該數字的那個句子，對每一類標籤找離數字最近的提及（大小寫不拘；子欄名緊接著另一個子欄名時，如「LightRAG -High」，取後者）；句子裡沒提到的那一類不比對。只要原文裡有一格的數值相同、且與句中提到的各類標籤都一致，就算通過；否則列出該數字、答案給的標籤、原文中這個數值的各組標籤與那個句子。有不符項時另以 `delta` 在回答後附一段說明。這是規則比對，不呼叫 LLM；只能發現「數字對、標籤錯」，不能自動改正，也不檢查句子沒提到的標籤。
+- `done.mislabelled_numbers`（2026-11-06 補入，D64；D67 改為結構化比對）：回答中來自表格的數字，其在答案裡的標籤被原文表格**否定**者。表格切塊的每一行是「列標籤 — 欄位分組: 子欄 數值, …」（架構規格第 5 節），所以每個數字在原文中是一個格子：列、分組、子欄三類標籤，加上同一組只有兩格時的「比較對象」（另一格的子欄，顯示為 `vs NaiveRAG`）。核對把答案中含該數字的句子讀成一個宣稱：每類標籤依角色取，不依距離——寫在數字旁的標籤（「NaiveRAG 32.4%」「32.4% (NaiveRAG)」「32.4% in Legal」「57.6% for -High」）是它自己的；否則取子句中唯一自由提及的那個，再退到整句唯一提及的那個；句中寫明「the same …」時可繼承上一句唯一的那個標籤。緊接在 over／against／than／versus／compared to／relative to（中文：優於／勝過／相較於／對比）之後的方法名是**比較對象**，不是數字的所屬方法。數值相同的格子中沒有任何一格符合答案給的標籤（含比較對象）→ 列入 `mislabelled_numbers`，附答案的標籤、原文各格的標籤與那個句子，並以 `delta` 在回答後附一段說明。
+- `done.unresolved_numbers`（2026-11-06 補入，D67）：有格子符合答案給的標籤，但答案少給了該格子有的某類標籤（`reason: "missing"`），或同一類在子句裡有兩個自由的候選、核對不猜（`reason: "ambiguous"`）。欄位同 `mislabelled_numbers` 加 `reason`；`source_labels` 是符合的格子。這不是錯誤：核對不知道，不等於答案錯；回答下方不附說明。全部標籤都給了且有格子符合的數字不另列出（視為支持）。整個核對是規則比對、不呼叫 LLM、不含任何特定論文的字面；數字存在於頁面（`verified_numbers`）不代表歸屬正確，核對沒列出也不代表答案全對。
 - `done.finish_reason`：LLM 呼叫的結束原因（`stop`、`output_limit`、`context_exhausted`…）；未呼叫 LLM 時為 `null`。
 - 摘要類問題而摘要尚未 `ready`：以 `delta` 回覆摘要尚未完成或已失敗，`answered` 為 `false`（AC-42）。
 
