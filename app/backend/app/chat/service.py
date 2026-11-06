@@ -12,7 +12,7 @@ have no ready summary is answered without a call either (AC-42).
 import asyncio
 import logging
 import uuid
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
 from dataclasses import dataclass
 from typing import Any
@@ -26,6 +26,16 @@ from app.chat.memory import (
     build_memory,
     clean_rewrite,
     rewrite_prompt,
+)
+from app.chat.navigation import (
+    MapEntry,
+    PlanItem,
+    analyst_preamble,
+    build_map,
+    build_navigation_prompt,
+    merge_evidence,
+    parse_plan,
+    roles_preamble,
 )
 from app.chat.prompting import (
     build_answer_prompt,
@@ -62,7 +72,7 @@ from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
 from app.models import User
-from app.retrieval.repository import RetrievalRepository
+from app.retrieval.repository import RetrievalRepository, RetrievedChunk
 from app.retrieval.service import RetrievalService, SearchScope
 from app.summarization.repository import DocumentSummaryState, SummaryRepository
 
@@ -70,6 +80,7 @@ logger = logging.getLogger(__name__)
 
 # Budget of one answer call (docs/02-specs/02-architecture.md, section 4.3).
 ANSWER_MAX_OUTPUT_TOKENS = 2_500
+NAVIGATION_CHUNKS_PER_ITEM = 8  # D71: at most this many chunks per located plan item
 DELIVERY_PIECE = 400  # characters per delta when a finished text is delivered (two-call mode)
 EVIDENCE_TOKEN_BUDGET = 5_500
 # The answer is saved to the database every this many pieces while it streams.
@@ -193,10 +204,36 @@ class ChatService:
             kind = question_type(question)
             yield ChatEvent("route", {"type": kind, "standalone_question": question})
 
+            # D71: experimental modes. "roles" only changes the prompt (same evidence);
+            # "navigate" adds a navigation call whose located places are fetched and put
+            # behind the retrieved sources. "single" (default) changes nothing.
+            mode = self._settings.answer_mode
+            preamble = ""
+            navigation: dict[str, Any] | None = None
+            extra_calls: list[LLMResult] = []
+            fetched: list[tuple[PlanItem, list[RetrievedChunk]]] = []
+            chunks = None if kind == "summary" else await self._search(prepared, question)
+            if mode in ("roles", "navigate") and (kind == "summary" or chunks is not None):
+                entries = await self._document_map(prepared)
+                if mode == "roles":
+                    preamble = roles_preamble(entries)
+                else:
+                    yield ChatEvent("stage", {"stage": "navigating"})
+                    navigation, items, fetched, nav_result = await self._navigate(
+                        prepared, question, entries, chunks or []
+                    )
+                    if nav_result is not None:
+                        extra_calls.append(nav_result)
+                    if items:
+                        preamble = analyst_preamble(items)
             evidence = (
-                await self._summary_evidence(prepared, question)
+                await self._summary_evidence(
+                    prepared, question, preamble=preamble, fetched=fetched, navigation=navigation
+                )
                 if kind == "summary"
-                else await self._retrieval_evidence(prepared, question)
+                else self._evidence_from_chunks(
+                    prepared, question, chunks, preamble, fetched, navigation
+                )
             )
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
@@ -225,6 +262,7 @@ class ChatService:
                         "doubtful_citations": [],
                         "finish_reason": None,
                         "revision": None,
+                        "navigation": navigation,
                     },
                 )
                 return
@@ -233,7 +271,7 @@ class ChatService:
                 # Experimental two-call mode (D69): nothing is streamed; the draft is
                 # checked, revised once when faulted, and the chosen text sent at the end.
                 async for event in self._answer_in_two_calls(
-                    prepared, question, evidence, received
+                    prepared, question, evidence, received, navigation, extra_calls
                 ):
                     yield event
                 return
@@ -308,13 +346,17 @@ class ChatService:
             await self._finish(
                 prepared, status=status, content="".join(received), answered=answered
             )
-            yield ChatEvent(
-                "usage",
-                {
-                    "prompt_tokens": result.prompt_tokens,
-                    "completion_tokens": result.completion_tokens,
-                    "limit": self._settings.llm_context_limit,
-                },
+            yield (
+                self._usage([*extra_calls, result])
+                if extra_calls
+                else ChatEvent(
+                    "usage",
+                    {
+                        "prompt_tokens": result.prompt_tokens,
+                        "completion_tokens": result.completion_tokens,
+                        "limit": self._settings.llm_context_limit,
+                    },
+                )
             )
             yield ChatEvent(
                 "done",
@@ -376,6 +418,7 @@ class ChatService:
                     ],
                     "finish_reason": result.finish_reason.value,
                     "revision": None,
+                    "navigation": navigation,
                 },
             )
         except (asyncio.CancelledError, GeneratorExit):
@@ -500,7 +543,13 @@ class ChatService:
         return notes
 
     async def _answer_in_two_calls(
-        self, prepared: PreparedQuestion, question: str, evidence: Evidence, received: list[str]
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        evidence: Evidence,
+        received: list[str],
+        navigation: dict[str, Any] | None = None,
+        earlier_calls: Sequence[LLMResult] = (),
     ) -> AsyncIterator[ChatEvent]:
         """D69: draft, check, revise once when faulted and the budget allows, check again,
         choose by severity, then send the chosen text. Both calls go through the gateway's
@@ -521,7 +570,7 @@ class ChatService:
             max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
             context=context,
         )
-        calls = [first]
+        calls = [*earlier_calls, first]
         if not first.finish_reason.is_complete:
             # Cut short: not an answer to check or revise. Kept, marked interrupted.
             received.append(first.text)
@@ -532,7 +581,12 @@ class ChatService:
             yield ChatEvent(
                 "done",
                 self._done_payload(
-                    "interrupted", None, None, first.finish_reason.value, {"mode": mode}
+                    "interrupted",
+                    None,
+                    None,
+                    first.finish_reason.value,
+                    {"mode": mode},
+                    navigation,
                 ),
             )
             return
@@ -607,7 +661,9 @@ class ChatService:
         yield self._usage(calls)
         yield ChatEvent(
             "done",
-            self._done_payload("completed", answered, final, calls[-1].finish_reason.value, info),
+            self._done_payload(
+                "completed", answered, final, calls[-1].finish_reason.value, info, navigation
+            ),
         )
 
     @staticmethod
@@ -629,6 +685,7 @@ class ChatService:
         assessment: "Assessment | None",
         finish_reason: str | None,
         revision: dict[str, Any] | None,
+        navigation: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         check = assessment.check if assessment else NumberCheck([], [], [], [], [])
         doubts = assessment.doubts if assessment else []
@@ -690,30 +747,67 @@ class ChatService:
             ],
             "finish_reason": finish_reason,
             "revision": revision,
+            "navigation": navigation,
         }
 
-    async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
+    async def _search(
+        self, prepared: PreparedQuestion, question: str
+    ) -> list[RetrievedChunk] | None:
+        """The retrieved chunks with their table context, or None when nothing is close
+        enough (AC-15): then nothing is sent to the model and the user is told so."""
         async with self._sessions() as session:
             retrieval = RetrievalService(session, self._embedder, self._settings)
             chunks = await retrieval.search(prepared.actor, prepared.scope, question)
-            # First line of defence against made-up answers (AC-15): nothing close
-            # enough was found, so nothing is sent to the model and the user is told so.
             best = chunks[0].score if chunks else None
             if best is not None and best >= self._settings.min_similarity:
-                chunks = await retrieval.with_table_context(prepared.actor, chunks)
-        if best is None or best < self._settings.min_similarity:
-            logger.info(
-                "Question refused: best similarity %s below %s",
-                None if best is None else round(best, 3),
-                self._settings.min_similarity,
-            )
+                return await retrieval.with_table_context(prepared.actor, chunks)
+        logger.info(
+            "Question refused: best similarity %s below %s",
+            None if best is None else round(best, 3),
+            self._settings.min_similarity,
+        )
+        return None
+
+    def _evidence_from_chunks(
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        chunks: list[RetrievedChunk] | None,
+        preamble: str = "",
+        fetched: Sequence[tuple[PlanItem, Sequence[RetrievedChunk]]] = (),
+        navigation: dict[str, Any] | None = None,
+    ) -> Evidence:
+        if chunks is None:
             return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
-        prompt, used = build_answer_prompt(question, chunks, self._counter, EVIDENCE_TOKEN_BUDGET)
+        merged, log = merge_evidence(chunks, fetched, self._counter, budget=EVIDENCE_TOKEN_BUDGET)
+        if navigation is not None:
+            navigation["log"] = log
+            navigation["kept"] = sum(1 for e in log if e["kept"] and e["reason"].startswith("plan"))
+            navigation["excluded_budget"] = sum(
+                1 for e in log if e["reason"] == "over the evidence budget"
+            )
+        prompt, used = build_answer_prompt(
+            question, merged, self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
+        )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "")
 
-    async def _summary_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
-        """The stored summaries of the documents in scope; the ones without are named."""
+    async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
+        return self._evidence_from_chunks(
+            prepared, question, await self._search(prepared, question)
+        )
+
+    async def _summary_evidence(
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        *,
+        preamble: str = "",
+        fetched: Sequence[tuple[PlanItem, Sequence[RetrievedChunk]]] = (),
+        navigation: dict[str, Any] | None = None,
+    ) -> Evidence:
+        """The stored summaries of the documents in scope; the ones without are named.
+        Chunks a reading plan fetched (D71) come after the summaries, within the budget."""
         async with self._sessions() as session:
             repository = SummaryRepository(session)
             states = await repository.states(prepared.actor.id, prepared.scope.document_ids)
@@ -725,11 +819,128 @@ class ChatService:
         note = _unavailable_note(missing, language, nothing_ready=not summaries)
         if not summaries:
             return Evidence(None, [], note)
+        extra: list[RetrievedChunk] = []
+        seen: set[uuid.UUID] = set()
+        for _, chunks in fetched:
+            for chunk in chunks:
+                if chunk.chunk_id not in seen:
+                    seen.add(chunk.chunk_id)
+                    extra.append(chunk)
         prompt, used = build_summary_prompt(
-            question, summaries, self._counter, evidence_budget=EVIDENCE_TOKEN_BUDGET
+            question,
+            summaries,
+            self._counter,
+            evidence_budget=EVIDENCE_TOKEN_BUDGET,
+            preamble=preamble,
+            extra_chunks=extra,
         )
-        sources = [summary_source_payload(index, s) for index, s in enumerate(used, start=1)]
+        if navigation is not None:
+            kept = {c.chunk_id for c in used if isinstance(c, RetrievedChunk)}
+            navigation["log"] = [
+                {
+                    "ordinal": c.ordinal,
+                    "page": c.page,
+                    "kept": c.chunk_id in kept,
+                    "reason": "plan (after the summaries)"
+                    if c.chunk_id in kept
+                    else "over the evidence budget",
+                }
+                for c in extra
+            ]
+            navigation["kept"] = len(kept)
+            navigation["excluded_budget"] = len(extra) - len(kept)
+        sources = [
+            source_payload(index, item)
+            if isinstance(item, RetrievedChunk)
+            else summary_source_payload(index, item)
+            for index, item in enumerate(used, start=1)
+        ]
         return Evidence(prompt, sources, note)
+
+    async def _document_map(self, prepared: PreparedQuestion) -> list[MapEntry]:
+        """Sections (from the section summaries) and table/figure captions (from the
+        chunks) of the documents in scope (D71)."""
+        async with self._sessions() as session:
+            summaries = await SummaryRepository(session).ready_summaries(
+                prepared.actor.id, prepared.scope.document_ids
+            )
+            captions = await RetrievalRepository(session).caption_lines(
+                prepared.actor.id, prepared.scope.document_ids
+            )
+        return build_map(summaries, captions)
+
+    async def _navigate(
+        self,
+        prepared: PreparedQuestion,
+        question: str,
+        entries: list[MapEntry],
+        chunks: list[RetrievedChunk],
+    ) -> tuple[
+        dict[str, Any],
+        list[PlanItem],
+        list[tuple[PlanItem, list[RetrievedChunk]]],
+        LLMResult | None,
+    ]:
+        """D71 navigate mode: ask for a reading plan, locate every item on the map and
+        fetch the chunks of the located places. A plan call that fails or does not fit
+        leaves the evidence as retrieved."""
+        headers = [
+            f"[{i}] {c.filename}, page {c.page}: {' '.join(c.text.split())[:80]}"
+            for i, c in enumerate(chunks, start=1)
+        ]
+        prompt, max_output = build_navigation_prompt(
+            question, entries, headers, self._counter, self._settings.llm_context_limit
+        )
+        context = CallContext(
+            owner_id=prepared.actor.id,
+            conversation_id=prepared.conversation_id,
+            message_id=prepared.assistant_message_id,
+        )
+        info: dict[str, Any] = {
+            "map_entries": len(entries),
+            "plan": None,
+            "items": [],
+            "located": 0,
+            "fetched": 0,
+            "kept": 0,
+            "excluded_budget": 0,
+            "skipped": None,
+        }
+        try:
+            result = await self._gateway.generate(
+                prompt, purpose="navigate", max_output_tokens=max_output, context=context
+            )
+        except ContextBudgetExceeded:
+            info["skipped"] = "budget"
+            return info, [], [], None
+        except LLMCallFailed as error:
+            logger.warning("Navigation call failed, answering from the retrieval: %s", error)
+            info["skipped"] = "failed"
+            return info, [], [], None
+        items = parse_plan(result.text, entries)
+        info["plan"] = result.text
+        info["items"] = [{"text": i.text, "located": i.located, "pages": i.pages} for i in items]
+        info["located"] = sum(1 for i in items if i.located)
+        fetched: list[tuple[PlanItem, list[RetrievedChunk]]] = []
+        scope = prepared.scope.document_ids
+        async with self._sessions() as session:
+            repository = RetrievalRepository(session)
+            for item in items:
+                if not item.located:
+                    continue
+                document_id = (
+                    item.entry.document_id
+                    if item.entry
+                    else (scope[0] if len(scope) == 1 else None)
+                )
+                if document_id is None:
+                    continue  # an explicit page with several documents in scope: ambiguous
+                found = await repository.chunks_on_pages(
+                    prepared.actor.id, document_id, item.pages, limit=NAVIGATION_CHUNKS_PER_ITEM
+                )
+                fetched.append((item, found))
+                info["fetched"] += len(found)
+        return info, items, fetched, result
 
     async def _finish(
         self, prepared: PreparedQuestion, *, status: str, content: str, answered: bool | None

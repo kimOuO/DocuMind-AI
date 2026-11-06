@@ -16,6 +16,7 @@ import {
   type NumberCheck,
   type SearchScope,
   type Source,
+  type Navigation,
   type Revision,
   type Stage,
   type Usage,
@@ -50,6 +51,7 @@ function describe(error: unknown): string {
 
 const ROUTE_LABEL: Record<string, string> = { retrieval: '檢索', summary: '摘要' }
 const STAGE_LABEL: Record<Stage, string> = {
+  navigating: 'Navigator 規劃要看的章節與表格中',
   generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
   verifying: '核對中',
   revising: '依核對結果修正中',
@@ -58,6 +60,29 @@ const STAGE_LABEL: Record<Stage, string> = {
 const REVISION_LABEL = {
   verified: '已通過核對',
   unverified: '核對仍有疑點',
+}
+
+/** The Navigator's reading plan (D71 navigate mode): candidates checked against the document map. */
+function NavigationNote({ navigation }: { navigation: Navigation }) {
+  if (navigation.skipped) {
+    return <p className="text-sm text-muted">Navigator 未執行（{navigation.skipped}），回答依原始檢索。</p>
+  }
+  return (
+    <details className="mt-2 text-sm">
+      <summary className="cursor-pointer text-muted">
+        Navigator 計畫：{navigation.items.length} 項，定位 {navigation.located} 項，補充 {navigation.kept} 個片段
+        {navigation.excluded_budget > 0 && `（${navigation.excluded_budget} 個因預算未納入）`}
+      </summary>
+      <ul className="mt-1 list-none p-0">
+        {navigation.items.map((item) => (
+          <li key={item.text} className={item.located ? '' : 'text-muted'}>
+            {item.text}
+            {item.located ? `（第 ${item.pages[0]}${item.pages.length > 1 ? `–${item.pages[item.pages.length - 1]}` : ''} 頁）` : '（文件中找不到）'}
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
 }
 
 /** What the experimental two-call mode did (D69), for the reader: which text was kept and why. */
@@ -83,6 +108,7 @@ function describeOrigin(source: Source): string {
     return source.section_title === null ? '全文摘要' : `章節摘要：${source.section_title}`
   }
   if (source.origin === 'table_context') return '表格之後的討論'
+  if (source.origin === 'navigation') return '依閱讀計畫補充'
   return source.score === null ? '' : `相似度 ${source.score.toFixed(2)}`
 }
 
@@ -238,6 +264,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const [usage, setUsage] = useState<Usage | null>(null)
   const [stage, setStage] = useState<Stage | null>(null)
   const [revision, setRevision] = useState<Revision | null>(null)
+  const [navigation, setNavigation] = useState<Navigation | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
 
@@ -266,6 +293,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     setUsage(null)
     setStage(null)
     setRevision(null)
+    setNavigation(null)
     setCheck(null)
     setError(null)
     if (id === null) {
@@ -301,6 +329,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     setUsage(null)
     setStage(null)
     setRevision(null)
+    setNavigation(null)
     setCheck(null)
     let conversationId = activeId
     try {
@@ -368,6 +397,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
             }))
             setCheck(askEvent.data)
             setRevision(askEvent.data.revision ?? null)
+            setNavigation(askEvent.data.navigation ?? null)
             setStage(null)
             break
           case 'error':
@@ -487,6 +517,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
         <p className="text-sm text-muted">改寫後的問題：{route.standalone_question}</p>
       )}
       {stage !== null && <p className="text-sm text-muted">{STAGE_LABEL[stage]}</p>}
+      {navigation !== null && <NavigationNote navigation={navigation} />}
       {revision !== null && <RevisionNote revision={revision} />}
       {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
         <p className="text-sm text-muted">

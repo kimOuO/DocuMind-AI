@@ -5,6 +5,7 @@ filters on its owner, whatever document ids the caller passes. Only documents
 that are ready are searched.
 """
 
+import re
 import uuid
 from dataclasses import dataclass
 
@@ -12,6 +13,8 @@ from sqlalchemy import and_, or_, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Chunk, Document
+
+_CAPTION_LINE = re.compile(r"^\s*(?:Table|Figure|Fig\.)\s*\d+\s*[.:]", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -133,6 +136,71 @@ class RetrievalRepository:
             else:
                 pages.append((document_id, page, chunk_text))
         return pages
+
+    async def chunks_on_pages(
+        self, owner_id: uuid.UUID, document_id: uuid.UUID, pages: list[int], *, limit: int
+    ) -> list[RetrievedChunk]:
+        """The owner's chunks of a document on the given pages, in document order (D71:
+        evidence a reading plan asks for)."""
+        if not pages:
+            return []
+        rows = await self._db.execute(
+            select(
+                Chunk.id,
+                Chunk.document_id,
+                Document.filename,
+                Chunk.page,
+                Chunk.ordinal,
+                Chunk.text,
+                Chunk.token_count,
+            )
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Document.owner_id == owner_id,
+                Chunk.document_id == document_id,
+                Chunk.page.in_(pages),
+            )
+            .order_by(Chunk.ordinal)
+            .limit(limit)
+        )
+        return [
+            RetrievedChunk(
+                chunk_id=row.id,
+                document_id=row.document_id,
+                filename=row.filename,
+                page=row.page,
+                ordinal=row.ordinal,
+                text=row.text,
+                token_count=row.token_count,
+                score=None,
+                origin="navigation",
+            )
+            for row in rows
+        ]
+
+    async def caption_lines(
+        self, owner_id: uuid.UUID, document_ids: list[uuid.UUID]
+    ) -> list[tuple[uuid.UUID, str, int, str]]:
+        """Every line of the owner's chunks that starts a table or figure caption
+        ("Table 2: …", "Figure 1: …"), with its document and page (D71: the document map)."""
+        if not document_ids:
+            return []
+        rows = await self._db.execute(
+            select(Chunk.document_id, Document.filename, Chunk.page, Chunk.text)
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Document.owner_id == owner_id,
+                Chunk.document_id.in_(document_ids),
+                Chunk.text.op("~*")(r"(^|\n)\s*(Table|Figure|Fig\.)\s*\d+\s*[.:]"),
+            )
+            .order_by(Chunk.document_id, Chunk.ordinal)
+        )
+        captions: list[tuple[uuid.UUID, str, int, str]] = []
+        for document_id, filename, page, chunk_text in rows:
+            for line in chunk_text.splitlines():
+                if _CAPTION_LINE.match(line):
+                    captions.append((document_id, filename, page, line.strip()))
+        return captions
 
     async def chunks_after(
         self, owner_id: uuid.UUID, document_id: uuid.UUID, ordinal: int, *, limit: int

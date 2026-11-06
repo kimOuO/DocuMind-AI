@@ -162,7 +162,7 @@ export interface Source {
   snippet: string
   score: number | null
   /** How the source got here: found by search, added as a table's discussion, or a stored summary. */
-  origin: 'retrieval' | 'table_context' | 'summary'
+  origin: 'retrieval' | 'table_context' | 'navigation' | 'summary'
 }
 
 export type MessageStatus = 'pending' | 'streaming' | 'completed' | 'failed' | 'interrupted'
@@ -213,7 +213,20 @@ export interface Revision {
   reason?: string
 }
 
-export type Stage = 'generating' | 'verifying' | 'revising' | 'finalizing'
+export type Stage = 'navigating' | 'generating' | 'verifying' | 'revising' | 'finalizing'
+
+/** What the experimental navigate mode did (D71); null in the other modes. */
+export interface Navigation {
+  map_entries: number
+  plan: string | null
+  items: { text: string; located: boolean; pages: number[] }[]
+  located: number
+  fetched: number
+  kept: number
+  excluded_budget: number
+  skipped: string | null
+  log?: { ordinal: number; page: number; kept: boolean; reason: string }[]
+}
 
 /** A figure of the answer found on a cited page, with the original text around it (AC-26). */
 export interface VerifiedNumber {
@@ -283,6 +296,7 @@ export type AskEvent =
         cited: number[]
         finish_reason: string | null
         revision: Revision | null
+        navigation?: Navigation | null
       }
     }
   | { name: 'error'; data: { code: string; detail: string } }

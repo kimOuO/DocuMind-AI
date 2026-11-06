@@ -7,6 +7,7 @@ retrieved chunks as sources; summary questions get the stored summaries.
 """
 
 import re
+from collections.abc import Sequence
 from typing import Any
 
 from app.ingestion.tables import is_table_chunk
@@ -67,9 +68,17 @@ def _source_block(index: int, chunk: RetrievedChunk) -> str:
 
 
 def build_answer_prompt(
-    question: str, chunks: list[RetrievedChunk], counter: TokenCounter, evidence_budget: int
+    question: str,
+    chunks: list[RetrievedChunk],
+    counter: TokenCounter,
+    evidence_budget: int,
+    *,
+    preamble: str = "",
 ) -> tuple[str, list[RetrievedChunk]]:
-    """The prompt, and the chunks that were included in it (numbered from 1 in that order)."""
+    """The prompt, and the chunks that were included in it (numbered from 1 in that order).
+
+    A preamble (D71: the two-role instructions, or the Navigator's plan) goes before
+    the instructions; the default prompt has none."""
     used: list[RetrievedChunk] = []
     blocks: list[str] = []
     spent = 0
@@ -84,7 +93,7 @@ def build_answer_prompt(
         spent += cost
     sources = "\n\n".join(blocks) if blocks else "(no sources)"
     instructions = INSTRUCTIONS.format(language_rule=LANGUAGE_RULES[question_language(question)])
-    return f"{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
+    return f"{preamble}{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
 
 
 def source_payload(index: int, chunk: RetrievedChunk) -> dict[str, Any]:
@@ -155,19 +164,27 @@ def _summary_block(index: int, summary: StoredSummary) -> str:
 
 
 def build_summary_prompt(
-    question: str, summaries: list[StoredSummary], counter: TokenCounter, *, evidence_budget: int
-) -> tuple[str, list[StoredSummary]]:
-    """The prompt, and the summaries included in it (numbered from 1 in that order).
+    question: str,
+    summaries: list[StoredSummary],
+    counter: TokenCounter,
+    *,
+    evidence_budget: int,
+    preamble: str = "",
+    extra_chunks: Sequence[RetrievedChunk] = (),
+) -> tuple[str, list[StoredSummary | RetrievedChunk]]:
+    """The prompt, and the sources included in it (numbered from 1 in that order).
 
     The budget is shared equally between the documents, so that with several
     documents each one gets its part (D32). Within a document the whole-document
     summary comes first, then the sections in order; the first that does not
-    fit ends that document's share.
+    fit ends that document's share. Extra chunks (D71: what a reading plan fetched)
+    come after every summary, while the whole budget lasts; a preamble goes first.
     """
     documents = list(dict.fromkeys(s.document_id for s in summaries))
     share = evidence_budget // len(documents) if documents else evidence_budget
-    used: list[StoredSummary] = []
+    used: list[StoredSummary | RetrievedChunk] = []
     blocks: list[str] = []
+    total = 0
     for document_id in documents:
         spent = 0
         for summary in (s for s in summaries if s.document_id == document_id):
@@ -178,13 +195,22 @@ def build_summary_prompt(
             used.append(summary)
             blocks.append(block)
             spent += cost
+            total += cost
+    for chunk in extra_chunks:
+        block = _source_block(len(used) + 1, chunk)
+        cost = counter.count(block)
+        if total + cost > evidence_budget:
+            break
+        used.append(chunk)
+        blocks.append(block)
+        total += cost
     sources = "\n\n".join(blocks) if blocks else "(no sources)"
     documents_rule = DOCUMENTS_RULE.format(count=len(documents)) if len(documents) > 1 else ""
     instructions = SUMMARY_INSTRUCTIONS.format(
         documents_rule=documents_rule,
         language_rule=LANGUAGE_RULES[question_language(question)],
     )
-    return f"{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
+    return f"{preamble}{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
 
 
 def summary_source_payload(index: int, summary: StoredSummary) -> dict[str, Any]:

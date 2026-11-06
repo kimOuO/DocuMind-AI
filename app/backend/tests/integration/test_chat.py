@@ -216,6 +216,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "overstated_claims": [],
         "doubtful_citations": [],
         "revision": None,
+        "navigation": None,
         "finish_reason": "stop",
     }
     # What the model was given: the rules, the numbered source, the question.
@@ -510,6 +511,7 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
         "overstated_claims": [],
         "doubtful_citations": [],
         "revision": None,
+        "navigation": None,
         "finish_reason": None,
     }
     assert in_chinese[3][1] == {"text": "文件中找不到與這個問題相關的內容。"}

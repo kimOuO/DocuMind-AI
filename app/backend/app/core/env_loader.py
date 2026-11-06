@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     revision_soft_triggers: bool = True  # doubtful citations may trigger a revision
     revision_completeness: bool = True  # a missing comparison target may trigger one
     revision_always: bool = False  # research control: revise every draft
+    # Experimental answer modes (D71): "single" (default, one streamed call); "roles"
+    # (one call, Navigator then Analyst in the same prompt, same evidence); "navigate"
+    # (a navigation call produces a reading plan, located places are fetched and added
+    # behind the Top-K, then the answer call).
+    answer_mode: str = "single"
 
     # Uploads
     max_upload_mb: int = 50

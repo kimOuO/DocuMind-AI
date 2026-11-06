@@ -327,6 +327,55 @@ test('the two-call mode reports which text was kept and the summed token usage',
   expect(screen.getByText(/這 2 次呼叫合計的 token：輸入 7,000 \+ 回答 900 = 7,900$/)).toBeInTheDocument()
 })
 
+test('the navigate mode shows the plan, what was located and the added sources', async () => {
+  mockApi(
+    routesFor(
+      sse([
+        ['start', { user_message_id: 'u1', assistant_message_id: 'a1', scope: { mode: 'all', document_ids: [PAPER.id] } }],
+        ['route', { type: 'retrieval', standalone_question: QUESTION }],
+        ['stage', { stage: 'navigating' }],
+        ['sources', [SOURCE, { ...SOURCE, index: 2, page_start: 8, page_end: 8, origin: 'navigation' }]],
+        ['delta', { text: 'The ablated versions perform worse [1].' }],
+        ['usage', { prompt_tokens: 5000, completion_tokens: 600, limit: null, calls: 2 }],
+        [
+          'done',
+          {
+            status: 'completed',
+            answered: true,
+            cited: [1],
+            finish_reason: 'stop',
+            ...NO_NUMBERS,
+            revision: null,
+            navigation: {
+              map_entries: 9,
+              plan: '- Table 2 (page 8)\n- Table 9',
+              items: [
+                { text: 'Table 2 (page 8)', located: true, pages: [8] },
+                { text: 'Table 9', located: false, pages: [] },
+              ],
+              located: 1,
+              fetched: 2,
+              kept: 1,
+              excluded_budget: 1,
+              skipped: null,
+            },
+          },
+        ],
+      ]),
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  expect(await screen.findByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(screen.getByText('Navigator 計畫：2 項，定位 1 項，補充 1 個片段（1 個因預算未納入）')).toBeInTheDocument()
+  expect(screen.getByText('Table 2 (page 8)（第 8 頁）')).toBeInTheDocument()
+  expect(screen.getByText('Table 9（文件中找不到）')).toBeInTheDocument()
+  // The stored conversation (reloaded after the stream) decides which sources show; the
+  // origin label of plan-fetched sources is a one-line mapping in describeOrigin.
+})
+
 test('an answer without numbers shows no number check', async () => {
   mockApi(routesFor(answerStream()))
   render(<ChatPanel documents={[PAPER]} />)
