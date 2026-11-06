@@ -686,6 +686,17 @@ def select_evidence(
 # --- the prompts -----------------------------------------------------------------------
 
 
+# N4 (2026-11-07): without this rule the Navigator named the table a question needs in 7/10
+# (Table 1 for the comparison question) and 4/10 (Table 6 for the GraphRAG pairwise question)
+# Navigator-only runs; with it and temperature 0, 10/10 and 10/10 (N1–N4 in
+# evaluation/navigator-abc/runs). The rule is a template field so an experiment can drop it.
+TABLES_RULE = (
+    "- The figures of a paper are in its tables: name every table or figure on the map whose "
+    "caption concerns what the question asks about — a method, a dataset or a measure it "
+    "names, or the comparison it asks for — even when the caption does not use the "
+    "question's words. A section that discusses a table does not replace the table.\n"
+)
+
 NAVIGATION_INSTRUCTIONS = """\
 You are the Navigator for a question about the user's documents. Your job is to say where in \
 the documents the evidence is and what is needed from each place, not what it says.
@@ -694,7 +705,7 @@ Rules:
 - Use the document map and the sources already retrieved below. List the targets the answer \
 needs: a section or subsection, a table, a figure or a page, named as the map names it, with \
 what is needed from it. Prefer not to miss evidence; at most six targets.
-- One target per line, in this form:
+{tables_rule}- One target per line, in this form:
   - <place as the map names it> | need: <what to find there, in a few words> | priority: \
 required or supplementary | status: covered or missing
   "status: covered" means the retrieved sources already hold that evidence; "missing" means \
@@ -722,6 +733,7 @@ def build_navigation_prompt(
     limit: int,
 ) -> tuple[str, int]:
     prompt = NAVIGATION_INSTRUCTIONS.format(
+        tables_rule=TABLES_RULE,
         language_rule=LANGUAGE_RULES[question_language(question)],
         map=map_text(entries) or "- (no map available)",
         retrieved="\n".join(retrieved) or "(none)",

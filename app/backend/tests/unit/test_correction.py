@@ -175,7 +175,7 @@ def test_a_correct_number_under_the_wrong_subject_gets_the_subjects_own_figure()
         "showing a significant drop in comprehensiveness (34.8% vs. 67.6%) in Agri."
     )
 
-    result = correct(text, pages(ABLATION), aliases=ALIASES)
+    result = correct(text, pages(ABLATION), aliases=ALIASES, swap=True)
 
     assert "(65.2% vs. 67.6%)" in result.text
     assert [(e["kind"], e["before"], e["after"]) for e in result.edits] == [
@@ -189,7 +189,7 @@ def test_a_correct_number_credited_to_the_wrong_method_gets_the_methods_name_fix
     other method of the same row and group."""
     text = "In Agri, Full has 67.6% in Comprehensiveness versus 32.4% for Other [1]."
 
-    result = correct(text, pages(ABLATION), aliases=ALIASES)
+    result = correct(text, pages(ABLATION), aliases=ALIASES, swap=True)
 
     assert result.text == "In Agri, Full has 67.6% in Comprehensiveness versus 32.4% for Naive [1]."
     assert [(e["kind"], e["before"], e["after"]) for e in result.edits] == [
@@ -200,7 +200,7 @@ def test_a_correct_number_credited_to_the_wrong_method_gets_the_methods_name_fix
 def test_a_wrong_comparator_is_fixed_the_same_way() -> None:
     text = "Full reaches 67.6% in Agri Comprehensiveness against -High [1]."
 
-    result = correct(text, pages(ABLATION), aliases=ALIASES)
+    result = correct(text, pages(ABLATION), aliases=ALIASES, swap=True)
 
     assert result.text == "Full reaches 67.6% in Agri Comprehensiveness against Naive [1]."
 
@@ -237,7 +237,7 @@ def test_a_figure_with_no_single_reading_is_removed_with_its_parenthesis_not_inv
     # parenthesis goes; the sentence stays.
     text = "Full leads in Agri Comprehensiveness (99.9% vs. 32.4%) and in Mix [1]."
 
-    result = correct(text, pages(ABLATION), aliases=ALIASES, unverified=["99.9%"])
+    result = correct(text, pages(ABLATION), aliases=ALIASES, unverified=["99.9%"], remove=True)
 
     assert result.text == "Full leads in Agri Comprehensiveness and in Mix [1]."
     assert result.removed == ["(99.9% vs. 32.4%)"]
@@ -290,7 +290,109 @@ def test_the_compared_figure_after_a_correct_one_is_not_rewritten() -> None:
         "(65.2% vs. 67.6%) and Diversity (72.8% vs. 76.4%) in Agri."
     )
 
-    result = correct(text, pages(ABLATION), aliases=ALIASES)
+    result = correct(text, pages(ABLATION), aliases=ALIASES, swap=True, remove=True)
 
     assert result.text == text and result.edits == [] and result.reverted == []
     assert result.remaining == []
+
+
+def test_an_unverified_figure_in_one_paragraph_takes_only_its_own_sentence() -> None:
+    """The real case from the GraphRAG document summary: the figure found nowhere was in
+    the third paragraph, and the whole text up to it went. A line break bounds a
+    sentence as a full stop does."""
+    text = (
+        "First paragraph, kept whole.\n\n"
+        "Second paragraph starts here. Results show a win rate of 99.9% for X. It ends here.\n\n"
+        "Third paragraph, kept."
+    )
+
+    result = correct(text, [PageText(DOC, 8, "prose only")], unverified=["99.9%"], remove=True)
+
+    assert result.text == (
+        "First paragraph, kept whole.\n\n"
+        "Second paragraph starts here. It ends here.\n\n"
+        "Third paragraph, kept."
+    )
+    assert result.removed == ["Results show a win rate of 99.9% for X."]
+
+
+# --- D76: what the B4 and B4b batches showed the corrector must never do -------------------
+
+
+def test_a_table_row_with_the_method_in_its_first_column_is_not_rewritten() -> None:
+    """B4b-Q3-1: the row names the variant first and then NaiveRAG's and the variant's
+    figures; the checker reads every figure as the variant's. The corrector must not turn
+    NaiveRAG's figure into the variant's — figure substitution is not a default action."""
+    text = (
+        "| Method | Dataset | Metric | Naive | Variant |\n"
+        "| -High | Agri | Comprehensiveness | 32.4% | 65.2% |\n"
+    )
+
+    result = correct(text, pages(ABLATION), aliases=ALIASES)
+
+    assert result.text == text and result.edits == [] and result.removed == []
+
+
+def test_a_list_of_correct_figures_the_checker_misreads_is_not_removed() -> None:
+    """B4b-Q3-2: "higher than Naive at 32.4%" made the checker take Naive as the comparator
+    of 32.4% and contradict it; fifteen correct sentences were then removed. Removal is
+    not a default action either."""
+    text = (
+        "In Agri, Full scores 67.6% for Comprehensiveness, higher than Naive at 32.4%, "
+        "Naive -High at 65.2%, and Naive -Low at 64.0% [1]."
+    )
+
+    result = correct(text, pages(ABLATION), aliases=ALIASES)
+
+    assert result.text == text and result.removed == []
+
+
+def test_a_text_without_sentence_boundaries_is_never_wiped_for_an_unverified_figure() -> None:
+    """B4b: the GraphRAG document summary (2,184 characters, no ". " boundary found) was
+    removed whole for two figures found nowhere. Nothing is removed by default; even when
+    removal is asked for, a figure without a parenthesis or a sentence is left alone."""
+    text = "The paper reports 67.6% and 65.3% for the two settings\nand goes on without a period"
+
+    assert correct(text, pages(ABLATION), unverified=["67.6%", "65.3%"]).text == text
+    forced = correct(text, pages(ABLATION), unverified=["67.6%"], remove=True)
+    assert forced.text == text and forced.removed == []
+
+
+def test_only_ordering_words_are_corrected_by_default_and_name_or_figure_swaps_need_opting_in() -> (
+    None
+):
+    wrong_word = "In Mix, Comprehensiveness drops from 61.2% for Full to 64.0% for -Low [1]."
+    wrong_name = "In Agri, Full has 67.6% in Comprehensiveness versus 32.4% for Other [1]."
+
+    assert "rises from 61.2%" in correct(wrong_word, pages(ABLATION), aliases=ALIASES).text
+    assert correct(wrong_name, pages(ABLATION), aliases=ALIASES).text == wrong_name
+    assert "for Naive" in correct(wrong_name, pages(ABLATION), aliases=ALIASES, swap=True).text
+
+
+# --- D76: direction with two named methods, or a pronoun subject ----------------------------
+
+
+def test_a_cue_between_two_named_methods_maps_the_pair_to_them_in_order() -> None:
+    """B4b-Q2-3: "Full outperforms Other in Comprehensiveness (49.6% vs. 50.4%)" — Full's
+    figure first, Other's second, and 49.6 is not above 50.4."""
+    page = pages(WIN_RATES, page=7)
+    [issue] = check_directions(
+        "In Mix, Full outperforms Other in Overall (49.6% vs. 50.4%) [1].", page
+    )
+    assert (issue.kind, issue.status) == ("performance", "inconsistent")
+    assert (
+        check_directions("In Mix, Other outperforms Full in Overall (50.4% vs. 49.6%) [1].", page)
+        == []
+    )
+
+
+def test_a_pronoun_subject_is_the_side_the_named_comparator_is_not() -> None:
+    """B4-Q3-3: "It performs better in Mix (55.6% vs. 60.0% for Full)": the named method
+    owns the second figure, so the pronoun's figure is the first — and 55.6 is below 60.0.
+    The orientation here is stated in the sources, so the word can be judged."""
+    page = pages(ABLATION, STATED)
+    text = "It performs better in Agri Comprehensiveness (64.0% vs. 67.6% for Full) [1]."
+
+    [issue] = check_directions(text, page)
+
+    assert issue.status == "inconsistent" and "pronoun" in issue.detail

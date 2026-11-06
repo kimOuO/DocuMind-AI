@@ -236,7 +236,10 @@ def test_a_question_about_variants_is_complete_when_one_condition_shows_every_me
     assert result.missing == [] and result.condition == "Agri / Overall"
 
 
-def test_naming_every_variant_without_one_shared_condition_is_incomplete() -> None:
+def test_naming_every_variant_without_one_shared_condition_is_not_complete() -> None:
+    """Three variants, two conditions: never one condition with every figure. The check
+    cannot tie "-High 59.6%" to a dataset in the list sentence, so D76 leaves the verdict
+    uncertain rather than calling the method missing."""
     answer = (
         "Full reaches 67.6% in Agri Overall; -High 59.6% and -Low 64.0% in Mix "
         "Comprehensiveness [1]."
@@ -244,9 +247,9 @@ def test_naming_every_variant_without_one_shared_condition_is_incomplete() -> No
 
     result = check_completeness("Performance of the ablated variants of Full", answer, pages(TABLE))
 
-    assert result.status == "incomplete"
+    assert result.status == "uncertain"
     assert result.condition is None
-    assert "Full" not in result.missing  # named with a figure, but never in one condition
+    assert result.missing == ["-High"]  # Full and -Low are tied to figures; -High is not
 
 
 def test_a_variant_left_out_is_named_as_missing() -> None:
@@ -285,3 +288,172 @@ def test_the_overall_status_separates_factual_errors_from_missing_content() -> N
     )
     assert overall_status(clean, inconsistent, complete) == "FACTUALLY_INCORRECT"
     assert overall_status(clean, [], Completeness("not_applicable", [], [], None)) == "UNCERTAIN"
+
+
+# --- D76: comparison facts, exception lists and conclusions ---------------------------------
+
+from app.chat.evidence import (  # noqa: E402
+    ArithmeticIssue,
+    check_arithmetic,
+    check_conclusions,
+    comparison_facts,
+    facts_text,
+)
+
+PAIRED = (
+    "Table 1: Win rates (%) of the baselines v.s. Full across two datasets.\n"
+    "Agri Mix\n"
+    "Naive Full Naive Full\n"
+    "Comprehensiveness — Agri: Naive 32.4%, Full 67.6%; Mix: Naive 38.8%, Full 61.2%\n"
+    "Overall — Agri: Naive 32.4%, Full 67.6%; Mix: Naive 40.0%, Full 60.0%\n"
+    "Other Full Other Full\n"
+    "Comprehensiveness — Agri: Other 45.6%, Full 54.4%; Mix: Other 50.4%, Full 49.6%\n"
+    "Overall — Agri: Other 45.2%, Full 54.8%; Mix: Other 50.4%, Full 49.6%\n"
+)
+
+
+def test_facts_are_built_only_between_cells_of_one_condition_and_carry_their_setting() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    direct = [f for f in facts if {f.method_a, f.method_b} == {"Full", "Other"}]
+    assert len(direct) == 4  # two datasets × two metrics, the direct pairs only
+    mix_overall = next(f for f in direct if f.group == "Mix" and f.row == "Overall")
+    assert (mix_overall.value_a, mix_overall.value_b, mix_overall.relation) == (
+        "49.6%",
+        "50.4%",
+        "LESS",
+    )
+    assert mix_overall.setting == "direct pair" and mix_overall.direction == "higher"
+    assert mix_overall.better == "Other"
+    # Naive and Other were each measured against Full, never against each other: the fact
+    # between them is indirect and carries no verdict on which is better.
+    indirect = [f for f in facts if {f.method_a, f.method_b} == {"Naive", "Other"}]
+    assert indirect and all(f.confidence == "indirect" for f in indirect)
+    assert all(f.setting == "each against Full" and f.better is None for f in indirect)
+
+
+def test_facts_across_blocks_against_one_reference_are_marked_indirect() -> None:
+    cells = build_matrix([(1, chunk(23, 8, TABLE))])
+
+    facts = comparison_facts(cells, "the ablated variants of Full")
+
+    full_vs_high = next(
+        f
+        for f in facts
+        if {f.method_a, f.method_b} == {"Full", "-High"}
+        and f.group == "Agri"
+        and f.row == "Overall"
+    )
+    assert full_vs_high.setting == "each against Naive"
+    assert full_vs_high.confidence == "indirect"
+    assert (
+        full_vs_high.direction == "higher" and full_vs_high.better is None
+    )  # indirect: no verdict
+    assert full_vs_high.relation == "GREATER"  # 67.6 against 64.8: the numbers, not a verdict
+
+
+def test_the_facts_text_summarises_each_pair_with_its_exceptions_and_limits() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    text = facts_text(facts, WordCounter(), budget=300)
+
+    assert "Full vs Other" in text
+    assert "higher in 2 of 4" in text and "lower in 2" in text
+    assert "Mix / Comprehensiveness: 49.6% vs 50.4%" in text
+    assert "Mix / Overall: 49.6% vs 50.4%" in text
+    assert "direct pair" in text
+
+
+def test_an_only_exception_claim_is_contradicted_when_the_facts_hold_more() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+    answer = (
+        "Full is ahead of Other in most cells. The only exception is Mix in Overall, where "
+        "Other is slightly higher [1]."
+    )
+
+    [issue] = check_conclusions(answer, facts)
+
+    assert issue.status == "contradicted"
+    assert "2 conditions" in issue.detail and "Mix / Comprehensiveness" in issue.detail
+
+
+def test_a_correct_exception_list_and_a_hedged_conclusion_raise_nothing() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+    answer = (
+        "Full is ahead of Other in Agri; in Mix, Other is higher in Comprehensiveness and "
+        "Overall [1]. Full leads in most conditions [1]."
+    )
+
+    assert check_conclusions(answer, facts) == []
+
+
+# --- D76: completeness by structured coverage -------------------------------------------
+
+
+def test_a_figure_that_only_coincides_with_the_full_methods_value_does_not_make_it_complete() -> (
+    None
+):
+    """B4-Q3-2: -Origin's 83.6% equals Full's 83.6% under Legal / Comprehensiveness; the
+    answer never gives Full's own figure. Coverage is read from labelled figures, not from
+    numbers that happen to appear."""
+    table = (
+        "Table 2: Performance of the variants, using Naive as reference.\n"
+        "Legal\nNaive Full\n"
+        "Comprehensiveness — Legal: Naive 16.4%, Full 83.6%\n"
+        "Naive -High\n"
+        "Comprehensiveness — Legal: Naive 23.6%, -High 76.4%\n"
+        "Naive -Origin\n"
+        "Comprehensiveness — Legal: Naive 16.4%, -Origin 83.6%\n"
+    )
+    answer = "In Legal Comprehensiveness, -High reaches 76.4% and -Origin 83.6% against Naive [1]."
+
+    result = check_completeness("Performance of the ablated variants of Full", answer, pages(table))
+
+    assert result.status == "incomplete" and result.missing == ["Full"]
+
+
+def test_completeness_is_uncertain_when_the_figures_cannot_be_tied_to_their_methods() -> None:
+    table = (
+        "Table 2: Performance of the variants, using Naive as reference.\n"
+        "Legal\nNaive Full\n"
+        "Comprehensiveness — Legal: Naive 16.4%, Full 83.6%\n"
+        "Naive -High\n"
+        "Comprehensiveness — Legal: Naive 23.6%, -High 76.4%\n"
+        "Naive -Origin\n"
+        "Comprehensiveness — Legal: Naive 16.4%, -Origin 83.6%\n"
+    )
+    answer = (
+        "The variants Full, -High and -Origin reach 83.6%, 76.4% and 83.6% in Legal "
+        "Comprehensiveness [1]."
+    )
+
+    result = check_completeness("Performance of the ablated variants of Full", answer, pages(table))
+
+    assert result.status == "uncertain"
+
+
+# --- D76: derived arithmetic ---------------------------------------------------------------
+
+
+def test_a_stated_ratio_is_checked_against_the_two_figures_it_is_derived_from() -> None:
+    page = [PageText(DOC, 10, COUNTS)]
+    wrong = "On Podcast, C0 uses 34 Units while TS uses 1,669: C0 uses 9x fewer units [1]."
+    right = "On Podcast, TS uses 49.09 times more Units than C0 (1,669 against 34) [1]."
+
+    [issue] = check_arithmetic(wrong, page)
+    assert isinstance(issue, ArithmeticIssue)
+    assert (
+        issue.status == "inconsistent" and issue.stated == "9x" and abs(issue.computed - 49.1) < 0.1
+    )
+    assert check_arithmetic(right, page) == []
+
+
+def test_a_ratio_without_two_base_figures_in_the_sentence_is_unchecked_not_wrong() -> None:
+    page = [PageText(DOC, 10, COUNTS)]
+    [issue] = check_arithmetic("C0 uses about 38x fewer tokens than TS on Podcast [1].", page)
+    assert issue.status == "unchecked"

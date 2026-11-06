@@ -17,10 +17,9 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from app.chat.correction import correct
 from app.chat.evidence import build_matrix, method_aliases, method_definitions
 from app.chat.verification import PageText as CheckedPage
-from app.chat.verification import verify_numbers
+from app.chat.verification import numbers_in, verify_numbers
 from app.documents.storage import FileStorage
 from app.ingestion.headings import find_headings
 from app.ingestion.parsing import DocumentParseError, parse_document
@@ -46,6 +45,15 @@ RETRY_REMINDER = (
     "\n\n(The previous attempt ran past the length limit and was discarded. Keep to the word "
     "limit above: a compact summary, not a list of every item.)\n"
 )
+# D77/M5: qwen3.6 ran past the limit twice on the same appendix unit. A last attempt, firmer
+# and at temperature 0 (the model's most likely text, not a sample); the summary still
+# fails if that one is cut too — a cut text is never stored.
+RETRY_REMINDER_FIRM = (
+    "\n\n(Two attempts ran past the length limit and were discarded. Write at most 150 "
+    "words in one or two paragraphs. Do not list, quote or reproduce the items of the "
+    "section; name what it contains.)\n"
+)
+RETRIES: tuple[tuple[str, float | None], ...] = ((RETRY_REMINDER, None), (RETRY_REMINDER_FIRM, 0.0))
 
 
 class SummaryOutcome(StrEnum):
@@ -73,8 +81,8 @@ class SummaryJobRunner:
         self._counter = counter
         self._gateway = gateway
         self._input_budget = input_budget
-        # D75: what the number check found in each summary and what was corrected; kept in
-        # memory for the experiment's records and the tests, not stored.
+        # D75/D76: what the number check found in each summary; kept in memory for the
+        # experiment's records and the tests (the status itself is stored with the summary).
         self.verification_reports: list[dict[str, Any]] = []
 
     async def run(self, job_id: uuid.UUID) -> SummaryOutcome:
@@ -102,7 +110,7 @@ class SummaryJobRunner:
                     chunk_ids = await IngestionRepository(session).chunk_ids_for_pages(
                         claimed.document_id, unit.page_start, unit.page_end
                     )
-                text = await self._verified(
+                verification = await self._verification(
                     claimed, unit.title, text, unit.page_start, unit.page_end
                 )
                 sections.append(
@@ -115,13 +123,14 @@ class SummaryJobRunner:
                         source_chunk_ids=chunk_ids,
                         text=text,
                         token_count=self._counter.count(text),
+                        verification=verification,
                     )
                 )
 
             if not await self._progress(job_id, len(units), total):
                 return SummaryOutcome.ABANDONED
             document_text = await self._summarise_document(claimed, sections, context)
-            document_text = await self._verified(
+            document_verification = await self._verification(
                 claimed,
                 "document",
                 document_text,
@@ -137,6 +146,7 @@ class SummaryJobRunner:
                 source_chunk_ids=[],
                 text=document_text,
                 token_count=self._counter.count(document_text),
+                verification=document_verification,
             )
             async with self._sessions() as session, session.begin():
                 written = await IngestionRepository(session).complete_summary_job(
@@ -186,19 +196,32 @@ class SummaryJobRunner:
             document_prompt(claimed.filename, items), "document_summary", context, "document"
         )
 
-    async def _verified(
+    async def _verification(
         self, claimed: ClaimedSummaryJob, what: str, text: str, page_start: int, page_end: int
-    ) -> str:
-        """D75: the summary checked against the chunks of its pages — a figure under labels
-        the tables contradict is corrected when the table gives one reading and removed
-        otherwise, a figure found nowhere on the pages is removed; the result is checked
-        again and the outcome recorded. No model call."""
+    ) -> dict[str, Any]:
+        """D76: how the summary's figures stand against the chunks of its pages. Nothing is
+        rewritten (D75's correction of summaries proved unsafe): the status travels with the
+        summary so that an answer can be told which figures contradict the tables.
+        VERIFIED means every figure was found and none contradicts a table; "nothing found
+        wrong" alone is UNCERTAIN when a figure could not be located or resolved."""
         async with self._sessions() as session:
             rows = await IngestionRepository(session).chunk_texts_for_pages(
                 claimed.document_id, page_start, page_end
             )
-        if not rows:
-            return text
+        figures = numbers_in(text)
+        if not rows or not figures:
+            report = {
+                "status": "NOT_CHECKED",
+                "contradicted": [],
+                "unverified": [],
+                "unresolved": [],
+                "checked_figures": 0,
+                "reason": "no chunks for the pages" if not rows else "no figures in the summary",
+            }
+            self.verification_reports.append(
+                {"summary": what, "pages": [page_start, page_end], **report}
+            )
+            return report
         by_page: dict[int, list[str]] = {}
         for page, chunk_text in rows:
             by_page.setdefault(page, []).append(chunk_text)
@@ -217,46 +240,43 @@ class SummaryJobRunner:
         ]
         cells = build_matrix(indexed)
         aliases = method_aliases(method_definitions(indexed, {c.column for c in cells}))
-        before = verify_numbers(text, pages, aliases)
-        fixed = correct(text, pages, aliases=aliases, unverified=before.unverified)
-        after = verify_numbers(fixed.text, pages, aliases)
+        check = verify_numbers(text, pages, aliases)
+        if check.mislabelled:
+            status = "CONTRADICTED"
+        elif check.unverified or check.unresolved:
+            status = "UNCERTAIN"
+        else:
+            status = "VERIFIED"
+        report = {
+            "status": status,
+            "contradicted": [m.number for m in check.mislabelled],
+            "unverified": check.unverified,
+            "unresolved": [u.number for u in check.unresolved],
+            "checked_figures": len(figures),
+        }
+        if status != "VERIFIED":
+            logger.info("Summary of %s: %s (%s)", what, status, report)
         self.verification_reports.append(
-            {
-                "summary": what,
-                "pages": [page_start, page_end],
-                "mislabelled_before": [m.number for m in before.mislabelled],
-                "unverified_before": before.unverified,
-                "edits": fixed.edits,
-                "removed": fixed.removed,
-                "remaining": fixed.remaining,
-                "reverted": fixed.reverted,
-                "mislabelled_after": [m.number for m in after.mislabelled],
-                "changed": fixed.text != text,
-            }
+            {"summary": what, "pages": [page_start, page_end], **report}
         )
-        if fixed.text != text:
-            logger.info(
-                "Summary of %s corrected: %d edits, %d removals, %d remaining",
-                what,
-                len(fixed.edits),
-                len(fixed.removed),
-                len(fixed.remaining),
-            )
-        return fixed.text
+        return report
 
     async def _generate(self, prompt: str, purpose: str, context: CallContext, what: str) -> str:
         result = await self._gateway.generate(
             prompt, purpose=purpose, max_output_tokens=SUMMARY_MAX_OUTPUT_TOKENS, context=context
         )
-        if not result.finish_reason.is_complete:
-            # The model ran past the output limit (seen twice on one appendix unit, D75):
-            # one more attempt, told so; the text that was cut is never used.
-            logger.info("Summary of %s ran past the output limit; retrying once", what)
+        for attempt, (reminder, temperature) in enumerate(RETRIES, start=1):
+            if result.finish_reason.is_complete:
+                break
+            # The model ran past the output limit (seen on one appendix unit, D75/D77): told
+            # so and asked again; the text that was cut is never used.
+            logger.info("Summary of %s ran past the output limit; retry %d", what, attempt)
             result = await self._gateway.generate(
-                prompt + RETRY_REMINDER,
+                prompt + reminder,
                 purpose=purpose,
                 max_output_tokens=SUMMARY_MAX_OUTPUT_TOKENS,
                 context=context,
+                temperature=temperature,
             )
         if not result.finish_reason.is_complete:
             raise IncompleteSummary(

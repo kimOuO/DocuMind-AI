@@ -342,25 +342,51 @@ ABLATION_TABLE = (
 )
 
 
-async def test_a_section_summary_that_credits_another_methods_figure_is_corrected_before_storage(
+async def test_a_section_summary_crediting_another_methods_figure_is_kept_and_marked(
     user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:
-    """D75 (the Q1 case): the summary gives -High the full model's 67.6%; the table of the
-    section's chunks has -High at 65.2% under those labels, so the figure is replaced —
-    read from the table, never invented — and the corrected summary is what is stored."""
+    """D76 (the Q1 case): the summary gives -High the full model's 67.6%. Nothing is
+    rewritten — D75's correction of summaries proved unsafe — but the stored summary carries
+    CONTRADICTED with the figure, so that an answer can be told not to repeat it."""
     model = MisattributingSummariser()
     _, summary, dispatcher = runners(tokenizer, model)
     document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
 
     await dispatcher.run(uuid.UUID(job_id))
 
-    stored = summaries(db, document_id)
-    section = next(row for row in stored if row[0] == "section")
-    assert "reaches 65.2% in Agriculture Comprehensiveness" in section[5]
-    assert "67.6%" in section[5]  # LightRAG's own figure stays
+    section = next(row for row in summaries(db, document_id) if row[0] == "section")
+    assert "reaches 67.6% in Agriculture Comprehensiveness" in section[5]  # as written
+    stored = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'section'",
+        (document_id,),
+    ).fetchone()[0]
+    assert stored["status"] == "CONTRADICTED" and stored["contradicted"] == ["67.6%"]
     report = summary.verification_reports[0]
-    assert report["mislabelled_before"] == ["67.6%"]
-    assert [(e["kind"], e["before"], e["after"]) for e in report["edits"]] == [
-        ("figure", "67.6%", "65.2%")
-    ]
-    assert report["mislabelled_after"] == [] and report["changed"] is True
+    assert report["status"] == "CONTRADICTED" and report["checked_figures"] >= 1
+    # The document summary names only a figure the table holds: nothing to contradict, but
+    # "nothing found wrong" is not VERIFIED when a figure cannot be tied to a method.
+    document = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'document'",
+        (document_id,),
+    ).fetchone()[0]
+    assert document["status"] in ("VERIFIED", "UNCERTAIN", "NOT_CHECKED")
+
+
+async def test_a_summary_without_figures_or_chunks_is_not_checked_rather_than_verified(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    class Wordy(StubSummariser):
+        def __call__(self, request: httpx.Request) -> httpx.Response:
+            response = super().__call__(request)
+            body = response.json()
+            if "Summary of" in body.get("response", ""):
+                body["response"] = "This section explains the method without any figures."
+                return httpx.Response(200, json=body)
+            return response
+
+    _, summary, dispatcher = runners(tokenizer, Wordy())
+    _, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    assert summary.verification_reports[0]["status"] == "NOT_CHECKED"

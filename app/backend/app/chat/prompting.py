@@ -160,7 +160,33 @@ DOCUMENTS_RULE = (
 def _summary_block(index: int, summary: StoredSummary) -> str:
     where = "whole document" if summary.level == "document" else f"section: {summary.title}"
     pages = f"pages {summary.page_start}-{summary.page_end}"
+    # B5 baseline (2026-11-07, user's decision): the D76 verification note is not shown to
+    # the model; the status is still stored and reported. To restore: append
+    # _verification_note(summary.verification) after {where}.
     return f"[{index}] {summary.filename}, {pages}, {where}\n{summary.text}"
+
+
+def _verification_note(verification: dict[str, Any] | None) -> str:
+    """D76: what the summary's own check found, told to the model so that a contradicted
+    figure is not repeated and an unverified one is not presented as certain."""
+    if not verification:
+        return ""
+    status = verification.get("status")
+    if status == "CONTRADICTED":
+        figures = ", ".join(verification.get("contradicted", []))
+        return (
+            f"\nVerification: the figures {figures} in this summary contradict the source "
+            "tables; do not repeat them, and prefer a source that holds the table itself."
+        )
+    if status == "UNCERTAIN":
+        figures = ", ".join(
+            [*verification.get("unverified", []), *verification.get("unresolved", [])]
+        )
+        return (
+            f"\nVerification: the figures {figures} could not be confirmed in the source "
+            "pages; do not present them as certain."
+        )
+    return ""
 
 
 def build_summary_prompt(
@@ -226,4 +252,5 @@ def summary_source_payload(index: int, summary: StoredSummary) -> dict[str, Any]
         "snippet": summary.text,
         "score": None,
         "origin": "summary",
+        "verification": summary.verification,
     }

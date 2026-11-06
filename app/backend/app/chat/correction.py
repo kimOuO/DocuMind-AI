@@ -30,11 +30,13 @@ from app.chat.evidence import (
     matrix_cells_of_pages,
 )
 from app.chat.verification import (
+    _SENTENCE_END,
     Aliases,
     LabelOutcome,
     PageText,
     _key,
     _label_pattern,
+    _pieces,
     label_outcomes,
 )
 
@@ -153,18 +155,32 @@ def strip_step_numbering(text: str) -> str:
 
 def _remove_span(
     text: str, start: int, end: int, sentence: tuple[int, int] | None = None
-) -> tuple[int, int, str]:
+) -> tuple[int, int, str] | None:
     """The span to cut for a figure: its enclosing parenthesis when it is in one, else the
-    sentence it is in; and the text being cut."""
+    sentence it is in; None when neither is known — a whole text is never cut (B4b lost a
+    2,184-character summary that way)."""
     for m in _PARENTHESIS.finditer(text):
         if m.start() <= start and end <= m.end():
             return m.start(), m.end(), m.group().strip()
-    if sentence is not None:
+    if sentence is not None and sentence != (0, 0):
         s_start, s_end = sentence
         while s_end < len(text) and text[s_end] in " \n":
             s_end += 1
         return s_start, s_end, text[s_start : sentence[1]].strip()
-    return 0, len(text), text.strip()
+    return None
+
+
+def _sentence_around(text: str, position: int) -> tuple[int, int] | None:
+    """The sentence holding the position: a stretch bounded by a line break or a full stop
+    that itself ends in sentence punctuation. A stretch without one (a heading, a list
+    item, a run-on text) is not a sentence to cut, and the whole text never is."""
+    for start, end in _pieces(text, _SENTENCE_END):
+        if start <= position < end:
+            piece = text[start:end].rstrip()
+            if piece and piece[-1] in ".!?。！？" and (start, end) != (0, len(text)):
+                return start, end
+            return None
+    return None
 
 
 def _unknown_name(
@@ -322,19 +338,30 @@ def correct(
     *,
     aliases: Aliases | None = None,
     unverified: Sequence[str] = (),
+    swap: bool = False,
+    remove: bool = False,
 ) -> Correction:
-    """Fix or remove what the tables of the pages contradict, once; report the rest."""
+    """Fix what the tables of the pages contradict, once; report the rest.
+
+    By default only a comparison word that goes against two resolved figures is changed
+    (an ordering word by arithmetic; a performance word when the metric's direction is
+    known). Swapping a figure or a name (`swap`) and removing a parenthesis or sentence
+    (`remove`) exist for experiments: the B4 and B4b batches (D76) showed them acting on
+    the checks' misreadings and damaging correct text."""
     cells = matrix_cells_of_pages(pages)
     edits: list[dict[str, Any]] = []
     removed: list[str] = []
     working = text
     # Figures found on no cited page go first (their parenthesis or sentence), so that the
     # label check below does not read the neighbours of a figure that is leaving anyway.
-    for number in unverified:
+    for number in unverified if remove else ():
         at = working.find(number)
         if at < 0:
             continue
-        start, end, cut = _remove_span(working, at, at + len(number))
+        span = _remove_span(working, at, at + len(number), _sentence_around(working, at))
+        if span is None:
+            continue
+        start, end, cut = span
         working = working[:start] + working[end:]
         removed.append(cut)
     if not cells:
@@ -343,18 +370,21 @@ def correct(
 
     planned: list[_Edit] = []
     seen: set[tuple[int, int]] = set()
-    for outcome in _contradicted(label_outcomes(working, pages, aliases), working):
+    contradicted = (
+        _contradicted(label_outcomes(working, pages, aliases), working) if swap or remove else []
+    )
+    for outcome in contradicted:
         if (outcome.position, outcome.end) in seen:
             continue
         seen.add((outcome.position, outcome.end))
-        edit = _figure_edit(working, outcome, cells, aliases)
-        if edit is None:
-            start, end, cut = _remove_span(
-                working, outcome.position, outcome.end, outcome.sentence_span
-            )
-            planned.append(_Edit(start, end, "", {"kind": "remove", "text": cut}))
-        else:
+        edit = _figure_edit(working, outcome, cells, aliases) if swap else None
+        if edit is not None:
             planned.append(edit)
+        elif remove:
+            span = _remove_span(working, outcome.position, outcome.end, outcome.sentence_span)
+            if span is not None:
+                start, end, cut = span
+                planned.append(_Edit(start, end, "", {"kind": "remove", "text": cut}))
     for issue in check_directions(working, pages, aliases):
         if issue.status != "inconsistent":
             continue

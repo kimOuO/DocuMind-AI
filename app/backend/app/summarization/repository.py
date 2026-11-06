@@ -2,6 +2,7 @@
 
 import uuid
 from dataclasses import dataclass
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,6 +28,7 @@ class StoredSummary:
     page_end: int
     text: str
     token_count: int
+    verification: dict[str, Any] | None = None  # D76
 
 
 class SummaryRepository:
@@ -69,6 +71,7 @@ class SummaryRepository:
                     Summary.page_end,
                     Summary.text,
                     Summary.token_count,
+                    Summary.verification,
                 )
                 .join(Document, Document.id == Summary.document_id)
                 .where(

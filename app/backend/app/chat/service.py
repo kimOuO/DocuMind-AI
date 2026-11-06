@@ -11,6 +11,7 @@ have no ready summary is answered without a call either (AC-42).
 
 import asyncio
 import logging
+import re
 import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
@@ -24,12 +25,18 @@ from app.chat.citation_check import DoubtfulCitation, SourceText, check_citation
 from app.chat.correction import Correction, correct, strip_step_numbering
 from app.chat.evidence import (
     MATRIX_TOKEN_BUDGET,
+    ArithmeticIssue,
     Completeness,
+    ConclusionIssue,
     DirectionIssue,
     analysis_preamble,
     build_matrix,
+    check_arithmetic,
     check_completeness,
+    check_conclusions,
     check_directions,
+    comparison_facts,
+    matrix_cells_of_pages,
     method_aliases,
     method_definitions,
     overall_status,
@@ -102,6 +109,7 @@ logger = logging.getLogger(__name__)
 
 # Budget of one answer call (docs/02-specs/02-architecture.md, section 4.3).
 ANSWER_MAX_OUTPUT_TOKENS = 2_500
+_TABLE_CAPTION_LINE = re.compile(r"^\s*(Table\s+\d+)\s*[.:]", re.IGNORECASE)
 # D73: how many of a target's chunks are ranked before the turns start.
 NAVIGATION_CANDIDATES_PER_TARGET = 3 * CHUNKS_PER_TARGET
 DELIVERY_PIECE = 400  # characters per delta when a finished text is delivered (two-call mode)
@@ -145,6 +153,10 @@ class Assessment:
     completeness: Completeness = field(
         default_factory=lambda: Completeness("not_applicable", [], [], None)
     )
+    # D76: conclusions that count exceptions, checked against the comparison facts; and
+    # ratios the answer derives, checked by arithmetic.
+    conclusions: list[ConclusionIssue] = field(default_factory=list)
+    arithmetic: list[ArithmeticIssue] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -274,13 +286,28 @@ class ChatService:
                         indexed = list(enumerate([*(chunks or []), *added], start=1))
                         cells = build_matrix(indexed)
                         definitions = method_definitions(indexed, {c.column for c in cells})
+                        facts = comparison_facts(cells, question)
+                        # B5 baseline (2026-11-07, user's decision): the D76 facts are
+                        # recorded and used by the checks, not shown to the model (B3's
+                        # preamble). To restore: pass facts=facts.
                         preamble += analysis_preamble(
                             cells, definitions, self._counter, budget=MATRIX_TOKEN_BUDGET
+                        )
+                        # D76: tables the sources name but the chunker did not rewrite cell
+                        # by cell have no matrix — a coverage gap, not a verified table.
+                        with_cells = {c.source_index for c in cells}
+                        gaps = sorted(
+                            f"{m.group(1).title()} [{i}]"
+                            for i, c in indexed
+                            if i not in with_cells
+                            and (m := _TABLE_CAPTION_LINE.match(c.text.strip()))
                         )
                         navigation["matrix"] = {
                             "cells": len(cells),
                             "tables": sorted({f"{c.table} [{c.source_index}]" for c in cells}),
                             "definitions": [d.method for d in definitions],
+                            "facts": len(facts),
+                            "coverage_gaps": gaps,
                         }
             evidence = (
                 await self._summary_evidence(
@@ -316,6 +343,8 @@ class ChatService:
                         "doubtful_citations": [],
                         "direction_issues": [],
                         "completeness": _completeness_payload(None),
+                        "conclusion_issues": [],
+                        "arithmetic_issues": [],
                         "analysis_status": None,
                         "finish_reason": None,
                         "revision": None,
@@ -379,6 +408,8 @@ class ChatService:
             doubts = []
             directions: list[DirectionIssue] = []
             completeness: Completeness | None = None
+            conclusions: list[ConclusionIssue] = []
+            arithmetic: list[ArithmeticIssue] = []
             if complete:
                 text = "".join(received)
                 pages = await self._pages(prepared, evidence, cited)
@@ -387,6 +418,10 @@ class ChatService:
                 # about variants got every variant under one condition.
                 directions = check_directions(text, pages)
                 completeness = check_completeness(question, text, pages)
+                conclusions = check_conclusions(
+                    text, comparison_facts(matrix_cells_of_pages(pages), question)
+                )
+                arithmetic = check_arithmetic(text, pages)
                 # AC-13 (D68): statements whose citation points at the wrong source.
                 doubts = check_citations(
                     "".join(received),
@@ -501,7 +536,11 @@ class ChatService:
                         for d in directions
                     ],
                     "completeness": _completeness_payload(completeness),
-                    "analysis_status": overall_status(check, directions, completeness)
+                    "conclusion_issues": _conclusion_payload(conclusions),
+                    "arithmetic_issues": _arithmetic_payload(arithmetic),
+                    "analysis_status": overall_status(
+                        check, directions, completeness, conclusions, arithmetic
+                    )
                     if completeness is not None
                     else None,
                     "finish_reason": result.finish_reason.value,
@@ -626,7 +665,9 @@ class ChatService:
             doubts,
             triggers,
             check_directions(text, pages, aliases),
-            check_completeness(question, text, pages),
+            check_completeness(question, text, pages, aliases),
+            check_conclusions(text, comparison_facts(matrix_cells_of_pages(pages), question)),
+            check_arithmetic(text, pages),
         )
 
     def _notes(self, check: NumberCheck, evidence: Evidence, language: str) -> list[str]:
@@ -686,8 +727,13 @@ class ChatService:
         cited = cited_indexes(text, len(evidence.sources))
         pages = await self._pages(prepared, evidence, cited)
         fixed: Correction = correct(text, pages, aliases=aliases)
+        applied = self._settings.auto_correction
+        if not applied:
+            # The checks' proposals are recorded; the text stays as the model wrote it.
+            fixed = Correction(text, fixed.edits, fixed.removed, fixed.remaining, fixed.uncertain)
         info: dict[str, Any] = {
-            "changed": fixed.text != text,
+            "applied": applied,
+            "changed": applied and fixed.text != text,
             "edits": fixed.edits,
             "removed": fixed.removed,
             "remaining": fixed.remaining,
@@ -961,12 +1007,16 @@ class ChatService:
                 for d in (assessment.directions if assessment else [])
             ],
             "completeness": _completeness_payload(assessment.completeness if assessment else None),
+            "conclusion_issues": _conclusion_payload(assessment.conclusions if assessment else []),
+            "arithmetic_issues": _arithmetic_payload(assessment.arithmetic if assessment else []),
             "analysis_status": overall_status(
                 check,
                 assessment.directions if assessment else [],
                 assessment.completeness
                 if assessment
                 else Completeness("not_applicable", [], [], None),
+                assessment.conclusions if assessment else [],
+                assessment.arithmetic if assessment else [],
             )
             if assessment
             else None,
@@ -1137,7 +1187,11 @@ class ChatService:
         }
         try:
             result = await self._gateway.generate(
-                prompt, purpose="navigate", max_output_tokens=max_output, context=context
+                prompt,
+                purpose="navigate",
+                max_output_tokens=max_output,
+                context=context,
+                temperature=self._settings.navigation_temperature,
             )
         except ContextBudgetExceeded:
             info["skipped"] = "budget"
@@ -1304,6 +1358,23 @@ _UNAVAILABLE = {
         "closing": "摘要完成後可再問一次，或改問文件內容的具體問題。",
     },
 }
+
+
+def _conclusion_payload(issues: Sequence[ConclusionIssue]) -> list[dict[str, Any]]:
+    return [{"sentence": i.sentence, "status": i.status, "detail": i.detail} for i in issues]
+
+
+def _arithmetic_payload(issues: Sequence[ArithmeticIssue]) -> list[dict[str, Any]]:
+    return [
+        {
+            "sentence": i.sentence,
+            "stated": i.stated,
+            "computed": i.computed,
+            "status": i.status,
+            "detail": i.detail,
+        }
+        for i in issues
+    ]
 
 
 def _completeness_payload(completeness: Completeness | None) -> dict[str, Any]:

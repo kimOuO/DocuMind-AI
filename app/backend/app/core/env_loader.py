@@ -7,6 +7,7 @@ Rule (docs/02-specs/03-interfaces.md, section 5.3): no other module may call
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -51,6 +52,29 @@ class Settings(BaseSettings):
     # (a navigation call produces a reading plan, located places are fetched and added
     # behind the Top-K, then the answer call).
     answer_mode: str = "single"
+    # D75/D76: whether the deterministic correction of comparison words is applied to the
+    # navigate-mode answer. Off by default: in the B4/B4b runs the checks' reading of a
+    # sentence was not reliable enough to act on (48 figures rewritten in one answer, 15
+    # sentences removed in another); the checks still run and report what they would have
+    # changed. Summaries are never rewritten; their verification status is stored instead.
+    auto_correction: bool = False
+    # N4 (2026-11-07): sampling temperature of the Navigator call only (the answer call keeps
+    # the model's default). 0 makes the reading plan repeatable; with the tables rule in the
+    # Navigator prompt, that plan named the needed table in 10/10 runs for the two questions
+    # whose table is never among the Top-K. None keeps the model's default.
+    navigation_temperature: float | None = 0.0
+    # The tokenizer file the budget guard counts with, relative to app/backend, and its
+    # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
+    # table text by up to 3% (D77/M5), so a qwen3.6 run points these at
+    # third-party/qwen3.6-tokenizer (see its README).
+    tokenizer_path: str = "third-party/qwen3-tokenizer/tokenizer.json"
+    tokenizer_sha256: str = "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+
+    @field_validator("navigation_temperature", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object) -> object:
+        """NAVIGATION_TEMPERATURE= (empty) keeps the model's default."""
+        return None if isinstance(value, str) and not value.strip() else value
 
     # Uploads
     max_upload_mb: int = 50

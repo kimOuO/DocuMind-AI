@@ -508,7 +508,7 @@ async def test_navigate_mode_corrects_a_comparison_word_the_table_contradicts_be
     )
     model = NavigatingOllama("- Table 2 | need: the values | priority: required", answer=wrong)
     use_model(kim, tokenizer, model)
-    mode(kim, "navigate")
+    mode(kim, "navigate", auto_correction=True)
 
     stream = events(ask(kim, new_conversation(kim)))
 
@@ -520,7 +520,7 @@ async def test_navigate_mode_corrects_a_comparison_word_the_table_contradicts_be
         "In Mix, Comprehensiveness falls from 61.2% for LightRAG to 59.6% for -High [1]."
     )
     correction = by_name["done"]["correction"]
-    assert correction["changed"] is True
+    assert correction["applied"] is True and correction["changed"] is True
     assert [(e["kind"], e["before"], e["after"]) for e in correction["edits"]] == [
         ("ordering", "rises", "falls")
     ]
@@ -531,6 +531,35 @@ async def test_navigate_mode_corrects_a_comparison_word_the_table_contradicts_be
         "In Mix, Comprehensiveness falls"
     )
     assert one(db, "SELECT count(*) FROM llm_calls") == (2,)
+
+
+async def test_by_default_the_correction_is_reported_but_not_applied(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D75 after B4/B4b: the checks' reading was not reliable enough to act on, so the
+    default keeps the model's text and records what would have been changed."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    wrong = "In Mix, Comprehensiveness rises from 61.2% for LightRAG to 59.6% for -High [1]."
+    model = NavigatingOllama("- Table 2 | need: the values | priority: required", answer=wrong)
+    use_model(kim, tokenizer, model)
+    mode(kim, "navigate")
+
+    stream = events(ask(kim, new_conversation(kim)))
+
+    by_name = dict(stream)
+    assert [d["stage"] for n, d in stream if n == "stage"] == [
+        "navigating",
+        "generating",
+        "verifying",
+        "finalizing",
+    ]
+    assert "".join(d["text"] for n, d in stream if n == "delta").startswith(wrong)
+    correction = by_name["done"]["correction"]
+    assert correction["applied"] is False and correction["changed"] is False
+    assert [(e["kind"], e["before"], e["after"]) for e in correction["edits"]] == [
+        ("ordering", "rises", "falls")
+    ]
+    assert [d["status"] for d in by_name["done"]["direction_issues"]] == ["inconsistent"]
 
 
 async def test_navigate_mode_leaves_a_correct_answer_untouched(
@@ -552,6 +581,7 @@ async def test_navigate_mode_leaves_a_correct_answer_untouched(
     ]
     assert "".join(d["text"] for n, d in stream if n == "delta").startswith(ANSWER)
     assert by_name["done"]["correction"] == {
+        "applied": False,  # the default: the checks report, the text is not changed
         "changed": False,
         "edits": [],
         "removed": [],

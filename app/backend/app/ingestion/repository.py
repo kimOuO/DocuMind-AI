@@ -15,6 +15,7 @@ after the other:
 
 import uuid
 from dataclasses import dataclass
+from typing import Any
 
 from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.engine import CursorResult
@@ -54,6 +55,7 @@ class SummaryRecord:
     source_chunk_ids: list[uuid.UUID]
     text: str
     token_count: int
+    verification: dict[str, Any] | None = None  # D76: see Summary.verification
 
 
 @dataclass(frozen=True)
@@ -260,6 +262,7 @@ class IngestionRepository:
                 source_chunk_ids=record.source_chunk_ids,
                 text=record.text,
                 token_count=record.token_count,
+                verification=record.verification,
             )
             self._db.add(summary)
             stored.append(summary)
@@ -275,6 +278,7 @@ class IngestionRepository:
                 source_summary_ids=[s.id for s in stored],
                 text=document_summary.text,
                 token_count=document_summary.token_count,
+                verification=document_summary.verification,
             )
         )
         document.summary_status = "ready"

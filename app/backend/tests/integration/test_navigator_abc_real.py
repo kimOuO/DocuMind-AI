@@ -28,7 +28,7 @@ from app.documents.storage import FileStorage
 from app.ingestion.indexing import IndexJobRunner, JobOutcome
 from app.llm.embedding import OllamaEmbedder
 from app.llm.gateway import OllamaGateway
-from app.llm.tokenizer import Qwen3TokenCounter
+from app.llm.tokenizer import get_token_counter
 from app.summarization.service import SummaryJobRunner, SummaryOutcome
 from tests.integration.conftest import register_and_login
 
@@ -75,7 +75,7 @@ def _events(text: str) -> list[tuple[str, dict]]:
 async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> None:
     register_and_login(client, "kim")
     settings = get_settings()
-    counter = Qwen3TokenCounter()
+    counter = get_token_counter()
     storage = FileStorage(settings.data_dir)
     sessions = get_sessionmaker()
     index = IndexJobRunner(

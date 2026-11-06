@@ -5,6 +5,7 @@ All tables needed in P2 are defined here; ``summaries`` is added in P3.
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
@@ -186,6 +187,10 @@ class Summary(Base):
     )
     text: Mapped[str] = mapped_column(Text)
     token_count: Mapped[int] = mapped_column(Integer)
+    # D76: how the summary's figures stood against the chunks of its pages when it was
+    # stored: {"status": VERIFIED|CONTRADICTED|UNCERTAIN|NOT_CHECKED, "contradicted": [...],
+    # "unverified": [...], "unresolved": [...], "checked_figures": n}; null for older rows.
+    verification: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = _created()
 
 

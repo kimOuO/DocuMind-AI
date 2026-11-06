@@ -283,6 +283,7 @@ def test_a_summary_source_payload_carries_the_section_and_page_range() -> None:
         "snippet": "Eval summary 67.6% (p. 8).",
         "score": None,
         "origin": "summary",
+        "verification": None,
     }
     assert summary_source_payload(1, PAPER[0])["section_title"] is None
 
