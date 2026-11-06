@@ -466,3 +466,152 @@ Q3、G1、G2 兩邊相同；對方對修正器的三個觀察（Q3-1 改錯 48 �
 ### 結論與處置
 
 回答任務書的問題：D75 沒有改善事實正確率（B3 9/15 → B4 5/15、B4b 8/15，跨批次比較）；Q3 的方向錯沒有消失、也沒被核對抓到；Q1 的摘要污染在 B4 更糟（修正器自己污染）、B4b 乾淨是因為那批摘要本來就乾淨；Q2 的對象錯置在 B4-Q2-3 被修對一次，但 B4b 沒再出現同型錯；Validator 帶來的誤判直接變成有害修正；token 持平（B3 7,532 → B4 7,608、B4b 7,623）、延遲 B3 40.9 秒 → 36.6／39.0 秒。**處置：自動修正不套用於正式流程**——核對照跑、`done.correction` 與摘要驗證紀錄照報「會改什麼」，文字不動（實作方式在 D76 定案）。保留的是核對端的能力（別名、大小詞／效能詞分開、方向來源、摘要存入前的核對紀錄）與摘要呼叫的重試。這等於回到 B3 的行為加上更多核對資訊。
+
+## D77 Navigator 召回實驗（N1–N4）與 B5：以 B3 的 prompt 為基準加 N4 設定（2026-11-07，15 次，723 秒）
+
+### 為什麼先量 Navigator
+
+使用者問「找資料那層是否完整」。離線數 B2／B3／B4／B4b 共 48 份 Navigator 計畫：Q2 需要的 Table 1 只有 5/12 被列出、G2 的 Table 6 只有 6/12；兩張表都從不在 Top-5 裡，沒列就等於 Analyst 看不到。Q3、G1 的表每次都在 Top-5 也每次都列出；「表在 Top-5 卻沒列」0 次。
+
+### Navigator-only（只做第一次呼叫；`tests/integration/test_navigator_recall_real.py`；Q2、G2 各 10 次；`runs/N*-navigator.json`）
+
+| 組 | 設定 | Q2 列到 Table 1 | G2 列到 Table 6 |
+|---|---|---|---|
+| N1 | 現況（模型預設 temperature 0.6、top_p 0.95、top_k 20） | 7/10 | 4/10 |
+| N2 | 只設 temperature 0 | 10/10 | **0/10** |
+| N3 | 只加 prompt 規則（標題與問題相關的表都要列；討論表的章節不能取代表） | 9/10 | 3/10 |
+| N4 | 兩者都改 | **10/10** | **10/10** |
+
+四組都仍是 6 個目標、全部定位到、每份計畫仍含章節目標；規則多約 70 tokens。N2 說明 temperature 0 只是把最可能的路徑固定住，路徑裡沒有 Table 6 就每次都沒有；N3 說明規則單獨改時被抽樣蓋過；兩者一起才成立。
+
+### B5 的設定（使用者決定：「76先註解掉 … 以這個為實驗主軸 … 與N4調整結果 一同測試5個問題」）
+
+- 模型輸入回到 B3：`ANALYSIS_ORDER` 用 B3 文字（D75 的兩句保留為 `_ANALYSIS_ORDER_D75`）、矩陣表頭用 B3 措辭；D76 的比較事實與摘要驗證註記**不放進 prompt**（仍計算、仍記錄、仍供答後核對）；修正器不動作（同 B3）。
+- 加 N4：`TABLES_RULE` 進 Navigator prompt；新設定 `NAVIGATION_TEMPERATURE=0`，只作用於 Navigator 呼叫，Analyst 維持模型預設。
+
+### 機制指標（B3 對 B5，`analyse.py`）
+
+| 題 | 臂 | Recall 計畫 | Coverage 最終 | 補充塊 | 多餘 | supp. 用 | Matrix 格 | tokens | 秒 |
+|---|---|---|---|---|---|---|---|---|---|
+| Q1 | B3 | 1.00 | 1.00 | 9 | 8 | 0 | — | 6,867 | 29.1 |
+| Q1 | **B5** | 1.00 | 1.00 | 6 | 6 | 0 | — | 7,253 | 31.9 |
+| Q2 | B3 | 0.83 | 0.67 | 13 | 9 | 4 | 512 | 8,267 | 44.1 |
+| Q2 | **B5** | 0.75 | 0.75 | 18 | 12 | 6 | 384 | 8,891 | 55.5 |
+| Q3 | B3 | 1.00 | 1.00 | 0 | 0 | 0 | 384 | 7,343 | 72.6 |
+| Q3 | **B5** | 1.00 | 1.00 | 0 | 0 | 0 | 384 | 7,987 | 97.3 |
+| G1 | B3 | 1.00 | 1.00 | 21 | 21 | 6 | 0 | 8,059 | 28.6 |
+| G1 | **B5** | 1.00 | 1.00 | 21 | 21 | 6 | 0 | 7,980 | 26.5 |
+| G2 | B3 | 0.33 | 0.33 | 20 | 18 | 5 | 0 | 7,123 | 30.4 |
+| G2 | **B5** | **1.00** | **1.00** | 21 | 15 | 6 | 0 | 7,475 | 29.9 |
+
+Navigator 這批 Q2 三次都列 Table 1、G2 三次都列 Table 6，三次都進到 Analyst 的來源（[6] p7、[11] p26）。Q2 的 Recall 計畫 0.75 是因為 Table 1 進了、但 ground truth 另一個必要位置（4.2 節的文字）有一次被預算排除。
+
+### 人工判定（同 key-facts 標準；正確性、完整性、整體通過分開；數字由腳本逐格對 `ground-truth/paper-structure.json`）
+
+| 題 | B3（歷史） | **B5** | B5 事實正確 | B5 完整 |
+|---|---|---|---|---|
+| Q1 摘要 | 1/3 | **0/3** | 0/3 | 3/3 |
+| Q2 比較 | 2/3 | **1/3** | 1/3 | 3/3 |
+| Q3 消融 | 0/3 | **0/3** | 0/3 | 0/3 |
+| G1 數字 | 3/3 | **3/3** | 3/3 | 3/3 |
+| G2 比較 | 1/3 | **2/3** | 2/3 | 3/3 |
+| 合計 | 7/15 | **6/15** | 6/15 | 12/15 |
+
+逐次：
+
+| 次 | 判定 | 原因 |
+|---|---|---|
+| B5-Q1-1～3 | 不通過 ×3 | S1–S5 齊；三次都寫「LightRAG achieved 83.6% … compared to the best baseline, which reached only 16.4% and 13.6%」——16.4／13.6 是 NaiveRAG（最差 baseline）的值，最佳 baseline 是 GraphRAG 48.4／26.4。這句出自本批 EVALUATION 章節摘要與全文摘要原文（**Summary Quality**，與 B3-Q1 同型）。**本批的摘要驗證已把這兩份摘要標為 CONTRADICTED，反駁數字正是 16.4%、13.6%**；D76 的提醒註記若未停用，模型會被告知不要照抄這兩個數字（未測，不能宣稱會改對） |
+| B5-Q2-1 | 不通過 | Table 1 GraphRAG 區塊 32 格全對；散文「In the Mix dataset … LightRAG showing … a slight lead in Empowerment」錯（49.2 < 50.8），「Legal … smaller margin in Empowerment」也錯（差 12.8，是 Legal 四個指標中第二大）；方向核對 0 條 |
+| B5-Q2-2 | 不通過 | 32 格全對、例外段正確點出 Mix 的 Comprehensiveness 與 Empowerment；但主要結論「In the Mix dataset … LightRAG wins in Diversity and Overall」錯（Overall 49.6 < 50.4）；方向核對 0 條 |
+| B5-Q2-3 | 通過 | 32 格全對；四個指標逐一分析、Mix 三個例外全對（Overall 寫 similarly 50.4 vs 49.6，可接受）；C1、C2、C7 達成；核對把 50.4／49.6／50.8／49.2 標為標籤錯是**誤報**（句子「GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)」正確）；引用可疑 [7]、[9] 經核對 p9 的 trade-offs 句與 p8 的 balanced 句都在，**也是誤報** |
+| B5-Q3-1 | 不通過 | 96 個數字全對（48 組 LightRAG 對變體），A6 達成；但「-High shows slight improvements in Comprehensiveness and Overall … for Agriculture and Mix」四格全反（65.2<67.6、59.6<61.2、64.8<67.6、57.6<60.0），「-Origin … improvements in Agriculture and Mix for Comprehensiveness and Diversity」四格對兩格；表格欄位錯置；沒有任何定義（A1 缺） |
+| B5-Q3-2 | 不通過 | 64 格全對、A6 達成；「-Origin outperforms LightRAG in the Mix dataset for Comprehensiveness」錯（55.6 < 61.2）；-Low、-Origin 寫「no definition found in the sources」（A1 缺兩個，A3 缺）；分析狀態 FACTUALLY_CORRECT_BUT_INCOMPLETE，方向核對 0 條 |
+| B5-Q3-3 | 不通過 | 80 格全對（含 NaiveRAG 列）、A6 達成；「-High shows a significant performance decline compared to LightRAG in all metrics in the CS dataset」錯（Diversity 63.2 > 62.0），「-Origin underperforms … in the CS and Mix datasets in all metrics」錯（Mix Diversity 74.4 > 67.6）；-Low、-Origin 定義缺 |
+| B5-G1-1～3 | 通過 ×3 | 八個數字全對；run 2 引述內文的「9x–43x」（原文有此句） |
+| B5-G2-1 | 不通過 | Table 3 claims 四個數字對；但把 Table 6 中 **C2 對 TS** 的那列（57.28／42.72、62.08／37.92）寫成 C2 對 SS；Table 6 已在來源 [11] p26 |
+| B5-G2-2、B5-G2-3 | 通過 ×2 | **77.76／79.2（p<0.001）對、引 [11] p26**；沒寫 SS 的 22.24／20.8（與 B2-G2-1 同樣接受）；run 2 把 79.2 寫成 79.20% 被列為找不到的數字（格式差異） |
+
+### 要誠實說的
+
+- B5 的 336 個表格數字全部正確。15 次裡所有事實錯誤都在散文結論：五句方向錯（Q2 兩句、Q3 三句）、一次表格列選錯（G2-1）、一句摘要繼承錯（Q1 ×3）。方向核對在這批仍回報 0 條；它看不懂「X showing a slight lead in Y」「-High shows improvements in M and N for A and B」這類沒有數字並列的句子。
+- N4 的效果在完整流程成立：Table 1、Table 6 三次都進到 Analyst。G2 因此從 1/3 到 2/3；Q2 沒有變好，因為 Q2 的瓶頸從 B3 起就不是拿不到表，是拿到表後的結論。
+- Q1 的錯來自入庫摘要，與 Navigator 無關；這批的摘要驗證有抓到（CONTRADICTED：16.4%、13.6%），但依使用者的 B5 設定沒有告知模型。
+- Q3 這批三次都沒有 -Low、-Origin 的定義：定義抽取只抓到 -High 的句子，preamble 寫「no definition found」，模型照寫而沒有回頭讀來源原文。B3 的 Q3 回答定義三個都對（B3-Q3-2），所以這是 B5 相對 B3 的退步，原因待查（抽取規則對「High-level-only Retrieval: The -Low variant …」句型的處理）。
+- Q3 的回答時間從 73 秒到 97 秒：三次都輸出整張表（64–96 格），輸出 tokens 多。
+- 15 次、同一份地圖。B3 與 B5 的差距（7 對 6）在三次重複的噪音範圍內，不能說 B5 比 B3 差或好；能說的是 G2 的取證問題解了、Q2/Q3 的結論問題沒動。
+
+### 結論（供使用者決定）
+
+- Navigator 的召回問題用 N4（規則＋temperature 0）解決，且沒有擠掉章節目標；建議保留。
+- 下一個瓶頸明確是 Analyst 把正確數字寫成錯誤方向句，以及 Q1 的摘要繼承。前者是 D76 比較事實想解的問題（本批停用，未測）；後者 D76 的 CONTRADICTED 註記這批剛好有命中的機會（未測）。
+
+## M5：同 B5 設定、換模型 `qwen3.6:27b`（q4_K_M；2026-11-07，15 次，1,698 秒含兩次中斷重啟前的入庫）
+
+使用者：「幫我換模型測試一次」（選 AI 建議清單的第一個）。設定與 B5 完全相同（B3 的 prompt、N4 的 Navigator 設定），只換 `LLM_MODEL`，並以該模型自己的 tokenizer 計數（`TOKENIZER_PATH`／`TOKENIZER_SHA256`，見 `app/backend/third-party/qwen3.6-tokenizer/README.md`）。摘要樹由新模型重新生成。模型預設 temperature 1.0（qwen3:32b 為 0.6），Analyst 用預設、Navigator 固定 0。
+
+### 換模型才暴露的三個系統問題（都已修）
+
+1. **tokenizer 不同**：qwen3.6 的詞表 248,044 筆對 Qwen3 的 151,669 筆。用 Qwen3 的檔案計數，表格文字少算最多約 3%（估 6,501、實際 6,690），實驗工具的「估算 ≥ 實際」斷言在第一題後擋下。改為依設定載入模型自己的 tokenizer；新檔案在四段文字上一律比 Ollama 多 4–5 個 token。
+2. **摘要兩次超過輸出上限**：GraphRAG 附錄「Conclusion (part 3/3)」兩次都寫滿 1,500 tokens（逐條複述附錄的 prompt 範本）。重試從一次改為兩次，第二次字數上限更明確並用 temperature 0；仍不截斷，第三次失敗才讓工作失敗。
+3. **AI 失誤**：寫 tokenizer 資料夾的 README 時覆蓋了專案根目錄的 `README.md`，以 `git checkout` 還原（當時無未提交修改）。
+
+### 機制指標（B5 對 M5，`analyse.py`）
+
+| 題 | 臂 | Recall 計畫 | Coverage 最終 | 計畫定位／條 | 補充塊 | 多餘 | Matrix 格 | tokens | 秒 |
+|---|---|---|---|---|---|---|---|---|---|
+| Q1 | B5 | 1.00 | 1.00 | 18/18 | 6 | 6 | — | 7,253 | 31.9 |
+| Q1 | **M5** | 1.00 | 1.00 | 18/18 | 0 | 0 | — | 7,874 | 43.1 |
+| Q2 | B5 | 0.75 | 0.75 | 18/18 | 18 | 12 | 384 | 8,891 | 55.5 |
+| Q2 | **M5** | 1.00 | 1.00 | 18/18 | 18 | 9 | 384 | **9,883** | 94.5 |
+| Q3 | B5 | 1.00 | 1.00 | 18/18 | 0 | 0 | 384 | 7,987 | 97.3 |
+| Q3 | **M5** | 1.00 | 1.00 | 9/9 | 0 | 0 | 384 | 8,339 | 103.1 |
+| G1 | B5 | 1.00 | 1.00 | 18/18 | 21 | 21 | 0 | 7,980 | 26.5 |
+| G1 | **M5** | 1.00 | 1.00 | 9/9 | 9 | 9 | 0 | 6,578 | 57.8 |
+| G2 | B5 | 1.00 | 1.00 | 18/18 | 21 | 15 | 0 | 7,475 | 29.9 |
+| G2 | **M5** | **0.00** | **0.00** | 12/12 | 18 | 18 | 0 | 9,043 | 82.3 |
+
+- Navigator（temperature 0）在這個模型上列 3–4 個目標而不是 6 個；Q2 三次都列 Table 1，**G2 三次都沒列 Table 6**（0/3；B5 3/3）。這正是 D77 寫下的風險：temperature 0 把最可能的路徑固定住，路徑裡沒有 Table 6 就每次都沒有。`TABLES_RULE` 對這個模型不夠。
+- 兩次回答寫到 2,500 tokens 的輸出上限被中斷（Q3-1、G2-1）；Q2 的兩次呼叫合計近 10K。回答裡夾著推理過程（「Wait」「Correction」「Actually」）。
+- Q3 三次都把 -High、-Low、-Origin 的定義從原文寫出（B5 三次都寫「no definition found」）：這個模型沒有照抄 preamble 的那句話。
+
+### 人工判定（同 key-facts 標準；Q2／Q3 的表格數字由腳本與人工逐格對 `paper-structure.json`）
+
+| 題 | B5 | **M5** | M5 事實正確 | M5 完整 |
+|---|---|---|---|---|
+| Q1 摘要 | 0/3 | **1/3** | 1/3 | 3/3 |
+| Q2 比較 | 1/3 | **1/3** | 1/3 | 3/3 |
+| Q3 消融 | 0/3 | **1/3** | 1/3 | 2/3 |
+| G1 數字 | 3/3 | **3/3** | 3/3 | 3/3 |
+| G2 比較 | 2/3 | **0/3** | 0/3 | 0/3 |
+| 合計 | 6/15 | **6/15** | 6/15 | 11/15 |
+
+逐次：
+
+| 次 | 判定 | 原因 |
+|---|---|---|
+| M5-Q1-1、M5-Q1-2 | 不通過 ×2 | S1–S5 齊、Table 1 的八個數字對；但「removing high-level retrieval reduced overall scores to 35.2% on Agriculture and 22.0% on Legal … -Low 34.8% and 18.8%」——這些是 **NaiveRAG** 在 -High／-Low 區塊的值（-High 是 64.8／78.0）。句子出自本批 ABLATION 章節摘要與全文摘要原文（**Summary Quality**）；本批摘要驗證把兩份摘要都標為 CONTRADICTED，反駁數字正是 35.2／22.0／34.8／18.8，但依 B5 設定未告知模型 |
+| M5-Q1-3 | 通過 | S1–S5 齊；對 NaiveRAG 的四個 Overall、對 GraphRAG 的四個 Overall 全對，Mix 例外點出；成本句對；沒有那句消融錯誤。核對把 54.8／52.0／52.8／49.6 標為標籤錯是**誤報**（句子說「outperformed GraphRAG on Agriculture (54.8%)」，54.8 是 LightRAG 的值） |
+| M5-Q2-1 | 不通過 | Table 1 GraphRAG 區塊 32 格全對、Mix 三個例外全對、成本與案例研究對；但「≈ 13.99 × 2 × 5,000 tokens」把 1,399 寫成 13.99（同一回答前一段寫對）——論文沒有的數字 |
+| M5-Q2-2 | 不通過 | 32 格全對、例外全對、13,990,000（1,399×2×5,000）算對；但「API Calls: GraphRAG uses 610 × 1,000 calls」把 token 數當成呼叫數（論文：數百次） |
+| M5-Q2-3 | 通過 | 32 格全對且每格標 >；Mix 三個例外；成本（610,000／<100、多次／1 次、1,399×2×5,000）對；案例研究對。缺點：一行「GraphRAG (48.4%) > LightRAG (51.6%) -> *Correction*」把寫錯又改正的過程留在答案裡；「& (4)」「& (6)」步驟編號外漏；全稱核對標的那句其實是答案自己在限定「consistently」（誤報） |
+| M5-Q3-1 | 不通過 | 80 格全對（含 NaiveRAG 列）、三個定義全對；但答案在 2,500 tokens 被截斷（status interrupted），分析段是逐格自問自答（「Wait, checking…」）；「LightRAG scores ranging from 55.2% to 86.4%」的 55.2 是 -Origin 的值 |
+| M5-Q3-2 | 不通過 | 64 格全對、三個定義全對；-High 的分析（CS Diversity 63.2 > 62.0 唯一例外）**全對**，-Low 的分析（Mix 三項反超、Legal 兩項持平）**全對**；但「-Origin outperforms LightRAG in the Agriculture dataset across all metrics」錯（Diversity 73.6 < 76.4）。方向核對回報的 (74.4, 67.6) incomparable 是誤報 |
+| M5-Q3-3 | 通過 | Overall 列四版本 ×四資料集全對（A6）、三個定義全對（A1）、A2–A5 齊；-High、-Low、-Origin 的每一句比較都與表一致，含 -Low 在 Mix 的反超與 -Origin 在 Agriculture Overall／Mix Diversity 的反超。缺點：「Diversity (73.6% vs 76.4% - *wait, 73.6 < 76.4, so this is a regression*)」把改正過程留在答案裡；核對把 25 個數字標為標籤錯全是**誤報**（配對寫 vs LightRAG 而非 vs NaiveRAG）。**歷史上第一次 Q3 同時過事實與完整** |
+| M5-G1-1～3 | 通過 ×3 | 八個數字全對；run 1 另算 97.4%／97.7%（由 2.6%／2.3% 推得，算對）；都引述「9x-43x」 |
+| M5-G2-1 | 不通過 | Navigator 沒列 Table 6；答案在 2,500 tokens 被截斷，正文是對第 10 頁 Figure 2 熱圖文字的逐格摸索。它讀到的 C2 對 SS 是 81（Podcast）、71（News）——以論文第 9 頁的範圍句（Podcast 72–83%、News 72–80%）對照熱圖文字，各指標的標題在文字抽取中落在格子**之後**，正確的 Comprehensiveness 格是 **78**（Podcast）、**79**（News）；81／71 是下一個指標的格 |
+| M5-G2-2 | 不通過 | 沒有 Table 6；Table 3 的 32.46／26.50、31.62／25.23 對；但 Figure 2 讀成 79（Podcast）、69（News）——是 C3 列的值 |
+| M5-G2-3 | 不通過 | 沒有 Table 6；Table 3 對；Figure 2 讀成 72／62——是 C0 列的值。三次從同一段熱圖文字讀出三組不同的數，沒有一組對 |
+
+### 要誠實說的
+
+- 總分與 B5 相同（6/15），但錯的地方不同。qwen3.6 讀表更細（逐格比較、自己改正、定義從原文寫出），B5 在 Q2／Q3 的五句方向錯這批只剩一句全稱句（Q3-2）；Q3 第一次有一次完整通過。代價是輸出長、把推理過程寫進答案、兩次撞到輸出上限、Q2 貼著 10K。
+- G2 從 2/3 掉到 0/3，原因在 Navigator：這個模型在 temperature 0 下只列 3–4 個目標且不列 Table 6，TABLES_RULE 沒有把 Table 6 帶進最可能的路徑；沒有 Table 6 之後，Analyst 從 Figure 2 的熱圖文字讀數，三次三種讀法全錯。這是 N2 那種「固定後每次都漏」的實例。
+- Q1 的錯仍來自入庫摘要（換模型後是另一句，但同型：把 NaiveRAG 的值記到變體上）；摘要驗證兩批都抓到了（CONTRADICTED），兩批都依設定沒告知模型。
+- 數字標籤核對在這個模型的輸出上誤報很多（配對寫成 vs LightRAG、54.8 標成 GraphRAG 的），顯示核對器對不同寫法的句型很敏感。
+- 15 次、一份地圖、一個模型版本；兩個模型各一批不足以排名，只能說兩者卡在不同地方。
+
+### 結論（供使用者決定）
+
+- 換模型沒有讓整體通過率變好，但改變了錯誤的型態：方向句錯誤大幅減少、定義齊了，新增的是冗長與截斷。若採用這個模型，要先處理輸出長度（prompt 要求不要把檢查過程寫進答案、縮短表格）並重新調 Navigator（TABLES_RULE 對它不夠，或 temperature 0 不適用）。
+- 兩批都指向同兩件事：Q1 要把 CONTRADICTED 註記交給模型（D76 P0，已做好、未啟用）；比較結論由程式從矩陣算、模型只解釋（D77 的建議 1）。

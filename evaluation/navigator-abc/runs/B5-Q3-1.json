@@ -1,0 +1,3091 @@
+{
+ "arm": "B5",
+ "answer_mode": "navigate",
+ "question": "Q3",
+ "question_text": "Performance of ablated versions of LightRAG",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.45
+ },
+ "elapsed_seconds": 112.9,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Performance of ablated versions of LightRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nNaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\nComprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6%\nDiversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0%\nEmpowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4%\nOverall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6%\nNaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\nComprehensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0%\nDiversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%\nEmpowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low 57.2%; Legal: NaiveRAG 16.4%, -Low 83.6%; Mix: NaiveRAG 35.2%, -Low 64.8%\nOverall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8%\nNaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\nComprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6%\nDiversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4%\nEmpowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8%\nOverall — Agriculture: NaiveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6%",
+   "score": 0.6268,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+   "score": 0.6038,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Lianghao Xia2, Yanhua Yu1,∗, Tu Ao1, Chao Huang2∗\nBeijing University of Posts and Telecommunications1\nUniversity of Hong Kong2\nzrguo101@hku.hk aka_xia@foxmail.com chaohuang75@gmail.com\nABSTRACT\nRetrieval-Augmented Generation (RAG) systems enhance large language models\n(LLMs) by integrating external knowledge sources, enabling more accurate and\ncontextually relevant responses tailored to user needs. However, existing RAG\nsystems have significant limitations, including reliance on flat data representa-\ntions and inadequate contextual awareness, which can lead to fragmented answers\nthat fail to capture complex inter-dependencies. To address these challenges, we\npropose LightRAG, which incorporates graph structures into text indexing and\nretrieval processes. This innovative framework employs a dual-level retrieval sys-\ntem that enhances comprehensive information retrieval from both low-level and\nhigh-level knowledge discovery. Additionally, the integration of graph structures\nwith vector representations facilitates efficient retrieval of related entities and their\nrelationships, significantly improving response times while maintaining contextual\nrelevance. This capability is further enhanced by an incremental update algorithm\nthat ensures the timely integration of new data, allowing the system to remain\neffective and responsive in rapidly changing data environments. Extensive experi-\nmental validation demonstrates considerable improvements in retrieval accuracy\nand efficiency compared to existing approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al.",
+   "score": 0.574,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+   "score": 0.5588,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al. (2024);\nSalemi & Zamani (2024). This innovative integration allows LLMs to generate more accurate and\ncontextually relevant responses, significantly improving their utility in real-world applications. By\nadapting to specific domain knowledge Tu et al. (2024), RAG systems ensure that the information\nprovided is not only pertinent but also tailored to the user’s needs. Furthermore, they offer access to\nup-to-date information Zhao et al. (2024), which is crucial in rapidly evolving fields. Chunking plays\na vital role in facilitating the retrieval-augmented generation process Lyu et al. (2024). By breaking\ndown a large external text corpus into smaller, more manageable segments, chunking significantly\nenhances the accuracy of information retrieval. This approach allows for more targeted similarity\nsearches, ensuring that the retrieved content is directly relevant to user queries.\nHowever, existing RAG systems have key limitations that hinder their performance. First, many\nmethods rely on flat data representations, restricting their ability to understand and retrieve information\nbased on intricate relationships between entities. Second, these systems often lack the contextual\nawareness needed to maintain coherence across various entities and their interrelations, resulting\nin responses that may not fully address user queries. For example, consider a user asking, “How\ndoes the rise of electric vehicles influence urban air quality and public transportation infrastructure?”\nExisting RAG methods might retrieve separate documents on electric vehicles, air pollution, and\npublic transportation challenges but struggle to syn",
+   "score": 0.5575,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, leading to a significant\nperformance decline across nearly all datasets and metrics. This drop is mainly due to its emphasis\non the specific information, which focuses excessively on entities and their immediate neighbors.\nWhile this approach enables deeper exploration of directly related entities, it struggles to gather\ninformation for complex queries that demand comprehensive insights.\n• High-level-only Retrieval: The -Low variant prioritizes capturing a broader range of content by\nleveraging entity-wise relationships rather than focusing on specific entities. This approach offers\na significant advantage in comprehensiveness, allowing it to gather more extensive and varied\ninformation. However, the trade-off is a reduced depth in examining specific entities, which can\nlimit its ability to provide highly detailed insights. Consequently, this high-level-only retrieval\nmethod may struggle with tasks that require precise, detailed answers.\n• Hybrid Mode: The hybrid mode, or the full version of LightRAG, combines the strengths of\nboth low-level and high-level retrieval methods. It retrieves a broader set of relationships while\nsimultaneously conducting an in-depth exploration of specific entities. This dual-level approach\nensures both breadth in the retrieval process and depth in the analysis, providing a comprehensive\nview of the data. As a result, LightRAG achieves balanced performance across multiple dimensions.\nSemantic Graph Excels in RAG. We eliminated the use of original text in our retrieval process.\nSurprisingly, the resulting variant, -Origin, does not exhibit significant performance declines across\nall four datasets. In some cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between",
+   "score": null,
+   "origin": "table_context"
+  }
+ ],
+ "final_answer": "The question asks for a comparison of the performance of ablated versions of LightRAG. The ablated versions include -High, -Low, and -Origin. The evaluation is conducted on four datasets: Agriculture, CS, Legal, and Mix. The metrics used are Comprehensiveness, Diversity, Empowerment, and Overall.\n\n### Compact Comparison Table of Relevant Figures\n| Method       | Dataset   | Metric        | LightRAG | -High  | -Low   | -Origin |\n|--------------|-----------|---------------|----------|--------|--------|---------|\n| Comprehensiveness | Agriculture | LightRAG vs -High | 67.6% vs 65.2% | [1] | [1] | [1] |\n| Comprehensiveness | Agriculture | LightRAG vs -Low | 67.6% vs 64.0% | [1] | [1] | [1] |\n| Comprehensiveness | Agriculture | LightRAG vs -Origin | 67.6% vs 75.2% | [1] | [1] | [1] |\n| Comprehensiveness | CS | LightRAG vs -High | 61.6% vs 57.2% | [1] | [1] | [1] |\n| Comprehensiveness | CS | LightRAG vs -Low | 61.6% vs 56.8% | [1] | [1] | [1] |\n| Comprehensiveness | CS | LightRAG vs -Origin | 61.6% vs 60.8% | [1] | [1] | [1] |\n| Comprehensiveness | Legal | LightRAG vs -High | 83.6% vs 76.4% | [1] | [1] | [1] |\n| Comprehensiveness | Legal | LightRAG vs -Low | 83.6% vs 80.8% | [1] | [1] | [1] |\n| Comprehensiveness | Legal | LightRAG vs -Origin | 83.6% vs 83.6% | [1] | [1] | [1] |\n| Comprehensiveness | Mix | LightRAG vs -High | 61.2% vs 59.6% | [1] | [1] | [1] |\n| Comprehensiveness | Mix | LightRAG vs -Low | 61.2% vs 64.0% | [1] | [1] | [1] |\n| Comprehensiveness | Mix | LightRAG vs -Origin | 61.2% vs 55.6% | [1] | [1] | [1] |\n| Diversity | Agriculture | LightRAG vs -High | 76.4% vs 72.8% | [1] | [1] | [1] |\n| Diversity | Agriculture | LightRAG vs -Low | 76.4% vs 72.0% | [1] | [1] | [1] |\n| Diversity | Agriculture | LightRAG vs -Origin | 76.4% vs 73.6% | [1] | [1] | [1] |\n| Diversity | CS | LightRAG vs -High | 62.0% vs 63.2% | [1] | [1] | [1] |\n| Diversity | CS | LightRAG vs -Low | 62.0% vs 60.4% | [1] | [1] | [1] |\n| Diversity | CS | LightRAG vs -Origin | 62.0% vs 55.2% | [1] | [1] | [1] |\n| Diversity | Legal | LightRAG vs -High | 86.4% vs 83.2% | [1] | [1] | [1] |\n| Diversity | Legal | LightRAG vs -Low | 86.4% vs 86.4% | [1] | [1] | [1] |\n| Diversity | Legal | LightRAG vs -Origin | 86.4% vs 85.6% | [1] | [1] | [1] |\n| Diversity | Mix | LightRAG vs -High | 67.6% vs 64.0% | [1] | [1] | [1] |\n| Diversity | Mix | LightRAG vs -Low | 67.6% vs 66.8% | [1] | [1] | [1] |\n| Diversity | Mix | LightRAG vs -Origin | 67.6% vs 74.4% | [1] | [1] | [1] |\n| Empowerment | Agriculture | LightRAG vs -High | 67.6% vs 64.0% | [1] | [1] | [1] |\n| Empowerment | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | [1] | [1] | [1] |\n| Empowerment | Agriculture | LightRAG vs -Origin | 67.6% vs 68.0% | [1] | [1] | [1] |\n| Empowerment | CS | LightRAG vs -High | 61.2% vs 57.6% | [1] | [1] | [1] |\n| Empowerment | CS | LightRAG vs -Low | 61.2% vs 57.2% | [1] | [1] | [1] |\n| Empowerment | CS | LightRAG vs -Origin | 61.2% vs 56.8% | [1] | [1] | [1] |\n| Empowerment | Legal | LightRAG vs -High | 83.6% vs 77.2% | [1] | [1] | [1] |\n| Empowerment | Legal | LightRAG vs -Low | 83.6% vs 83.6% | [1] | [1] | [1] |\n| Empowerment | Legal | LightRAG vs -Origin | 83.6% vs 82.8% | [1] | [1] | [1] |\n| Empowerment | Mix | LightRAG vs -High | 57.2% vs 52.4% | [1] | [1] | [1] |\n| Empowerment | Mix | LightRAG vs -Low | 57.2% vs 64.8% | [1] | [1] | [1] |\n| Empowerment | Mix | LightRAG vs -Origin | 57.2% vs 54.8% | [1] | [1] | [1] |\n| Overall | Agriculture | LightRAG vs -High | 67.6% vs 64.8% | [1] | [1] | [1] |\n| Overall | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | [1] | [1] | [1] |\n| Overall | Agriculture | LightRAG vs -Origin | 67.6% vs 74.4% | [1] | [1] | [1] |\n| Overall | CS | LightRAG vs -High | 61.2% vs 56.0% | [1] | [1] | [1] |\n| Overall | CS | LightRAG vs -Low | 61.2% vs 56.4% | [1] | [1] | [1] |\n| Overall | CS | LightRAG vs -Origin | 61.2% vs 60.8% | [1] | [1] | [1] |\n| Overall | Legal | LightRAG vs -High | 84.8% vs 78.0% | [1] | [1] | [1] |\n| Overall | Legal | LightRAG vs -Low | 84.8% vs 81.2% | [1] | [1] | [1] |\n| Overall | Legal | LightRAG vs -Origin | 84.8% vs 84.4% | [1] | [1] | [1] |\n| Overall | Mix | LightRAG vs -High | 60.0% vs 57.6% | [1] | [1] | [1] |\n| Overall | Mix | LightRAG vs -Low | 60.0% vs 64.8% | [1] | [1] | [1] |\n| Overall | Mix | LightRAG vs -Origin | 60.0% vs 55.6% | [1] | [1] | [1] |\n\n### Analysis\n- **-High variant**:\n  - **Improvements**: In Agriculture and Mix datasets, -High shows slight improvements in Comprehensiveness and Overall metrics compared to LightRAG.\n  - **Regressions**: Across most datasets and metrics, -High underperforms LightRAG, particularly in CS and Legal, where it shows significant drops in Comprehensiveness, Diversity, Empowerment, and Overall [6].\n  - **Exception**: -High shows improvements in Comprehensiveness and Overall for Agriculture and Mix datasets [1].\n\n- **-Low variant**:\n  - **Improvements**: -Low outperforms LightRAG in Mix dataset for Comprehensiveness and Empowerment [1].\n  - **Regressions**: In most datasets and metrics, -Low underperforms LightRAG, especially in CS and Legal, where it shows significant drops in Comprehensiveness, Diversity, Empowerment, and Overall [6].\n  - **Exception**: -Low outperforms LightRAG in Mix dataset for Comprehensiveness and Empowerment [1].\n\n- **-Origin variant**:\n  - **Improvements**: -Origin shows improvements in Agriculture and Mix datasets for Comprehensiveness and Diversity [6].\n  - **Regressions**: In most cases, -Origin underperforms LightRAG, particularly in CS and Legal datasets [1].\n  - **Exception**: -Origin shows improvements in Agriculture and Mix datasets for Comprehensiveness and Diversity [1].\n\n### Conclusion\nThe ablated versions of LightRAG (-High, -Low, and -Origin) show mixed results. While some variants show improvements in specific datasets and metrics, the full version of LightRAG achieves balanced performance across multiple dimensions.\n\nFigures whose labels differ from the source table: 67.6% (answer: Comprehensiveness, Agriculture, LightRAG, vs -High; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 65.2% (answer: Comprehensiveness, Agriculture, LightRAG, vs -High; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 67.6% (answer: Comprehensiveness, Agriculture, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.0% (answer: Comprehensiveness, Agriculture, LightRAG, vs -Low; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 67.6% (answer: Comprehensiveness, Agriculture, LightRAG, vs -Origin; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 75.2% (answer: Comprehensiveness, Agriculture, LightRAG, vs -Origin; source: Comprehensiveness, Agriculture, -Origin, vs NaiveRAG); 61.6% (answer: Comprehensiveness, CS, LightRAG, vs -High; source: Comprehensiveness, CS, LightRAG, vs NaiveRAG); 57.2% (answer: Comprehensiveness, CS, LightRAG, vs -High; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 61.6% (answer: Comprehensiveness, CS, LightRAG, vs -Low; source: Comprehensiveness, CS, LightRAG, vs NaiveRAG); 56.8% (answer: Comprehensiveness, CS, LightRAG, vs -Low; source: Comprehensiveness, CS, -Low, vs NaiveRAG / Empowerment, CS, -Origin, vs NaiveRAG); 61.6% (answer: Comprehensiveness, CS, LightRAG, vs -Origin; source: Comprehensiveness, CS, LightRAG, vs NaiveRAG); 60.8% (answer: Comprehensiveness, CS, LightRAG, vs -Origin; source: Comprehensiveness, CS, -Origin, vs NaiveRAG / Overall, CS, -Origin, vs NaiveRAG); 83.6% (answer: Comprehensiveness, Legal, LightRAG, vs -High; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 76.4% (answer: Comprehensiveness, Legal, LightRAG, vs -High; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 83.6% (answer: Comprehensiveness, Legal, LightRAG, vs -Low; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 80.8% (answer: Comprehensiveness, Legal, LightRAG, vs -Low; source: Comprehensiveness, Legal, -Low, vs NaiveRAG); 83.6% (answer: Comprehensiveness, Legal, LightRAG, vs -Origin; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 61.2% (answer: Comprehensiveness, Mix, LightRAG, vs -High; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 59.6% (answer: Comprehensiveness, Mix, LightRAG, vs -High; source: Comprehensiveness, Mix, -High, vs NaiveRAG); 61.2% (answer: Comprehensiveness, Mix, LightRAG, vs -Low; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 64.0% (answer: Comprehensiveness, Mix, LightRAG, vs -Low; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 61.2% (answer: Comprehensiveness, Mix, LightRAG, vs -Origin; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 55.6% (answer: Comprehensiveness, Mix, LightRAG, vs -Origin; source: Comprehensiveness, Mix, -Origin, vs NaiveRAG / Overall, Mix, -Origin, vs NaiveRAG); 76.4% (answer: Diversity, Agriculture, LightRAG, vs -High; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 72.8% (answer: Diversity, Agriculture, LightRAG, vs -High; source: Diversity, Agriculture, -High, vs NaiveRAG); 76.4% (answer: Diversity, Agriculture, LightRAG, vs -Low; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 72.0% (answer: Diversity, Agriculture, LightRAG, vs -Low; source: Diversity, Agriculture, -Low, vs NaiveRAG); 76.4% (answer: Diversity, Agriculture, LightRAG, vs -Origin; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 73.6% (answer: Diversity, Agriculture, LightRAG, vs -Origin; source: Diversity, Agriculture, -Origin, vs NaiveRAG); 62.0% (answer: Diversity, CS, LightRAG, vs -High; source: Diversity, CS, LightRAG, vs NaiveRAG); 63.2% (answer: Diversity, CS, LightRAG, vs -High; source: Diversity, CS, -High, vs NaiveRAG); 62.0% (answer: Diversity, CS, LightRAG, vs -Low; source: Diversity, CS, LightRAG, vs NaiveRAG); 60.4% (answer: Diversity, CS, LightRAG, vs -Low; source: Diversity, CS, -Low, vs NaiveRAG); 62.0% (answer: Diversity, CS, LightRAG, vs -Origin; source: Diversity, CS, LightRAG, vs NaiveRAG); 55.2% (answer: Diversity, CS, LightRAG, vs -Origin; source: Diversity, CS, -Origin, vs NaiveRAG); 86.4% (answer: Diversity, Legal, LightRAG, vs -High; source: Diversity, Legal, LightRAG, vs NaiveRAG / Diversity, Legal, -Low, vs NaiveRAG); 83.2% (answer: Diversity, Legal, LightRAG, vs -High; source: Diversity, Legal, -High, vs NaiveRAG); 86.4% (answer: Diversity, Legal, LightRAG, vs -Low; source: Diversity, Legal, LightRAG, vs NaiveRAG / Diversity, Legal, -Low, vs NaiveRAG); 86.4% (answer: Diversity, Legal, LightRAG, vs -Origin; source: Diversity, Legal, LightRAG, vs NaiveRAG / Diversity, Legal, -Low, vs NaiveRAG); 85.6% (answer: Diversity, Legal, LightRAG, vs -Origin; source: Diversity, Legal, -Origin, vs NaiveRAG); 67.6% (answer: Diversity, Mix, LightRAG, vs -High; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.0% (answer: Diversity, Mix, LightRAG, vs -High; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 67.6% (answer: Diversity, Mix, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 66.8% (answer: Diversity, Mix, LightRAG, vs -Low; source: Diversity, Mix, -Low, vs NaiveRAG); 67.6% (answer: Diversity, Mix, LightRAG, vs -Origin; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 74.4% (answer: Diversity, Mix, LightRAG, vs -Origin; source: Diversity, Mix, -Origin, vs NaiveRAG / Overall, Agriculture, -Origin, vs NaiveRAG); 67.6% (answer: Empowerment, Agriculture, LightRAG, vs -High; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.0% (answer: Empowerment, Agriculture, LightRAG, vs -High; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 67.6% (answer: Empowerment, Agriculture, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 65.2% (answer: Empowerment, Agriculture, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 67.6% (answer: Empowerment, Agriculture, LightRAG, vs -Origin; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 68.0% (answer: Empowerment, Agriculture, LightRAG, vs -Origin; source: Empowerment, Agriculture, -Origin, vs NaiveRAG); 61.2% (answer: Empowerment, CS, LightRAG, vs -High; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 57.6% (answer: Empowerment, CS, LightRAG, vs -High; source: Empowerment, CS, -High, vs NaiveRAG / Overall, Mix, -High, vs NaiveRAG); 61.2% (answer: Empowerment, CS, LightRAG, vs -Low; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 57.2% (answer: Empowerment, CS, LightRAG, vs -Low; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 61.2% (answer: Empowerment, CS, LightRAG, vs -Origin; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 56.8% (answer: Empowerment, CS, LightRAG, vs -Origin; source: Comprehensiveness, CS, -Low, vs NaiveRAG / Empowerment, CS, -Origin, vs NaiveRAG); 83.6% (answer: Empowerment, Legal, LightRAG, vs -High; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 77.2% (answer: Empowerment, Legal, LightRAG, vs -High; source: Empowerment, Legal, -High, vs NaiveRAG); 83.6% (answer: Empowerment, Legal, LightRAG, vs -Low; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 83.6% (answer: Empowerment, Legal, LightRAG, vs -Origin; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 82.8% (answer: Empowerment, Legal, LightRAG, vs -Origin; source: Empowerment, Legal, -Origin, vs NaiveRAG); 57.2% (answer: Empowerment, Mix, LightRAG, vs -High; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 52.4% (answer: Empowerment, Mix, LightRAG, vs -High; source: Empowerment, Mix, -High, vs NaiveRAG); 57.2% (answer: Empowerment, Mix, LightRAG, vs -Low; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 64.8% (answer: Empowerment, Mix, LightRAG, vs -Low; source: Overall, Agriculture, -High, vs NaiveRAG / Empowerment, Mix, -Low, vs NaiveRAG / Overall, Mix, -Low, vs NaiveRAG); 57.2% (answer: Empowerment, Mix, LightRAG, vs -Origin; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 54.8% (answer: Empowerment, Mix, LightRAG, vs -Origin; source: Empowerment, Mix, -Origin, vs NaiveRAG); 67.6% (answer: Overall, Agriculture, LightRAG, vs -High; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.8% (answer: Overall, Agriculture, LightRAG, vs -High; source: Overall, Agriculture, -High, vs NaiveRAG / Empowerment, Mix, -Low, vs NaiveRAG / Overall, Mix, -Low, vs NaiveRAG); 67.6% (answer: Overall, Agriculture, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 65.2% (answer: Overall, Agriculture, LightRAG, vs -Low; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 67.6% (answer: Overall, Agriculture, LightRAG, vs -Origin; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 74.4% (answer: Overall, Agriculture, LightRAG, vs -Origin; source: Diversity, Mix, -Origin, vs NaiveRAG / Overall, Agriculture, -Origin, vs NaiveRAG); 61.2% (answer: Overall, CS, LightRAG, vs -High; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 56.0% (answer: Overall, CS, LightRAG, vs -High; source: Overall, CS, -High, vs NaiveRAG); 61.2% (answer: Overall, CS, LightRAG, vs -Low; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 56.4% (answer: Overall, CS, LightRAG, vs -Low; source: Overall, CS, -Low, vs NaiveRAG); 61.2% (answer: Overall, CS, LightRAG, vs -Origin; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 60.8% (answer: Overall, CS, LightRAG, vs -Origin; source: Comprehensiveness, CS, -Origin, vs NaiveRAG / Overall, CS, -Origin, vs NaiveRAG); 84.8% (answer: Overall, Legal, LightRAG, vs -High; source: Overall, Legal, LightRAG, vs NaiveRAG); 78.0% (answer: Overall, Legal, LightRAG, vs -High; source: Overall, Legal, -High, vs NaiveRAG); 84.8% (answer: Overall, Legal, LightRAG, vs -Low; source: Overall, Legal, LightRAG, vs NaiveRAG); 81.2% (answer: Overall, Legal, LightRAG, vs -Low; source: Overall, Legal, -Low, vs NaiveRAG); 84.8% (answer: Overall, Legal, LightRAG, vs -Origin; source: Overall, Legal, LightRAG, vs NaiveRAG); 84.4% (answer: Overall, Legal, LightRAG, vs -Origin; source: Overall, Legal, -Origin, vs NaiveRAG); 60.0% (answer: Overall, Mix, LightRAG, vs -High; source: Overall, Mix, LightRAG, vs NaiveRAG); 57.6% (answer: Overall, Mix, LightRAG, vs -High; source: Empowerment, CS, -High, vs NaiveRAG / Overall, Mix, -High, vs NaiveRAG); 60.0% (answer: Overall, Mix, LightRAG, vs -Low; source: Overall, Mix, LightRAG, vs NaiveRAG); 64.8% (answer: Overall, Mix, LightRAG, vs -Low; source: Overall, Agriculture, -High, vs NaiveRAG / Empowerment, Mix, -Low, vs NaiveRAG / Overall, Mix, -Low, vs NaiveRAG); 60.0% (answer: Overall, Mix, LightRAG, vs -Origin; source: Overall, Mix, LightRAG, vs NaiveRAG); 55.6% (answer: Overall, Mix, LightRAG, vs -Origin; source: Comprehensiveness, Mix, -Origin, vs NaiveRAG / Overall, Mix, -Origin, vs NaiveRAG).",
+ "usage": {
+  "prompt_tokens": 5815,
+  "completion_tokens": 2541,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   6
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "67.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+   },
+   {
+    "number": "65.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…RAG -High NaiveRAG -High Comprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: Naiv…"
+   },
+   {
+    "number": "64.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -Hi…"
+   },
+   {
+    "number": "75.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…rigin NaiveRAG -Origin Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix:…"
+   },
+   {
+    "number": "61.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…ess — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Div…"
+   },
+   {
+    "number": "57.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+   },
+   {
+    "number": "56.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…hensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity —…"
+   },
+   {
+    "number": "60.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…eness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6% Diver…"
+   },
+   {
+    "number": "83.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "76.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…aiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix…"
+   },
+   {
+    "number": "80.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low…"
+   },
+   {
+    "number": "61.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+   },
+   {
+    "number": "59.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High…"
+   },
+   {
+    "number": "55.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…rigin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Or…"
+   },
+   {
+    "number": "72.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…Mix: NaiveRAG 40.4%, -High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: Naiv…"
+   },
+   {
+    "number": "72.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveR…"
+   },
+   {
+    "number": "73.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…NaiveRAG 44.4%, -Origin 55.6% Diversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix:…"
+   },
+   {
+    "number": "62.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+   },
+   {
+    "number": "63.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+   },
+   {
+    "number": "60.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…% Diversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8% Empowerment…"
+   },
+   {
+    "number": "55.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…rsity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empow…"
+   },
+   {
+    "number": "86.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…tRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture: NaiveRAG 32.4%,…"
+   },
+   {
+    "number": "83.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "….2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -H…"
+   },
+   {
+    "number": "85.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%,…"
+   },
+   {
+    "number": "66.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8% Empowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low…"
+   },
+   {
+    "number": "74.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…rigin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -…"
+   },
+   {
+    "number": "68.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…aiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix:…"
+   },
+   {
+    "number": "57.6%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…powerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall —…"
+   },
+   {
+    "number": "77.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "….0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High…"
+   },
+   {
+    "number": "82.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8% Overall — Agriculture: NaiveRAG 25.6%, -Ori…"
+   },
+   {
+    "number": "52.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 5…"
+   },
+   {
+    "number": "64.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+   },
+   {
+    "number": "54.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…rigin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8% Overall — Agriculture: NaiveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Orig…"
+   },
+   {
+    "number": "56.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG…"
+   },
+   {
+    "number": "56.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "….8% Overall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8% NaiveRAG -O…"
+   },
+   {
+    "number": "84.8%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -Hi…"
+   },
+   {
+    "number": "78.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "….2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low Nai…"
+   },
+   {
+    "number": "81.2%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8% NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Or…"
+   },
+   {
+    "number": "84.4%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6% • Low-level-only Retrieval: The -High varia…"
+   },
+   {
+    "number": "60.0%",
+    "document_id": "9543203e-0f4b-4cf0-b54c-963ab454fccf",
+    "page": 8,
+    "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High Comprehensiveness —…"
+   }
+  ],
+  "mislabelled_numbers": [
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -High | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "65.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -High | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -Low | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "64.0%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -Low | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -Origin | 67.6% vs 75.2% | | | |"
+   },
+   {
+    "number": "75.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Agriculture | LightRAG vs -Origin | 67.6% vs 75.2% | | | |"
+   },
+   {
+    "number": "61.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -High | 61.6% vs 57.2% | | | |"
+   },
+   {
+    "number": "57.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -High | 61.6% vs 57.2% | | | |"
+   },
+   {
+    "number": "61.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -Low | 61.6% vs 56.8% | | | |"
+   },
+   {
+    "number": "56.8%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -Low | 61.6% vs 56.8% | | | |"
+   },
+   {
+    "number": "61.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -Origin | 61.6% vs 60.8% | | | |"
+   },
+   {
+    "number": "60.8%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | CS | LightRAG vs -Origin | 61.6% vs 60.8% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Legal | LightRAG vs -High | 83.6% vs 76.4% | | | |"
+   },
+   {
+    "number": "76.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Legal | LightRAG vs -High | 83.6% vs 76.4% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Legal | LightRAG vs -Low | 83.6% vs 80.8% | | | |"
+   },
+   {
+    "number": "80.8%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Legal | LightRAG vs -Low | 83.6% vs 80.8% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Legal | LightRAG vs -Origin | 83.6% vs 83.6% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -High | 61.2% vs 59.6% | | | |"
+   },
+   {
+    "number": "59.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -High | 61.2% vs 59.6% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -Low | 61.2% vs 64.0% | | | |"
+   },
+   {
+    "number": "64.0%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -Low | 61.2% vs 64.0% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -Origin | 61.2% vs 55.6% | | | |"
+   },
+   {
+    "number": "55.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Comprehensiveness | Mix | LightRAG vs -Origin | 61.2% vs 55.6% | | | |"
+   },
+   {
+    "number": "76.4%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -High | 76.4% vs 72.8% | | | |"
+   },
+   {
+    "number": "72.8%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -High | 76.4% vs 72.8% | | | |"
+   },
+   {
+    "number": "76.4%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -Low | 76.4% vs 72.0% | | | |"
+   },
+   {
+    "number": "72.0%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -Low | 76.4% vs 72.0% | | | |"
+   },
+   {
+    "number": "76.4%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -Origin | 76.4% vs 73.6% | | | |"
+   },
+   {
+    "number": "73.6%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Agriculture | LightRAG vs -Origin | 76.4% vs 73.6% | | | |"
+   },
+   {
+    "number": "62.0%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -High | 62.0% vs 63.2% | | | |"
+   },
+   {
+    "number": "63.2%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -High | 62.0% vs 63.2% | | | |"
+   },
+   {
+    "number": "62.0%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -Low | 62.0% vs 60.4% | | | |"
+   },
+   {
+    "number": "60.4%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -Low | 62.0% vs 60.4% | | | |"
+   },
+   {
+    "number": "62.0%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -Origin | 62.0% vs 55.2% | | | |"
+   },
+   {
+    "number": "55.2%",
+    "answer_labels": [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | CS | LightRAG vs -Origin | 62.0% vs 55.2% | | | |"
+   },
+   {
+    "number": "86.4%",
+    "answer_labels": [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Legal | LightRAG vs -High | 86.4% vs 83.2% | | | |"
+   },
+   {
+    "number": "83.2%",
+    "answer_labels": [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Legal | LightRAG vs -High | 86.4% vs 83.2% | | | |"
+   },
+   {
+    "number": "86.4%",
+    "answer_labels": [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Legal | LightRAG vs -Low | 86.4% vs 86.4% | | | |"
+   },
+   {
+    "number": "86.4%",
+    "answer_labels": [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Legal | LightRAG vs -Origin | 86.4% vs 85.6% | | | |"
+   },
+   {
+    "number": "85.6%",
+    "answer_labels": [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Legal | LightRAG vs -Origin | 86.4% vs 85.6% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -High | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "64.0%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -High | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -Low | 67.6% vs 66.8% | | | |"
+   },
+   {
+    "number": "66.8%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -Low | 67.6% vs 66.8% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -Origin | 67.6% vs 74.4% | | | |"
+   },
+   {
+    "number": "74.4%",
+    "answer_labels": [
+     "Diversity",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Diversity | Mix | LightRAG vs -Origin | 67.6% vs 74.4% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -High | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "64.0%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -High | 67.6% vs 64.0% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "65.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -Origin | 67.6% vs 68.0% | | | |"
+   },
+   {
+    "number": "68.0%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Agriculture | LightRAG vs -Origin | 67.6% vs 68.0% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -High | 61.2% vs 57.6% | | | |"
+   },
+   {
+    "number": "57.6%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -High | 61.2% vs 57.6% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -Low | 61.2% vs 57.2% | | | |"
+   },
+   {
+    "number": "57.2%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -Low | 61.2% vs 57.2% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -Origin | 61.2% vs 56.8% | | | |"
+   },
+   {
+    "number": "56.8%",
+    "answer_labels": [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | CS | LightRAG vs -Origin | 61.2% vs 56.8% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Legal | LightRAG vs -High | 83.6% vs 77.2% | | | |"
+   },
+   {
+    "number": "77.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Legal | LightRAG vs -High | 83.6% vs 77.2% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Legal | LightRAG vs -Low | 83.6% vs 83.6% | | | |"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Legal | LightRAG vs -Origin | 83.6% vs 82.8% | | | |"
+   },
+   {
+    "number": "82.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Legal | LightRAG vs -Origin | 83.6% vs 82.8% | | | |"
+   },
+   {
+    "number": "57.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -High | 57.2% vs 52.4% | | | |"
+   },
+   {
+    "number": "52.4%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -High | 57.2% vs 52.4% | | | |"
+   },
+   {
+    "number": "57.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -Low | 57.2% vs 64.8% | | | |"
+   },
+   {
+    "number": "64.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -Low | 57.2% vs 64.8% | | | |"
+   },
+   {
+    "number": "57.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -Origin | 57.2% vs 54.8% | | | |"
+   },
+   {
+    "number": "54.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Empowerment | Mix | LightRAG vs -Origin | 57.2% vs 54.8% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -High | 67.6% vs 64.8% | | | |"
+   },
+   {
+    "number": "64.8%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -High | 67.6% vs 64.8% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "65.2%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -Low | 67.6% vs 65.2% | | | |"
+   },
+   {
+    "number": "67.6%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -Origin | 67.6% vs 74.4% | | | |"
+   },
+   {
+    "number": "74.4%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Agriculture",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Agriculture | LightRAG vs -Origin | 67.6% vs 74.4% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -High | 61.2% vs 56.0% | | | |"
+   },
+   {
+    "number": "56.0%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -High | 61.2% vs 56.0% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -Low | 61.2% vs 56.4% | | | |"
+   },
+   {
+    "number": "56.4%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "CS",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -Low | 61.2% vs 56.4% | | | |"
+   },
+   {
+    "number": "61.2%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -Origin | 61.2% vs 60.8% | | | |"
+   },
+   {
+    "number": "60.8%",
+    "answer_labels": [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "CS",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | CS | LightRAG vs -Origin | 61.2% vs 60.8% | | | |"
+   },
+   {
+    "number": "84.8%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -High | 84.8% vs 78.0% | | | |"
+   },
+   {
+    "number": "78.0%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -High | 84.8% vs 78.0% | | | |"
+   },
+   {
+    "number": "84.8%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -Low | 84.8% vs 81.2% | | | |"
+   },
+   {
+    "number": "81.2%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -Low | 84.8% vs 81.2% | | | |"
+   },
+   {
+    "number": "84.8%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -Origin | 84.8% vs 84.4% | | | |"
+   },
+   {
+    "number": "84.4%",
+    "answer_labels": [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Legal | LightRAG vs -Origin | 84.8% vs 84.4% | | | |"
+   },
+   {
+    "number": "60.0%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -High | 60.0% vs 57.6% | | | |"
+   },
+   {
+    "number": "57.6%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -High"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "CS",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-High",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -High | 60.0% vs 57.6% | | | |"
+   },
+   {
+    "number": "60.0%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -Low | 60.0% vs 64.8% | | | |"
+   },
+   {
+    "number": "64.8%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -Low"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "-High",
+      "vs NaiveRAG"
+     ],
+     [
+      "Empowerment",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-Low",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -Low | 60.0% vs 64.8% | | | |"
+   },
+   {
+    "number": "60.0%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -Origin | 60.0% vs 55.6% | | | |"
+   },
+   {
+    "number": "55.6%",
+    "answer_labels": [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs -Origin"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "| Overall | Mix | LightRAG vs -Origin | 60.0% vs 55.6% | | | |"
+   }
+  ],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "incomplete",
+   "required": [
+    "-High",
+    "-Low",
+    "-Origin",
+    "LightRAG"
+   ],
+   "missing": [
+    "-High",
+    "-Low",
+    "-Origin",
+    "LightRAG"
+   ],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 38,
+   "plan": "- Section 4.3 ABLATION STUDIES (RQ2) | need: discussion of ablated versions | priority: required | status: covered  \n- Table 2 (page 8) | need: performance metrics | priority: required | status: covered  \n- Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered  \n- Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method description | priority: supplementary | status: missing  \n- Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: implementation details | priority: supplementary | status: missing  \n- Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: implementation details | priority: supplementary | status: missing",
+   "items": [
+    {
+     "text": "Section 4.3 ABLATION STUDIES (RQ2) | need: discussion of ablated versions | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      7,
+      8
+     ],
+     "location": "Section 4.3 ABLATION STUDIES (RQ2)",
+     "need": "discussion of ablated versions",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "covered",
+     "label": "4.3 ABLATION STUDIES (RQ2)",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Table 2 (page 8) | need: performance metrics | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      8
+     ],
+     "location": "Table 2 (page 8)",
+     "need": "performance metrics",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "covered",
+     "label": "Table 2",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      8,
+      9
+     ],
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "need": "additional context on ablation effects",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "4.4 CASE STUDY (RQ3)",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method description | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      4,
+      5
+     ],
+     "location": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "need": "method description",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: implementation details | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      14
+     ],
+     "location": "Section 7.3.1 PROMPTS FOR GRAPH GENERATION",
+     "need": "implementation details",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "7.3.1 PROMPTS FOR GRAPH GENERATION",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: implementation details | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      14
+     ],
+     "location": "Section 7.3.2 PROMPTS FOR QUERY GENERATION",
+     "need": "implementation details",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "7.3.2 PROMPTS FOR QUERY GENERATION",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    }
+   ],
+   "located": 6,
+   "fetched": 0,
+   "kept": 0,
+   "excluded_budget": 0,
+   "skipped": null,
+   "budget": 2257,
+   "evidence_tokens": 3243,
+   "embedding": {
+    "texts": 0,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 22,
+     "page": 8,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 0,
+     "page": 1,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 1,
+     "page": 1,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 23,
+     "page": 8,
+     "kept": true,
+     "reason": "table_context",
+     "target": null,
+     "score": null
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.3 ABLATION STUDIES (RQ2)",
+     "status": "covered",
+     "reason": "all 3 chunks of the section are among the sources"
+    },
+    {
+     "location": "Table 2 (page 8)",
+     "status": "covered",
+     "reason": "the table's chunk, with its rows, is among the sources"
+    },
+    {
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "status": "partial",
+     "reason": "2 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 7.3.1 PROMPTS FOR GRAPH GENERATION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 7.3.2 PROMPTS FOR QUERY GENERATION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    }
+   ],
+   "unmet_required": [],
+   "supplementary_used": 0,
+   "matrix": {
+    "cells": 128,
+    "tables": [
+     "Table 2 [1]"
+    ],
+    "definitions": [
+     "NaiveRAG",
+     "LightRAG",
+     "-High"
+    ],
+    "facts": 64,
+    "coverage_gaps": []
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [
+    "67.6% (Comprehensiveness, Agriculture, LightRAG, vs -High)",
+    "67.6% (Comprehensiveness, Agriculture, LightRAG, vs -Low)",
+    "67.6% (Comprehensiveness, Agriculture, LightRAG, vs -Origin)",
+    "61.6% (Comprehensiveness, CS, LightRAG, vs -High)",
+    "61.6% (Comprehensiveness, CS, LightRAG, vs -Low)",
+    "61.6% (Comprehensiveness, CS, LightRAG, vs -Origin)",
+    "83.6% (Comprehensiveness, Legal, LightRAG, vs -High)",
+    "83.6% (Comprehensiveness, Legal, LightRAG, vs -Low)",
+    "83.6% (Comprehensiveness, Legal, LightRAG, vs -Origin)",
+    "61.2% (Comprehensiveness, Mix, LightRAG, vs -High)",
+    "61.2% (Comprehensiveness, Mix, LightRAG, vs -Low)",
+    "61.2% (Comprehensiveness, Mix, LightRAG, vs -Origin)",
+    "76.4% (Diversity, Agriculture, LightRAG, vs -High)",
+    "76.4% (Diversity, Agriculture, LightRAG, vs -Low)",
+    "76.4% (Diversity, Agriculture, LightRAG, vs -Origin)",
+    "62.0% (Diversity, CS, LightRAG, vs -High)",
+    "62.0% (Diversity, CS, LightRAG, vs -Low)",
+    "62.0% (Diversity, CS, LightRAG, vs -Origin)",
+    "86.4% (Diversity, Legal, LightRAG, vs -High)",
+    "86.4% (Diversity, Legal, LightRAG, vs -Low)",
+    "86.4% (Diversity, Legal, LightRAG, vs -Origin)",
+    "67.6% (Diversity, Mix, LightRAG, vs -High)",
+    "67.6% (Diversity, Mix, LightRAG, vs -Low)",
+    "67.6% (Diversity, Mix, LightRAG, vs -Origin)",
+    "67.6% (Empowerment, Agriculture, LightRAG, vs -High)",
+    "67.6% (Empowerment, Agriculture, LightRAG, vs -Low)",
+    "67.6% (Empowerment, Agriculture, LightRAG, vs -Origin)",
+    "61.2% (Empowerment, CS, LightRAG, vs -High)",
+    "61.2% (Empowerment, CS, LightRAG, vs -Low)",
+    "61.2% (Empowerment, CS, LightRAG, vs -Origin)",
+    "83.6% (Empowerment, Legal, LightRAG, vs -High)",
+    "83.6% (Empowerment, Legal, LightRAG, vs -Low)",
+    "83.6% (Empowerment, Legal, LightRAG, vs -Origin)",
+    "57.2% (Empowerment, Mix, LightRAG, vs -High)",
+    "57.2% (Empowerment, Mix, LightRAG, vs -Low)",
+    "57.2% (Empowerment, Mix, LightRAG, vs -Origin)",
+    "67.6% (Overall, Agriculture, LightRAG, vs -High)",
+    "67.6% (Overall, Agriculture, LightRAG, vs -Low)",
+    "67.6% (Overall, Agriculture, LightRAG, vs -Origin)",
+    "61.2% (Overall, CS, LightRAG, vs -High)",
+    "61.2% (Overall, CS, LightRAG, vs -Low)",
+    "61.2% (Overall, CS, LightRAG, vs -Origin)",
+    "84.8% (Overall, Legal, LightRAG, vs -High)",
+    "84.8% (Overall, Legal, LightRAG, vs -Low)",
+    "84.8% (Overall, Legal, LightRAG, vs -Origin)",
+    "60.0% (Overall, Mix, LightRAG, vs -High)",
+    "60.0% (Overall, Mix, LightRAG, vs -Low)",
+    "60.0% (Overall, Mix, LightRAG, vs -Origin)"
+   ],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1600,
+   "completion_tokens": 176,
+   "estimated_prompt_tokens": 1616,
+   "finish_reason": "stop",
+   "duration_ms": 8724
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 4215,
+   "completion_tokens": 2365,
+   "estimated_prompt_tokens": 4231,
+   "finish_reason": "stop",
+   "duration_ms": 103651
+  }
+ ]
+}

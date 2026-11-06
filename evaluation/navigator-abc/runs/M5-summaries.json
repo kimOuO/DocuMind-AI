@@ -1,0 +1,378 @@
+[
+ {
+  "summary": "Front matter",
+  "pages": [
+   1,
+   1
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "INTRODUCTION",
+  "pages": [
+   1,
+   2
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 2
+ },
+ {
+  "summary": "RETRIEVAL-AUGMENTED GENERATION",
+  "pages": [
+   2,
+   3
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "THE LIGHT RAG ARCHITECTURE",
+  "pages": [
+   3,
+   5
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "EVALUATION",
+  "pages": [
+   5,
+   5
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "EXPERIMENTAL SETTINGS",
+  "pages": [
+   5,
+   6
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 9
+ },
+ {
+  "summary": "COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+  "pages": [
+   6,
+   7
+  ],
+  "status": "CONTRADICTED",
+  "contradicted": [
+   "75.2%",
+   "58.4%",
+   "73.6%",
+   "57.6%"
+  ],
+  "unverified": [],
+  "unresolved": [
+   "67.6%",
+   "61.2%",
+   "84.8%",
+   "60.0%",
+   "62.0%",
+   "85.6%",
+   "54.8%",
+   "52.0%",
+   "52.8%",
+   "49.6%"
+  ],
+  "checked_figures": 15
+ },
+ {
+  "summary": "ABLATION STUDIES (RQ2)",
+  "pages": [
+   7,
+   8
+  ],
+  "status": "CONTRADICTED",
+  "contradicted": [
+   "35.2%",
+   "44.0%",
+   "22.0%",
+   "42.4%",
+   "34.8%",
+   "43.6%",
+   "18.8%",
+   "35.2%",
+   "25.6%",
+   "39.2%",
+   "15.6%",
+   "55.6%"
+  ],
+  "unverified": [],
+  "unresolved": [
+   "38.8%",
+   "15.2%",
+   "40.0%",
+   "67.6%",
+   "61.2%",
+   "84.8%",
+   "60.0%",
+   "32.4%",
+   "67.6%",
+   "23.6%",
+   "76.4%",
+   "32.4%",
+   "67.6%",
+   "44.4%",
+   "74.4%",
+   "60.8%",
+   "84.4%"
+  ],
+  "checked_figures": 35
+ },
+ {
+  "summary": "CASE STUDY (RQ3)",
+  "pages": [
+   8,
+   9
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "MODEL COST AND ADAPTABILITY ANALYSIS (RQ4)",
+  "pages": [
+   9,
+   10
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 6
+ },
+ {
+  "summary": "RELATED WORK",
+  "pages": [
+   10,
+   10
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "CONCLUSION",
+  "pages": [
+   10,
+   10
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "APPENDIX",
+  "pages": [
+   13,
+   16
+  ],
+  "status": "UNCERTAIN",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [
+   "12",
+   "2,017,886",
+   "10",
+   "2,306,535",
+   "94",
+   "5,081,069",
+   "61",
+   "619,009"
+  ],
+  "checked_figures": 8
+ },
+ {
+  "summary": "document",
+  "pages": [
+   1,
+   16
+  ],
+  "status": "CONTRADICTED",
+  "contradicted": [
+   "35.2%",
+   "22.0%",
+   "34.8%",
+   "18.8%"
+  ],
+  "unverified": [],
+  "unresolved": [
+   "54.8%",
+   "52.0%",
+   "52.8%",
+   "49.6%",
+   "74.4%",
+   "84.4%"
+  ],
+  "checked_figures": 18
+ },
+ {
+  "summary": "Front matter",
+  "pages": [
+   1,
+   1
+  ],
+  "status": "NOT_CHECKED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 0,
+  "reason": "no figures in the summary"
+ },
+ {
+  "summary": "Introduction",
+  "pages": [
+   1,
+   2
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 6
+ },
+ {
+  "summary": "Background",
+  "pages": [
+   2,
+   4
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 2
+ },
+ {
+  "summary": "Methods",
+  "pages": [
+   4,
+   8
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 2
+ },
+ {
+  "summary": "Analysis",
+  "pages": [
+   8,
+   9
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 12
+ },
+ {
+  "summary": "Results",
+  "pages": [
+   9,
+   11
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 22
+ },
+ {
+  "summary": "Discussion",
+  "pages": [
+   11,
+   12
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 52
+ },
+ {
+  "summary": "Conclusion (part 1/3)",
+  "pages": [
+   12,
+   18
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 3
+ },
+ {
+  "summary": "Conclusion (part 2/3)",
+  "pages": [
+   18,
+   26
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 22
+ },
+ {
+  "summary": "Conclusion (part 3/3)",
+  "pages": [
+   26,
+   26
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 74
+ },
+ {
+  "summary": "document",
+  "pages": [
+   1,
+   26
+  ],
+  "status": "VERIFIED",
+  "contradicted": [],
+  "unverified": [],
+  "unresolved": [],
+  "checked_figures": 18
+ }
+]

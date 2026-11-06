@@ -1,0 +1,362 @@
+[
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 1,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 2,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 3,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 4,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 5,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 6,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 7,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 8,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 9,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "Q2",
+  "run": 10,
+  "required_table": "Table 1",
+  "listed": true,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 1",
+   "Table 3"
+  ],
+  "prompt_tokens": 1429,
+  "completion_tokens": 194,
+  "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: qualitative comparison with GraphRAG | priority: supplementary | status: missing  \n- Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: context on GraphRAG | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 1,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 2,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 3,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 4,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 5,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 6,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 7,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 8,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 9,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ },
+ {
+  "label": "N2",
+  "temperature": 0.0,
+  "prompt_variant": "-",
+  "question": "G2",
+  "run": 10,
+  "required_table": "Table 6",
+  "listed": false,
+  "targets": 6,
+  "located": 6,
+  "tables_named": [
+   "Table 2",
+   "Table 3"
+  ],
+  "prompt_tokens": 1404,
+  "completion_tokens": 178,
+  "plan": "- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing  \n- Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing  \n- Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 | need: additional evaluation context for C2 and SS | priority: supplementary | status: missing  \n- Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: covered  \n- Section 3.1.5 Graph Communities → Community Summaries | need: methodological basis for summaries | priority: supplementary | status: missing"
+ }
+]
