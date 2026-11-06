@@ -1,5 +1,1031 @@
 {
  "source": "LaTeX source of arXiv:2410.05779v3 (https://arxiv.org/e-print/2410.05779v3)",
+ "table1": [
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "83.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "23.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "76.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.0%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "62.0%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "13.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "86.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "16.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "83.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "42.8%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "57.2%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "NaiveRAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "NaiveRAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "NaiveRAG",
+   "value": "15.2%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "84.8%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "NaiveRAG",
+   "value": "40.0%"
+  },
+  {
+   "block": 0,
+   "baseline": "NaiveRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "60.0%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "RQ-RAG",
+   "value": "31.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "68.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "RQ-RAG",
+   "value": "38.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "RQ-RAG",
+   "value": "15.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "84.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "RQ-RAG",
+   "value": "39.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "60.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "RQ-RAG",
+   "value": "29.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "70.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "RQ-RAG",
+   "value": "39.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "60.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "RQ-RAG",
+   "value": "11.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "88.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "RQ-RAG",
+   "value": "30.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "69.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "RQ-RAG",
+   "value": "31.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "68.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "RQ-RAG",
+   "value": "36.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "63.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "RQ-RAG",
+   "value": "15.2%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "84.8%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "RQ-RAG",
+   "value": "42.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "57.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "RQ-RAG",
+   "value": "32.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "RQ-RAG",
+   "value": "38.0%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "62.0%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "RQ-RAG",
+   "value": "14.4%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "85.6%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "RQ-RAG",
+   "value": "40.0%"
+  },
+  {
+   "block": 1,
+   "baseline": "RQ-RAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "60.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "HyDE",
+   "value": "26.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "74.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "HyDE",
+   "value": "41.6%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "58.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "HyDE",
+   "value": "26.8%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "73.2%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "HyDE",
+   "value": "40.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "59.6%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "HyDE",
+   "value": "24.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "76.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "HyDE",
+   "value": "38.8%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "61.2%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "HyDE",
+   "value": "20.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "80.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "HyDE",
+   "value": "32.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "67.6%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "HyDE",
+   "value": "25.2%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "74.8%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "HyDE",
+   "value": "40.8%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "59.2%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "HyDE",
+   "value": "26.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "74.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "HyDE",
+   "value": "46.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "54.0%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "HyDE",
+   "value": "24.8%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "75.2%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "HyDE",
+   "value": "41.6%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "58.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "HyDE",
+   "value": "26.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "73.6%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "HyDE",
+   "value": "42.4%"
+  },
+  {
+   "block": 2,
+   "baseline": "HyDE",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "57.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "GraphRAG",
+   "value": "45.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "54.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "GraphRAG",
+   "value": "48.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "51.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "GraphRAG",
+   "value": "48.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "51.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "GraphRAG",
+   "value": "50.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Comprehensiveness",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "49.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "GraphRAG",
+   "value": "22.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "77.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "GraphRAG",
+   "value": "40.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "59.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "GraphRAG",
+   "value": "26.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "73.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "GraphRAG",
+   "value": "36.0%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Diversity",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "64.0%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "GraphRAG",
+   "value": "41.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "58.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "GraphRAG",
+   "value": "45.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "54.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "GraphRAG",
+   "value": "43.6%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "56.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "GraphRAG",
+   "value": "50.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Empowerment",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "49.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "GraphRAG",
+   "value": "45.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Agriculture",
+   "system": "LightRAG",
+   "value": "54.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "GraphRAG",
+   "value": "48.0%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "CS",
+   "system": "LightRAG",
+   "value": "52.0%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "GraphRAG",
+   "value": "47.2%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Legal",
+   "system": "LightRAG",
+   "value": "52.8%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "GraphRAG",
+   "value": "50.4%"
+  },
+  {
+   "block": 3,
+   "baseline": "GraphRAG",
+   "metric": "Overall",
+   "dataset": "Mix",
+   "system": "LightRAG",
+   "value": "49.6%"
+  }
+ ],
  "table2": [
   {
    "block": 0,

@@ -9,6 +9,7 @@ Usage:
     python build_paper_structure.py <directory containing the extracted .tex files>
 
 Writes paper-structure.json next to this script, containing:
+  - table1:   every cell of Table 1 (block, baseline, metric, dataset, system, value)
   - table2:   every cell of Table 2 (block, metric, dataset, system, value)
   - headings: section and subsection titles in document order
   - anchors:  one short phrase per body paragraph, in document order
@@ -94,6 +95,49 @@ def read_anchors(tex_dir: Path) -> list[dict[str, str]]:
     return anchors_from_files([tex_dir / f"{name}.tex" for name in BODY_FILES])
 
 
+def read_table1(tex_dir: Path) -> list[dict[str, str | int]]:
+    """Table 1 (tab:performance): four blocks, each pairing a baseline with LightRAG."""
+    tex = strip_comments((tex_dir / "eval.tex").read_text(encoding="utf-8"))
+    table = re.search(
+        r"\\label\{tab:performance\}.*?\\end\{tabular\}", tex, flags=re.DOTALL
+    )
+    if table is None:
+        raise SystemExit("Table 1 (tab:performance) not found in eval.tex")
+
+    cells: list[dict[str, str | int]] = []
+    block_index = -1
+    baseline = ""
+    for row in table.group(0).split("\\\\"):
+        row = re.sub(
+            r"\\(cmidrule\(lr\)\{[^}]*\}|midrule|toprule|bottomrule)", "", row
+        ).strip()
+        fields = [
+            re.sub(r"\\(textbf|underline)\{([^}]*)\}", r"\2", f).strip()
+            for f in row.split("&")
+        ]
+        fields = [f.replace("\\model", MODEL_NAME).replace("\\%", "%") for f in fields]
+        if len(fields) == 9 and fields[2] == MODEL_NAME and fields[1] != "":
+            block_index += 1
+            baseline = fields[1]
+            if fields[1:] != [baseline, MODEL_NAME] * 4:
+                raise SystemExit(f"unexpected sub-header: {fields}")
+        elif len(fields) == 9 and fields[0] in METRICS:
+            for column, value in enumerate(fields[1:]):
+                cells.append(
+                    {
+                        "block": block_index,
+                        "baseline": baseline,
+                        "metric": fields[0],
+                        "dataset": DATASETS[column // 2],
+                        "system": baseline if column % 2 == 0 else MODEL_NAME,
+                        "value": value,
+                    }
+                )
+    if len(cells) != 4 * len(METRICS) * 8:
+        raise SystemExit(f"expected 128 cells, found {len(cells)}")
+    return cells
+
+
 def read_table2(tex_dir: Path) -> list[dict[str, str | int]]:
     tex = strip_comments((tex_dir / "eval.tex").read_text(encoding="utf-8"))
     table = re.search(
@@ -142,6 +186,7 @@ def main() -> None:
     tex_dir = Path(sys.argv[1])
     truth = {
         "source": "LaTeX source of arXiv:2410.05779v3 (https://arxiv.org/e-print/2410.05779v3)",
+        "table1": read_table1(tex_dir),
         "table2": read_table2(tex_dir),
         "headings": read_headings(tex_dir),
         "anchors": read_anchors(tex_dir),
@@ -150,6 +195,7 @@ def main() -> None:
     out.write_text(
         json.dumps(truth, indent=1, ensure_ascii=False) + "\n", encoding="utf-8"
     )
+    print(f"table1 cells: {len(truth['table1'])}")
     print(f"table2 cells: {len(truth['table2'])}")
     print(f"headings:     {len(truth['headings'])}")
     print(f"anchors:      {len(truth['anchors'])}")
