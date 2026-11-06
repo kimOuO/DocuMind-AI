@@ -81,6 +81,8 @@ async def test_the_paper_is_summarised_within_the_budget_with_page_tags(
             f"  {level:8} {ordinal} {str(title)[:32]:32} p{start}-{end} {tokens:4} tokens, "
             f"page tags {sorted(set(tags))}"
         )
+        if level == "section":
+            print(f"           {text}")
     document_text = next(r[6] for r in rows if r[0] == "document")
     print(f"\ndocument summary:\n{document_text}")
 

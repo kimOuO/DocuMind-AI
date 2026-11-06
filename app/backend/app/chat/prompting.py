@@ -127,6 +127,9 @@ for example [1] or [2][3].
 a number, for example "67.6% (p. 8)".
 - When asked for a summary of a document, cover the problem it addresses, what it proposes \
 or does, and its main results, as far as the sources say so.
+- Keep the scope of every comparison outcome as the sources state it. If some results go \
+against the overall trend, say so explicitly; do not claim "in all cases" or "outperforms \
+everywhere" unless the sources show it for every case.
 - If the sources do not contain what the question asks, say so and cite nothing.
 {documents_rule}{language_rule}
 

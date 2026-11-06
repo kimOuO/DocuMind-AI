@@ -55,6 +55,17 @@ def test_the_document_prompt_lists_the_section_summaries_in_order() -> None:
     assert prompt.endswith("Overall summary:")
 
 
+def test_summaries_keep_the_scope_of_comparison_outcomes() -> None:
+    """D63 applied to summaries: a "wins everywhere" claim needs every case behind it."""
+    for prompt in (
+        section_prompt("x.pdf", "T", [PageText(1, "")]),
+        document_prompt("x.pdf", [("T", "s")]),
+    ):
+        assert "go against the overall trend" in prompt
+        assert '"in all cases"' in prompt
+        assert "every case" in prompt
+
+
 def test_the_merge_prompt_keeps_page_references() -> None:
     prompt = merge_prompt("paper.pdf", [("A", "x (p. 1)"), ("B", "y (p. 2)")])
 

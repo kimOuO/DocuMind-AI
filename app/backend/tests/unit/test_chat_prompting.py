@@ -262,6 +262,15 @@ def test_a_summary_source_payload_carries_the_section_and_page_range() -> None:
     assert summary_source_payload(1, PAPER[0])["section_title"] is None
 
 
+def test_the_summary_instructions_keep_the_scope_of_comparison_outcomes() -> None:
+    """D63 applies to answers from summaries too: no "in all cases" without every case."""
+    prompt, _ = build_summary_prompt("q", [], WordCounter(), evidence_budget=0)
+
+    assert "go against the overall trend" in prompt
+    assert '"in all cases"' in prompt
+    assert "every case" in prompt
+
+
 def test_the_summary_instructions_fit_their_budget(counter: Qwen3TokenCounter) -> None:
     prompt, _ = build_summary_prompt("summary this document.", [], counter, evidence_budget=0)
     assert counter.count(prompt) <= 500

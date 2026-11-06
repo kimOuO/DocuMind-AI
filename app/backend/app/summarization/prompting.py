@@ -24,6 +24,9 @@ Rules:
 language as the section.
 - Keep every specific number, name and result that the section reports: percentages, \
 counts, token figures, dataset names, method names, comparison outcomes.
+- Keep the scope of every comparison outcome as the section states it. If some results go \
+against the overall trend, keep them; do not write "in all cases" or "across all datasets" \
+unless the section shows it for every case.
 - Immediately after every specific number, write the page it appears on in \
 parentheses, like "67.6% (p. 8)". The page is given in the "page" markers below.
 - Do not add anything that is not in the section. Do not evaluate or praise it.
@@ -45,6 +48,9 @@ describes, and its main results or conclusions.
 - State the main results with their specific numbers, taken from the section summaries, \
 and keep the page reference that follows each number exactly as written, like \
 "67.6% (p. 8)". Do not invent numbers or pages.
+- Keep the scope of every comparison outcome as the section summaries state it. If some \
+results go against the overall trend, keep them; do not write "in all cases" or "across all \
+datasets" unless the summaries show it for every case.
 - Do not add anything that is not in the section summaries. Do not evaluate or praise.
 - Plain text, no headings, no bullet points.
 
