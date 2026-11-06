@@ -93,7 +93,13 @@ class LLMChunk:
 
 class LLMGateway(Protocol):
     async def generate(
-        self, prompt: str, *, purpose: str, max_output_tokens: int, context: CallContext
+        self,
+        prompt: str,
+        *,
+        purpose: str,
+        max_output_tokens: int,
+        context: CallContext,
+        temperature: float | None = None,
     ) -> LLMResult: ...
 
     def stream(
@@ -129,11 +135,23 @@ class OllamaGateway:
         self._timeout = httpx.Timeout(timeout_seconds, connect=10)
 
     async def generate(
-        self, prompt: str, *, purpose: str, max_output_tokens: int, context: CallContext
+        self,
+        prompt: str,
+        *,
+        purpose: str,
+        max_output_tokens: int,
+        context: CallContext,
+        temperature: float | None = None,
     ) -> LLMResult:
+        """One answer to the prompt. `temperature` overrides the model's default sampling
+        for this call only (None keeps it); the budget guard and the ledger apply as ever."""
         call_id, started = await self._open(prompt, purpose, max_output_tokens, context)
         request = generate_request(
-            self._settings, prompt=prompt, max_output_tokens=max_output_tokens, stream=False
+            self._settings,
+            prompt=prompt,
+            max_output_tokens=max_output_tokens,
+            stream=False,
+            temperature=temperature,
         )
         try:
             async with self._client() as client:

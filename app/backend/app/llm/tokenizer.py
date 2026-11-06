@@ -57,5 +57,9 @@ class Qwen3TokenCounter:
 
 @lru_cache
 def get_token_counter() -> Qwen3TokenCounter:
-    """The process-wide tokenizer. Loading the file takes about half a second."""
-    return Qwen3TokenCounter()
+    """The process-wide tokenizer, the file named by the settings (the model's own; see
+    Settings.tokenizer_path). Loading the file takes about half a second."""
+    from app.core.env_loader import get_settings
+
+    settings = get_settings()
+    return Qwen3TokenCounter(BACKEND_ROOT / settings.tokenizer_path, settings.tokenizer_sha256)

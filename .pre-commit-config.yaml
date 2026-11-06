@@ -15,8 +15,8 @@ repos:
       - id: check-merge-conflict
       - id: check-added-large-files
         args: [--maxkb=4096]
-        # The only exception: the vendored Qwen3 tokenizer (11.4 MB).
-        exclude: ^app/backend/third-party/qwen3-tokenizer/tokenizer\.json$
+        # The only exception: the vendored tokenizers (Qwen3 11.4 MB, Qwen3.6 12.8 MB).
+        exclude: ^app/backend/third-party/[^/]+/tokenizer\.json$
       - id: detect-private-key
 
   - repo: local

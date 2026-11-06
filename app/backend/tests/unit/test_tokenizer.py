@@ -12,6 +12,7 @@ import pytest
 
 from app.llm.chat_template import ChatMessage, render_chat, render_prompt
 from app.llm.tokenizer import (
+    BACKEND_ROOT,
     TOKENIZER_PATH,
     TOKENIZER_SHA256,
     Qwen3TokenCounter,
@@ -123,3 +124,17 @@ def test_the_templated_prompt_count_matches_the_value_measured_against_ollama(
     assert counter.count(render_prompt(ENGLISH, thinking=False)) == 32
     # ... and 41 with this system instruction.
     assert counter.count(render_prompt(ENGLISH, system="You answer briefly.", thinking=False)) == 41
+
+
+def test_the_qwen36_tokenizer_file_loads_and_counts_table_text_differently() -> None:
+    """D77/M5: qwen3.6 has its own vocabulary (248,044 entries against Qwen3's 151,669);
+    the Qwen3 file undercounted its table text by up to 3%, so a qwen3.6 run must point the
+    settings at this file. The checksum is the one recorded in the folder's README."""
+    path = BACKEND_ROOT / "third-party" / "qwen3.6-tokenizer" / "tokenizer.json"
+    counter = Qwen3TokenCounter(
+        path, "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+    )
+    table = "Comprehensiveness 32.4% 67.6% 38.4% 61.6% 16.4% 83.6% 38.8% 61.2%\n" * 8
+
+    assert counter.count("LightRAG") >= 1
+    assert counter.count(table) != Qwen3TokenCounter().count(table)
