@@ -5,19 +5,19 @@
   "ground_truth": "answers.json (hand-labelled against paper-structure.json)"
  },
  "summary": {
-  "TP": 10,
+  "TP": 11,
   "FP": 0,
   "FN": 0,
-  "TN": 183,
-  "UNRESOLVED-wrong": 2,
-  "UNRESOLVED-correct": 57,
-  "figures": 252,
-  "wrong_figures": 12,
+  "TN": 204,
+  "UNRESOLVED-wrong": 4,
+  "UNRESOLVED-correct": 93,
+  "figures": 312,
+  "wrong_figures": 15,
   "precision": 1.0,
   "recall": 1.0,
-  "recall_strict": 0.833,
-  "unresolved_rate": 0.234,
-  "unresolved_missing": 48,
+  "recall_strict": 0.733,
+  "unresolved_rate": 0.311,
+  "unresolved_missing": 86,
   "unresolved_ambiguous": 11
  },
  "figures": [
@@ -4189,7 +4189,8 @@
    "reason": "missing",
    "answer_labels": [
     "Comprehensiveness",
-    "Agriculture"
+    "Agriculture",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -4212,7 +4213,8 @@
    "reason": "missing",
    "answer_labels": [
     "Comprehensiveness",
-    "Legal"
+    "Legal",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6346,7 +6348,8 @@
    "reason": "missing",
    "answer_labels": [
     "Comprehensiveness",
-    "Agriculture"
+    "Agriculture",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6358,6 +6361,1527 @@
    ],
    "sentence": "For example, it achieves a 67.6% win rate in Comprehensiveness over Naive RAG in the Agriculture dataset.",
    "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, Comprehensiveness drops from 67.6% in the full LightRAG to 65.2% in -High.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, Comprehensiveness drops from 67.6% in the full LightRAG to 65.2% in -High.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "64.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "It performs better in comprehensiveness, such as 64.0% in the Agriculture dataset, compared to the full version’s 67.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "It performs better in comprehensiveness, such as 64.0% in the Agriculture dataset, compared to the full version’s 67.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "65.2%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Empowerment",
+    "Agriculture"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Agriculture",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "However, it struggles with depth in specific entity analysis, as seen in the Empowerment metric for Agriculture, where it scores 65.2% compared to LightRAG’s 67.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 3,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Empowerment",
+    "Agriculture",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Agriculture",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "However, it struggles with depth in specific entity analysis, as seen in the Empowerment metric for Agriculture, where it scores 65.2% compared to LightRAG’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "60.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Overall",
+    "Mix"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs RQ-RAG"
+    ]
+   ],
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "57.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Mix",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Mix",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "64.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Mix",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Mix",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "75.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-Origin",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, it achieves 75.2% in Comprehensiveness, significantly higher than the full version’s 67.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 4,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, it achieves 75.2% in Comprehensiveness, significantly higher than the full version’s 67.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A21",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Legal",
+    "LightRAG",
+    "vs NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "TN"
+  },
+  {
+   "answer": "A21",
+   "number": "88.4%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "why_wrong": "'88.4% against RQ-RAG' under Comprehensiveness / Legal; LightRAG vs RQ-RAG there is 84.8%, 88.4% is Diversity / Legal",
+   "status": "contradicted",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Legal",
+    "LightRAG",
+    "vs RQ-RAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs RQ-RAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "TP"
+  },
+  {
+   "answer": "A21",
+   "number": "73.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Legal",
+    "LightRAG",
+    "vs HyDE"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs HyDE"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "67.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Agriculture",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Overall",
+     "Agriculture",
+     "LightRAG",
+     "vs RQ-RAG"
+    ]
+   ],
+   "sentence": "Representative figures supporting this include the overall performance in the Agriculture dataset, where LightRAG achieved 67.6% compared to NaiveRAG's 32.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "32.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Agriculture",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Agriculture",
+     "NaiveRAG",
+     "vs LightRAG"
+    ]
+   ],
+   "sentence": "Representative figures supporting this include the overall performance in the Agriculture dataset, where LightRAG achieved 67.6% compared to NaiveRAG's 32.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "61.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "CS",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Overall",
+     "CS",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs RQ-RAG"
+    ],
+    [
+     "Diversity",
+     "CS",
+     "LightRAG",
+     "vs HyDE"
+    ]
+   ],
+   "sentence": "In the CS dataset, LightRAG scored 61.2% compared to NaiveRAG's 38.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "38.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "CS",
+     "NaiveRAG",
+     "vs LightRAG"
+    ],
+    [
+     "Overall",
+     "CS",
+     "NaiveRAG",
+     "vs LightRAG"
+    ]
+   ],
+   "sentence": "In the CS dataset, LightRAG scored 61.2% compared to NaiveRAG's 38.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "84.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs RQ-RAG"
+    ],
+    [
+     "Empowerment",
+     "Legal",
+     "LightRAG",
+     "vs RQ-RAG"
+    ]
+   ],
+   "sentence": "In the Legal dataset, LightRAG achieved 84.8% compared to NaiveRAG's 15.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "15.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Legal",
+     "NaiveRAG",
+     "vs LightRAG"
+    ]
+   ],
+   "sentence": "In the Legal dataset, LightRAG achieved 84.8% compared to NaiveRAG's 15.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "60.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs NaiveRAG"
+    ],
+    [
+     "Overall",
+     "Mix",
+     "LightRAG",
+     "vs RQ-RAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, LightRAG scored 60.0% compared to NaiveRAG's 40.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "40.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Mix",
+     "NaiveRAG",
+     "vs LightRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, LightRAG scored 60.0% compared to NaiveRAG's 40.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Agriculture",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, the -High variant scores 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "34.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Agriculture",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -High"
+    ],
+    [
+     "Empowerment",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -Low"
+    ],
+    [
+     "Overall",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "For example, in the Agriculture dataset, the -High variant scores 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "57.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "CS",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -High variant scores 57.2% compared to NaiveRAG's 42.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "42.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "CS",
+     "NaiveRAG",
+     "vs -High"
+    ],
+    [
+     "Empowerment",
+     "CS",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -High variant scores 57.2% compared to NaiveRAG's 42.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "76.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Legal dataset, the -High variant scores 76.4% compared to NaiveRAG's 23.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "23.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "NaiveRAG",
+     "vs -High"
+    ]
+   ],
+   "sentence": "In the Legal dataset, the -High variant scores 76.4% compared to NaiveRAG's 23.6%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "59.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Mix",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -High variant scores 59.6% compared to NaiveRAG's 40.4%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "40.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Mix",
+     "NaiveRAG",
+     "vs -High"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -High variant scores 59.6% compared to NaiveRAG's 40.4%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "64.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Agriculture",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Agriculture dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "36.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Agriculture",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -High"
+    ],
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "In the Agriculture dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "56.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "CS",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -Low variant scores 56.8% compared to NaiveRAG's 43.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "43.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "CS",
+     "NaiveRAG",
+     "vs -Low"
+    ],
+    [
+     "Empowerment",
+     "CS",
+     "NaiveRAG",
+     "vs -Origin"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -Low variant scores 56.8% compared to NaiveRAG's 43.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "80.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Legal dataset, the -Low variant scores 80.8% compared to NaiveRAG's 19.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "19.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Legal",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "In the Legal dataset, the -Low variant scores 80.8% compared to NaiveRAG's 19.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "64.0%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Mix",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A22",
+   "number": "36.0%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Mix",
+     "NaiveRAG",
+     "vs -High"
+    ],
+    [
+     "Comprehensiveness",
+     "Mix",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A23",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Legal",
+    "LightRAG",
+    "vs NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves an 83.6% win rate over NaiveRAG in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
+  },
+  {
+   "answer": "A23",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Diversity",
+    "Legal",
+    "LightRAG",
+    "vs NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves an 83.6% win rate over NaiveRAG in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
+  },
+  {
+   "answer": "A23",
+   "number": "51.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Comprehensiveness",
+    "vs GraphRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "CS",
+     "LightRAG",
+     "vs GraphRAG"
+    ],
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs GraphRAG"
+    ]
+   ],
+   "sentence": "Against GraphRAG, it achieves 51.6% win rate in Comprehensiveness and 73.6% in Diversity.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A23",
+   "number": "73.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Diversity",
+    "vs GraphRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs GraphRAG"
+    ]
+   ],
+   "sentence": "Against GraphRAG, it achieves 51.6% win rate in Comprehensiveness and 73.6% in Diversity.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "- **Comprehensiveness:** In the Agriculture dataset, -High variant achieves 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "34.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Agriculture",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -High"
+    ]
+   ],
+   "sentence": "- **Comprehensiveness:** In the Agriculture dataset, -High variant achieves 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "74.4%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "why_wrong": "written under 'Comprehensiveness' for Mix / -Origin; -Origin / Mix / Comprehensiveness is 55.6%. 74.4% with NaiveRAG 25.6% is Diversity / Mix (or Overall / Agriculture)",
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "-Origin"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Mix",
+     "-Origin",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "UNRESOLVED-wrong"
+  },
+  {
+   "answer": "A24",
+   "number": "25.6%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "why_wrong": "the NaiveRAG reference of the same misplaced pair (Comprehensiveness / Mix reference is 44.4%)",
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Mix",
+     "NaiveRAG",
+     "vs -Origin"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "UNRESOLVED-wrong"
+  },
+  {
+   "answer": "A24",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Diversity",
+    "Legal",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "- **Diversity:** In the Legal dataset, -Low variant achieves 86.4% compared to NaiveRAG's 13.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "13.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Diversity",
+    "Legal",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "NaiveRAG",
+     "vs LightRAG"
+    ],
+    [
+     "Diversity",
+     "Legal",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "- **Diversity:** In the Legal dataset, -Low variant achieves 86.4% compared to NaiveRAG's 13.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "55.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "-Origin"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "CS",
+     "-Origin",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -Origin variant achieves 55.2% compared to NaiveRAG's 44.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "44.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "CS",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "CS",
+     "NaiveRAG",
+     "vs -Origin"
+    ]
+   ],
+   "sentence": "In the CS dataset, the -Origin variant achieves 55.2% compared to NaiveRAG's 44.8%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "77.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Empowerment",
+    "Legal",
+    "-High"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Legal",
+     "-High",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "- **Empowerment:** In the Legal dataset, -High variant achieves 77.2% compared to NaiveRAG's 22.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "22.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Empowerment",
+    "Legal",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Legal",
+     "NaiveRAG",
+     "vs -High"
+    ]
+   ],
+   "sentence": "- **Empowerment:** In the Legal dataset, -High variant achieves 77.2% compared to NaiveRAG's 22.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "54.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "-Origin"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Mix",
+     "-Origin",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Origin variant achieves 54.8% compared to NaiveRAG's 45.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "45.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Mix",
+     "NaiveRAG",
+     "vs -Origin"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Origin variant achieves 54.8% compared to NaiveRAG's 45.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "74.4%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Agriculture",
+    "-Origin"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Agriculture",
+     "-Origin",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "- **Overall:** In the Agriculture dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "25.6%",
+   "occurrence": 2,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Overall",
+    "Agriculture",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Overall",
+     "Agriculture",
+     "NaiveRAG",
+     "vs -Origin"
+    ]
+   ],
+   "sentence": "- **Overall:** In the Agriculture dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "64.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "-Low"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Mix",
+     "-Low",
+     "vs NaiveRAG"
+    ],
+    [
+     "Overall",
+     "Mix",
+     "-Low",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Low variant achieves 64.8% compared to NaiveRAG's 35.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A24",
+   "number": "35.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "unresolved",
+   "reason": "missing",
+   "answer_labels": [
+    "Mix",
+    "NaiveRAG"
+   ],
+   "source_labels": [
+    [
+     "Empowerment",
+     "Mix",
+     "NaiveRAG",
+     "vs -Low"
+    ],
+    [
+     "Overall",
+     "Mix",
+     "NaiveRAG",
+     "vs -Low"
+    ]
+   ],
+   "sentence": "In the Mix dataset, the -Low variant achieves 64.8% compared to NaiveRAG's 35.2%.",
+   "class": "UNRESOLVED-correct"
+  },
+  {
+   "answer": "A25",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Comprehensiveness",
+    "Legal",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
+  },
+  {
+   "answer": "A25",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "why_wrong": null,
+   "status": "supported",
+   "reason": null,
+   "answer_labels": [
+    "Diversity",
+    "Legal",
+    "LightRAG"
+   ],
+   "source_labels": [
+    [
+     "Diversity",
+     "Legal",
+     "LightRAG",
+     "vs NaiveRAG"
+    ]
+   ],
+   "sentence": "For example, in the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
   }
  ]
 }

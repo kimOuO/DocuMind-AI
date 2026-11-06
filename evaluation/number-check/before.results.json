@@ -5,17 +5,17 @@
   "ground_truth": "answers.json (hand-labelled against paper-structure.json)"
  },
  "summary": {
-  "TP": 8,
-  "FP": 8,
-  "FN": 4,
-  "TN": 232,
+  "TP": 9,
+  "FP": 13,
+  "FN": 6,
+  "TN": 284,
   "UNRESOLVED-wrong": 0,
   "UNRESOLVED-correct": 0,
-  "figures": 252,
-  "wrong_figures": 12,
-  "precision": 0.5,
-  "recall": 0.667,
-  "recall_strict": 0.667,
+  "figures": 312,
+  "wrong_figures": 15,
+  "precision": 0.409,
+  "recall": 0.6,
+  "recall_strict": 0.6,
   "unresolved_rate": 0.0,
   "unresolved_missing": 0,
   "unresolved_ambiguous": 0
@@ -2287,6 +2287,546 @@
    "truth": "correct",
    "status": "passed",
    "sentence": "For example, it achieves a 67.6% win rate in Comprehensiveness over Naive RAG in the Agriculture dataset.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Agriculture dataset, Comprehensiveness drops from 67.6% in the full LightRAG to 65.2% in -High.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "contradicted",
+   "sentence": "For example, in the Agriculture dataset, Comprehensiveness drops from 67.6% in the full LightRAG to 65.2% in -High.",
+   "class": "FP"
+  },
+  {
+   "answer": "A20",
+   "number": "64.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "It performs better in comprehensiveness, such as 64.0% in the Agriculture dataset, compared to the full version’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "It performs better in comprehensiveness, such as 64.0% in the Agriculture dataset, compared to the full version’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "65.2%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "However, it struggles with depth in specific entity analysis, as seen in the Empowerment metric for Agriculture, where it scores 65.2% compared to LightRAG’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 3,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "However, it struggles with depth in specific entity analysis, as seen in the Empowerment metric for Agriculture, where it scores 65.2% compared to LightRAG’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "60.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "57.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "64.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Mix dataset, it achieves 60.0% in Overall quality, outperforming both -High (57.6%) and -Low (64.8%) variants.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "75.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Agriculture dataset, it achieves 75.2% in Comprehensiveness, significantly higher than the full version’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A20",
+   "number": "67.6%",
+   "occurrence": 4,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Agriculture dataset, it achieves 75.2% in Comprehensiveness, significantly higher than the full version’s 67.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A21",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "TN"
+  },
+  {
+   "answer": "A21",
+   "number": "88.4%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "status": "contradicted",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "TP"
+  },
+  {
+   "answer": "A21",
+   "number": "73.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "contradicted",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves **83.6% win rate in Comprehensiveness** against Naive RAG, **88.4%** against RQ-RAG, and **73.2%** against HyDE.",
+   "class": "FP"
+  },
+  {
+   "answer": "A22",
+   "number": "67.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "Representative figures supporting this include the overall performance in the Agriculture dataset, where LightRAG achieved 67.6% compared to NaiveRAG's 32.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "32.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "Representative figures supporting this include the overall performance in the Agriculture dataset, where LightRAG achieved 67.6% compared to NaiveRAG's 32.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "61.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, LightRAG scored 61.2% compared to NaiveRAG's 38.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "38.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, LightRAG scored 61.2% compared to NaiveRAG's 38.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "84.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, LightRAG achieved 84.8% compared to NaiveRAG's 15.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "15.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, LightRAG achieved 84.8% compared to NaiveRAG's 15.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "60.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, LightRAG scored 60.0% compared to NaiveRAG's 40.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "40.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, LightRAG scored 60.0% compared to NaiveRAG's 40.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Agriculture dataset, the -High variant scores 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "34.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Agriculture dataset, the -High variant scores 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "57.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -High variant scores 57.2% compared to NaiveRAG's 42.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "42.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -High variant scores 57.2% compared to NaiveRAG's 42.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "76.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, the -High variant scores 76.4% compared to NaiveRAG's 23.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "23.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, the -High variant scores 76.4% compared to NaiveRAG's 23.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "59.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -High variant scores 59.6% compared to NaiveRAG's 40.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "40.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -High variant scores 59.6% compared to NaiveRAG's 40.4%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "64.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Agriculture dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "36.0%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Agriculture dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "56.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -Low variant scores 56.8% compared to NaiveRAG's 43.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "43.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -Low variant scores 56.8% compared to NaiveRAG's 43.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "80.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, the -Low variant scores 80.8% compared to NaiveRAG's 19.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "19.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Legal dataset, the -Low variant scores 80.8% compared to NaiveRAG's 19.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "64.0%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A22",
+   "number": "36.0%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Low variant scores 64.0% compared to NaiveRAG's 36.0%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A23",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves an 83.6% win rate over NaiveRAG in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
+  },
+  {
+   "answer": "A23",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "contradicted",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves an 83.6% win rate over NaiveRAG in Comprehensiveness and 86.4% in Diversity.",
+   "class": "FP"
+  },
+  {
+   "answer": "A23",
+   "number": "51.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "contradicted",
+   "sentence": "Against GraphRAG, it achieves 51.6% win rate in Comprehensiveness and 73.6% in Diversity.",
+   "class": "FP"
+  },
+  {
+   "answer": "A23",
+   "number": "73.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "contradicted",
+   "sentence": "Against GraphRAG, it achieves 51.6% win rate in Comprehensiveness and 73.6% in Diversity.",
+   "class": "FP"
+  },
+  {
+   "answer": "A24",
+   "number": "65.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Comprehensiveness:** In the Agriculture dataset, -High variant achieves 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "34.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Comprehensiveness:** In the Agriculture dataset, -High variant achieves 65.2% compared to NaiveRAG's 34.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "74.4%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "FN"
+  },
+  {
+   "answer": "A24",
+   "number": "25.6%",
+   "occurrence": 1,
+   "truth": "wrong",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "FN"
+  },
+  {
+   "answer": "A24",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Diversity:** In the Legal dataset, -Low variant achieves 86.4% compared to NaiveRAG's 13.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "13.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Diversity:** In the Legal dataset, -Low variant achieves 86.4% compared to NaiveRAG's 13.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "55.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -Origin variant achieves 55.2% compared to NaiveRAG's 44.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "44.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the CS dataset, the -Origin variant achieves 55.2% compared to NaiveRAG's 44.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "77.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Empowerment:** In the Legal dataset, -High variant achieves 77.2% compared to NaiveRAG's 22.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "22.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Empowerment:** In the Legal dataset, -High variant achieves 77.2% compared to NaiveRAG's 22.8%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "54.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Origin variant achieves 54.8% compared to NaiveRAG's 45.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "45.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Origin variant achieves 54.8% compared to NaiveRAG's 45.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "74.4%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Overall:** In the Agriculture dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "25.6%",
+   "occurrence": 2,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "- **Overall:** In the Agriculture dataset, the -Origin variant achieves 74.4% compared to NaiveRAG's 25.6%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "64.8%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Low variant achieves 64.8% compared to NaiveRAG's 35.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A24",
+   "number": "35.2%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "In the Mix dataset, the -Low variant achieves 64.8% compared to NaiveRAG's 35.2%.",
+   "class": "TN"
+  },
+  {
+   "answer": "A25",
+   "number": "83.6%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness and 86.4% in Diversity.",
+   "class": "TN"
+  },
+  {
+   "answer": "A25",
+   "number": "86.4%",
+   "occurrence": 1,
+   "truth": "correct",
+   "status": "passed",
+   "sentence": "For example, in the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness and 86.4% in Diversity.",
    "class": "TN"
   }
  ]

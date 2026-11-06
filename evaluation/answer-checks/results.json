@@ -1,0 +1,398 @@
+{
+ "config": {
+  "checks": "app/backend/app/chat/verification.py check_universal_claims; app/backend/app/chat/citation_check.py (working tree, D68)",
+  "sources": "2410.05779v3.pdf re-chunked with the project settings; pages of the cited sources",
+  "ground_truth": "labels.json (hand-labelled)"
+ },
+ "summary": {
+  "answers": 19,
+  "universal_claims": {
+   "TP": 3,
+   "FP": 0,
+   "FN": 0,
+   "TN": 5,
+   "UNRESOLVED": 0
+  },
+  "citations": {
+   "TP": 12,
+   "FP": 0,
+   "FN": 1
+  }
+ },
+ "answers": [
+  {
+   "id": "C01",
+   "question": "Q3",
+   "condition": "D64-A cell-per-line table format, run 1",
+   "universal_candidates": [
+    "While removing either level of retrieval leads to performance trade-offs, the hybrid mode (full LightRAG) consistently outperforms the ablated versions across all datasets and metrics [1]."
+   ],
+   "overstated_claims": [
+    {
+     "sentence": "While removing either level of retrieval leads to performance trade-offs, the hybrid mode (full LightRAG) consistently outperforms the ablated versions across all datasets and metrics.",
+     "method": "LightRAG",
+     "compared": [],
+     "higher": 53,
+     "lower": 8,
+     "examples": [
+      "Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8)",
+      "Comprehensiveness / Mix: LightRAG 61.2% vs -Low 64.0% (p. 8)",
+      "Diversity / CS: LightRAG 62.0% vs -High 63.2% (p. 8)",
+      "Diversity / Mix: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Empowerment / Agriculture: LightRAG 67.6% vs -Origin 68.0% (p. 8)",
+      "Empowerment / Mix: LightRAG 57.2% vs -Low 64.8% (p. 8)",
+      "Overall / Agriculture: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Overall / Mix: LightRAG 60.0% vs -Low 64.8% (p. 8)"
+     ],
+     "status": "contradicted",
+     "reason": null
+    }
+   ],
+   "doubtful_citations": [
+    {
+     "sentence": "In summary, the ablation studies highlight the importance of the dual-level retrieval system in LightRAG.",
+     "cited": [
+      1
+     ],
+     "closer": [
+      2
+     ],
+     "coverage_cited": 0.29,
+     "coverage_closer": 0.57
+    }
+   ]
+  },
+  {
+   "id": "C02",
+   "question": "Q3",
+   "condition": "D64-A cell-per-line table format, run 2",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C03",
+   "question": "Q3",
+   "condition": "D64-A cell-per-line table format, run 3",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C04",
+   "question": "Q3",
+   "condition": "D64-B one-metric-per-line (current format), run 1",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C05",
+   "question": "Q3",
+   "condition": "D64-B, run 2",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C06",
+   "question": "Q3",
+   "condition": "D64-B, run 3",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C07",
+   "question": "Q3",
+   "condition": "D65 thinking on, run 1",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C08",
+   "question": "Q3",
+   "condition": "D65 thinking on, run 2",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C09",
+   "question": "Q3",
+   "condition": "D65 thinking on, run 3",
+   "universal_candidates": [
+    "- **Comprehensiveness**: LightRAG achieves **67.6% (Agriculture)**, **61.6% (CS)**, **83.6% (Legal)**, and **61.2% (Mix)**, significantly outperforming NaiveRAG (32.4%–38.8%) across all datasets [1].",
+    "- The **hybrid mode** (full LightRAG) consistently balances breadth and depth, outperforming all variants [6]."
+   ],
+   "overstated_claims": [
+    {
+     "sentence": "- The **hybrid mode** (full LightRAG) consistently balances breadth and depth, outperforming all variants.",
+     "method": "LightRAG",
+     "compared": [],
+     "higher": 306,
+     "lower": 11,
+     "examples": [
+      "Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)",
+      "Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8)",
+      "Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7)",
+      "Comprehensiveness / Mix: LightRAG 61.2% vs -Low 64.0% (p. 8)",
+      "Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)",
+      "Diversity / CS: LightRAG 62.0% vs -High 63.2% (p. 8)",
+      "Diversity / Mix: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Empowerment / Agriculture: LightRAG 67.6% vs -Origin 68.0% (p. 8)",
+      "Empowerment / Mix: LightRAG 57.2% vs -Low 64.8% (p. 8)",
+      "Overall / Agriculture: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Overall / Mix: LightRAG 60.0% vs -Low 64.8% (p. 8)"
+     ],
+     "status": "contradicted",
+     "reason": null
+    }
+   ],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C10",
+   "question": "Q2",
+   "condition": "P3 evaluation, run 2",
+   "universal_candidates": [
+    "Additionally, in case studies, LightRAG outperforms GraphRAG in all evaluation dimensions assessed by the LLM judge, including comprehensiveness, diversity, empowerment, and overall quality."
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "While GraphRAG must dismantle its existing community structure to incorporate new data, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without requiring full reconstruction.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.0,
+     "coverage_closer": 0.93
+    },
+    {
+     "sentence": "This results in significantly lower overhead and token costs during updates.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.2,
+     "coverage_closer": 1.0
+    }
+   ]
+  },
+  {
+   "id": "C11",
+   "question": "Q2",
+   "condition": "P3 evaluation, run 3",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "While GraphRAG must dismantle its existing community structure to incorporate new entities and relationships, incurring a substantial token cost, LightRAG seamlessly integrates new data into the existing graph without the need for full reconstruction.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.07,
+     "coverage_closer": 0.93
+    },
+    {
+     "sentence": "This results in significantly lower overhead during updates.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.0,
+     "coverage_closer": 1.0
+    }
+   ]
+  },
+  {
+   "id": "C12",
+   "question": "Q3",
+   "condition": "D67 regression (list-style answer)",
+   "universal_candidates": [
+    "In summary, the hybrid mode of LightRAG, which combines low-level and high-level retrieval, consistently outperforms the ablated versions across all datasets and metrics, highlighting the importance of the dual-level retrieval paradigm."
+   ],
+   "overstated_claims": [
+    {
+     "sentence": "In summary, the hybrid mode of LightRAG, which combines low-level and high-level retrieval, consistently outperforms the ablated versions across all datasets and metrics, highlighting the importance of the dual-level retrieval paradigm.",
+     "method": "LightRAG",
+     "compared": [],
+     "higher": 306,
+     "lower": 11,
+     "examples": [
+      "Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)",
+      "Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8)",
+      "Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7)",
+      "Comprehensiveness / Mix: LightRAG 61.2% vs -Low 64.0% (p. 8)",
+      "Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7)",
+      "Diversity / CS: LightRAG 62.0% vs -High 63.2% (p. 8)",
+      "Diversity / Mix: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Empowerment / Agriculture: LightRAG 67.6% vs -Origin 68.0% (p. 8)",
+      "Empowerment / Mix: LightRAG 57.2% vs -Low 64.8% (p. 8)",
+      "Overall / Agriculture: LightRAG 67.6% vs -Origin 74.4% (p. 8)",
+      "Overall / Mix: LightRAG 60.0% vs -Low 64.8% (p. 8)"
+     ],
+     "status": "contradicted",
+     "reason": null
+    }
+   ],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C13",
+   "question": "Q2",
+   "condition": "D67 regression",
+   "universal_candidates": [
+    "In case studies, LightRAG outperformed GraphRAG in all evaluation dimensions assessed by the LLM judge, including comprehensiveness, diversity, empowerment, and overall quality [4]."
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "This results in significantly lower overhead and demonstrates LightRAG's superior efficiency and cost-effectiveness.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.0,
+     "coverage_closer": 1.0
+    }
+   ]
+  },
+  {
+   "id": "C14",
+   "question": "Q3",
+   "condition": "D68 regression with the new prompts and checks, run 1",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C15",
+   "question": "Q2",
+   "condition": "D68 regression with the new prompts and checks, run 1",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "During the incremental data update phase, LightRAG seamlessly integrates newly extracted entities and relationships into the existing graph without the need for full reconstruction.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.23,
+     "coverage_closer": 1.0
+    }
+   ]
+  },
+  {
+   "id": "C16",
+   "question": "Q3",
+   "condition": "D68 regression with the new prompts and checks, run 2",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "The hybrid mode, or the full version of LightRAG, combines the strengths of both low-level and high-level retrieval methods, ensuring both breadth in the retrieval process and depth in the analysis, providing a comprehensive view of the data.",
+     "cited": [
+      2
+     ],
+     "closer": [
+      6
+     ],
+     "coverage_cited": 0.25,
+     "coverage_closer": 1.0
+    }
+   ]
+  },
+  {
+   "id": "C17",
+   "question": "Q2",
+   "condition": "D68 regression with the new prompts and checks, run 2",
+   "universal_candidates": [
+    "This is further supported by a case study where LightRAG outperformed GraphRAG in all evaluation dimensions assessed by an LLM judge, including comprehensiveness, diversity, empowerment, and overall quality [4]."
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "For example, in the Legal dataset, the disparity in performance is significant, with LightRAG showing a clear advantage in comprehensiveness, diversity, and empowerment.",
+     "cited": [
+      4
+     ],
+     "closer": [
+      1
+     ],
+     "coverage_cited": 0.29,
+     "coverage_closer": 0.57
+    },
+    {
+     "sentence": "While GraphRAG must dismantle and regenerate its community structure when new data is introduced, incurring a substantial token cost, LightRAG seamlessly integrates new entities and relationships into the existing graph without full reconstruction, resulting in significantly lower overhead.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.06,
+     "coverage_closer": 0.89
+    },
+    {
+     "sentence": "However, in some cases, such as in Agriculture and Mix datasets, GraphRAG shows improvements, possibly due to the effective extraction of key information during the graph-based indexing process.",
+     "cited": [
+      2
+     ],
+     "closer": [
+      4,
+      5
+     ],
+     "coverage_cited": 0.0,
+     "coverage_closer": 0.83
+    }
+   ]
+  },
+  {
+   "id": "C18",
+   "question": "Q3",
+   "condition": "D68 regression with the new prompts and checks, run 3",
+   "universal_candidates": [],
+   "overstated_claims": [],
+   "doubtful_citations": []
+  },
+  {
+   "id": "C19",
+   "question": "Q2",
+   "condition": "D68 regression with the new prompts and checks, run 3",
+   "universal_candidates": [
+    "In case studies, LightRAG outperforms GraphRAG in all evaluation dimensions assessed by the LLM judge, including comprehensiveness, diversity, empowerment, and overall quality."
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "Unlike GraphRAG, which must dismantle its existing community structure to incorporate new entities and relationships, LightRAG seamlessly integrates newly extracted entities into the existing graph without the need for full reconstruction.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      5
+     ],
+     "coverage_cited": 0.0,
+     "coverage_closer": 0.93
+    }
+   ]
+  }
+ ]
+}
