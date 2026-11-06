@@ -15,6 +15,7 @@ import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
 from dataclasses import dataclass
+from functools import partial
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -28,14 +29,18 @@ from app.chat.memory import (
     rewrite_prompt,
 )
 from app.chat.navigation import (
+    CHUNKS_PER_TARGET,
+    EvidenceCandidate,
     MapEntry,
     PlanItem,
+    TargetCandidates,
     analyst_preamble,
     build_map,
     build_navigation_prompt,
-    merge_evidence,
+    describe_retrieved,
     parse_plan,
     roles_preamble,
+    select_evidence,
 )
 from app.chat.prompting import (
     build_answer_prompt,
@@ -72,15 +77,17 @@ from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
 from app.models import User
+from app.retrieval.expansion import MAX_FOLLOWING, table_context
 from app.retrieval.repository import RetrievalRepository, RetrievedChunk
 from app.retrieval.service import RetrievalService, SearchScope
-from app.summarization.repository import DocumentSummaryState, SummaryRepository
+from app.summarization.repository import DocumentSummaryState, StoredSummary, SummaryRepository
 
 logger = logging.getLogger(__name__)
 
 # Budget of one answer call (docs/02-specs/02-architecture.md, section 4.3).
 ANSWER_MAX_OUTPUT_TOKENS = 2_500
-NAVIGATION_CHUNKS_PER_ITEM = 8  # D71: at most this many chunks per located plan item
+# D73: how many of a target's chunks are ranked before the turns start.
+NAVIGATION_CANDIDATES_PER_TARGET = 3 * CHUNKS_PER_TARGET
 DELIVERY_PIECE = 400  # characters per delta when a finished text is delivered (two-call mode)
 EVIDENCE_TOKEN_BUDGET = 5_500
 # The answer is saved to the database every this many pieces while it streams.
@@ -211,16 +218,29 @@ class ChatService:
             preamble = ""
             navigation: dict[str, Any] | None = None
             extra_calls: list[LLMResult] = []
-            fetched: list[tuple[PlanItem, list[RetrievedChunk]]] = []
-            chunks = None if kind == "summary" else await self._search(prepared, question)
+            added: list[RetrievedChunk] = []
+            chunks: list[RetrievedChunk] | None = None
+            embedding: list[float] | None = None
+            if kind != "summary":
+                chunks, embedding = await self._search(prepared, question)
             if mode in ("roles", "navigate") and (kind == "summary" or chunks is not None):
-                entries = await self._document_map(prepared)
+                entries, summaries = await self._document_map(prepared)
                 if mode == "roles":
                     preamble = roles_preamble(entries)
                 else:
                     yield ChatEvent("stage", {"stage": "navigating"})
-                    navigation, items, fetched, nav_result = await self._navigate(
-                        prepared, question, entries, chunks or []
+                    base_tokens = (
+                        sum(s.token_count for s in summaries)
+                        if kind == "summary"
+                        else sum(c.token_count for c in chunks or [])
+                    )
+                    navigation, items, added, nav_result = await self._navigate(
+                        prepared,
+                        question,
+                        entries,
+                        chunks or [],
+                        embedding,
+                        budget=max(EVIDENCE_TOKEN_BUDGET - base_tokens, 0),
                     )
                     if nav_result is not None:
                         extra_calls.append(nav_result)
@@ -228,12 +248,10 @@ class ChatService:
                         preamble = analyst_preamble(items)
             evidence = (
                 await self._summary_evidence(
-                    prepared, question, preamble=preamble, fetched=fetched, navigation=navigation
+                    prepared, question, preamble=preamble, added=added, navigation=navigation
                 )
                 if kind == "summary"
-                else self._evidence_from_chunks(
-                    prepared, question, chunks, preamble, fetched, navigation
-                )
+                else self._evidence_from_chunks(prepared, question, chunks, preamble, added)
             )
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
@@ -752,21 +770,23 @@ class ChatService:
 
     async def _search(
         self, prepared: PreparedQuestion, question: str
-    ) -> list[RetrievedChunk] | None:
-        """The retrieved chunks with their table context, or None when nothing is close
-        enough (AC-15): then nothing is sent to the model and the user is told so."""
+    ) -> tuple[list[RetrievedChunk] | None, list[float]]:
+        """The retrieved chunks with their table context (or None when nothing is close
+        enough, AC-15: then nothing is sent to the model and the user is told so), and
+        the question's embedding, which the navigate mode reuses."""
         async with self._sessions() as session:
             retrieval = RetrievalService(session, self._embedder, self._settings)
-            chunks = await retrieval.search(prepared.actor, prepared.scope, question)
+            embedding = await retrieval.embed(question)
+            chunks = await retrieval.search(prepared.actor, prepared.scope, question, embedding)
             best = chunks[0].score if chunks else None
             if best is not None and best >= self._settings.min_similarity:
-                return await retrieval.with_table_context(prepared.actor, chunks)
+                return await retrieval.with_table_context(prepared.actor, chunks), embedding
         logger.info(
             "Question refused: best similarity %s below %s",
             None if best is None else round(best, 3),
             self._settings.min_similarity,
         )
-        return None
+        return None, embedding
 
     def _evidence_from_chunks(
         self,
@@ -774,28 +794,19 @@ class ChatService:
         question: str,
         chunks: list[RetrievedChunk] | None,
         preamble: str = "",
-        fetched: Sequence[tuple[PlanItem, Sequence[RetrievedChunk]]] = (),
-        navigation: dict[str, Any] | None = None,
+        added: Sequence[RetrievedChunk] = (),
     ) -> Evidence:
         if chunks is None:
             return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
-        merged, log = merge_evidence(chunks, fetched, self._counter, budget=EVIDENCE_TOKEN_BUDGET)
-        if navigation is not None:
-            navigation["log"] = log
-            navigation["kept"] = sum(1 for e in log if e["kept"] and e["reason"].startswith("plan"))
-            navigation["excluded_budget"] = sum(
-                1 for e in log if e["reason"] == "over the evidence budget"
-            )
         prompt, used = build_answer_prompt(
-            question, merged, self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
+            question, [*chunks, *added], self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "")
 
     async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
-        return self._evidence_from_chunks(
-            prepared, question, await self._search(prepared, question)
-        )
+        chunks, _ = await self._search(prepared, question)
+        return self._evidence_from_chunks(prepared, question, chunks)
 
     async def _summary_evidence(
         self,
@@ -803,11 +814,11 @@ class ChatService:
         question: str,
         *,
         preamble: str = "",
-        fetched: Sequence[tuple[PlanItem, Sequence[RetrievedChunk]]] = (),
+        added: Sequence[RetrievedChunk] = (),
         navigation: dict[str, Any] | None = None,
     ) -> Evidence:
         """The stored summaries of the documents in scope; the ones without are named.
-        Chunks a reading plan fetched (D71) come after the summaries, within the budget."""
+        Chunks the Navigator's targets selected (D71/D73) come after the summaries."""
         async with self._sessions() as session:
             repository = SummaryRepository(session)
             states = await repository.states(prepared.actor.id, prepared.scope.document_ids)
@@ -819,36 +830,27 @@ class ChatService:
         note = _unavailable_note(missing, language, nothing_ready=not summaries)
         if not summaries:
             return Evidence(None, [], note)
-        extra: list[RetrievedChunk] = []
-        seen: set[uuid.UUID] = set()
-        for _, chunks in fetched:
-            for chunk in chunks:
-                if chunk.chunk_id not in seen:
-                    seen.add(chunk.chunk_id)
-                    extra.append(chunk)
         prompt, used = build_summary_prompt(
             question,
             summaries,
             self._counter,
             evidence_budget=EVIDENCE_TOKEN_BUDGET,
             preamble=preamble,
-            extra_chunks=extra,
+            extra_chunks=list(added),
         )
         if navigation is not None:
+            # The prompt builder has the last word on the budget: a selected chunk it
+            # left out is recorded as such.
             kept = {c.chunk_id for c in used if isinstance(c, RetrievedChunk)}
-            navigation["log"] = [
-                {
-                    "ordinal": c.ordinal,
-                    "page": c.page,
-                    "kept": c.chunk_id in kept,
-                    "reason": "plan (after the summaries)"
-                    if c.chunk_id in kept
-                    else "over the evidence budget",
-                }
-                for c in extra
-            ]
+            dropped = {c.ordinal for c in added if c.chunk_id not in kept}
+            for entry in navigation["log"]:
+                if entry["kept"] and entry["target"] is not None and entry["ordinal"] in dropped:
+                    entry["kept"] = False
+                    entry["reason"] = "over the evidence budget"
             navigation["kept"] = len(kept)
-            navigation["excluded_budget"] = len(extra) - len(kept)
+            navigation["excluded_budget"] = sum(
+                1 for e in navigation["log"] if e["reason"] == "over the evidence budget"
+            )
         sources = [
             source_payload(index, item)
             if isinstance(item, RetrievedChunk)
@@ -857,17 +859,22 @@ class ChatService:
         ]
         return Evidence(prompt, sources, note)
 
-    async def _document_map(self, prepared: PreparedQuestion) -> list[MapEntry]:
-        """Sections (from the section summaries) and table/figure captions (from the
-        chunks) of the documents in scope (D71)."""
+    async def _document_map(
+        self, prepared: PreparedQuestion
+    ) -> tuple[list[MapEntry], list[StoredSummary]]:
+        """Sections and subsections (from the heading lines of the chunks; the section
+        summaries where no heading was recognised) and table/figure captions of the
+        documents in scope (D71, D73), with the stored summaries themselves."""
         async with self._sessions() as session:
             summaries = await SummaryRepository(session).ready_summaries(
                 prepared.actor.id, prepared.scope.document_ids
             )
-            captions = await RetrievalRepository(session).caption_lines(
-                prepared.actor.id, prepared.scope.document_ids
-            )
-        return build_map(summaries, captions)
+            repository = RetrievalRepository(session)
+            documents = prepared.scope.document_ids
+            captions = await repository.caption_lines(prepared.actor.id, documents)
+            headings = await repository.heading_lines(prepared.actor.id, documents)
+            pages = await repository.chunk_pages(prepared.actor.id, documents)
+        return build_map(summaries, captions, headings, pages), summaries
 
     async def _navigate(
         self,
@@ -875,21 +882,21 @@ class ChatService:
         question: str,
         entries: list[MapEntry],
         chunks: list[RetrievedChunk],
-    ) -> tuple[
-        dict[str, Any],
-        list[PlanItem],
-        list[tuple[PlanItem, list[RetrievedChunk]]],
-        LLMResult | None,
-    ]:
-        """D71 navigate mode: ask for a reading plan, locate every item on the map and
-        fetch the chunks of the located places. A plan call that fails or does not fit
+        embedding: list[float] | None,
+        *,
+        budget: int,
+    ) -> tuple[dict[str, Any], list[PlanItem], list[RetrievedChunk], LLMResult | None]:
+        """D73 navigate mode: ask for targets (place, need, priority), locate each on the
+        map, rank its candidate chunks within the located range by similarity to the
+        question and to the need (tables and figures by structure), and let the targets
+        take turns at the remaining budget. A plan call that fails or does not fit
         leaves the evidence as retrieved."""
-        headers = [
-            f"[{i}] {c.filename}, page {c.page}: {' '.join(c.text.split())[:80]}"
-            for i, c in enumerate(chunks, start=1)
-        ]
         prompt, max_output = build_navigation_prompt(
-            question, entries, headers, self._counter, self._settings.llm_context_limit
+            question,
+            entries,
+            describe_retrieved(chunks, entries),
+            self._counter,
+            self._settings.llm_context_limit,
         )
         context = CallContext(
             owner_id=prepared.actor.id,
@@ -905,6 +912,20 @@ class ChatService:
             "kept": 0,
             "excluded_budget": 0,
             "skipped": None,
+            "budget": budget,
+            "evidence_tokens": sum(c.token_count for c in chunks),
+            "embedding": {"texts": 0, "failed": None},
+            "log": [
+                {
+                    "ordinal": c.ordinal,
+                    "page": c.page,
+                    "kept": True,
+                    "reason": c.origin,
+                    "target": None,
+                    "score": None,
+                }
+                for c in chunks
+            ],
         }
         try:
             result = await self._gateway.generate(
@@ -919,28 +940,100 @@ class ChatService:
             return info, [], [], None
         items = parse_plan(result.text, entries)
         info["plan"] = result.text
-        info["items"] = [{"text": i.text, "located": i.located, "pages": i.pages} for i in items]
         info["located"] = sum(1 for i in items if i.located)
-        fetched: list[tuple[PlanItem, list[RetrievedChunk]]] = []
+
+        # One embedding call for every distinct need; when it fails, the question alone
+        # ranks the candidates (and a question without an embedding leaves document order).
+        needs = list(dict.fromkeys(i.need for i in items if i.located and i.need))
+        need_vectors: dict[str, list[float]] = {}
+        if needs:
+            info["embedding"]["texts"] = len(needs)
+            try:
+                need_vectors = dict(zip(needs, await self._embedder.embed(needs), strict=True))
+            except EmbeddingError as error:
+                info["embedding"]["failed"] = _describe(error)["code"]
+                logger.warning("Need embeddings failed, ranking by the question only: %s", error)
+
+        targets: list[TargetCandidates] = []
         scope = prepared.scope.document_ids
         async with self._sessions() as session:
             repository = RetrievalRepository(session)
             for item in items:
-                if not item.located:
-                    continue
                 document_id = (
                     item.entry.document_id
                     if item.entry
                     else (scope[0] if len(scope) == 1 else None)
                 )
-                if document_id is None:
-                    continue  # an explicit page with several documents in scope: ambiguous
-                found = await repository.chunks_on_pages(
-                    prepared.actor.id, document_id, item.pages, limit=NAVIGATION_CHUNKS_PER_ITEM
-                )
-                fetched.append((item, found))
-                info["fetched"] += len(found)
-        return info, items, fetched, result
+                if not item.located or document_id is None:
+                    # Not on the map, or an explicit page with several documents in scope.
+                    targets.append(TargetCandidates(item, []))
+                    continue
+                need_vector = need_vectors.get(item.need)
+                vectors = [v for v in (embedding, need_vector) if v is not None]
+                scored = partial(_scored, embedding is not None, need_vector is not None)
+
+                entry = item.entry
+                if entry is not None and entry.kind in ("table", "figure"):
+                    # By structure: the caption's chunk, then the discussion after it (D62).
+                    assert entry.ordinal_start is not None
+                    ranked = await repository.rank_chunks(
+                        prepared.actor.id,
+                        document_id,
+                        vectors,
+                        ordinals=(entry.ordinal_start, entry.ordinal_start),
+                        limit=1,
+                    )
+                    candidates = [
+                        EvidenceCandidate(c, *scored(sc), structural=True) for c, sc in ranked
+                    ]
+                    if ranked:
+                        following = await repository.chunks_after(
+                            prepared.actor.id,
+                            document_id,
+                            entry.ordinal_start,
+                            limit=MAX_FOLLOWING,
+                        )
+                        candidates.extend(
+                            EvidenceCandidate(c, None, None, structural=True)
+                            for c in table_context(ranked[0][0], following, set())
+                        )
+                else:
+                    by_chunks = (
+                        entry is not None
+                        and entry.ordinal_start is not None
+                        and entry.ordinal_end is not None
+                    )
+                    ranked = await repository.rank_chunks(
+                        prepared.actor.id,
+                        document_id,
+                        vectors,
+                        ordinals=(entry.ordinal_start, entry.ordinal_end)  # type: ignore[union-attr,arg-type]
+                        if by_chunks
+                        else None,
+                        pages=None if by_chunks else item.pages,
+                        limit=NAVIGATION_CANDIDATES_PER_TARGET,
+                    )
+                    candidates = [EvidenceCandidate(c, *scored(sc)) for c, sc in ranked]
+                info["fetched"] += len(candidates)
+                targets.append(TargetCandidates(item, candidates))
+        selection = select_evidence(
+            chunks,
+            targets,
+            budget=budget + sum(c.token_count for c in chunks),
+            floor=self._settings.min_similarity,
+        )
+        added = selection.chunks[len(chunks) :]
+        info["log"] = selection.log
+        info["items"] = [
+            {"text": i.text, "located": i.located, "pages": i.pages, **record}
+            for i, record in zip(items, selection.targets, strict=True)
+        ]
+        info["kept"] = len(added)
+        info["excluded_budget"] = sum(
+            1 for e in selection.log if e["reason"] == "over the evidence budget"
+        )
+        info["evidence_tokens"] = selection.evidence_tokens
+        return info, items, added, result
 
     async def _finish(
         self, prepared: PreparedQuestion, *, status: str, content: str, answered: bool | None
@@ -974,6 +1067,17 @@ _UNAVAILABLE = {
         "closing": "摘要完成後可再問一次，或改問文件內容的具體問題。",
     },
 }
+
+
+def _scored(
+    has_question: bool, has_need: bool, scores: list[float]
+) -> tuple[float | None, float | None]:
+    """A ranked row's scores split into (question score, need score): the question's
+    vector comes first when it was used, the need's second."""
+    values = iter(scores)
+    question_score = next(values) if has_question else None
+    need_score = next(values) if has_need else None
+    return question_score, need_score
 
 
 def _unavailable_note(

@@ -65,9 +65,21 @@ class RetrievalService:
             )
         return SearchScope("all", ready)
 
-    async def search(self, actor: User, scope: SearchScope, question: str) -> list[RetrievedChunk]:
-        """The Top-K chunks for the question, shared across the documents in scope."""
+    async def embed(self, question: str) -> list[float]:
         [embedding] = await self._embedder.embed([question])
+        return embedding
+
+    async def search(
+        self,
+        actor: User,
+        scope: SearchScope,
+        question: str,
+        embedding: list[float] | None = None,
+    ) -> list[RetrievedChunk]:
+        """The Top-K chunks for the question, shared across the documents in scope. The
+        question's embedding may be passed in when the caller already has it."""
+        if embedding is None:
+            embedding = await self.embed(question)
         return await self._repo.search(
             actor.id, scope.document_ids, embedding, self._settings.top_k
         )

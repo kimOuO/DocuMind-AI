@@ -76,8 +76,9 @@ function NavigationNote({ navigation }: { navigation: Navigation }) {
       <ul className="mt-1 list-none p-0">
         {navigation.items.map((item) => (
           <li key={item.text} className={item.located ? '' : 'text-muted'}>
-            {item.text}
+            {item.location ? `${item.location}：${item.need ?? ''}` : item.text}
             {item.located ? `（第 ${item.pages[0]}${item.pages.length > 1 ? `–${item.pages[item.pages.length - 1]}` : ''} 頁）` : '（文件中找不到）'}
+            {item.selected && item.selected.length > 0 && `，補充 ${item.selected.length} 個片段`}
           </li>
         ))}
       </ul>

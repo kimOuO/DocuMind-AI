@@ -216,16 +216,34 @@ export interface Revision {
 export type Stage = 'navigating' | 'generating' | 'verifying' | 'revising' | 'finalizing'
 
 /** What the experimental navigate mode did (D71); null in the other modes. */
+export interface NavigationTarget {
+  text: string
+  located: boolean
+  pages: number[]
+  /** D73: the Navigator's place, what it needs there, and how the selection went. */
+  location?: string
+  need?: string
+  priority?: 'required' | 'supplementary'
+  status?: 'covered' | 'missing' | null
+  label?: string | null
+  candidates?: number
+  selected?: number[]
+  excluded?: { ordinal: number; reason: string }[]
+}
+
 export interface Navigation {
   map_entries: number
   plan: string | null
-  items: { text: string; located: boolean; pages: number[] }[]
+  items: NavigationTarget[]
   located: number
   fetched: number
   kept: number
   excluded_budget: number
   skipped: string | null
-  log?: { ordinal: number; page: number; kept: boolean; reason: string }[]
+  budget?: number
+  evidence_tokens?: number
+  embedding?: { texts: number; failed: string | null }
+  log?: { ordinal: number; page: number; kept: boolean; reason: string; target?: number | null; score?: number | null }[]
 }
 
 /** A figure of the answer found on a cited page, with the original text around it (AC-26). */

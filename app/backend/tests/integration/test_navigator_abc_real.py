@@ -8,6 +8,8 @@ model.
 
 Run with:  pytest -m llm tests/integration/test_navigator_abc_real.py -s
 Narrow it with the environment: ABC_ARMS=C,A ABC_QUESTIONS=Q2,Q3 ABC_RUNS=1
+Label a rerun of one arm so that it does not overwrite the earlier records (D73: the
+reworked navigate mode is recorded as B2): ABC_ARMS=B ABC_LABEL=B2
 """
 
 import json
@@ -102,8 +104,10 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
         assert await summary.run(index.queued_summary_jobs[job]) is SummaryOutcome.COMPLETED
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
 
+    label = os.environ.get("ABC_LABEL")
     for arm, questions in _plan().items():
         answer_mode = ARMS[arm]
+        recorded_arm = label if label and len(_plan()) == 1 else arm
         client.app.dependency_overrides[get_settings] = lambda m=answer_mode: (  # type: ignore[attr-defined]
             get_settings().model_copy(update={"answer_mode": m})
         )
@@ -129,7 +133,7 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
                     (before,),
                 ).fetchall()
                 record = {
-                    "arm": arm,
+                    "arm": recorded_arm,
                     "answer_mode": answer_mode,
                     "question": key,
                     "question_text": question,
@@ -164,13 +168,13 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
                         for c in calls
                     ],
                 }
-                (RUNS_DIR / f"{arm}-{key}-{run}.json").write_text(
+                (RUNS_DIR / f"{recorded_arm}-{key}-{run}.json").write_text(
                     json.dumps(record, indent=1, ensure_ascii=False) + "\n"
                 )
                 done = by_name.get("done") or {}
                 navigation = done.get("navigation") or {}
                 print(
-                    f"\n[{arm} {key} run {run}] {elapsed:.0f}s calls={len(calls)} "
+                    f"\n[{recorded_arm} {key} run {run}] {elapsed:.0f}s calls={len(calls)} "
                     f"route={(by_name.get('route') or {}).get('type')} "
                     f"status={done.get('status', by_name.get('error'))} "
                     "sources="

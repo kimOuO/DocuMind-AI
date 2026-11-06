@@ -12,9 +12,13 @@ from dataclasses import dataclass
 from sqlalchemy import and_, or_, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.ingestion.headings import find_headings
+from app.ingestion.parsing import Page
 from app.models import Chunk, Document
 
 _CAPTION_LINE = re.compile(r"^\s*(?:Table|Figure|Fig\.)\s*\d+\s*[.:]", re.IGNORECASE)
+# A line that may be a numbered heading ("4.3 ABLATION STUDIES"); the recogniser decides.
+_NUMBERED_LINE_SQL = r"(^|\n)\s*\d{1,2}(\.\d{1,2})*\s+[A-Za-z]"
 
 
 @dataclass(frozen=True)
@@ -137,56 +141,16 @@ class RetrievalRepository:
                 pages.append((document_id, page, chunk_text))
         return pages
 
-    async def chunks_on_pages(
-        self, owner_id: uuid.UUID, document_id: uuid.UUID, pages: list[int], *, limit: int
-    ) -> list[RetrievedChunk]:
-        """The owner's chunks of a document on the given pages, in document order (D71:
-        evidence a reading plan asks for)."""
-        if not pages:
-            return []
-        rows = await self._db.execute(
-            select(
-                Chunk.id,
-                Chunk.document_id,
-                Document.filename,
-                Chunk.page,
-                Chunk.ordinal,
-                Chunk.text,
-                Chunk.token_count,
-            )
-            .join(Document, Document.id == Chunk.document_id)
-            .where(
-                Document.owner_id == owner_id,
-                Chunk.document_id == document_id,
-                Chunk.page.in_(pages),
-            )
-            .order_by(Chunk.ordinal)
-            .limit(limit)
-        )
-        return [
-            RetrievedChunk(
-                chunk_id=row.id,
-                document_id=row.document_id,
-                filename=row.filename,
-                page=row.page,
-                ordinal=row.ordinal,
-                text=row.text,
-                token_count=row.token_count,
-                score=None,
-                origin="navigation",
-            )
-            for row in rows
-        ]
-
     async def caption_lines(
         self, owner_id: uuid.UUID, document_ids: list[uuid.UUID]
-    ) -> list[tuple[uuid.UUID, str, int, str]]:
+    ) -> list[tuple[uuid.UUID, str, int, int, str]]:
         """Every line of the owner's chunks that starts a table or figure caption
-        ("Table 2: …", "Figure 1: …"), with its document and page (D71: the document map)."""
+        ("Table 2: …", "Figure 1: …"), with its document, page and chunk ordinal (D71:
+        the document map)."""
         if not document_ids:
             return []
         rows = await self._db.execute(
-            select(Chunk.document_id, Document.filename, Chunk.page, Chunk.text)
+            select(Chunk.document_id, Document.filename, Chunk.page, Chunk.ordinal, Chunk.text)
             .join(Document, Document.id == Chunk.document_id)
             .where(
                 Document.owner_id == owner_id,
@@ -195,12 +159,112 @@ class RetrievalRepository:
             )
             .order_by(Chunk.document_id, Chunk.ordinal)
         )
-        captions: list[tuple[uuid.UUID, str, int, str]] = []
-        for document_id, filename, page, chunk_text in rows:
+        captions: list[tuple[uuid.UUID, str, int, int, str]] = []
+        for document_id, filename, page, ordinal, chunk_text in rows:
             for line in chunk_text.splitlines():
                 if _CAPTION_LINE.match(line):
-                    captions.append((document_id, filename, page, line.strip()))
+                    captions.append((document_id, filename, page, ordinal, line.strip()))
         return captions
+
+    async def heading_lines(
+        self, owner_id: uuid.UUID, document_ids: list[uuid.UUID]
+    ) -> list[tuple[uuid.UUID, str, int, int, int, str]]:
+        """Every numbered heading the recogniser (AC-53) finds in the owner's chunks, with
+        its document, page, chunk ordinal and line within the chunk (D73: sections and
+        subsections of the document map, with their chunk ranges)."""
+        if not document_ids:
+            return []
+        rows = await self._db.execute(
+            select(Chunk.document_id, Document.filename, Chunk.page, Chunk.ordinal, Chunk.text)
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Document.owner_id == owner_id,
+                Chunk.document_id.in_(document_ids),
+                Chunk.text.op("~")(_NUMBERED_LINE_SQL),
+            )
+            .order_by(Chunk.document_id, Chunk.ordinal)
+        )
+        headings: list[tuple[uuid.UUID, str, int, int, int, str]] = []
+        for document_id, filename, page, ordinal, chunk_text in rows:
+            for h in find_headings([Page(page, chunk_text)]):
+                if h.number is not None:
+                    headings.append((document_id, filename, page, ordinal, h.line, h.raw))
+        return headings
+
+    async def chunk_pages(
+        self, owner_id: uuid.UUID, document_ids: list[uuid.UUID]
+    ) -> list[tuple[uuid.UUID, int, int]]:
+        """(document, ordinal, page) of every chunk of the owner's documents."""
+        if not document_ids:
+            return []
+        rows = await self._db.execute(
+            select(Chunk.document_id, Chunk.ordinal, Chunk.page)
+            .join(Document, Document.id == Chunk.document_id)
+            .where(Document.owner_id == owner_id, Chunk.document_id.in_(document_ids))
+            .order_by(Chunk.document_id, Chunk.ordinal)
+        )
+        return [(row.document_id, row.ordinal, row.page) for row in rows]
+
+    async def rank_chunks(
+        self,
+        owner_id: uuid.UUID,
+        document_id: uuid.UUID,
+        embeddings: list[list[float]],
+        *,
+        ordinals: tuple[int, int] | None = None,
+        pages: list[int] | None = None,
+        limit: int,
+    ) -> list[tuple[RetrievedChunk, list[float]]]:
+        """The owner's chunks of a document within a chunk range or on given pages, with
+        their cosine similarity to each embedding, ranked by the mean similarity (D73:
+        the candidates of a Navigator target). Without embeddings: document order."""
+        if ordinals is None and not pages:
+            return []
+        scores = [
+            (1 - Chunk.embedding.cosine_distance(e)).label(f"score_{i}")
+            for i, e in enumerate(embeddings)
+        ]
+        query = (
+            select(
+                Chunk.id,
+                Chunk.document_id,
+                Document.filename,
+                Chunk.page,
+                Chunk.ordinal,
+                Chunk.text,
+                Chunk.token_count,
+                *scores,
+            )
+            .join(Document, Document.id == Chunk.document_id)
+            .where(Document.owner_id == owner_id, Chunk.document_id == document_id)
+        )
+        if ordinals is not None:
+            query = query.where(Chunk.ordinal >= ordinals[0], Chunk.ordinal <= ordinals[1])
+        else:
+            query = query.where(Chunk.page.in_(pages or []))
+        if scores:
+            mean = sum(scores[1:], scores[0]) / len(scores)
+            query = query.order_by(mean.desc(), Chunk.ordinal)
+        else:
+            query = query.order_by(Chunk.ordinal)
+        rows = await self._db.execute(query.limit(limit))
+        return [
+            (
+                RetrievedChunk(
+                    chunk_id=row.id,
+                    document_id=row.document_id,
+                    filename=row.filename,
+                    page=row.page,
+                    ordinal=row.ordinal,
+                    text=row.text,
+                    token_count=row.token_count,
+                    score=None,
+                    origin="navigation",
+                ),
+                [float(getattr(row, f"score_{i}")) for i in range(len(embeddings))],
+            )
+            for row in rows
+        ]
 
     async def chunks_after(
         self, owner_id: uuid.UUID, document_id: uuid.UUID, ordinal: int, *, limit: int
