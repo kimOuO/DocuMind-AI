@@ -104,6 +104,19 @@ def analyse(run: dict) -> dict:
             for e in navigation.get("log", [])
             if e.get("reason") == "over the evidence budget"
         ),
+        # D74 (B3): coverage of the required targets, the supplementary chunks used, the
+        # size of the evidence matrix and the four-way analysis status.
+        "required_targets": sum(1 for i in items if i.get("priority") == "required"),
+        "required_covered": sum(
+            1
+            for i in items
+            if i.get("priority") == "required" and i.get("coverage") == "covered"
+        ),
+        "unmet_required": len(navigation.get("unmet_required") or []),
+        "supplementary_used": navigation.get("supplementary_used"),
+        "matrix_cells": (navigation.get("matrix") or {}).get("cells"),
+        "analysis_status": (run.get("done") or {}).get("analysis_status"),
+        "direction_issues": len((run.get("done") or {}).get("direction_issues") or []),
         "calls": len(run.get("llm_calls", [])),
         "tokens": sum(
             c["prompt_tokens"] + c["completion_tokens"]
@@ -157,6 +170,23 @@ def _answers(runs: list[dict]) -> str:
                 lines.append(
                     f"  - {'✓' if item['located'] else '✗'} {item['text']}{detail}"
                 )
+        if done.get("analysis_status") is not None:
+            completeness = done.get("completeness") or {}
+            lines.append(
+                f"- 分析狀態：{done['analysis_status']}；完整性 {completeness.get('status')}"
+                f"（required {completeness.get('required')}，缺 {completeness.get('missing')}，"
+                f"條件 {completeness.get('condition')}）；方向核對 "
+                f"{[(d['status'], d['left'], d['right']) for d in done.get('direction_issues') or []]}"
+            )
+        if navigation.get("coverage") is not None:
+            lines.append(
+                "- 涵蓋判定："
+                + "；".join(
+                    f"{c['location']}→{c['status']}" for c in navigation["coverage"]
+                )
+                + f"；required 未納入 {navigation.get('unmet_required')}；supplementary 用 "
+                f"{navigation.get('supplementary_used')}；Matrix {navigation.get('matrix')}"
+            )
         lines.append(
             "- 檢查：標籤不符 "
             f"{[m['number'] for m in done.get('mislabelled_numbers') or []]}；"
@@ -190,9 +220,10 @@ def main() -> None:
 
     print(
         "| arm | Q | n | recall retrieved | recall plan | recall final | coverage final | "
-        "plan located/items | added | redundant | low relevance | over budget | calls | tokens | s |"
+        "plan located/items | added | redundant | low relevance | over budget | "
+        "required covered | supp. used | matrix cells | calls | tokens | s |"
     )
-    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     for (arm, q), rs in sorted(groups.items(), key=lambda kv: (kv[0][1], kv[0][0])):
         located = sum(r["plan_located"] or 0 for r in rs)
         items = sum(r["plan_items"] for r in rs)
@@ -202,6 +233,9 @@ def main() -> None:
             f"{mean([r['coverage_final'] for r in rs])} | {located}/{items} | "
             f"{sum(r['added_chunks'] for r in rs)} | {sum(r['redundant_added'] for r in rs)} | "
             f"{sum(r['excluded_low_relevance'] for r in rs)} | {sum(r['excluded_budget'] for r in rs)} | "
+            f"{sum(r['required_covered'] for r in rs)}/{sum(r['required_targets'] for r in rs)} | "
+            f"{sum(r['supplementary_used'] or 0 for r in rs)} | "
+            f"{sum(r['matrix_cells'] or 0 for r in rs)} | "
             f"{mean([r['calls'] for r in rs])} | {mean([r['tokens'] for r in rs])} | "
             f"{mean([r['elapsed_seconds'] for r in rs])} |"
         )

@@ -188,6 +188,75 @@ LightRAG is open-source and available at https://github.com/HKUDS/LightRAG [2]. 
 The document addresses the limitations of existing Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack contextual awareness, leading to fragmented responses for complex queries [1]. To overcome these issues, the authors propose LightRAG, a RAG system that integrates graph structures into text indexing and retrieval, enabling more comprehensive and contextually rich responses [1]. LightRAG introduces a dual-level retrieval system that supports both low-level retrieval of specific entities and high-level retrieval of broader topics, improving the system's ability to capture complex dependencies and provide coherent answers [1]. The system enhances retrieval by segmenting documents into smaller chunks, extracting entities and relationships to build a knowledge graph, and using a deduplication process to improve efficiency [1]. It also supports fast adaptation to new data through an incremental update algorithm [1]. Experimental evaluations on the UltraDomain benchmark across four domains show that LightRAG outperforms existing approaches in terms of comprehensiveness, diversity, empowerment, and overall performance [1]. For example, in the Agriculture dataset, LightRAG achieved a 67.6% win rate in Comprehensiveness against Naive RAG's 32.4% [1], and in the Legal dataset, it achieved 83.6% in Comprehensiveness against Naive RAG's 16.4% [1]. Compared to GraphRAG, LightRAG showed a 54.4% win rate in Comprehensiveness [1]. Ablation studies confirm the importance of the dual-level retrieval paradigm, with performance declining when either level is removed [1]. In terms of efficiency, LightRAG used fewer than 100 tokens and a single API call for retrieval in the Legal dataset, compared to GraphRAG's 610,000 tokens and hundreds of API calls [1]. The document also discusses the integration of graph structures with vector representations to enhance retrieval and the system's ability to adapt to new data [1]. The key contributions of this work include emphasizing the importance of graph-empowered RAG systems, proposing LightRAG with a dual-level retrieval paradigm, and demonstrating experimental improvements over baseline methods in retrieval accuracy, model ablation, response efficiency, and adaptability [1]. The document concludes by summarizing the implications of the work and highlighting the effectiveness of LightRAG in improving the speed and quality of information retrieval and generation while reducing costs for LLM inference [8].
 ```
 
+## B3-Q1-1
+
+- 問題：`summary this document.`；模式 `navigate`；30.6 秒；2 次呼叫；tokens 7384
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary, [10] p11 navigation, [11] p8 navigation
+- 閱讀計畫（定位 6/6，保留 2，超預算 16）：
+  - ✓ Section 1 INTRODUCTION | need: overview and purpose | priority: required | status: missing → 候選 5，納入 []，排除 [(4, 'low relevance'), (2, 'low relevance'), (1, 'low relevance'), (3, 'low relevance'), (0, 'low relevance')]
+  - ✓ Section 2 RETRIEVAL-AUGMENTED GENERATION | need: background context | priority: required | status: missing → 候選 4，納入 []，排除 [(4, 'low relevance'), (7, 'low relevance'), (6, 'low relevance'), (5, 'low relevance')]
+  - ✓ Section 3 THE LIGHT RAG ARCHITECTURE | need: framework structure | priority: required | status: missing → 候選 8，納入 [14]，排除 [(8, 'low relevance'), (13, 'low relevance'), (10, 'low relevance'), (11, 'low relevance'), (12, 'low relevance'), (9, 'low relevance'), (7, 'over the evidence budget')]
+  - ✓ Section 4 EVALUATION | need: experimental results | priority: required | status: missing → 候選 9，納入 [22]，排除 [(14, 'low relevance'), (19, 'over the evidence budget'), (18, 'over the evidence budget'), (27, 'over the evidence budget'), (28, 'over the evidence budget'), (24, 'over the evidence budget'), (21, 'over the evidence budget'), (26, 'over the evidence budget')]
+  - ✓ Section 5 RELATED WORK | need: prior research context | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(29, 'low relevance'), (30, 'over the evidence budget'), (31, 'over the evidence budget')]
+  - ✓ Section 6 CONCLUSION | need: summary of findings | priority: required | status: missing → 候選 7，納入 [32]，排除 [(31, 'low relevance'), (33, 'over the evidence budget'), (34, 'over the evidence budget'), (37, 'over the evidence budget'), (36, 'over the evidence budget'), (35, 'over the evidence budget')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 1 INTRODUCTION→missing；Section 2 RETRIEVAL-AUGMENTED GENERATION→missing；Section 3 THE LIGHT RAG ARCHITECTURE→missing；Section 4 EVALUATION→missing；Section 5 RELATED WORK→missing；Section 6 CONCLUSION→missing；required 未納入 ['Section 1 INTRODUCTION', 'Section 2 RETRIEVAL-AUGMENTED GENERATION']；supplementary 用 0；Matrix None
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 2；找不到的數字 []
+
+```text
+The document "LightRAG: Simple and Fast Retrieval-Augmented Generation" addresses limitations in existing Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack sufficient contextual awareness, leading to fragmented answers [1]. The authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval processes, enabling dual-level retrieval for both low-level and high-level knowledge discovery [2]. LightRAG combines graph structures with vector representations to efficiently retrieve related entities and their relationships, improving response times and maintaining contextual relevance [1]. An incremental update algorithm ensures timely integration of new data, making the system effective in rapidly changing environments [1].
+
+Extensive experiments on four datasets—Agriculture, CS, Legal, and Mix—show that LightRAG outperforms state-of-the-art methods such as Naive RAG, RQ-RAG, HyDE, and GraphRAG [1]. On the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment compared to Naive RAG [6]. Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset [6]. LightRAG also demonstrates cost efficiency, using fewer than 100 tokens and a single API call for retrieval in the Legal dataset, compared to 610,000 tokens and hundreds of API calls for GraphRAG [6].
+
+The document concludes that LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference [8]. The LightRAG code is open-sourced and available at https://github.com/HKUDS/LightRAG [1].
+```
+
+## B3-Q1-2
+
+- 問題：`summary this document.`；模式 `navigate`；28.7 秒；2 次呼叫；tokens 6026
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary, [10] p5 navigation, [11] p12 navigation
+- 閱讀計畫（定位 6/6，保留 2，超預算 21）：
+  - ✓ Section 1 INTRODUCTION | need: overview of the document | priority: required | status: missing → 候選 5，納入 []，排除 [(1, 'low relevance'), (2, 'low relevance'), (4, 'over the evidence budget'), (0, 'over the evidence budget'), (3, 'over the evidence budget')]
+  - ✓ Section 2 RETRIEVAL-AUGMENTED GENERATION | need: definition and context | priority: required | status: missing → 候選 4，納入 []，排除 [(6, 'low relevance'), (5, 'low relevance'), (4, 'low relevance'), (7, 'low relevance')]
+  - ✓ Section 3 THE LIGHT RAG ARCHITECTURE | need: framework description | priority: required | status: missing → 候選 8，納入 [14]，排除 [(11, 'low relevance'), (10, 'low relevance'), (12, 'low relevance'), (9, 'low relevance'), (13, 'over the evidence budget'), (7, 'over the evidence budget'), (8, 'over the evidence budget')]
+  - ✓ Section 4 EVALUATION | need: experimental results summary | priority: required | status: missing → 候選 9，納入 [22, 24]，排除 [(19, 'over the evidence budget'), (18, 'over the evidence budget'), (14, 'already selected for another target'), (27, 'over the evidence budget'), (23, 'over the evidence budget'), (26, 'over the evidence budget'), (21, 'over the evidence budget')]
+  - ✓ Section 5 RELATED WORK | need: background and prior research | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(29, 'low relevance'), (31, 'over the evidence budget'), (30, 'over the evidence budget')]
+  - ✓ Section 6 CONCLUSION | need: summary of contributions and findings | priority: required | status: missing → 候選 7，納入 [37]，排除 [(31, 'low relevance'), (32, 'over the evidence budget'), (36, 'over the evidence budget'), (34, 'over the evidence budget'), (33, 'over the evidence budget'), (35, 'over the evidence budget')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 1 INTRODUCTION→missing；Section 2 RETRIEVAL-AUGMENTED GENERATION→missing；Section 3 THE LIGHT RAG ARCHITECTURE→missing；Section 4 EVALUATION→missing；Section 5 RELATED WORK→missing；Section 6 CONCLUSION→missing；required 未納入 ['Section 1 INTRODUCTION', 'Section 2 RETRIEVAL-AUGMENTED GENERATION']；supplementary 用 0；Matrix None
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 2；找不到的數字 []
+
+```text
+The document "LightRAG: Simple and Fast Retrieval-Augmented Generation" addresses the limitations of existing Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack sufficient contextual awareness, leading to fragmented answers [3]. To overcome these issues, the authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval, enabling dual-level retrieval for both low-level and high-level knowledge discovery [1]. LightRAG combines graph structures with vector representations to efficiently retrieve related entities and their relationships, improving response times and maintaining contextual relevance. An incremental update algorithm ensures timely integration of new data, making the system effective in rapidly changing environments [1].
+
+The framework is evaluated across four datasets—Agriculture, CS, Legal, and Mix—showing significant improvements in retrieval accuracy and efficiency compared to existing approaches such as Naive RAG, RQ-RAG, HyDE, and GraphRAG. On the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment against Naive RAG [6]. Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset [6]. 
+
+Additionally, LightRAG demonstrates cost efficiency. In the Legal dataset, it uses fewer than 100 tokens and a single API call for retrieval, compared to 610,000 tokens and hundreds of API calls for GraphRAG [6]. The system is open-sourced at https://github.com/HKUDS/LightRAG [1]. The document concludes that LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference [8].
+```
+
+## B3-Q1-3
+
+- 問題：`summary this document.`；模式 `navigate`；27.9 秒；2 次呼叫；tokens 7192
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary, [10] p6 navigation, [11] p11 navigation, [12] p2 navigation, [13] p9 navigation, [14] p12 navigation
+- 閱讀計畫（定位 6/6，保留 5，超預算 18）：
+  - ✓ Section 1 INTRODUCTION | need: overview of the document | priority: required | status: missing → 候選 5，納入 [4, 0]，排除 [(1, 'low relevance'), (2, 'low relevance'), (3, 'over the evidence budget')]
+  - ✓ Section 3 THE LIGHT RAG ARCHITECTURE | need: description of the architecture | priority: required | status: missing → 候選 8，納入 []，排除 [(7, 'low relevance'), (11, 'low relevance'), (10, 'low relevance'), (8, 'low relevance'), (13, 'low relevance'), (14, 'low relevance'), (12, 'low relevance'), (9, 'low relevance')]
+  - ✓ Section 4 EVALUATION | need: evaluation methodology and results | priority: required | status: missing → 候選 9，納入 [18, 26]，排除 [(27, 'over the evidence budget'), (25, 'over the evidence budget'), (24, 'over the evidence budget'), (17, 'over the evidence budget'), (23, 'over the evidence budget'), (14, 'over the evidence budget'), (16, 'over the evidence budget')]
+  - ✓ Section 5 RELATED WORK | need: context and prior work | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(31, 'low relevance'), (29, 'low relevance'), (30, 'over the evidence budget')]
+  - ✓ Section 6 CONCLUSION | need: summary of findings and future work | priority: required | status: missing → 候選 7，納入 [34, 37, 35]，排除 [(32, 'over the evidence budget'), (33, 'over the evidence budget'), (36, 'target quota reached'), (31, 'target quota reached')]
+  - ✓ Section 7 APPENDIX | need: additional details and examples | priority: supplementary | status: missing → 候選 8，納入 []，排除 [(39, 'low relevance'), (41, 'low relevance'), (43, 'low relevance'), (38, 'over the evidence budget'), (40, 'over the evidence budget'), (44, 'over the evidence budget'), (45, 'over the evidence budget'), (42, 'over the evidence budget')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 1 INTRODUCTION→missing；Section 3 THE LIGHT RAG ARCHITECTURE→missing；Section 4 EVALUATION→missing；Section 5 RELATED WORK→missing；Section 6 CONCLUSION→missing；Section 7 APPENDIX→missing；required 未納入 ['Section 3 THE LIGHT RAG ARCHITECTURE']；supplementary 用 0；Matrix None
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The document presents LightRAG, a novel Retrieval-Augmented Generation (RAG) framework that addresses limitations in existing RAG systems, such as the use of flat data representations and insufficient contextual awareness, which often lead to fragmented answers [1]. LightRAG integrates graph structures into text indexing and retrieval, enabling dual-level retrieval for both low-level and high-level knowledge discovery [3]. This integration of graph structures with vector representations allows for efficient retrieval of related entities and relationships, improving response times while maintaining contextual relevance [1]. The framework also includes an incremental update algorithm to efficiently integrate new data, making it suitable for dynamic environments [1].
+
+LightRAG is evaluated on four datasets—Agriculture, CS, Legal, and Mix—demonstrating significant improvements in retrieval accuracy and efficiency compared to existing methods such as Naive RAG, RQ-RAG, HyDE, and GraphRAG [1]. For instance, in the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment compared to Naive RAG [6]. The framework also shows cost efficiency, using fewer than 100 tokens and a single API call for retrieval, compared to hundreds of thousands of tokens and multiple API calls for GraphRAG [1]. 
+
+The document concludes by highlighting LightRAG's contributions, including a general framework for graph-empowered RAG, the development of a dual-level retrieval paradigm, and experimental validation showing significant improvements in retrieval accuracy, response efficiency, and adaptability [8]. The system is open-sourced at https://github.com/HKUDS/LightRAG [1].
+```
+
 ## C-Q1-1
 
 - 問題：`summary this document.`；模式 `single`；24.8 秒；1 次呼叫；tokens 4371
@@ -469,6 +538,172 @@ From a cost and adaptability perspective, LightRAG is significantly more efficie
 In case studies, LightRAG outperforms GraphRAG in all evaluation dimensions assessed by the LLM judge, including comprehensiveness, diversity, empowerment, and overall quality. For instance, in a machine learning question case study, LightRAG provides a broader array of metrics and more nuanced explanations compared to GraphRAG [6].
 
 In summary, LightRAG demonstrates superior performance in diverse environments, enhanced response variety, improved efficiency in incremental updates, and better case study outcomes compared to GraphRAG.
+```
+
+## B3-Q2-1
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；43.9 秒；2 次呼叫；tokens 7716
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p9 retrieval, [4] p8 retrieval, [5] p10 retrieval, [6] p7 navigation, [7] p6 navigation, [8] p9 navigation, [9] p4 navigation
+- 閱讀計畫（定位 6/6，保留 4，超預算 0）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'already selected for another target')]
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: ablation results involving GraphRAG | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(21, 'already among the retrieved sources'), (22, 'supplementary cap reached'), (23, 'supplementary cap reached')]
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: supplementary | status: missing → 候選 5，納入 []，排除 [(27, 'already among the retrieved sources'), (24, 'supplementary cap reached'), (25, 'supplementary cap reached'), (23, 'supplementary cap reached'), (26, 'supplementary cap reached')]
+  - ✓ Table 1 (page 7) | need: quantitative comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [19]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources')]
+  - ✓ Table 3 (page 9) | need: case study comparison data | priority: supplementary | status: missing → 候選 3，納入 [25]，排除 [(26, 'supplementary cap reached'), (27, 'supplementary cap reached')]
+  - ✓ Section 3.1 GRAPH-BASED TEXT INDEXING | need: architecture differences | priority: supplementary | status: missing → 候選 5，納入 [10]，排除 [(9, 'low relevance'), (11, 'supplementary cap reached'), (8, 'supplementary cap reached'), (7, 'supplementary cap reached')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Section 4.3 ABLATION STUDIES (RQ2)→partial；Section 4.4 CASE STUDY (RQ3)→partial；Table 1 (page 7)→missing；Table 3 (page 9)→missing；Section 3.1 GRAPH-BASED TEXT INDEXING→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 128, 'tables': ['Table 1 [6]'], 'definitions': ['LightRAG']}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+(1) The question asks to compare LightRAG with GraphRAG, including datasets, evaluation dimensions, and metrics. The datasets used are Agriculture, CS, Legal, and Mix. The evaluation dimensions are Comprehensiveness, Diversity, Empowerment, and Overall. Metrics are based on win rates (%) from Table 1.
+
+(2) Method definitions:
+- LightRAG: A graph-based RAG system using a dual-level retrieval paradigm and graph-based text indexing [2].
+- GraphRAG: Not defined in the sources but described as a graph-based RAG system.
+
+(3) Comparison of LightRAG and GraphRAG based on the same datasets, evaluation dimensions, and metrics from Table 1 [6]:
+
+| Dataset | Evaluation Dimension | GraphRAG Win Rate (%) | LightRAG Win Rate (%) |
+|---------|----------------------|------------------------|------------------------|
+| Agriculture | Comprehensiveness | 45.6 | 54.4 |
+| Agriculture | Diversity | 22.8 | 77.2 |
+| Agriculture | Empowerment | 41.2 | 58.8 |
+| Agriculture | Overall | 45.2 | 54.8 |
+| CS | Comprehensiveness | 48.4 | 51.6 |
+| CS | Diversity | 40.8 | 59.2 |
+| CS | Empowerment | 45.2 | 54.8 |
+| CS | Overall | 48.0 | 52.0 |
+| Legal | Comprehensiveness | 48.4 | 51.6 |
+| Legal | Diversity | 26.4 | 73.6 |
+| Legal | Empowerment | 43.6 | 56.4 |
+| Legal | Overall | 47.2 | 52.8 |
+| Mix | Comprehensiveness | 50.4 | 49.6 |
+| Mix | Diversity | 36.0 | 64.0 |
+| Mix | Empowerment | 50.8 | 49.2 |
+| Mix | Overall | 50.4 | 49.6 |
+
+(4) Improvements:
+- LightRAG outperforms GraphRAG in Comprehensiveness in Agriculture and CS.
+- LightRAG significantly outperforms GraphRAG in Diversity in Agriculture, CS, and Legal.
+- LightRAG outperforms GraphRAG in Empowerment in Agriculture and CS.
+- LightRAG outperforms GraphRAG in Overall in Agriculture and CS.
+
+Exceptions:
+- In Mix, GraphRAG outperforms LightRAG in Comprehensiveness and Empowerment.
+- In Mix, GraphRAG and LightRAG are nearly equal in Overall.
+
+(5) These findings are consistent with the data in Table 1 [6], where LightRAG's win rates are higher than GraphRAG in most cases, particularly in the Diversity dimension.
+
+(6) The comparison is based on Table 1 [6], and the definition of LightRAG is based on [2].
+
+(7) The requested comparison is fully addressed.
+```
+
+## B3-Q2-2
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；46.8 秒；2 次呼叫；tokens 8549
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p9 retrieval, [4] p8 retrieval, [5] p10 retrieval, [6] p7 navigation, [7] p8 navigation, [8] p8 navigation
+- 閱讀計畫（定位 6/6，保留 4，超預算 8）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'already selected for another target')]
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: performance comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [23, 22]，排除 [(21, 'already among the retrieved sources')]
+  - ✓ Table 1 (page 7) | need: quantitative comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [19]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources')]
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 5，納入 []，排除 [(27, 'already among the retrieved sources'), (24, 'already among the retrieved sources'), (25, 'over the evidence budget'), (23, 'already selected for another target'), (26, 'over the evidence budget')]
+  - ✓ Table 3 (page 9) | need: case study comparison with GraphRAG | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(25, 'over the evidence budget'), (26, 'over the evidence budget'), (27, 'already among the retrieved sources')]
+  - ✓ Section 3.1 GRAPH-BASED TEXT INDEXING | need: architectural basis for comparison | priority: supplementary | status: missing → 候選 5，納入 []，排除 [(9, 'low relevance'), (10, 'over the evidence budget'), (11, 'over the evidence budget'), (8, 'over the evidence budget'), (7, 'over the evidence budget')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Section 4.3 ABLATION STUDIES (RQ2)→partial；Table 1 (page 7)→missing；Section 4.4 CASE STUDY (RQ3)→partial；Table 3 (page 9)→missing；Section 3.1 GRAPH-BASED TEXT INDEXING→missing；required 未納入 ['Section 4.4 CASE STUDY (RQ3)']；supplementary 用 0；Matrix {'cells': 256, 'tables': ['Table 1 [6]', 'Table 2 [8]'], 'definitions': ['LightRAG', '-High', 'NaiveRAG']}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 [([6], [3])]；未解析 0；找不到的數字 []
+
+```text
+The question asks to compare LightRAG with GraphRAG, focusing on their performance across different datasets and evaluation metrics.
+
+### Evidence and Definitions
+
+- LightRAG is described as a graph-based RAG system that uses a dual-level retrieval paradigm combining low-level and high-level retrieval mechanisms to enhance response diversity and comprehensiveness [2].  
+- GraphRAG is another graph-based RAG system, but it is not explicitly defined in the sources. Its performance is analyzed in comparison to LightRAG in the datasets and metrics described below.
+
+### Performance Comparison
+
+From **Table 1 (page 7)**, the win rates of LightRAG versus GraphRAG across four datasets (Agriculture, CS, Legal, Mix) and four evaluation dimensions (Comprehensiveness, Diversity, Empowerment, Overall) are as follows:
+
+| Dataset | Metric        | LightRAG Win Rate (%) | GraphRAG Win Rate (%) |
+|---------|---------------|------------------------|------------------------|
+| Agriculture | Comprehensiveness | 54.4 | 45.6 |
+| Agriculture | Diversity | 77.2 | 22.8 |
+| Agriculture | Empowerment | 58.8 | 41.2 |
+| Agriculture | Overall | 54.8 | 45.2 |
+| CS        | Comprehensiveness | 51.6 | 48.4 |
+| CS        | Diversity | 59.2 | 40.8 |
+| CS        | Empowerment | 54.8 | 45.2 |
+| CS        | Overall | 52.0 | 48.0 |
+| Legal     | Comprehensiveness | 51.6 | 48.4 |
+| Legal     | Diversity | 73.6 | 26.4 |
+| Legal     | Empowerment | 56.4 | 43.6 |
+| Legal     | Overall | 52.8 | 47.2 |
+| Mix       | Comprehensiveness | 49.6 | 50.4 |
+| Mix       | Diversity | 64.0 | 36.0 |
+| Mix       | Empowerment | 49.2 | 50.8 |
+| Mix       | Overall | 49.6 | 50.4 |
+
+### Analysis
+
+- **Comprehensiveness**: LightRAG outperforms GraphRAG in all datasets except for Mix, where both achieve nearly equal performance.
+- **Diversity**: LightRAG significantly outperforms GraphRAG in all four datasets, with the largest margin in Agriculture and Legal.
+- **Empowerment**: LightRAG performs better than GraphRAG in Agriculture, CS, and Legal, but GraphRAG slightly outperforms LightRAG in Mix.
+- **Overall**: LightRAG outperforms GraphRAG in Agriculture, CS, and Legal, but GraphRAG slightly outperforms LightRAG in Mix.
+
+### Conclusion
+
+LightRAG demonstrates a consistent advantage over GraphRAG in most metrics and datasets, particularly in diversity and comprehensiveness. However, GraphRAG performs slightly better in the Mix dataset for empowerment and overall performance. This suggests that while LightRAG is generally superior, the performance may vary depending on the specific dataset and evaluation metric [6].
+```
+
+## B3-Q2-3
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；41.6 秒；2 次呼叫；tokens 8537
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p9 retrieval, [4] p8 retrieval, [5] p10 retrieval, [6] p9 navigation, [7] p9 navigation, [8] p8 navigation, [9] p8 navigation, [10] p6 navigation, [11] p10 navigation
+- 閱讀計畫（定位 6/6，保留 7，超預算 1）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison results with GraphRAG | priority: required | status: covered → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'over the evidence budget')]
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: ablation results involving GraphRAG | priority: required | status: covered → 候選 3，納入 [22, 23]，排除 [(21, 'already among the retrieved sources')]
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 5，納入 []，排除 [(27, 'already among the retrieved sources'), (24, 'already among the retrieved sources'), (25, 'already selected for another target'), (23, 'already selected for another target'), (26, 'already selected for another target')]
+  - ✓ Table 3 (page 9) | need: case study comparison data with GraphRAG | priority: required | status: missing → 候選 3，納入 [25, 26]，排除 [(27, 'already among the retrieved sources')]
+  - ✓ Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS | need: background on GraphRAG | priority: supplementary | status: missing → 候選 2，納入 [30]，排除 [(31, 'supplementary cap reached')]
+  - ✓ Section 7.4 CASE STUDY: COMPARISON BETWEEN LIGHT RAG AND THE BASELINE NAIVE RAG | need: additional comparative context | priority: supplementary | status: missing → 候選 2，納入 [45]，排除 [(44, 'supplementary cap reached')]
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Section 4.3 ABLATION STUDIES (RQ2)→partial；Section 4.4 CASE STUDY (RQ3)→partial；Table 3 (page 9)→missing；Section 5.2 LARGE LANGUAGE MODEL FOR GRAPHS→missing；Section 7.4 CASE STUDY: COMPARISON BETWEEN LIGHT RAG AND THE BASELINE NAIVE RAG→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 128, 'tables': ['Table 2 [8]'], 'definitions': ['LightRAG', 'NaiveRAG', '-High']}
+- 檢查：標籤不符 ['16.4%', '13.6%', '16.4%', '15.2%', '16.4%', '13.6%', '15.2%']；全稱宣稱 0；引用可疑 []；未解析 3；找不到的數字 []
+
+```text
+(1) The question asks for a comparison between LightRAG and GraphRAG, including the datasets and evaluation metrics used. The methods compared are LightRAG and GraphRAG. The datasets involved are Agriculture, CS, Legal, and Mix. The metrics used are Comprehensiveness, Diversity, Empowerment, and Overall.
+
+(2) Evidence matrix and method definitions:
+- LightRAG [2]: Dual-level retrieval paradigm combining low-level and high-level retrieval to enhance response diversity and comprehensiveness.
+- GraphRAG [1]: Graph-based retrieval mechanism, compared to LightRAG in datasets and metrics.
+- Table 3 [6]: Case study comparison between LightRAG and GraphRAG on a machine learning question, with evaluation dimensions of Comprehensiveness, Diversity, Empowerment, and Overall.
+
+(3) Comparison of figures with the same dataset, metric, and pairing:
+- Comprehensiveness (Legal dataset): LightRAG has 83.6% win rate versus 16.4% for GraphRAG [8].
+- Diversity (Legal dataset): LightRAG has 86.4% win rate versus 13.6% for GraphRAG [8].
+- Empowerment (Legal dataset): LightRAG has 83.6% win rate versus 16.4% for GraphRAG [8].
+- Overall (Legal dataset): LightRAG has 84.8% win rate versus 15.2% for GraphRAG [8].
+
+(4) Improvements, regressions, and exceptions:
+- LightRAG outperforms GraphRAG in all four evaluation dimensions on the Legal dataset, with substantial margins.
+- No regression or exception is noted in the comparison.
+
+(5) Verifications:
+- "LightRAG outperforms" is supported by the win rates of 83.6%, 86.4%, 83.6%, and 84.8% in Comprehensiveness, Diversity, Empowerment, and Overall, respectively [8].
+- "GraphRAG" win rates of 16.4%, 13.6%, 16.4%, and 15.2% are significantly lower than those of LightRAG [8].
+
+(6) Citations:
+- The win rates and evaluation dimensions are cited from Table 2 [8].
+- Definitions and background are cited from the source descriptions of LightRAG [2] and GraphRAG [1].
+
+(7) Completeness:
+- The requested comparison between LightRAG and GraphRAG is addressed with the specific datasets and metrics required.
+- The response includes representative figures and a conclusion based on the figures provided, without overgeneralization.
+
+Figures whose labels differ from the source table: 16.4% (answer: Comprehensiveness, Legal, GraphRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: Diversity, Legal, GraphRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low); 16.4% (answer: Empowerment, Legal, GraphRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 15.2% (answer: Overall, Legal, GraphRAG; source: Overall, Legal, NaiveRAG, vs LightRAG / Comprehensiveness, Legal, RQ-RAG, vs LightRAG / Empowerment, Legal, RQ-RAG, vs LightRAG); 16.4% (answer: GraphRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: GraphRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low); 15.2% (answer: LightRAG; source: Overall, Legal, NaiveRAG, vs LightRAG / Comprehensiveness, Legal, RQ-RAG, vs LightRAG / Empowerment, Legal, RQ-RAG, vs LightRAG).
 ```
 
 ## C-Q2-1
@@ -786,6 +1021,220 @@ In contrast, the -Origin variant demonstrated 75.2% comprehensiveness in the Agr
 These results indicate that the dual-level retrieval paradigm in LightRAG contributes to its superior performance across various datasets and metrics.
 ```
 
+## B3-Q3-1
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；59.6 秒；2 次呼叫；tokens 7028
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: ablation study description | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Table 2 | need: quantitative performance comparison | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: methodology background | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: generation methodology details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: retrieval methodology details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：SUPPORTED_AND_COMPLETE；完整性 complete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 []，條件 Agriculture / Comprehensiveness）；方向核對 [('uncertain', '65.2%', '67.6%')]
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Section 7.3.1 PROMPTS FOR GRAPH GENERATION→missing；Section 7.3.2 PROMPTS FOR QUERY GENERATION→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'definitions': ['NaiveRAG', 'LightRAG', '-High']}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks for the performance of ablated versions of LightRAG compared to the full model and the reference model, NaiveRAG, across different datasets and metrics.
+
+### Compact Comparison Table
+
+| Method            | Dataset  | Metric         | Score (%) |
+|-------------------|----------|----------------|-----------|
+| NaiveRAG          | Agriculture | Comprehensiveness | 32.4      |
+| LightRAG          | Agriculture | Comprehensiveness | 67.6      |
+| NaiveRAG -High    | Agriculture | Comprehensiveness | 34.8      |
+| -High             | Agriculture | Comprehensiveness | 65.2      |
+| NaiveRAG -Low     | Agriculture | Comprehensiveness | 36.0      |
+| -Low              | Agriculture | Comprehensiveness | 64.0      |
+| NaiveRAG -Origin  | Agriculture | Comprehensiveness | 24.8      |
+| -Origin           | Agriculture | Comprehensiveness | 75.2      |
+| NaiveRAG          | CS        | Comprehensiveness | 38.4      |
+| LightRAG          | CS        | Comprehensiveness | 61.6      |
+| NaiveRAG -High    | CS        | Comprehensiveness | 42.8      |
+| -High             | CS        | Comprehensiveness | 57.2      |
+| NaiveRAG -Low     | CS        | Comprehensiveness | 43.2      |
+| -Low              | CS        | Comprehensiveness | 56.8      |
+| NaiveRAG -Origin  | CS        | Comprehensiveness | 39.2      |
+| -Origin           | CS        | Comprehensiveness | 60.8      |
+| NaiveRAG          | Legal     | Comprehensiveness | 16.4      |
+| LightRAG          | Legal     | Comprehensiveness | 83.6      |
+| NaiveRAG -High    | Legal     | Comprehensiveness | 23.6      |
+| -High             | Legal     | Comprehensiveness | 76.4      |
+| NaiveRAG -Low     | Legal     | Comprehensiveness | 19.2      |
+| -Low              | Legal     | Comprehensiveness | 80.8      |
+| NaiveRAG -Origin  | Legal     | Comprehensiveness | 16.4      |
+| -Origin           | Legal     | Comprehensiveness | 83.6      |
+| NaiveRAG          | Mix       | Comprehensiveness | 38.8      |
+| LightRAG          | Mix       | Comprehensiveness | 61.2      |
+| NaiveRAG -High    | Mix       | Comprehensiveness | 40.4      |
+| -High             | Mix       | Comprehensiveness | 59.6      |
+| NaiveRAG -Low     | Mix       | Comprehensiveness | 36.0      |
+| -Low              | Mix       | Comprehensiveness | 64.0      |
+| NaiveRAG -Origin  | Mix       | Comprehensiveness | 44.4      |
+| -Origin           | Mix       | Comprehensiveness | 55.6      |
+
+### Analysis
+
+LightRAG consistently outperforms NaiveRAG across all datasets and metrics, demonstrating the effectiveness of the dual-level retrieval paradigm. For example, in the Agriculture dataset, LightRAG achieves 67.6% in comprehensiveness, while NaiveRAG scores 32.4% [1]. Similar improvements are observed in the CS, Legal, and Mix datasets.
+
+Ablation studies show that removing either the high-level or low-level retrieval leads to performance degradation compared to the full LightRAG model. The -High variant, which removes high-order retrieval, shows a significant drop in performance across nearly all datasets and metrics [6]. For example, in the Agriculture dataset, -High scores 65.2% in comprehensiveness, which is lower than LightRAG's 67.6% [1].
+
+The -Low variant, which removes low-level retrieval, also performs worse than the full model. In the Agriculture dataset, -Low scores 64.0% in comprehensiveness, compared to LightRAG's 67.6% [1].
+
+The -Origin variant, which eliminates the use of original text in retrieval, performs better than NaiveRAG in some cases but worse than LightRAG. For example, in the Agriculture dataset, -Origin scores 75.2% in comprehensiveness, which is better than NaiveRAG's 32.4% but worse than LightRAG's 67.6% [1].
+
+In conclusion, the full LightRAG model outperforms its ablated variants and the baseline NaiveRAG across most datasets and metrics, demonstrating the importance of the dual-level retrieval paradigm [1][6].
+```
+
+## B3-Q3-2
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；85.6 秒；2 次呼叫；tokens 7657
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: description of ablation studies | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Table 2 | need: quantitative results of ablated versions | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation impact | priority: supplementary | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 7.4 CASE STUDY: COMPARISON BETWEEN LIGHT RAG AND THE BASELINE NAIVE RAG | need: further analysis of ablation effects | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Table 5 | need: comparative data from case study | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: methodological basis for ablations | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：SUPPORTED_AND_COMPLETE；完整性 complete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 []，條件 Agriculture / Comprehensiveness）；方向核對 []
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 7.4 CASE STUDY: COMPARISON BETWEEN LIGHT RAG AND THE BASELINE NAIVE RAG→missing；Table 5→missing；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'definitions': ['NaiveRAG', 'LightRAG', '-High']}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 118；找不到的數字 []
+
+```text
+The question asks for the performance of ablated versions of LightRAG, including which methods were tested, the datasets used, and the metrics evaluated.
+
+### Compact Comparison Table of the Figures Used
+| Method | Dataset | Metric | LightRAG Score | NaiveRAG Score | -High Score | -Low Score | -Origin Score |
+|--------|---------|--------|----------------|----------------|-------------|------------|---------------|
+| Comprehensiveness | Agriculture | % | 67.6% | 32.4% | 65.2% | 64.0% | 75.2% |
+| Comprehensiveness | CS | % | 61.6% | 38.4% | 57.2% | 56.8% | 60.8% |
+| Comprehensiveness | Legal | % | 83.6% | 16.4% | 76.4% | 80.8% | 83.6% |
+| Comprehensiveness | Mix | % | 61.2% | 38.8% | 59.6% | 64.0% | 55.6% |
+| Diversity | Agriculture | % | 76.4% | 23.6% | 72.8% | 72.0% | 73.6% |
+| Diversity | CS | % | 62.0% | 38.0% | 63.2% | 60.4% | 55.2% |
+| Diversity | Legal | % | 86.4% | 13.6% | 83.2% | 86.4% | 85.6% |
+| Diversity | Mix | % | 67.6% | 32.4% | 64.0% | 66.8% | 74.4% |
+| Empowerment | Agriculture | % | 67.6% | 32.4% | 64.0% | 65.2% | 68.0% |
+| Empowerment | CS | % | 61.2% | 38.8% | 57.6% | 57.2% | 56.8% |
+| Empowerment | Legal | % | 83.6% | 16.4% | 77.2% | 83.6% | 82.8% |
+| Empowerment | Mix | % | 57.2% | 42.8% | 52.4% | 64.8% | 54.8% |
+| Overall | Agriculture | % | 67.6% | 32.4% | 64.8% | 65.2% | 74.4% |
+| Overall | CS | % | 61.2% | 38.8% | 56.0% | 56.4% | 60.8% |
+| Overall | Legal | % | 84.8% | 15.2% | 78.0% | 81.2% | 84.4% |
+| Overall | Mix | % | 60.0% | 40.0% | 57.6% | 64.8% | 55.6% |
+
+### Analysis
+
+#### -High variant (removes high-order retrieval)
+- **Comprehensiveness**: Performance drops across all datasets compared to LightRAG. The most significant drop is in the Legal dataset (83.6% for LightRAG vs 76.4% for -High) [6].
+- **Diversity**: Performance drops in Agriculture (76.4% vs 72.8%), CS (62.0% vs 63.2%), and Mix (67.6% vs 64.0%), but slightly improves in Legal (86.4% vs 83.2%) [1].
+- **Empowerment**: Performance drops in Agriculture (67.6% vs 64.0%), CS (61.2% vs 57.6%), and Mix (57.2% vs 52.4%), but slightly improves in Legal (83.6% vs 77.2%) [1].
+- **Overall**: Performance drops in all datasets, with the most significant drop in Legal (84.8% vs 78.0%) [1].
+
+#### -Low variant (removes low-level retrieval)
+- **Comprehensiveness**: Performance drops in Agriculture (67.6% vs 64.0%), CS (61.6% vs 56.8%), and Mix (61.2% vs 64.0%), but slightly improves in Legal (83.6% vs 80.8%) [1].
+- **Diversity**: Performance drops in Agriculture (76.4% vs 72.0%) and CS (62.0% vs 60.4%), but slightly improves in Legal (86.4% vs 86.4%) and Mix (67.6% vs 66.8%) [1].
+- **Empowerment**: Performance drops in Agriculture (67.6% vs 65.2%), CS (61.2% vs 57.2%), and Mix (57.2% vs 64.8%), but slightly improves in Legal (83.6% vs 83.6%) [1].
+- **Overall**: Performance drops in Agriculture (67.6% vs 65.2%), CS (61.2% vs 56.4%), and Mix (60.0% vs 64.8%), but slightly improves in Legal (84.8% vs 81.2%) [1].
+
+#### -Origin variant (removes original text)
+- **Comprehensiveness**: Performance improves in Agriculture (32.4% vs 75.2%), Mix (38.8% vs 55.6%), and Legal (16.4% vs 83.6%), but drops in CS (38.4% vs 60.8%) [1].
+- **Diversity**: Performance improves in Agriculture (23.6% vs 73.6%), Mix (32.4% vs 74.4%), and Legal (13.6% vs 85.6%), but drops in CS (38.0% vs 55.2%) [1].
+- **Empowerment**: Performance improves in Agriculture (32.4% vs 68.0%), CS (38.8% vs 56.8%), and Legal (16.4% vs 82.8%), but drops in Mix (42.8% vs 54.8%) [1].
+- **Overall**: Performance improves in Agriculture (32.4% vs 74.4%), Legal (15.2% vs 84.4%), and Mix (40.0% vs 55.6%), but drops in CS (38.8% vs 60.8%) [1].
+
+### Conclusions
+- **-High variant** generally regresses across all metrics and datasets, with some exceptions in Legal for Diversity and Empowerment.
+- **-Low variant** shows mixed results, with performance drops in most cases but slight improvements in Legal for Comprehensiveness, Diversity, and Empowerment.
+- **-Origin variant** shows significant improvements in Agriculture and Legal across all metrics, but performance drops in CS and Mix in some cases.
+```
+
+## B3-Q3-3
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；72.5 秒；2 次呼叫；tokens 7345
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: overview of ablation study | priority: required | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Table 2 | need: performance comparison data | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study context | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: retrieval paradigm description | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 3.3 RETRIEVAL-AUGMENTED ANSWER GENERATION | need: answer generation process | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG | need: generation example | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：FACTUALLY_INCORRECT；完整性 complete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 []，條件 Agriculture / Comprehensiveness）；方向核對 []
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Section 3.3 RETRIEVAL-AUGMENTED ANSWER GENERATION→missing；Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'definitions': ['NaiveRAG', 'LightRAG', '-High']}
+- 檢查：標籤不符 ['65.2%', '67.6%', '56.8%', '61.6%']；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks for a comparison of the performance of ablated versions of LightRAG, including the methods, datasets, and metrics used.
+
+| Method         | Dataset    | Metric           | Performance (LightRAG baseline) |
+|----------------|------------|------------------|---------------------------------|
+| -High          | Agriculture| Comprehensiveness| 65.2%                           |
+| -High          | Agriculture| Diversity        | 72.8%                           |
+| -High          | Agriculture| Empowerment      | 64.0%                           |
+| -High          | Agriculture| Overall          | 64.8%                           |
+| -High          | CS         | Comprehensiveness| 57.2%                           |
+| -High          | CS         | Diversity        | 63.2%                           |
+| -High          | CS         | Empowerment      | 57.6%                           |
+| -High          | CS         | Overall          | 56.0%                           |
+| -High          | Legal      | Comprehensiveness| 76.4%                           |
+| -High          | Legal      | Diversity        | 83.2%                           |
+| -High          | Legal      | Empowerment      | 77.2%                           |
+| -High          | Legal      | Overall          | 78.0%                           |
+| -High          | Mix        | Comprehensiveness| 59.6%                           |
+| -High          | Mix        | Diversity        | 64.0%                           |
+| -High          | Mix        | Empowerment      | 52.4%                           |
+| -High          | Mix        | Overall          | 57.6%                           |
+| -Low           | Agriculture| Comprehensiveness| 64.0%                           |
+| -Low           | Agriculture| Diversity        | 72.0%                           |
+| -Low           | Agriculture| Empowerment      | 65.2%                           |
+| -Low           | Agriculture| Overall          | 65.2%                           |
+| -Low           | CS         | Comprehensiveness| 56.8%                           |
+| -Low           | CS         | Diversity        | 60.4%                           |
+| -Low           | CS         | Empowerment      | 57.2%                           |
+| -Low           | CS         | Overall          | 56.4%                           |
+| -Low           | Legal      | Comprehensiveness| 80.8%                           |
+| -Low           | Legal      | Diversity        | 86.4%                           |
+| -Low           | Legal      | Empowerment      | 83.6%                           |
+| -Low           | Legal      | Overall          | 81.2%                           |
+| -Low           | Mix        | Comprehensiveness| 64.0%                           |
+| -Low           | Mix        | Diversity        | 66.8%                           |
+| -Low           | Mix        | Empowerment      | 64.8%                           |
+| -Low           | Mix        | Overall          | 64.8%                           |
+| -Origin        | Agriculture| Comprehensiveness| 75.2%                           |
+| -Origin        | Agriculture| Diversity        | 73.6%                           |
+| -Origin        | Agriculture| Empowerment      | 68.0%                           |
+| -Origin        | Agriculture| Overall          | 74.4%                           |
+| -Origin        | CS         | Comprehensiveness| 60.8%                           |
+| -Origin        | CS         | Diversity        | 55.2%                           |
+| -Origin        | CS         | Empowerment      | 56.8%                           |
+| -Origin        | CS         | Overall          | 60.8%                           |
+| -Origin        | Legal      | Comprehensiveness| 83.6%                           |
+| -Origin        | Legal      | Diversity        | 85.6%                           |
+| -Origin        | Legal      | Empowerment      | 82.8%                           |
+| -Origin        | Legal      | Overall          | 84.4%                           |
+| -Origin        | Mix        | Comprehensiveness| 55.6%                           |
+| -Origin        | Mix        | Diversity        | 74.4%                           |
+| -Origin        | Mix        | Empowerment      | 54.8%                           |
+| -Origin        | Mix        | Overall          | 55.6%                           |
+
+The ablated versions of LightRAG show varied performance compared to the full LightRAG model. 
+
+- The -High variant, which removes high-order retrieval, shows a significant performance decline across nearly all datasets and metrics, especially in the CS and Mix datasets. For example, in the CS dataset, the -High variant performs at 57.2% in Comprehensiveness, compared to 61.6% in LightRAG [1]. However, in the Agriculture dataset, -High performs slightly better than LightRAG in some metrics, such as Comprehensiveness at 65.2% versus 67.6% in LightRAG [1].
+
+- The -Low variant, which removes low-level retrieval, performs better than -High in most cases, particularly in the Legal and Mix datasets. For example, in the Legal dataset, the -Low variant performs at 80.8% in Comprehensiveness, compared to 76.4% in -High [1]. However, in the CS dataset, the -Low variant performs worse than LightRAG in most metrics, such as Comprehensiveness at 56.8% versus 61.6% in LightRAG [1].
+
+- The -Origin variant, which eliminates the use of original text, performs surprisingly well in some cases, such as in the Agriculture and Mix datasets, where it shows improvements in some metrics. For example, in the Agriculture dataset, -Origin performs at 75.2% in Comprehensiveness, compared to 67.6% in LightRAG [1]. However, in the Mix dataset, -Origin performs worse in Comprehensiveness at 55.6% versus 61.2% in LightRAG [1].
+
+The full version of LightRAG combines the strengths of both low-level and high-level retrieval methods, achieving balanced performance across multiple dimensions [6].
+
+Figures whose labels differ from the source table: 65.2% (answer: Comprehensiveness, Agriculture, -High, vs LightRAG; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 67.6% (answer: Comprehensiveness, Agriculture, LightRAG, vs LightRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 56.8% (answer: Comprehensiveness, CS, -Low, vs LightRAG; source: Comprehensiveness, CS, -Low, vs NaiveRAG / Empowerment, CS, -Origin, vs NaiveRAG); 61.6% (answer: Comprehensiveness, CS, LightRAG, vs LightRAG; source: Comprehensiveness, CS, LightRAG, vs NaiveRAG).
+```
+
 ## C-Q3-1
 
 - 問題：`Performance of ablated versions of LightRAG`；模式 `single`；20.4 秒；1 次呼叫；tokens 4100
@@ -1079,6 +1528,111 @@ The root-level community summaries (C0) and the source-text summarization (TS) u
 These values are provided in Table 2 of the document [1].
 ```
 
+## B3-G1-1
+
+- 問題：`How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?`；模式 `navigate`；26.9 秒；2 次呼叫；tokens 8033
+- 來源：[1] p10 retrieval, [2] p10 retrieval, [3] p8 retrieval, [4] p10 retrieval, [5] p11 retrieval, [6] p11 table_context, [7] p11 table_context, [8] p8 navigation, [9] p10 navigation, [10] p9 navigation, [11] p9 navigation, [12] p10 navigation, [13] p10 navigation, [14] p6 navigation
+- 閱讀計畫（定位 6/6，保留 8，超預算 0）：
+  - ✓ Section 4.1.2 Conditions | need: dataset details | priority: required | status: covered → 候選 2，納入 [22]，排除 [(21, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: context units and tokens for C0 and TS | priority: required | status: missing → 候選 9，納入 [25, 24]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (26, 'already selected for another target'), (28, 'already selected for another target'), (27, 'already selected for another target')]
+  - ✓ Table 2 | need: context units for C0 and TS | priority: required | status: missing → 候選 3，納入 []，排除 [(29, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (31, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: tokens for C0 and TS | priority: required | status: missing → 候選 9，納入 [26, 28, 27]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (25, 'already selected for another target'), (24, 'target quota reached')]
+  - ✓ Section 3.1.5 Graph Communities → Community Summaries | need: definition of root-level summaries | priority: supplementary | status: missing → 候選 2，納入 [15]，排除 [(16, 'supplementary cap reached')]
+  - ✓ Section 3.1.1 Source Documents → Text Chunks | need: definition of source-text summarization | priority: supplementary | status: missing → 候選 1，納入 [11]，排除 []
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.1.2 Conditions→partial；Section 5.1 Experiment 1→partial；Table 2→partial；Section 5.1 Experiment 1→partial；Section 3.1.5 Graph Communities → Community Summaries→missing；Section 3.1.1 Source Documents → Text Chunks→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks for the number of context units and tokens used by root-level community summaries (C0) and source-text summarization (TS) on the Podcast and News datasets.
+
+| Dataset         | Method | Context Units | Tokens     |
+|-----------------|--------|---------------|------------|
+| Podcast         | C0     | 34            | 26,657     |
+| Podcast         | TS     | 1,669         | 1,014,611  |
+| News            | C0     | 55            | 39,770     |
+| News            | TS     | 3,197         | 1,707,694  |
+
+Root-level community summaries (C0) use 34 context units and 26,657 tokens for the Podcast dataset [1]. In comparison, source-text summarization (TS) uses 1,669 context units and 1,014,611 tokens for the same dataset [1]. For the News dataset, C0 uses 55 context units and 39,770 tokens [1], while TS uses 3,197 context units and 1,707,694 tokens [1].
+```
+
+## B3-G1-2
+
+- 問題：`How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?`；模式 `navigate`；26.8 秒；2 次呼叫；tokens 8008
+- 來源：[1] p10 retrieval, [2] p10 retrieval, [3] p8 retrieval, [4] p10 retrieval, [5] p11 retrieval, [6] p11 table_context, [7] p11 table_context, [8] p8 navigation, [9] p10 navigation, [10] p9 navigation, [11] p10 navigation, [12] p9 navigation, [13] p10 navigation, [14] p7 navigation
+- 閱讀計畫（定位 6/6，保留 8，超預算 0）：
+  - ✓ Section 4.1.2 Conditions | need: dataset descriptions | priority: required | status: covered → 候選 2，納入 [22]，排除 [(21, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: context units for C0 and TS | priority: required | status: missing → 候選 9，納入 [25, 28, 24]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (26, 'already selected for another target'), (27, 'target quota reached')]
+  - ✓ Table 2 | need: context units for C0 and TS | priority: required | status: missing → 候選 3，納入 []，排除 [(29, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (31, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: token usage for C0 and TS | priority: required | status: missing → 候選 9，納入 [26, 27]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (25, 'already selected for another target'), (28, 'already selected for another target'), (24, 'already selected for another target')]
+  - ✓ Section 4.1.2 Conditions | need: token chunking details | priority: supplementary | status: covered → 候選 2，納入 []，排除 [(21, 'already among the retrieved sources'), (22, 'supplementary cap reached')]
+  - ✓ Table 1 | need: example user tasks | priority: supplementary | status: missing → 候選 3，納入 [18, 19]，排除 [(20, 'supplementary cap reached')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.1.2 Conditions→partial；Section 5.1 Experiment 1→partial；Table 2→partial；Section 5.1 Experiment 1→partial；Section 4.1.2 Conditions→partial；Table 1→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks for the number of context units and tokens used by the root-level community summaries (C0) and the source-text summarization (TS) on the Podcast and News datasets.
+
+| Dataset           | Method | Context Units | Tokens   |
+|-------------------|--------|----------------|----------|
+| Podcast Transcripts | C0     | 34             | 26657    |
+| Podcast Transcripts | TS     | 1669           | 1014611  |
+| News Articles      | C0     | 55             | 39770    |
+| News Articles      | TS     | 3197           | 1707694  |
+
+From the data:
+- For the Podcast Transcripts dataset, C0 uses 34 context units and 26,657 tokens, while TS uses 1,669 context units and 1,014,611 tokens [1].
+- For the News Articles dataset, C0 uses 55 context units and 39,770 tokens, while TS uses 3,197 context units and 1,707,694 tokens [1].
+
+These figures demonstrate that C0 requires significantly fewer context units and tokens compared to TS for both the Podcast Transcripts and News Articles datasets [1].
+```
+
+## B3-G1-3
+
+- 問題：`How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?`；模式 `navigate`；32.0 秒；2 次呼叫；tokens 8136
+- 來源：[1] p10 retrieval, [2] p10 retrieval, [3] p8 retrieval, [4] p10 retrieval, [5] p11 retrieval, [6] p11 table_context, [7] p11 table_context, [8] p8 navigation, [9] p10 navigation, [10] p9 navigation, [11] p10 navigation, [12] p9 navigation, [13] p10 navigation, [14] p7 navigation
+- 閱讀計畫（定位 6/6，保留 8，超預算 0）：
+  - ✓ Section 4.1.2 Conditions | need: dataset descriptions | priority: required | status: covered → 候選 2，納入 [22]，排除 [(21, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: context units for C0 and TS | priority: required | status: missing → 候選 9，納入 [25, 28, 24]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (26, 'already selected for another target'), (27, 'target quota reached')]
+  - ✓ Section 5.1 Experiment 1 | need: token usage for C0 and TS | priority: required | status: missing → 候選 9，納入 [26, 27]，排除 [(30, 'already among the retrieved sources'), (29, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (25, 'already selected for another target'), (28, 'already selected for another target'), (24, 'already selected for another target')]
+  - ✓ Table 2 | need: context units for C0 and TS | priority: required | status: missing → 候選 3，納入 []，排除 [(29, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (31, 'already among the retrieved sources')]
+  - ✓ Section 5.1 Experiment 1 | need: dataset-specific context units | priority: supplementary | status: missing → 候選 9，納入 []，排除 [(28, 'low relevance'), (27, 'low relevance'), (30, 'already among the retrieved sources'), (29, 'supplementary cap reached'), (31, 'supplementary cap reached'), (32, 'supplementary cap reached'), (25, 'supplementary cap reached'), (24, 'supplementary cap reached'), (26, 'supplementary cap reached')]
+  - ✓ Table 1 | need: task examples for context units | priority: supplementary | status: missing → 候選 3，納入 [18, 19]，排除 [(20, 'supplementary cap reached')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 4.1.2 Conditions→partial；Section 5.1 Experiment 1→partial；Section 5.1 Experiment 1→partial；Table 2→partial；Section 5.1 Experiment 1→partial；Table 1→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 ['98%', '97.4%', '98.3%', '97.5%']
+
+```text
+The question asks for the number of context units and tokens used by root-level community summaries (C0) and source-text summarization (TS) on the Podcast and News datasets.
+
+### Comparison Table of the Figures
+| Dataset           | Method | Context Units | Tokens     |
+|-------------------|--------|----------------|------------|
+| Podcast Transcripts | C0     | 34             | 26,657     |
+| Podcast Transcripts | TS     | 1,669          | 1,014,611  |
+| News Articles     | C0     | 55             | 39,770     |
+| News Articles     | TS     | 3,197          | 1,707,694  |
+
+### Analysis
+
+Root-level community summaries (C0) use significantly fewer context units and tokens compared to source-text summarization (TS) in both the Podcast and News datasets.
+
+- **Podcast Transcripts**: 
+  - C0 uses 34 context units and 26,657 tokens, while TS uses 1,669 context units and 1,014,611 tokens [1].
+  - This represents a reduction of approximately 98% in context units and 97.4% in tokens for C0 compared to TS.
+
+- **News Articles**: 
+  - C0 uses 55 context units and 39,770 tokens, while TS uses 3,197 context units and 1,707,694 tokens [1].
+  - This represents a reduction of approximately 98.3% in context units and 97.5% in tokens for C0 compared to TS.
+
+### Conclusion
+
+Root-level community summaries (C0) require dramatically fewer context units and tokens than source-text summarization (TS) for both the Podcast and News datasets, as stated in the document [1].
+
+Numbers that could not be checked against the cited pages of the original text: 98%, 97.4%, 98.3%, 97.5%.
+```
+
 ## C-G1-1
 
 - 問題：`How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?`；模式 `single`；10.2 秒；1 次呼叫；tokens 3141
@@ -1301,6 +1855,110 @@ Condition C2 significantly outperformed vector RAG (SS) in comprehensiveness for
 
 ```text
 For the Podcast dataset, condition C2 achieved a comprehensiveness win rate of 72-83% over vector RAG (SS) (p<.001) [1]. In the News dataset, condition C2 had a comprehensiveness win rate of 72-80% over SS (p <.001) [1]. Additionally, in terms of the average number of extracted claims for the Podcast dataset, C2 had 32.46 claims, compared to SS with 26.50 claims [2]. For the News dataset, C2 had 31.62 claims, compared to SS with 25.23 claims [2]. These results indicate that C2 outperformed SS in comprehensiveness for both datasets. No results contradict this trend in the provided sources. Therefore, the conclusion is that C2 significantly outperformed SS in comprehensiveness for both the Podcast and News datasets.
+```
+
+## B3-G2-1
+
+- 問題：`Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets`；模式 `navigate`；29.6 秒；2 次呼叫；tokens 6849
+- 來源：[1] p9 retrieval, [2] p11 retrieval, [3] p10 retrieval, [4] p11 retrieval, [5] p10 retrieval, [6] p10 navigation, [7] p10 navigation, [8] p9 navigation, [9] p10 navigation, [10] p10 navigation, [11] p11 navigation
+- 閱讀計畫（定位 6/6，保留 6，超預算 0）：
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast dataset | priority: required | status: missing → 候選 9，納入 [29, 26, 24]，排除 [(25, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (28, 'target quota reached'), (27, 'target quota reached')]
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News dataset | priority: required | status: missing → 候選 9，納入 [28, 27]，排除 [(25, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (29, 'already selected for another target'), (26, 'already selected for another target'), (24, 'already selected for another target')]
+  - ✓ Table 2 | need: context units for C2 and SS in both datasets | priority: supplementary | status: covered → 候選 3，納入 []，排除 [(29, 'already selected for another target'), (30, 'already among the retrieved sources'), (31, 'already among the retrieved sources')]
+  - ✓ Section 5.2 Experiment 2 | need: average cluster counts for C2 and SS | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(32, 'already among the retrieved sources'), (33, 'already among the retrieved sources'), (34, 'already selected for another target')]
+  - ✓ Table 3 | need: extracted claims for C2 and SS in both datasets | priority: supplementary | status: missing → 候選 3，納入 [34]，排除 [(32, 'already among the retrieved sources'), (33, 'already among the retrieved sources')]
+  - ✓ Section 3.1.5 Graph Communities → Community Summaries | need: method description for C2 and SS | priority: supplementary | status: missing → 候選 2，納入 []，排除 [(16, 'low relevance'), (15, 'low relevance')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 5.1 Experiment 1→partial；Section 5.1 Experiment 1→partial；Table 2→missing；Section 5.2 Experiment 2→partial；Table 3→covered；Section 3.1.5 Graph Communities → Community Summaries→missing；required 未納入 []；supplementary 用 1；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 ['5.96', '6.39']
+
+```text
+The question asks to compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets.
+
+From Table 3, we observe the following average number of extracted claims (a measure of comprehensiveness):
+- For the Podcast dataset, C2 had an average of 32.46 claims, while SS had 26.50 claims [2].
+- For the News dataset, C2 had an average of 31.62 claims, while SS had 25.23 claims [2].
+
+In both datasets, condition C2 outperformed vector RAG (SS) in terms of comprehensiveness. In the Podcast dataset, the average number of extracted claims for C2 was 32.46 compared to 26.50 for SS, representing an increase of 5.96 claims. In the News dataset, the average number of extracted claims for C2 was 31.62 compared to 25.23 for SS, representing an increase of 6.39 claims. These differences were statistically significant (p < .05) in all cases [2]. There are no exceptions mentioned in the given data.
+
+| Dataset       | Method | Average Number of Claims |
+|---------------|--------|--------------------------|
+| Podcast       | C2     | 32.46                    |
+| Podcast       | SS     | 26.50                    |
+| News          | C2     | 31.62                    |
+| News          | SS     | 25.23                    |
+
+In conclusion, condition C2 outperforms vector RAG (SS) in comprehensiveness for both the Podcast and News datasets.
+
+Numbers that could not be checked against the cited pages of the original text: 5.96, 6.39.
+```
+
+## B3-G2-2
+
+- 問題：`Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets`；模式 `navigate`；34.2 秒；2 次呼叫；tokens 7520
+- 來源：[1] p9 retrieval, [2] p11 retrieval, [3] p10 retrieval, [4] p11 retrieval, [5] p10 retrieval, [6] p10 navigation, [7] p10 navigation, [8] p9 navigation, [9] p10 navigation, [10] p10 navigation, [11] p26 navigation, [12] p26 navigation
+- 閱讀計畫（定位 6/6，保留 7，超預算 0）：
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness comparison in Podcast dataset | priority: required | status: missing → 候選 9，納入 [29, 26]，排除 [(25, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (24, 'already selected for another target'), (28, 'already selected for another target'), (27, 'already selected for another target')]
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness comparison in News dataset | priority: required | status: missing → 候選 9，納入 [24, 28, 27]，排除 [(25, 'already among the retrieved sources'), (32, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (29, 'already selected for another target'), (26, 'already selected for another target')]
+  - ✓ Section 5.2 Experiment 2 | need: C2 vs SS average cluster counts | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(32, 'already among the retrieved sources'), (33, 'supplementary cap reached'), (34, 'supplementary cap reached')]
+  - ✓ Table 2 | need: context units for C2 and SS | priority: supplementary | status: covered → 候選 3，納入 []，排除 [(29, 'already selected for another target'), (30, 'already among the retrieved sources'), (31, 'supplementary cap reached')]
+  - ✓ Table 3 | need: extracted claims for C2 and SS | priority: supplementary | status: covered → 候選 3，納入 []，排除 [(32, 'already among the retrieved sources'), (33, 'already among the retrieved sources'), (34, 'supplementary cap reached')]
+  - ✓ Table 6 | need: pairwise comparisons including C2 and SS | priority: supplementary | status: missing → 候選 3，納入 [74, 75]，排除 [(76, 'supplementary cap reached')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 5.1 Experiment 1→partial；Section 5.1 Experiment 1→partial；Section 5.2 Experiment 2→partial；Table 2→missing；Table 3→covered；Table 6→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+(1) The question asks to compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets.
+
+(2) Comprehensiveness is measured as the average number of claims extracted from the answers generated under each condition [8]. Table 3 shows the average number of extracted claims for each condition and dataset type [2]. Additionally, pairwise comparisons are presented in Table 6, which includes mean scores and p-values for the comprehensiveness metric [11].
+
+(3) For the Podcast dataset, the average number of extracted claims for C2 is 32.46, and for SS, it is 26.50 [2]. In the News dataset, the average number of extracted claims for C2 is 31.62, and for SS, it is 25.23 [2]. In Table 6, the mean score for C2 over SS in the Podcast dataset is 77.76 for C2 and 22.24 for SS (p < 0.001), and in the News dataset, it is 79.2 for C2 and 20.8 for SS (p < 0.001) [11].
+
+(4) In both the Podcast and News datasets, condition C2 outperforms SS in terms of comprehensiveness. The differences are statistically significant in both datasets. No exceptions are noted.
+
+(5) The comprehensiveness scores for C2 are higher than those for SS in both datasets, and the p-values indicate that the differences are statistically significant [2][11].
+
+(6) The figures and definitions are cited as follows:
+- The average number of extracted claims for C2 and SS in the Podcast and News datasets are cited from Table 3 [2].
+- The mean scores and p-values for C2 and SS in the Podcast and News datasets are cited from Table 6 [11].
+- The definition of comprehensiveness is cited from the method description in the document [8].
+
+(7) The comparison includes all the requested elements: the methods (C2 and SS), the datasets (Podcast and News), and the metric (comprehensiveness). The findings are supported by the figures from the sources. No relevant information is missing.
+```
+
+## B3-G2-3
+
+- 問題：`Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets`；模式 `navigate`；27.4 秒；2 次呼叫；tokens 7001
+- 來源：[1] p9 retrieval, [2] p11 retrieval, [3] p10 retrieval, [4] p11 retrieval, [5] p10 retrieval, [6] p10 navigation, [7] p10 navigation, [8] p10 navigation, [9] p10 navigation, [10] p9 navigation, [11] p5 navigation, [12] p11 navigation
+- 閱讀計畫（定位 6/6，保留 7，超預算 0）：
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in Podcast | priority: required | status: missing → 候選 9，納入 [29, 26, 24]，排除 [(32, 'already among the retrieved sources'), (25, 'already among the retrieved sources'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (28, 'already selected for another target'), (27, 'already selected for another target')]
+  - ✓ Section 5.1 Experiment 1 | need: comprehensiveness results for C2 and SS in News | priority: required | status: missing → 候選 9，納入 [28, 27]，排除 [(32, 'already among the retrieved sources'), (25, 'already among the retrieved sources'), (29, 'already selected for another target'), (31, 'already among the retrieved sources'), (30, 'already among the retrieved sources'), (26, 'already selected for another target'), (24, 'already selected for another target')]
+  - ✓ Table 2 | need: context units for C2 and SS in Podcast and News | priority: supplementary | status: covered → 候選 3，納入 []，排除 [(29, 'already selected for another target'), (30, 'already among the retrieved sources'), (31, 'already among the retrieved sources')]
+  - ✓ Section 5.2 Experiment 2 | need: comparison of C2 and SS on cluster counts in Podcast and News | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(32, 'already among the retrieved sources'), (33, 'already among the retrieved sources'), (34, 'supplementary cap reached')]
+  - ✓ Table 3 | need: extracted claims for C2 and SS in Podcast and News | priority: supplementary | status: missing → 候選 3，納入 [34]，排除 [(32, 'already among the retrieved sources'), (33, 'already among the retrieved sources')]
+  - ✓ Section 3.1.4 Knowledge Graph → Graph Communities | need: description of community clustering for C2 and SS | priority: supplementary | status: missing → 候選 3，納入 [14]，排除 [(15, 'low relevance'), (13, 'low relevance')]
+- 分析狀態：UNCERTAIN；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 涵蓋判定：Section 5.1 Experiment 1→partial；Section 5.1 Experiment 1→partial；Table 2→missing；Section 5.2 Experiment 2→partial；Table 3→covered；Section 3.1.4 Knowledge Graph → Graph Communities→missing；required 未納入 []；supplementary 用 2；Matrix {'cells': 0, 'tables': [], 'definitions': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks to compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets. The relevant metric is comprehensiveness, defined as the average number of claims extracted from the answers generated under each condition [10].
+
+### Comparison Table
+| Dataset        | Method | Comprehensiveness |
+|----------------|--------|-------------------|
+| Podcast        | C2     | 32.46             |
+| Podcast        | SS     | 26.50             |
+| News           | C2     | 31.62             |
+| News           | SS     | 25.23             |
+
+### Analysis
+For the **Podcast dataset**, condition C2 achieved a comprehensiveness score of 32.46, while vector RAG (SS) achieved a score of 26.50. This indicates that C2 outperformed SS in comprehensiveness for the Podcast dataset [2].
+
+For the **News dataset**, condition C2 achieved a comprehensiveness score of 31.62, while vector RAG (SS) achieved a score of 25.23. This indicates that C2 outperformed SS in comprehensiveness for the News dataset as well [2].
+
+There are no exceptions to the trend of C2 outperforming SS in comprehensiveness for either dataset. The conclusions are supported directly by the figures provided.
 ```
 
 ## C-G2-1

@@ -1,0 +1,879 @@
+{
+ "arm": "B3",
+ "answer_mode": "navigate",
+ "question": "Q1",
+ "question_text": "summary this document.",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.45
+ },
+ "elapsed_seconds": 30.6,
+ "stages": [
+  "navigating"
+ ],
+ "route": {
+  "type": "summary",
+  "standalone_question": "summary this document."
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 16,
+   "section_title": null,
+   "snippet": "LightRAG: Simple and Fast Retrieval-Augmented Generation addresses limitations in existing RAG systems, which often rely on flat data representations and lack sufficient contextual awareness, leading to fragmented answers. The document proposes LightRAG, a framework that integrates graph structures into text indexing and retrieval, enabling dual-level retrieval for both low-level and high-level knowledge discovery. LightRAG combines graph structures with vector representations to efficiently retrieve related entities and their relationships, improving response times and maintaining contextual relevance. An incremental update algorithm ensures timely integration of new data, making the system effective in rapidly changing environments.\n\nExperiments on four datasets—Agriculture, CS, Legal, and Mix—show that LightRAG outperforms state-of-the-art methods such as Naive RAG, RQ-RAG, HyDE, and GraphRAG. On the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment compared to Naive RAG (p. 7). Against GraphRAG, LightRAG wins 54.4% in comprehensiveness in the Agriculture dataset and 57.6% in empowerment in the Legal dataset (p. 7). Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset (p. 8).\n\nLightRAG also demonstrates cost efficiency. In the Legal dataset, it uses fewer than 100 tokens and a single API call for retrieval, compared to 610,000 tokens and hundreds of API calls for GraphRAG (p. 10). During incremental updates, LightRAG integrates new data efficiently, while GraphRAG requires 1,399 × 2 × 5,000 tokens for full reconstruction (p. 10). The system is open-sourced at https://github.com/HKUDS/LightRAG (p. 1).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 2,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": "Front matter",
+   "snippet": "LightRAG: Simple and Fast Retrieval-Augmented Generation is a paper by Zirui Guo, Lianghao Xia, Yanhua Yu, Tu Ao, and Chao Huang from Beijing University of Posts and Telecommunications and the University of Hong Kong (p. 1). The paper addresses limitations in existing Retrieval-Augmented Generation (RAG) systems, which rely on flat data representations and lack sufficient contextual awareness, leading to fragmented answers (p. 1). The authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval processes (p. 1). LightRAG features a dual-level retrieval system that improves information retrieval from both low-level and high-level knowledge discovery (p. 1). The integration of graph structures with vector representations allows for efficient retrieval of related entities and their relationships, improving response times while maintaining contextual relevance (p. 1). An incremental update algorithm ensures timely integration of new data, making the system effective in rapidly changing data environments (p. 1). Extensive experiments show considerable improvements in retrieval accuracy and efficiency compared to existing approaches (p. 1). The LightRAG code is open-sourced and available at https://github.com/HKUDS/LightRAG (p. 1).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 3,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 2,
+   "section_title": "INTRODUCTION",
+   "snippet": "Retrieval-Augmented Generation (RAG) systems aim to improve large language models (LLMs) by incorporating external knowledge sources, enabling more accurate and contextually relevant responses (p. 1). These systems allow for domain-specific adaptations and provide up-to-date information, with chunking playing a critical role in enhancing retrieval accuracy by breaking down large texts into manageable segments (p. 1). However, current RAG systems face limitations, such as the use of flat data representations that hinder understanding of complex entity relationships and a lack of contextual awareness leading to fragmented responses (p. 1). For example, a query about the impact of electric vehicles on air quality and public transportation may result in disjointed answers due to the inability to synthesize interdependent information (p. 1). To address these issues, the authors propose integrating graph structures into text indexing and retrieval, which better represent interdependencies among entities (p. 2). The proposed system, LightRAG, introduces a dual-level retrieval framework, combining low-level and high-level retrieval strategies to capture detailed and conceptual information efficiently (p. 2). LightRAG integrates graph structures with vector representations to improve retrieval of related entities and enhance result comprehensiveness through structural knowledge (p. 2). Key contributions include a general framework for graph-empowered RAG, the development of LightRAG with a dual-level retrieval paradigm and incremental update algorithm, and experimental validation showing significant improvements in retrieval accuracy, response efficiency, and adaptability compared to existing RAG models (p. 2).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 4,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 2,
+   "page_end": 3,
+   "section_title": "RETRIEVAL-AUGMENTED GENERATION",
+   "snippet": "Retrieval-Augmented Generation (RAG) combines user queries with relevant documents from an external knowledge database, consisting of two components: the Retrieval Component and the Generation Component. The retrieval component identifies and retrieves relevant data based on the input query, while the generation component uses the retrieved information to generate coherent, contextually relevant responses (p. 2). Formally, the RAG framework is defined as M = (G, R = (φ, ψ)), where G is the generation module, R is the retrieval module, q is the input query, and D is the external database. The retrieval module includes two key functionalities: i) Data Indexer φ(·), which builds a specific data structure ˆD based on D, and ii) Data Retriever ψ(·), which retrieves relevant documents by comparing the query against the indexed data. The generative model G(·) then uses the retrieved information and the query to produce high-quality responses (p. 3). The proposed system emphasizes three key points: Comprehensive Information Retrieval, requiring the indexing function φ(·) to extract global information to enhance query answering (p. 3); Efficient and Low-Cost Retrieval, requiring the indexed data structure ˆD to enable rapid and cost-efficient retrieval to handle high query volumes (p. 3); and Fast Adaptation to Data Changes, requiring the system to swiftly adjust to new information to remain current in a changing information landscape (p. 3).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 5,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 3,
+   "page_end": 5,
+   "section_title": "THE LIGHT RAG ARCHITECTURE",
+   "snippet": "The LightRAG architecture enhances retrieval systems by segmenting documents into smaller pieces for efficient access. It uses LLMs to extract entities and relationships, forming a knowledge graph represented as ˆD = (ˆV, ˆE) = Dedupe ◦ Prof(V, E), where V and E are derived from documents through a recognition function Recog(Di) (p. 3). The system includes functions for extracting entities and relationships (R(·)), generating key-value pairs (P(·)), and deduplication (D(·)) to merge identical entities and reduce graph size (p. 3–4). LightRAG offers two advantages: comprehensive information understanding through multi-hop subgraphs and enhanced retrieval performance via optimized key-value structures (p. 4). It also supports fast adaptation to incremental knowledge bases by updating the graph without reprocessing all data (p. 4). \n\nThe dual-level retrieval paradigm addresses both specific and abstract queries. Specific queries target individual entities or edges, while abstract queries focus on broader themes (p. 4). LightRAG employs low-level and high-level retrieval strategies, integrating graph structures with vector representations. This includes query keyword extraction, matching, and incorporating high-order relatedness from retrieved subgraphs (p. 4–5). \n\nRetrieval-Augmented Answer Generation uses retrieved information to generate answers with a general-purpose LLM. The information includes entity and relation values, descriptions, and text excerpts (p. 5). \n\nThe LightRAG framework's complexity is analyzed in two parts: the graph-based index phase, which requires LLM calls proportional to the total tokens in each chunk, and the retrieval phase, which uses vector-based search to retrieve entities and relationships, reducing overhead compared to conventional methods (p. 5).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 6,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 10,
+   "section_title": "EVALUATION",
+   "snippet": "The evaluation section of the document assesses the LightRAG framework by addressing four research questions (RQ1-RQ4) across four datasets: Agriculture, CS, Legal, and Mix. Each dataset contains between 600,000 and 5,000,000 tokens. Question generation involves an LLM creating 125 questions per dataset, based on user tasks and expertise. LightRAG is compared with state-of-the-art methods: Naive RAG, RQ-RAG, HyDE, and GraphRAG. Evaluation dimensions include comprehensiveness, diversity, empowerment, and overall performance, with win rates calculated using GPT-4o-mini (p. 6). \n\nIn win rate comparisons, LightRAG consistently outperforms baselines across all datasets and dimensions. For example, in the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment against Naive RAG (p. 7). Against GraphRAG, LightRAG wins 54.4% in comprehensiveness in the Agriculture dataset and 57.6% in empowerment in the Legal dataset (p. 7). Ablation studies confirm that the dual-level retrieval paradigm enhances performance, with the -High variant (removing high-order retrieval) showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset (p. 8). \n\nA case study comparing LightRAG and GraphRAG on a machine learning question shows that LightRAG outperforms in all evaluation dimensions (p. 9). Cost analysis reveals that LightRAG uses fewer than 100 tokens and a single API call for retrieval in the Legal dataset, compared to 610,000 tokens and hundreds of API calls for GraphRAG (p. 10). During incremental updates, LightRAG integrates new data efficiently, while GraphRAG requires 1,399 × 2 × 5,000 tokens for full reconstruction (p. 10).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 7,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": "RELATED WORK",
+   "snippet": "Retrieval-Augmented Generation (RAG) systems enhance LLM inputs by retrieving information from external sources, improving factual and domain-specific responses (p. 10). Current RAG approaches, such as those by Gao et al. (2022; 2023), Chan et al. (2024), and Yu et al. (2024), use vector spaces to find the nearest context vectors but often rely on fragmented text chunks and retrieve only top-k contexts, limiting comprehensive global information capture (p. 10). Recent studies like Edge et al. (2024) have explored graph structures for knowledge representation, but these approaches often lack dynamic updates and expansions of the knowledge graph, making it difficult to incorporate new information effectively (p. 10). In contrast, the proposed model, LightRAG, enables the RAG system to adapt to new information quickly, ensuring timeliness and accuracy. Additionally, existing methods often rely on inefficient brute-force searches for each generated community. LightRAG overcomes this by using a dual-level retrieval paradigm for rapid information retrieval from the graph, significantly improving efficiency and response speed (p. 10). Graphs represent complex relationships and find applications in numerous fields. Research on Large Language Models (LLMs) for graphs is divided into three categories: i) GNNs as Prefix, where Graph Neural Networks (GNNs) generate structure-aware tokens for LLMs, as seen in GraphGPT (Tang et al., 2024) and LLaGA (Chen et al., 2024); ii) LLMs as Prefix, where LLMs process graph data with textual information to refine GNN training, as in GALM (Xie et al., 2023) and OFA (Liu et al., 2024); iii) LLMs-Graphs Integration, which focuses on seamless interaction between LLMs and graph data using fusion training, GNN alignment, and LLM-based agents, as demonstrated by Li et al. (2023) and Brannon et al. (2023) (p. 10).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 8,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": "CONCLUSION",
+   "snippet": "This work introduces an advancement in Retrieval-Augmented Generation (RAG) through the integration of a graph-based indexing approach that enhances both efficiency and comprehension in information retrieval (p. 10). LightRAG utilizes a comprehensive knowledge graph to facilitate rapid and relevant document retrieval, enabling a deeper understanding of complex queries (p. 10). Its dual-level retrieval paradigm allows for the extraction of both specific and abstract information, catering to diverse user needs (p. 10). Furthermore, LightRAG’s seamless incremental update capability ensures that the system remains current and responsive to new information, thereby maintaining its effectiveness over time (p. 10). Overall, LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference (p. 10).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 9,
+   "kind": "summary",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 16,
+   "section_title": "APPENDIX",
+   "snippet": "The appendix of the document elaborates on the methodologies and experimental settings used in the LightRAG framework. It describes the steps for extracting entities and relationships from documents, utilizing large language models (LLMs), and outlines the prompt templates and configurations used in LLM operations (p. 13). The evaluation criteria and dimensions for assessing LightRAG's performance against baselines are also detailed (p. 13). \n\nTable 4 presents statistical information for four datasets: Agriculture (12 documents, 2,017,886 tokens), CS (10 documents, 2,306,535 tokens), Legal (94 documents, 5,081,069 tokens), and Mix (61 documents, 619,009 tokens) (p. 13). \n\nFigure 3 illustrates the retrieve-and-generate process for a query, where the LLM extracts keywords and guides the dual-level retrieval on the knowledge graph, organizing information into entities, relationships, and text chunks (p. 14). \n\nFigure 4 describes prompts for graph generation, extracting entity-relationship information based on specified entity types (p. 14). Figure 5 outlines prompts for query generation, identifying user roles and tasks based on a dataset description (p. 14). \n\nFigure 6 describes prompts for keyword extraction, distinguishing between high-level and low-level keywords and returning them in JSON format (p. 15). Figure 7 outlines evaluation prompts for RAG, comparing answers based on three criteria: Comprehensiveness, Diversity, and Empowerment (p. 15).\n\nTable 5 compares LightRAG and the baseline NaiveRAG in answering a query about indigenous perspectives in corporate mergers. LightRAG's answer is rated higher in Comprehensiveness, Diversity, and Empowerment, with detailed explanations provided in JSON format (p. 16). The dual-level retrieval process in LightRAG enables a more comprehensive exploration of entities and relationships compared to NaiveRAG (p. 16).",
+   "score": null,
+   "origin": "summary"
+  },
+  {
+   "index": 10,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "REFERENCES\nWilliam Brannon, Suyash Fulay, Hang Jiang, Wonjune Kang, Brandon Roy, Jad Kabbara, and Deb\nRoy. Congrat: Self-supervised contrastive pretraining for joint graph and text embeddings. arXiv\npreprint arXiv:2305.14321, 2023.\nChi-Min Chan, Chunpu Xu, Ruibin Yuan, Hongyin Luo, Wei Xue, Yike Guo, and Jie Fu. Rq-rag:\nLearning to refine queries for retrieval augmented generation. arXiv preprint arXiv:2404.00610,\n2024.\nRunjin Chen, Tong Zhao, AJAY KUMAR JAISW AL, Neil Shah, and Zhangyang Wang. Llaga: Large\nlanguage and graph assistant. In International Conference on Machine Learning (ICML) , 2024.\nDarren Edge, Ha Trinh, Newman Cheng, Joshua Bradley, Alex Chao, Apurva Mody, Steven Truitt,\nand Jonathan Larson. From local to global: A graph rag approach to query-focused summarization.\narXiv preprint arXiv:2404.16130, 2024.\nShahul Es, Jithin James, Luis Espinosa Anke, and Steven Schockaert. Ragas: Automated evaluation\nof retrieval augmented generation. In International Conference of the European Chapter of the\nAssociation for Computational Linguistics (EACL) , pp. 150–158, 2024.\nWenqi Fan, Yujuan Ding, Liangbo Ning, Shijie Wang, Hengyun Li, Dawei Yin, Tat-Seng Chua, and\nQing Li. A survey on rag meeting llms: Towards retrieval-augmented large",
+   "score": 0.5047,
+   "origin": "navigation"
+  },
+  {
+   "index": 11,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nNaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\nComprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6%\nDiversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0%\nEmpowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4%\nOverall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6%\nNaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\nComprehensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0%\nDiversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%\nEmpowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low 57.2%; Legal: NaiveRAG 16.4%, -Low 83.6%; Mix: NaiveRAG 35.2%, -Low 64.8%\nOverall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8%\nNaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\nComprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6%\nDiversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4%\nEmpowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8%\nOverall — Agriculture: NaiveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6%",
+   "score": 0.4964,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "The document \"LightRAG: Simple and Fast Retrieval-Augmented Generation\" addresses limitations in existing Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack sufficient contextual awareness, leading to fragmented answers [1]. The authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval processes, enabling dual-level retrieval for both low-level and high-level knowledge discovery [2]. LightRAG combines graph structures with vector representations to efficiently retrieve related entities and their relationships, improving response times and maintaining contextual relevance [1]. An incremental update algorithm ensures timely integration of new data, making the system effective in rapidly changing environments [1].\n\nExtensive experiments on four datasets—Agriculture, CS, Legal, and Mix—show that LightRAG outperforms state-of-the-art methods such as Naive RAG, RQ-RAG, HyDE, and GraphRAG [1]. On the Legal dataset, LightRAG achieves 83.6% comprehensiveness, 86.4% diversity, and 83.6% empowerment compared to Naive RAG [6]. Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset [6]. LightRAG also demonstrates cost efficiency, using fewer than 100 tokens and a single API call for retrieval in the Legal dataset, compared to 610,000 tokens and hundreds of API calls for GraphRAG [6].\n\nThe document concludes that LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference [8]. The LightRAG code is open-sourced and available at https://github.com/HKUDS/LightRAG [1].",
+ "usage": {
+  "prompt_tokens": 6847,
+  "completion_tokens": 537,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2,
+   6,
+   8
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "83.6%",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "86.4%",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…tRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture: NaiveRAG 32.4%,…"
+   },
+   {
+    "number": "23.6%",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…AG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, Lig…"
+   },
+   {
+    "number": "100",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 9,
+    "snippet": "…Incremental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract Ce…"
+   },
+   {
+    "number": "610,000",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 9,
+    "snippet": "…mmunity report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per community). Additionally, GraphRAG’s…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "23.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "NaiveRAG",
+      "vs -High"
+     ]
+    ],
+    "sentence": "Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset.",
+    "reason": "missing"
+   },
+   {
+    "number": "83.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs NaiveRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "-Origin",
+      "vs NaiveRAG"
+     ]
+    ],
+    "sentence": "Ablation studies confirm the importance of the dual-level retrieval paradigm, with a variant removing high-order retrieval showing a significant drop in comprehensiveness (23.6% vs. 83.6%) in the Legal dataset.",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 38,
+   "plan": "- Section 1 INTRODUCTION | need: overview and purpose | priority: required | status: missing  \n- Section 2 RETRIEVAL-AUGMENTED GENERATION | need: background context | priority: required | status: missing  \n- Section 3 THE LIGHT RAG ARCHITECTURE | need: framework structure | priority: required | status: missing  \n- Section 4 EVALUATION | need: experimental results | priority: required | status: missing  \n- Section 5 RELATED WORK | need: prior research context | priority: supplementary | status: missing  \n- Section 6 CONCLUSION | need: summary of findings | priority: required | status: missing",
+   "items": [
+    {
+     "text": "Section 1 INTRODUCTION | need: overview and purpose | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      1,
+      2
+     ],
+     "location": "Section 1 INTRODUCTION",
+     "need": "overview and purpose",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "1 INTRODUCTION",
+     "candidates": 5,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 4,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 2,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 1,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 3,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 0,
+       "reason": "low relevance"
+      }
+     ]
+    },
+    {
+     "text": "Section 2 RETRIEVAL-AUGMENTED GENERATION | need: background context | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      2,
+      3
+     ],
+     "location": "Section 2 RETRIEVAL-AUGMENTED GENERATION",
+     "need": "background context",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "2 RETRIEVAL-AUGMENTED GENERATION",
+     "candidates": 4,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 4,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 7,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 6,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 5,
+       "reason": "low relevance"
+      }
+     ]
+    },
+    {
+     "text": "Section 3 THE LIGHT RAG ARCHITECTURE | need: framework structure | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      3,
+      4,
+      5
+     ],
+     "location": "Section 3 THE LIGHT RAG ARCHITECTURE",
+     "need": "framework structure",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "3 THE LIGHT RAG ARCHITECTURE",
+     "candidates": 8,
+     "selected": [
+      14
+     ],
+     "excluded": [
+      {
+       "ordinal": 8,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 13,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 10,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 11,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 12,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 9,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 7,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Section 4 EVALUATION | need: experimental results | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+     ],
+     "location": "Section 4 EVALUATION",
+     "need": "experimental results",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "4 EVALUATION",
+     "candidates": 9,
+     "selected": [
+      22
+     ],
+     "excluded": [
+      {
+       "ordinal": 14,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 19,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 18,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 27,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 28,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 24,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 21,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 26,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Section 5 RELATED WORK | need: prior research context | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      10
+     ],
+     "location": "Section 5 RELATED WORK",
+     "need": "prior research context",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "5 RELATED WORK",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 29,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 30,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 31,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Section 6 CONCLUSION | need: summary of findings | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      10,
+      11,
+      12
+     ],
+     "location": "Section 6 CONCLUSION",
+     "need": "summary of findings",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "6 CONCLUSION",
+     "candidates": 7,
+     "selected": [
+      32
+     ],
+     "excluded": [
+      {
+       "ordinal": 31,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 33,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 34,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 37,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 36,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 35,
+       "reason": "over the evidence budget"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 36,
+   "kept": 2,
+   "excluded_budget": 16,
+   "skipped": null,
+   "budget": 2310,
+   "evidence_tokens": 2285,
+   "embedding": {
+    "texts": 6,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 4,
+     "page": 2,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4422
+    },
+    {
+     "ordinal": 2,
+     "page": 1,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4344
+    },
+    {
+     "ordinal": 1,
+     "page": 1,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4297
+    },
+    {
+     "ordinal": 3,
+     "page": 2,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4157
+    },
+    {
+     "ordinal": 0,
+     "page": 1,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4119
+    },
+    {
+     "ordinal": 4,
+     "page": 2,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.4218
+    },
+    {
+     "ordinal": 7,
+     "page": 3,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.4126
+    },
+    {
+     "ordinal": 6,
+     "page": 3,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.4088
+    },
+    {
+     "ordinal": 5,
+     "page": 2,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.4016
+    },
+    {
+     "ordinal": 8,
+     "page": 3,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4435
+    },
+    {
+     "ordinal": 13,
+     "page": 5,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4404
+    },
+    {
+     "ordinal": 10,
+     "page": 4,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4392
+    },
+    {
+     "ordinal": 11,
+     "page": 4,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4299
+    },
+    {
+     "ordinal": 12,
+     "page": 4,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.3997
+    },
+    {
+     "ordinal": 9,
+     "page": 3,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.392
+    },
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 3,
+     "score": 0.4449
+    },
+    {
+     "ordinal": 29,
+     "page": 10,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 4,
+     "score": 0.4266
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4434
+    },
+    {
+     "ordinal": 32,
+     "page": 11,
+     "kept": true,
+     "reason": "plan: Section 6 CONCLUSION",
+     "target": 5,
+     "score": 0.5047
+    },
+    {
+     "ordinal": 22,
+     "page": 8,
+     "kept": true,
+     "reason": "plan: Section 4 EVALUATION",
+     "target": 3,
+     "score": 0.4964
+    },
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.4937
+    },
+    {
+     "ordinal": 33,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": 0.5039
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4806
+    },
+    {
+     "ordinal": 7,
+     "page": 3,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.4593
+    },
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": 0.5007
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4694
+    },
+    {
+     "ordinal": 37,
+     "page": 12,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": 0.4981
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4693
+    },
+    {
+     "ordinal": 36,
+     "page": 12,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": 0.4852
+    },
+    {
+     "ordinal": 28,
+     "page": 9,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4608
+    },
+    {
+     "ordinal": 35,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": 0.4797
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4573
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4562
+    },
+    {
+     "ordinal": 26,
+     "page": 9,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4554
+    },
+    {
+     "ordinal": 30,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": 0.4791
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": 0.4624
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 1 INTRODUCTION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 2 RETRIEVAL-AUGMENTED GENERATION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 3 THE LIGHT RAG ARCHITECTURE",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 4 EVALUATION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 5 RELATED WORK",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Section 6 CONCLUSION",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    }
+   ],
+   "unmet_required": [
+    "Section 1 INTRODUCTION",
+    "Section 2 RETRIEVAL-AUGMENTED GENERATION"
+   ],
+   "supplementary_used": 0
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1082,
+   "completion_tokens": 138,
+   "estimated_prompt_tokens": 1098,
+   "finish_reason": "stop",
+   "duration_ms": 6677
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 5765,
+   "completion_tokens": 399,
+   "estimated_prompt_tokens": 5781,
+   "finish_reason": "stop",
+   "duration_ms": 22832
+  }
+ ]
+}

@@ -1,0 +1,819 @@
+{
+ "arm": "B3",
+ "answer_mode": "navigate",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.45
+ },
+ "elapsed_seconds": 43.9,
+ "stages": [
+  "navigating"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handling large\ntoken counts and complex queries that require a thorough understanding of the dataset’s context,\ngraph-based RAG systems like LightRAG and GraphRAG consistently outperform purely chunk-\nbased retrieval methods such as NaiveRAG, HyDE, and RQRAG. This performance gap becomes\nparticularly pronounced as the dataset size increases. For instance, in the largest dataset (Legal), the\ndisparity widens significantly, with baseline methods achieving only about 20% win rates compared\nto the dominance of LightRAG. This trend underscores the advantages of graph-enhanced RAG\nsystems in capturing complex semantic dependencies within large-scale corpora, facilitating a more\ncomprehensive understanding of knowledge and leading to improved generalization performance.\nEnhancing Response Diversity with LightRAG: Compared to various baselines, LightRAG demon-\nstrates a significant advantage in the Diversity metric, particularly within the larger Legal dataset.\nIts consistent lead in this area underscores LightRAG’s effectiveness in generating a wider range\nof responses, especially in scenarios where diverse content is essential. We attribute this advantage\nto LightRAG’s dual-level retrieval paradigm, which facilitates comprehensive information retrieval\nfrom both low-level and high-level dimensions. This approach effectively leverages graph-based text\nindexing to consistently capture the full context in response to queries.\nLightRAG’s Superiority over GraphRAG: While both LightRAG and GraphRAG use graph-based\nretrieval mechanisms, LightRAG consistently outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of",
+   "score": 0.6455,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+   "score": 0.6299,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+   "score": 0.6265,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+   "score": 0.6123,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "which seamlessly integrates graph structures and vectorized representations for information retrieval,\nthereby eliminating the need to process large volumes of information upfront.\nIn the incremental data update phase, designed to address changes in dynamic real-world scenarios,\nboth models exhibit similar overhead for entity and relationship extraction. However, GraphRAG\nshows significant inefficiency in managing newly added data. When a new dataset of the same\nsize as the legal dataset is introduced, GraphRAG must dismantle its existing community structure\nto incorporate new entities and relationships, followed by complete regeneration. This process\nincurs a substantial token cost of approximately 5,000 tokens per community report. Given 1,399\ncommunities, GraphRAG would require around 1,399 × 2 × 5,000 tokens to reconstruct both the\noriginal and new community reports—an exorbitant expense that underscores its inefficiency. In\ncontrast, LightRAG seamlessly integrates newly extracted entities and relationships into the existing\ngraph without the need for full reconstruction. This approach results in significantly lower overhead\nduring incremental updates, demonstrating its superior efficiency and cost-effectiveness.\n5 R ELATED WORK\n5.1 R ETRIEVAL -AUGMENTED GENERATION WITH LLM S\nRetrieval-Augmented Generation (RAG) systems enhance LLM inputs by retrieving relevant infor-\nmation from external sources, grounding responses in factual, domain-specific knowledge Ram et al.\n(2023); Fan et al. (2024). Current RAG approaches Gao et al. (2022; 2023); Chan et al. (2024); Yu\net al. (2024) typically embed queries in a vector space to find the nearest context vectors. However,\nmany of these methods rely on fragmented text chunks and only retrieve the top-k contexts, limiting\ntheir ability to capture comprehensive global information needed for effective",
+   "score": 0.6049,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "Table 1: Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\nComprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%\nDiversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightRAG 60.8%; Legal: RQ-RAG 11.6%, LightRAG 88.4%; Mix: RQ-RAG 30.8%, LightRAG 69.2%\nEmpowerment — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 36.4%, LightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6%\nOverall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0%\nHyDE LightRAG HyDE LightRAG HyDE LightRAG HyDE LightRAG\nComprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6%\nDiversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 38.8%, LightRAG 61.2%; Legal: HyDE 20.0%, LightRAG 80.0%; Mix: HyDE 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0%\nOverall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6%\nGraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG\nComprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6%\nDiversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0%\nEmpowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2%\nOverall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6%",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 7,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+   "score": 0.5073,
+   "origin": "navigation"
+  },
+  {
+   "index": 8,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "Table 3: Case Study: Comparison Between LightRAG and the Baseline Method GraphRAG.\nQuery Which methods can normalize the feature values for effective machine learning?\nGraphRAG Key Metrics for Evaluating Movie Recommendation Systems: Evaluating the effectiveness of movie\nrecommendation systems is crucial for ensuring user satisfaction and improving the overall performance of\nthese systems. Several metrics are widely recognized for their ability to provide insights into how well a\nrecommendation system performs. Below are the most informative metrics: 1. Precision [...] 2. Recall [...]\n3. F1 Score [...] 4. Mean Average Precision (MAP)[...] 5. Root Mean Squared Error (RMSE) [...] 6.\nUser Satisfaction Metrics [...] Conclusion: In summary, metrics such as precision, recall, F1 score, MAP,\nRMSE, and user satisfaction are critical for evaluating the performance of movie recommendation systems.\nEach metric provides unique insights that can help developers and researchers refine their algorithms and\nenhance user experiences. By focusing on these metrics, stakeholders can ensure that their recommendation\nsystems effectively meet user preferences and expectations.\nLightRAG Key Metrics for Evaluating Movie Recommendation Systems: Evaluating movie recommendation systems\ninvolves multiple metrics that assess the effectiveness and accuracy of the recommendations provided to\nusers. Below are some of the most informative metrics commonly used in this context, derived from the\ndata and concepts surrounding recommendation systems. 1. Mean Average Precision at K (MAPK) [...] 2.\nPrecision and Recall [...] 3. Root Mean Squared Error (RMSE) and Mean Squared Error (MSE) [...]\n4. Area Under the Curve (AUC) [...] 5. F-Measure [...] 6. User Engagement Metrics [...] Conclusion: A\ncomprehensive evaluation of movie recommendation systems employs a range of metrics that capture both\nthe accuracy of the recommendations and user satisfaction. By effectively leveraging these metrics, system\ndesigners can optimize recommendation engines to deliver",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 9,
+   "kind": "chunk",
+   "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 4,
+   "page_end": 4,
+   "section_title": null,
+   "snippet": "the raw text Di. This process effectively reduces the overhead associated with graph operations on\nˆD by minimizing the graph’s size, leading to more efficient data processing.\nOur LightRAG offers two advantages through its graph-based text indexing paradigm. First, Com-\nprehensive Information Understanding. The constructed graph structures enable the extraction\nof global information from multi-hop subgraphs, greatly enhancing LightRAG’s ability to handle\ncomplex queries that span multiple document chunks. Second, Enhanced Retrieval Performance.\nthe key-value data structures derived from the graph are optimized for rapid and precise retrieval.\nThis provides a superior alternative to less accurate embedding matching methods (Gao et al., 2023)\nand inefficient chunk traversal techniques (Edge et al., 2024) commonly used in existing approaches.\nFast Adaptation to Incremental Knowledge Base. To efficiently adapt to evolving data changes\nwhile ensuring accurate and relevant responses, our LightRAG incrementally updates the knowledge\nbase without the need for complete reprocessing of the entire external database. For a new document\nD′, the incremental update algorithm processes it using the same graph-based indexing steps φ as\nbefore, resulting in ˆD′ = (ˆV ′, ˆE ′). Subsequently, LightRAGcombines the new graph data with the\noriginal by taking the union of the node sets ˆV and ˆV ′, as well as the edge sets ˆE and ˆE ′.\nTwo key objectives guide our approach to fast adaptation for the incremental knowledge base: Seam-\nless Integration of New Data . By applying a consistent methodology to new information, the\nincremental update module allows the LightRAG to integrate new external databases without disrupt-\ning the existing graph structure. This approach preserves the integrity of established connections,\nensuring that historical data remains accessible while enriching the graph without conflicts or redun-\ndancies. Reducing Computational Overhead . By eliminating the need",
+   "score": 0.4966,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "(1) The question asks to compare LightRAG with GraphRAG, including datasets, evaluation dimensions, and metrics. The datasets used are Agriculture, CS, Legal, and Mix. The evaluation dimensions are Comprehensiveness, Diversity, Empowerment, and Overall. Metrics are based on win rates (%) from Table 1.\n\n(2) Method definitions:\n- LightRAG: A graph-based RAG system using a dual-level retrieval paradigm and graph-based text indexing [2].\n- GraphRAG: Not defined in the sources but described as a graph-based RAG system.\n\n(3) Comparison of LightRAG and GraphRAG based on the same datasets, evaluation dimensions, and metrics from Table 1 [6]:\n\n| Dataset | Evaluation Dimension | GraphRAG Win Rate (%) | LightRAG Win Rate (%) |\n|---------|----------------------|------------------------|------------------------|\n| Agriculture | Comprehensiveness | 45.6 | 54.4 |\n| Agriculture | Diversity | 22.8 | 77.2 |\n| Agriculture | Empowerment | 41.2 | 58.8 |\n| Agriculture | Overall | 45.2 | 54.8 |\n| CS | Comprehensiveness | 48.4 | 51.6 |\n| CS | Diversity | 40.8 | 59.2 |\n| CS | Empowerment | 45.2 | 54.8 |\n| CS | Overall | 48.0 | 52.0 |\n| Legal | Comprehensiveness | 48.4 | 51.6 |\n| Legal | Diversity | 26.4 | 73.6 |\n| Legal | Empowerment | 43.6 | 56.4 |\n| Legal | Overall | 47.2 | 52.8 |\n| Mix | Comprehensiveness | 50.4 | 49.6 |\n| Mix | Diversity | 36.0 | 64.0 |\n| Mix | Empowerment | 50.8 | 49.2 |\n| Mix | Overall | 50.4 | 49.6 |\n\n(4) Improvements:\n- LightRAG outperforms GraphRAG in Comprehensiveness in Agriculture and CS.\n- LightRAG significantly outperforms GraphRAG in Diversity in Agriculture, CS, and Legal.\n- LightRAG outperforms GraphRAG in Empowerment in Agriculture and CS.\n- LightRAG outperforms GraphRAG in Overall in Agriculture and CS.\n\nExceptions:\n- In Mix, GraphRAG outperforms LightRAG in Comprehensiveness and Empowerment.\n- In Mix, GraphRAG and LightRAG are nearly equal in Overall.\n\n(5) These findings are consistent with the data in Table 1 [6], where LightRAG's win rates are higher than GraphRAG in most cases, particularly in the Diversity dimension.\n\n(6) The comparison is based on Table 1 [6], and the definition of LightRAG is based on [2].\n\n(7) The requested comparison is fully addressed.",
+ "usage": {
+  "prompt_tokens": 6851,
+  "completion_tokens": 865,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2,
+   6
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "45.6",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…G GraphRAG LightRAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, Lig…"
+   },
+   {
+    "number": "54.4",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix…"
+   },
+   {
+    "number": "22.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…AG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, Lig…"
+   },
+   {
+    "number": "77.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…raphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix…"
+   },
+   {
+    "number": "41.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, Lig…"
+   },
+   {
+    "number": "58.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…phRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix…"
+   },
+   {
+    "number": "45.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…G 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, Li…"
+   },
+   {
+    "number": "54.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…ent — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Ove…"
+   },
+   {
+    "number": "48.4",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…G Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, Li…"
+   },
+   {
+    "number": "51.6",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…ess — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Div…"
+   },
+   {
+    "number": "40.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…LightRAG 67.6% Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 5…"
+   },
+   {
+    "number": "59.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — A…"
+   },
+   {
+    "number": "48.0",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…htRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, Li…"
+   },
+   {
+    "number": "52.0",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…all — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The…"
+   },
+   {
+    "number": "26.4",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…ulture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG Lig…"
+   },
+   {
+    "number": "73.6",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG LightRAG GraphRAG L…"
+   },
+   {
+    "number": "43.6",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…hRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: Gra…"
+   },
+   {
+    "number": "56.4",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…tRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, Lig…"
+   },
+   {
+    "number": "47.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…hRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-e…"
+   },
+   {
+    "number": "52.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…tRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-enhanced RAG Syst…"
+   },
+   {
+    "number": "50.4",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+   },
+   {
+    "number": "49.6",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+   },
+   {
+    "number": "36.0",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS:…"
+   },
+   {
+    "number": "64.0",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%,…"
+   },
+   {
+    "number": "50.8",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+   },
+   {
+    "number": "49.2",
+    "document_id": "991fa2f2-62c7-4801-a5f5-5209f8f4c77e",
+    "page": 7,
+    "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 38,
+   "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Section 4.3 ABLATION STUDIES (RQ2) | need: ablation results involving GraphRAG | priority: supplementary | status: missing  \n- Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: supplementary | status: missing  \n- Table 1 (page 7) | need: quantitative comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison data | priority: supplementary | status: missing  \n- Section 3.1 GRAPH-BASED TEXT INDEXING | need: architecture differences | priority: supplementary | status: missing",
+   "items": [
+    {
+     "text": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      6,
+      7
+     ],
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "need": "comparison with GraphRAG",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "candidates": 4,
+     "selected": [
+      18
+     ],
+     "excluded": [
+      {
+       "ordinal": 20,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 19,
+       "reason": "already selected for another target"
+      }
+     ]
+    },
+    {
+     "text": "Section 4.3 ABLATION STUDIES (RQ2) | need: ablation results involving GraphRAG | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      7,
+      8
+     ],
+     "location": "Section 4.3 ABLATION STUDIES (RQ2)",
+     "need": "ablation results involving GraphRAG",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.3 ABLATION STUDIES (RQ2)",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 22,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 23,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    },
+    {
+     "text": "Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      8,
+      9
+     ],
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "need": "case study comparison with GraphRAG",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.4 CASE STUDY (RQ3)",
+     "candidates": 5,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 27,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 24,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 25,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 23,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 26,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    },
+    {
+     "text": "Table 1 (page 7) | need: quantitative comparison with GraphRAG | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      7
+     ],
+     "location": "Table 1 (page 7)",
+     "need": "quantitative comparison with GraphRAG",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 1",
+     "candidates": 3,
+     "selected": [
+      19
+     ],
+     "excluded": [
+      {
+       "ordinal": 20,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Table 3 (page 9) | need: case study comparison data | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      9
+     ],
+     "location": "Table 3 (page 9)",
+     "need": "case study comparison data",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 3",
+     "candidates": 3,
+     "selected": [
+      25
+     ],
+     "excluded": [
+      {
+       "ordinal": 26,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 27,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    },
+    {
+     "text": "Section 3.1 GRAPH-BASED TEXT INDEXING | need: architecture differences | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      3,
+      4
+     ],
+     "location": "Section 3.1 GRAPH-BASED TEXT INDEXING",
+     "need": "architecture differences",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "3.1 GRAPH-BASED TEXT INDEXING",
+     "candidates": 5,
+     "selected": [
+      10
+     ],
+     "excluded": [
+      {
+       "ordinal": 9,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 11,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 8,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 7,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 23,
+   "kept": 4,
+   "excluded_budget": 0,
+   "skipped": null,
+   "budget": 3743,
+   "evidence_tokens": 4393,
+   "embedding": {
+    "texts": 6,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 29,
+     "page": 10,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 9,
+     "page": 3,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.3506
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": true,
+     "reason": "plan: Table 1 (page 7)",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.6353
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.6169
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": false,
+     "reason": "already selected for another target",
+     "target": 0,
+     "score": 0.5689
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": true,
+     "reason": "plan: Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "target": 0,
+     "score": 0.5073
+    },
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": true,
+     "reason": "plan: Table 3 (page 9)",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.6175
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 1,
+     "score": 0.592
+    },
+    {
+     "ordinal": 10,
+     "page": 4,
+     "kept": true,
+     "reason": "plan: Section 3.1 GRAPH-BASED TEXT INDEXING",
+     "target": 5,
+     "score": 0.4966
+    },
+    {
+     "ordinal": 26,
+     "page": 9,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 2,
+     "score": 0.6002
+    },
+    {
+     "ordinal": 22,
+     "page": 8,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 1,
+     "score": 0.5367
+    },
+    {
+     "ordinal": 11,
+     "page": 4,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 5,
+     "score": 0.4922
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 2,
+     "score": 0.553
+    },
+    {
+     "ordinal": 23,
+     "page": 8,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 1,
+     "score": 0.5145
+    },
+    {
+     "ordinal": 8,
+     "page": 3,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 5,
+     "score": 0.4663
+    },
+    {
+     "ordinal": 23,
+     "page": 8,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 2,
+     "score": 0.5528
+    },
+    {
+     "ordinal": 7,
+     "page": 3,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 5,
+     "score": 0.465
+    },
+    {
+     "ordinal": 26,
+     "page": 9,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 2,
+     "score": 0.4807
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "status": "partial",
+     "reason": "2 of the section's 4 chunks are among the sources"
+    },
+    {
+     "location": "Section 4.3 ABLATION STUDIES (RQ2)",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    },
+    {
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "status": "partial",
+     "reason": "2 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Table 1 (page 7)",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Table 3 (page 9)",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Section 3.1 GRAPH-BASED TEXT INDEXING",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    }
+   ],
+   "unmet_required": [],
+   "supplementary_used": 2,
+   "matrix": {
+    "cells": 128,
+    "tables": [
+     "Table 1 [6]"
+    ],
+    "definitions": [
+     "LightRAG"
+    ]
+   }
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1429,
+   "completion_tokens": 189,
+   "estimated_prompt_tokens": 1445,
+   "finish_reason": "stop",
+   "duration_ms": 9102
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 5422,
+   "completion_tokens": 676,
+   "estimated_prompt_tokens": 5438,
+   "finish_reason": "stop",
+   "duration_ms": 34118
+  }
+ ]
+}
