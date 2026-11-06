@@ -95,6 +95,15 @@ def analyse(run: dict) -> dict:
         "redundant_added": sum(
             1 for s in added if not any(_hits(loc, s) for loc in locations)
         ),
+        # D73 (B2): how the selection ruled chunks out.
+        "excluded_low_relevance": sum(
+            1 for e in navigation.get("log", []) if e.get("reason") == "low relevance"
+        ),
+        "excluded_budget": sum(
+            1
+            for e in navigation.get("log", [])
+            if e.get("reason") == "over the evidence budget"
+        ),
         "calls": len(run.get("llm_calls", [])),
         "tokens": sum(
             c["prompt_tokens"] + c["completion_tokens"]
@@ -139,7 +148,15 @@ def _answers(runs: list[dict]) -> str:
                 f"保留 {navigation.get('kept')}，超預算 {navigation.get('excluded_budget')}）："
             )
             for item in navigation.get("items", []):
-                lines.append(f"  - {'✓' if item['located'] else '✗'} {item['text']}")
+                detail = ""
+                if "selected" in item:  # D73 targets
+                    detail = (
+                        f" → 候選 {item.get('candidates', 0)}，納入 {item['selected']}，"
+                        f"排除 {[(x['ordinal'], x['reason']) for x in item.get('excluded', [])]}"
+                    )
+                lines.append(
+                    f"  - {'✓' if item['located'] else '✗'} {item['text']}{detail}"
+                )
         lines.append(
             "- 檢查：標籤不符 "
             f"{[m['number'] for m in done.get('mislabelled_numbers') or []]}；"
@@ -172,9 +189,10 @@ def main() -> None:
         return f"{sum(real) / len(real):.2f}" if real else "—"
 
     print(
-        "| arm | Q | n | recall retrieved | recall plan | recall final | coverage final | plan located/items | added | redundant | calls | tokens | s |"
+        "| arm | Q | n | recall retrieved | recall plan | recall final | coverage final | "
+        "plan located/items | added | redundant | low relevance | over budget | calls | tokens | s |"
     )
-    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     for (arm, q), rs in sorted(groups.items(), key=lambda kv: (kv[0][1], kv[0][0])):
         located = sum(r["plan_located"] or 0 for r in rs)
         items = sum(r["plan_items"] for r in rs)
@@ -183,6 +201,7 @@ def main() -> None:
             f"{mean([r['recall_plan'] for r in rs])} | {mean([r['recall_final'] for r in rs])} | "
             f"{mean([r['coverage_final'] for r in rs])} | {located}/{items} | "
             f"{sum(r['added_chunks'] for r in rs)} | {sum(r['redundant_added'] for r in rs)} | "
+            f"{sum(r['excluded_low_relevance'] for r in rs)} | {sum(r['excluded_budget'] for r in rs)} | "
             f"{mean([r['calls'] for r in rs])} | {mean([r['tokens'] for r in rs])} | "
             f"{mean([r['elapsed_seconds'] for r in rs])} |"
         )
