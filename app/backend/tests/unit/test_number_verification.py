@@ -47,6 +47,17 @@ def test_small_integers_without_a_decimal_or_percent_are_not_checked() -> None:
     ]
 
 
+def test_numbers_that_label_a_part_of_the_document_are_not_checked() -> None:
+    """D70: "Section 4.3" is where to look, not a result; the figures around it still are."""
+    answer = (
+        "See Section 4.3 and Table 2 on page 8: Table 2 shows 67.6% for LightRAG, Fig. 2 "
+        "reports 610,000 tokens, RQ2 and Appendix 7.1 (Table 4) list 2,017,886 tokens; "
+        "see also §3.2 and 第 4.3 節, and the 83.6% there."
+    )
+
+    assert numbers_in(answer) == ["67.6%", "610,000", "2,017,886", "83.6%"]
+
+
 def test_a_number_found_on_a_cited_page_is_verified_with_a_snippet() -> None:
     pages = [
         PageText(DOC, 7, "Comprehensiveness 32.4% 67.6% 38.4% 61.6% 16.4% 83.6%"),

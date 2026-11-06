@@ -33,6 +33,13 @@ from app.ingestion.tables import cells_of
 # A number: with thousands separators, or plain; optional decimals; optional percent.
 # Not preceded by a letter, digit or dot, so "v3" and the tail of "2410.05779" stay out.
 _NUMBER = re.compile(r"(?<![\w.,])(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?%?")
+# A number right after one of these words numbers a part of the document, not a result:
+# "Section 4.3", "Table 2", "Fig. 2", "RQ2", "Appendix A.1", "Equation 3", "第 4 節".
+_STRUCTURE_LABEL = re.compile(
+    r"(?:\b(?:section|sec\.|subsection|chapter|table|tab\.|figure|fig\.|appendix|equation|eq\.|"
+    r"algorithm|rq|page|pages|p\.|pp\.)\s*|§\s*|第\s*)$",
+    re.IGNORECASE,
+)
 _CITATION = re.compile(r"\[\s*\d{1,3}(?:\s*,\s*\d{1,3})*\s*\]")
 _PAGE_REFERENCE = re.compile(r"\(pp?\.\s*\d+(?:\s*[-–]\s*\d+)?\)")
 _SNIPPET_RADIUS = 80
@@ -161,6 +168,8 @@ def numbers_in(answer: str) -> list[str]:
     found: list[str] = []
     for match in _NUMBER.finditer(stripped):
         number = match.group()
+        if _STRUCTURE_LABEL.search(stripped, 0, match.start()):
+            continue  # "Section 4.3", "Table 2": a label of the document, not a figure
         if _is_worth_checking(number) and number not in found:
             found.append(number)
     return found

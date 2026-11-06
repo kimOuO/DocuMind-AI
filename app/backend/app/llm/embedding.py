@@ -17,6 +17,12 @@ class EmbeddingError(RuntimeError):
     """The embeddings could not be produced. The message says why."""
 
 
+class EmbeddingInputError(EmbeddingError):
+    """The model could not compute a vector for this particular text (it answered with
+    NaN values), while the service itself is up. Seen with bge-m3 on the GPU for some
+    phrases (D70); the same text embeds on the CPU. Rewording the text is the way out."""
+
+
 class Embedder(Protocol):
     async def embed(self, texts: list[str]) -> list[list[float]]: ...
 
@@ -49,6 +55,11 @@ class OllamaEmbedder:
             raise EmbeddingError(f"The embedding service could not be reached: {error}") from error
 
         if response.status_code != 200:
+            if "NaN" in response.text:
+                raise EmbeddingInputError(
+                    "The embedding model could not compute a vector for this text "
+                    f"(it answered {response.status_code}: {response.text[:200]})"
+                )
             raise EmbeddingError(
                 f"The embedding service answered {response.status_code}: {response.text[:200]}"
             )

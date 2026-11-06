@@ -9,7 +9,7 @@ import httpx
 import pytest
 
 from app.core.env_loader import Settings
-from app.llm.embedding import EmbeddingError, OllamaEmbedder
+from app.llm.embedding import EmbeddingError, EmbeddingInputError, OllamaEmbedder
 from app.llm.ollama_api import embed_request
 from app.models import EMBEDDING_DIMENSIONS
 
@@ -78,3 +78,13 @@ async def test_an_unreachable_server_is_an_embedding_error() -> None:
 
     with pytest.raises(EmbeddingError, match="connection refused"):
         await _embedder(handler).embed(["one"])
+
+
+async def test_a_nan_reply_is_an_input_error_not_a_service_error() -> None:
+    """D70: bge-m3 on the GPU answers 500 with NaN for some phrases; the service is fine."""
+    nan = httpx.Response(
+        500, json={"error": "failed to encode response: json: unsupported value: NaN"}
+    )
+
+    with pytest.raises(EmbeddingInputError, match="could not compute a vector for this text"):
+        await _embedder(lambda request: nan).embed(["the sections, tables and figures"])

@@ -32,6 +32,7 @@ const MESSAGES: Record<string, string> = {
   INPUT_EXCEEDS_CONTEXT: '這次提問的內容超過模型的長度上限，沒有產生回答。',
   LLM_UNAVAILABLE: '語言模型目前無法使用，請稍後再試。',
   EMBEDDING_UNAVAILABLE: '嵌入模型目前無法使用，請稍後再試。',
+  EMBEDDING_INPUT_FAILED: '嵌入模型算不出這段文字的向量（服務正常），請換個說法再問。',
 }
 
 /** An answer that is not `completed` must never look like a finished one. */

@@ -58,7 +58,7 @@ from app.conversations.repository import ConversationRepository
 from app.conversations.service import ConversationService
 from app.core.env_loader import Settings
 from app.core.errors import ApiError
-from app.llm.embedding import Embedder, EmbeddingError
+from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
 from app.models import User
@@ -784,4 +784,7 @@ def _describe(error: Exception) -> dict[str, str]:
         return {"code": error.code, "detail": error.detail}
     if isinstance(error, ContextBudgetExceeded):
         return {"code": "CONTEXT_BUDGET_EXCEEDED", "detail": str(error)}
+    if isinstance(error, EmbeddingInputError):
+        # The service is up; this text cannot be embedded. Rewording helps, waiting does not.
+        return {"code": "EMBEDDING_INPUT_FAILED", "detail": str(error)}
     return {"code": "EMBEDDING_UNAVAILABLE", "detail": str(error)}

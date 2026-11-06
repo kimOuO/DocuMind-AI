@@ -24,7 +24,7 @@ from app.core.env_loader import get_settings
 from app.documents.storage import FileStorage
 from app.ingestion.indexing import IndexJobRunner
 from app.ingestion.parsing import parse_document
-from app.llm.embedding import EmbeddingError
+from app.llm.embedding import EmbeddingError, EmbeddingInputError
 from app.llm.gateway import OllamaGateway
 from app.llm.tokenizer import Qwen3TokenCounter
 from app.models import User
@@ -675,6 +675,30 @@ async def test_a_failing_embedding_service_makes_the_answer_failed_without_an_ll
 
     assert [name for name, _ in stream] == ["start", "route", "error"]
     assert stream[-1][1]["code"] == "EMBEDDING_UNAVAILABLE"
+    assert kim.get(f"{CONVERSATIONS}/{conversation}").json()["messages"][1]["status"] == "failed"
+    assert one(db, "SELECT count(*) FROM llm_calls")[0] == 0
+
+
+async def test_a_question_the_embedding_model_cannot_embed_is_reported_as_such(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D70: a NaN from the embedding model is this input's problem, not an outage."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    use_model(kim, tokenizer, StubOllama(["unused"]))
+
+    class NaNEmbedder:
+        async def embed(self, texts: list[str]) -> list[list[float]]:
+            raise EmbeddingInputError(
+                "The embedding model could not compute a vector for this text"
+            )
+
+    kim.app.dependency_overrides[get_embedder] = lambda: NaNEmbedder()  # type: ignore[attr-defined]
+    conversation = new_conversation(kim)
+
+    stream = events(ask(kim, conversation, "Name the sections, tables and figures to look at."))
+
+    assert [name for name, _ in stream] == ["start", "route", "error"]
+    assert stream[-1][1]["code"] == "EMBEDDING_INPUT_FAILED"
     assert kim.get(f"{CONVERSATIONS}/{conversation}").json()["messages"][1]["status"] == "failed"
     assert one(db, "SELECT count(*) FROM llm_calls")[0] == 0
 

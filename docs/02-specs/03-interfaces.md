@@ -184,6 +184,8 @@
 | `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "mislabelled_numbers": [{"number": "59.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Comprehensiveness", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…"}], "unresolved_numbers": [{"number": "57.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Overall", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…", "reason": "missing"}], "overstated_claims": [{"sentence": "…", "method": "LightRAG", "compared": ["-High"], "higher": 4, "lower": 2, "examples": ["Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)"], "status": "contradicted", "reason": null}], "doubtful_citations": [{"sentence": "…", "cited": [3], "closer": [5], "coverage_cited": 0.1, "coverage_closer": 0.7}], "finish_reason": "stop", "revision": null}` | 結束 |
 | `error` | `{"detail": "…", "code": "…"}` | 失敗；助理訊息的狀態為 `failed` |
 
+`error.code`：`LLM_UNAVAILABLE`、`INPUT_EXCEEDS_CONTEXT`、`CONTEXT_BUDGET_EXCEEDED`、`EMBEDDING_UNAVAILABLE`（嵌入服務連不上或出錯）、`EMBEDDING_INPUT_FAILED`（D70：嵌入服務正常，但模型對這段文字算出 NaN——bge-m3 在 GPU 上對特定片語會如此，CPU 不會；前端提示換個說法，不改寫問題、不換模型）、`INTERNAL_ERROR`。
+
 來源的格式（原文切塊與摘要共用）：
 
 ```json
