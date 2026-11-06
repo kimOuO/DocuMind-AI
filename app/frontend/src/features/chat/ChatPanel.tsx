@@ -16,6 +16,8 @@ import {
   type NumberCheck,
   type SearchScope,
   type Source,
+  type Revision,
+  type Stage,
   type Usage,
 } from '../../lib/api'
 
@@ -46,6 +48,29 @@ function describe(error: unknown): string {
 }
 
 const ROUTE_LABEL: Record<string, string> = { retrieval: '檢索', summary: '摘要' }
+const STAGE_LABEL: Record<Stage, string> = {
+  generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
+  verifying: '核對中',
+  revising: '依核對結果修正中',
+  finalizing: '整理最終回答',
+}
+const REVISION_LABEL = {
+  verified: '已通過核對',
+  unverified: '核對仍有疑點',
+}
+
+/** What the experimental two-call mode did (D69), for the reader: which text was kept and why. */
+function RevisionNote({ revision }: { revision: Revision }) {
+  if (revision.chosen === undefined || revision.status === undefined) return null
+  const kept = revision.chosen === 'revision' ? '顯示的是修正後的回答' : '顯示的是初稿'
+  const skipped = revision.skipped ? `（未修正：${revision.skipped}）` : ''
+  return (
+    <p className="text-sm text-muted">
+      兩次呼叫模式：{kept}，{REVISION_LABEL[revision.status]}
+      {skipped}。初稿核對發現 {revision.draft_triggers?.length ?? 0} 項，修正稿 {revision.revision_triggers?.length ?? 0} 項。
+    </p>
+  )
+}
 
 function pageRange(first: number, last: number): string {
   return first === last ? `第 ${first} 頁` : `第 ${first}–${last} 頁`
@@ -210,6 +235,8 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const [scope, setScope] = useState<SearchScope | null>(null)
   const [route, setRoute] = useState<{ type: string; standalone_question: string; asked: string } | null>(null)
   const [usage, setUsage] = useState<Usage | null>(null)
+  const [stage, setStage] = useState<Stage | null>(null)
+  const [revision, setRevision] = useState<Revision | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
 
@@ -236,6 +263,8 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     setScope(null)
     setRoute(null)
     setUsage(null)
+    setStage(null)
+    setRevision(null)
     setCheck(null)
     setError(null)
     if (id === null) {
@@ -269,6 +298,8 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     setScope(null)
     setRoute(null)
     setUsage(null)
+    setStage(null)
+    setRevision(null)
     setCheck(null)
     let conversationId = activeId
     try {
@@ -319,6 +350,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
           case 'sources':
             updateAnswer((answer) => ({ ...answer, sources: askEvent.data }))
             break
+          case 'stage':
+            setStage(askEvent.data.stage)
+            break
           case 'delta':
             updateAnswer((answer) => ({ ...answer, content: answer.content + askEvent.data.text }))
             break
@@ -332,6 +366,8 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
               answered: askEvent.data.answered,
             }))
             setCheck(askEvent.data)
+            setRevision(askEvent.data.revision ?? null)
+            setStage(null)
             break
           case 'error':
             updateAnswer((answer) => ({ ...answer, status: 'failed' }))
@@ -449,12 +485,14 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
       {route !== null && route.standalone_question !== route.asked && (
         <p className="text-sm text-muted">改寫後的問題：{route.standalone_question}</p>
       )}
+      {stage !== null && <p className="text-sm text-muted">{STAGE_LABEL[stage]}</p>}
+      {revision !== null && <RevisionNote revision={revision} />}
       {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
         <p className="text-sm text-muted">
-          這次呼叫的 token：輸入 {usage.prompt_tokens.toLocaleString()} + 回答{' '}
-          {usage.completion_tokens.toLocaleString()} ={' '}
-          {(usage.prompt_tokens + usage.completion_tokens).toLocaleString()} /{' '}
-          {usage.limit.toLocaleString()}
+          {usage.calls !== undefined && usage.calls > 1 ? `這 ${usage.calls} 次呼叫合計的 token` : '這次呼叫的 token'}
+          ：輸入 {usage.prompt_tokens.toLocaleString()} + 回答 {usage.completion_tokens.toLocaleString()} ={' '}
+          {(usage.prompt_tokens + usage.completion_tokens).toLocaleString()}
+          {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
         </p>
       )}
       {check !== null && <NumberCheckView check={check} />}

@@ -189,8 +189,31 @@ export interface SearchScope {
 export interface Usage {
   prompt_tokens: number | null
   completion_tokens: number | null
-  limit: number
+  /** The per-call limit; null when the figures are the sum of several calls (D69). */
+  limit: number | null
+  calls?: number
 }
+
+/** A finding that faulted a draft in the two-call mode (D69). */
+export interface RevisionTrigger {
+  kind: string
+  severity: 'hard' | 'soft'
+  feedback: string
+}
+
+/** What the experimental two-call mode did for this answer (D69); null in the default mode. */
+export interface Revision {
+  mode: 'conditional' | 'always'
+  triggered?: boolean
+  draft_triggers?: RevisionTrigger[]
+  revision_triggers?: RevisionTrigger[]
+  skipped?: string | null
+  chosen?: 'draft' | 'revision'
+  status?: 'verified' | 'unverified'
+  reason?: string
+}
+
+export type Stage = 'generating' | 'verifying' | 'revising' | 'finalizing'
 
 /** A figure of the answer found on a cited page, with the original text around it (AC-26). */
 export interface VerifiedNumber {
@@ -249,6 +272,7 @@ export type AskEvent =
   | { name: 'start'; data: { user_message_id: string; assistant_message_id: string; scope: SearchScope } }
   | { name: 'route'; data: { type: string; standalone_question: string } }
   | { name: 'sources'; data: Source[] }
+  | { name: 'stage'; data: { stage: Stage } }
   | { name: 'delta'; data: { text: string } }
   | { name: 'usage'; data: Usage }
   | {
@@ -258,6 +282,7 @@ export type AskEvent =
         answered: boolean | null
         cited: number[]
         finish_reason: string | null
+        revision: Revision | null
       }
     }
   | { name: 'error'; data: { code: string; detail: string } }

@@ -40,6 +40,13 @@ class Settings(BaseSettings):
     token_safety_buffer: int = 16
     question_token_budget: int = 200
 
+    # Experimental two-call answering (D69): a draft faulted by the checks is revised
+    # once. Off by default; the default path is the single streamed call.
+    answer_revision: bool = False
+    revision_soft_triggers: bool = True  # doubtful citations may trigger a revision
+    revision_completeness: bool = True  # a missing comparison target may trigger one
+    revision_always: bool = False  # research control: revise every draft
+
     # Uploads
     max_upload_mb: int = 50
     data_dir: Path = Path(".data")

@@ -279,6 +279,54 @@ test('the number check lists the figures found on the cited pages and flags the 
   expect(doubt).toHaveTextContent('引用 [3]，但較接近的來源是 [5]')
 })
 
+test('the two-call mode reports which text was kept and the summed token usage', async () => {
+  mockApi(
+    routesFor(
+      sse([
+        ['start', { user_message_id: 'u1', assistant_message_id: 'a1', scope: { mode: 'all', document_ids: [PAPER.id] } }],
+        ['route', { type: 'retrieval', standalone_question: QUESTION }],
+        ['sources', [SOURCE]],
+        ['stage', { stage: 'generating' }],
+        ['stage', { stage: 'verifying' }],
+        ['stage', { stage: 'revising' }],
+        ['stage', { stage: 'verifying' }],
+        ['stage', { stage: 'finalizing' }],
+        ['delta', { text: 'The ablated versions perform worse [1].' }],
+        ['usage', { prompt_tokens: 7000, completion_tokens: 900, limit: null, calls: 2 }],
+        [
+          'done',
+          {
+            status: 'completed',
+            answered: true,
+            cited: [1],
+            finish_reason: 'stop',
+            ...NO_NUMBERS,
+            revision: {
+              mode: 'conditional',
+              triggered: true,
+              draft_triggers: [{ kind: 'mislabelled_number', severity: 'hard', feedback: '…' }],
+              revision_triggers: [],
+              skipped: null,
+              chosen: 'revision',
+              status: 'verified',
+              reason: 'the revision removed hard faults',
+            },
+          },
+        ],
+      ]),
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  expect(await screen.findByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(
+    screen.getByText('兩次呼叫模式：顯示的是修正後的回答，已通過核對。初稿核對發現 1 項，修正稿 0 項。'),
+  ).toBeInTheDocument()
+  expect(screen.getByText(/這 2 次呼叫合計的 token：輸入 7,000 \+ 回答 900 = 7,900$/)).toBeInTheDocument()
+})
+
 test('an answer without numbers shows no number check', async () => {
   mockApi(routesFor(answerStream()))
   render(<ChatPanel documents={[PAPER]} />)
