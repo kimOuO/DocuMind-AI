@@ -162,7 +162,7 @@ def test_the_preamble_shows_the_matrix_the_definitions_and_the_order_of_analysis
 
     assert "Evidence matrix" in preamble and "Agri / Overall:" in preamble
     assert "-High [2]: Low-level-only retrieval: the -High variant removes" in preamble
-    assert "Full: no definition found in the sources" in preamble
+    assert "Full: not located by the program" in preamble and "quote it" in preamble
     assert "same dataset, the same metric and the same pairing" in preamble
     assert (
         preamble.index("matrix")
@@ -172,6 +172,29 @@ def test_the_preamble_shows_the_matrix_the_definitions_and_the_order_of_analysis
     # Without any table there is no matrix and the Analyst is told so.
     plain = analysis_preamble([], [], WordCounter(), budget=600)
     assert "No structured table data" in plain
+
+
+def test_the_order_of_analysis_asks_for_counted_conclusions_not_absolutes() -> None:
+    """D79 (user's decision after B6): the remaining errors were conclusions stronger than the
+    figures — "all four datasets", "consistently", "the only regression" — with the
+    exceptions sitting in the answer's own table. The Analyst is told to state every
+    comparison as a count of conditions with the exceptions named, and to use an absolute
+    word only when its own count shows it."""
+    sources = [(1, chunk(23, 8, TABLE))]
+    cells = build_matrix(sources)
+
+    preamble = analysis_preamble(cells, [], WordCounter(), budget=600)
+
+    assert "how many of the conditions" in preamble and "naming each condition" in preamble
+    assert '"all", "every", "consistently"' in preamble and "only when" in preamble
+    assert "in most conditions" in preamble
+    assert "each measured against a third" in preamble and "a trend, not a result" in preamble
+    # The rule is part of the ordered steps, not an afterthought.
+    assert preamble.index("how many of the conditions") < preamble.index("(6)")
+    # B6-Q3-2 gave the three variants' figures without the full method's: the completeness
+    # step now names that requirement, and the definitions, in words that fit any method.
+    assert "that method's own figure must stand beside the variants'" in preamble
+    assert "each variant must be defined from the sources" in preamble
 
 
 def test_tables_too_large_for_the_matrix_are_named_not_called_unreadable() -> None:

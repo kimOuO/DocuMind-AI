@@ -387,10 +387,36 @@ def method_aliases(definitions: Sequence[MethodDefinition]) -> dict[str, list[re
 # --- the Analyst's preamble ------------------------------------------------------------
 
 
-# B5 baseline (2026-11-07, user's decision): the analysis order as B3 had it. D75 added two
-# sentences (kept below as _ANALYSIS_ORDER_D75): say only higher/lower where a table's
-# direction is unknown, and do not number the paragraphs after the steps.
+# B5 baseline (2026-11-07, user's decision): the analysis order as B3 had it, kept below as
+# _ANALYSIS_ORDER_B3. D75 added two sentences (kept as _ANALYSIS_ORDER_D75): say only
+# higher/lower where a table's direction is unknown, and do not number the paragraphs.
+#
+# D79 (2026-11-07, user's decision after B6): steps (4) and (5) rewritten. In B6 every table
+# figure was right and the remaining errors were conclusions stronger than the figures —
+# "across all four datasets", "consistently", "the only regression" — with the exceptions
+# sitting in the answer's own table. A comparison is now stated as a count of conditions with
+# each exception named, and an absolute word is allowed only when that count shows it.
 ANALYSIS_ORDER = """\
+Answer in this order: (1) say what the question asks for — which methods, datasets and \
+metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
+that share the same dataset, the same metric and the same pairing — never a figure of one \
+dataset, metric or pairing with one of another, and never treat two methods' separate scores \
+against a reference as a test between those two methods; (4) for each comparison, state how \
+many of the conditions (dataset and metric) go one way and how many go the other, naming each \
+condition that goes the other way with its two figures — for example "higher in 13 of 16 \
+conditions, lower in 3: ..."; (5) keep every conclusion no stronger than those counts: use \
+"all", "every", "consistently", "always" or "the only exception" only when the count you wrote \
+shows it (every condition, or exactly one exception); otherwise write "in most conditions" and \
+name the exceptions again; where two methods were each measured against a third, call the \
+comparison a trend, not a result; (6) cite the table's source for a figure and the defining \
+passage for a definition; (7) check that nothing the question asks for is missing — when the \
+question is about variants of a method, that method's own figure must stand beside the \
+variants' in every condition you give, and each variant must be defined from the sources. You \
+may begin with a compact comparison table of the figures you use, then the analysis. Do not \
+describe these steps; write the answer.
+"""
+
+_ANALYSIS_ORDER_B3 = """\
 Answer in this order: (1) say what the question asks for — which methods, datasets and \
 metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
 that share the same dataset, the same metric and the same pairing — never a figure of one \
@@ -457,15 +483,21 @@ def analysis_preamble(
         )
     methods = sorted({c.column for c in cells})
     if methods or definitions:
+        # D79: a method the extraction did not find a sentence for is not "undefined" — in
+        # B6-Q3-1 the sources held the definitions of two variants the program had missed,
+        # and the model repeated "no definition found" instead of reading them.
         lines = [
-            "Method definitions found in the sources (a method with none may only be "
-            "described by quoting the source, never from its name):"
+            "Method definitions located in the sources (a method with none located may only "
+            "be described by quoting a source that defines it, never from its name):"
         ]
         defined = {d.method: d for d in definitions}
         for method in methods or sorted(defined):
             d = defined.get(method)
             if d is None:
-                lines.append(f"- {method}: no definition found in the sources")
+                lines.append(
+                    f"- {method}: not located by the program — look for its definition in "
+                    "the sources and quote it; if none defines it, say so"
+                )
             else:
                 lines.append(f"- {method} [{d.source_index}]: {d.sentence}")
         parts.append("\n".join(lines))
