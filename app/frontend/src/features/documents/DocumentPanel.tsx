@@ -326,7 +326,7 @@ export function DocumentPanel({
                       <progress
                         className="h-1.5 w-full accent-accent"
                         value={p.current ?? 0}
-                        max={p.total}
+                        max={p.total ?? undefined}
                         aria-label={label}
                       />
                       <span className="shrink-0">{label}</span>
