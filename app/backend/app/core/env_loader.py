@@ -74,18 +74,18 @@ class Settings(BaseSettings):
     # D86: sampling temperature of the answer call (single mode's one call; navigate mode's
     # Analyst; the revision draft). None keeps the model's default (qwen3:32b: 0.6). 0 makes
     # the same evidence give the same answer — not a better one, a repeatable one.
-    answer_temperature: float | None = None
+    answer_temperature: float | None = 0.5
     # D87 experiment A: what the program's comparison facts do at answer time.
     #   off     — computed for the checks only (the behaviour so far)
     #   inject  — the facts that bear on the question go into the prompt before the sources
     #   replace — as inject, and a table chunk whose figures the facts cover is shown as the
     #             rows of the compared columns only (its caption and page kept)
-    answer_facts: str = "off"
+    answer_facts: str = "inject"
     # D87 experiment B: when a section or document summary's figures contradict the tables
     # of its pages, the model is asked once to rewrite the contradicted sentences with the
     # table's own figures as evidence; what still contradicts afterwards is removed. Off by
     # default: the status is stored, the text kept as written.
-    summary_repair: bool = False
+    summary_repair: bool = True
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at

@@ -9,7 +9,9 @@ import tempfile
 
 os.environ["DB_NAME"] = "documind_test"
 os.environ["DB_NULL_POOL"] = "true"
-# The tests describe the code's defaults, whatever the developer's .env turns on (D87/D88).
+# The tests run with the answering improvements off and no fixed temperature, whatever the
+# developer's .env or the code defaults (D89: inject/true/0.5) say: they describe the
+# mechanisms one at a time, turning each on where it is the subject.
 os.environ["ANSWER_FACTS"] = "off"
 os.environ["SUMMARY_REPAIR"] = "false"
 os.environ["ANSWER_TEMPERATURE"] = ""

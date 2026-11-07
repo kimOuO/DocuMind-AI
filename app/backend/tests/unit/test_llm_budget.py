@@ -67,5 +67,7 @@ def test_an_empty_answer_temperature_means_the_models_default() -> None:
     """D86: ANSWER_TEMPERATURE= keeps the default; a value is a float."""
     assert Settings(answer_temperature="").answer_temperature is None  # type: ignore[arg-type]
     assert Settings(answer_temperature="0").answer_temperature == 0.0  # type: ignore[arg-type]
-    # The code's own default, apart from whatever the developer's .env sets.
-    assert Settings.model_fields["answer_temperature"].default is None
+    # The code's own default (D89: 0.5), apart from whatever the developer's .env sets.
+    assert Settings.model_fields["answer_temperature"].default == 0.5
+    assert Settings.model_fields["answer_facts"].default == "inject"
+    assert Settings.model_fields["summary_repair"].default is True
