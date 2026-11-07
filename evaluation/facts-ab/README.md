@@ -117,6 +117,16 @@ C1、C3 用的事實塊說明比 A1 多一句（16:19 改，使用者核准：�
 - 這次入庫的修復：EVALUATION 摘要寫「LightRAG surpasses GraphRAG in all four dimensions on the Legal dataset, achieving 54.4% in Comprehensiveness and 77.2% in Diversity」——54.4%、77.2% 是 **Agriculture** 對 GraphRAG 的數字（Legal 是 51.6%、73.6%），**真錯**。修復證據列出 Legal 整列，模型重寫後再核對 **VERIFIED**，沒有刪句。這是 B1 機制第二次修對真錯、且第一次達到 VERIFIED。全文摘要沒被觸發。
 - 2×2 中「注入開＋修復開」這格沒有互相干擾：Q1 走摘要路線，inject 無事實可注入（`facts: None`）；修復只動摘要。
 
+## F1：核對器修正後的完整測試（17:56–18:05 之前；inject＋修復開，Q1–Q3 各一次，commit `d14229e`）
+
+| 題 | 正式判定 | 寬標準 | 程式判定 | 說明 |
+|---|---|---|---|---|
+| Q1 | **通過** | 通過 | UNCERTAIN | S1–S5 都有；83.6% 對 16.4%、100、610,000 全對；「consistently outperforms … in most cases」有限定。這次入庫 EVALUATION 摘要有**真錯**：「LightRAG 67.6% comprehensiveness in Agriculture versus 34.8% for the -High variant」——34.8% 是 -High 區塊裡 **NaiveRAG** 的數字（-High 是 65.2%），**正是任務書點名的錯型（把基準的數字當成變體的）**；同一摘要還有一句被表格反證的全稱句。修復：重寫一次仍矛盾 → 該句刪除 → 再核對 VERIFIED。刪掉的句子確實是錯的。 |
+| Q2 | **通過** | 通過 | FACTUALLY_INCORRECT | 回答與 A1 一字不差（14 個數字、13／3、三個例外全對）。程式仍標 6 條標籤不符，**全是誤報**，是第三種句型：「GraphRAG performs better … Comprehensiveness (50.4% vs 49.6%)」只點名一個方法，括號裡第二個數字是對方的，核對器把它也歸給 GraphRAG；「(23.6% vs 22.8%)」兩個方法都點名但數字順序是「贏者 vs 輸者」，核對器照主詞順序配。 |
+| Q3 | 不通過（A6） | 通過 | FACTUALLY_CORRECT_BUT_INCOMPLETE | 與 A1-Q3-1 一字不差：16 個數字、計數、例外、三個定義（-Origin 這次對）全對；標籤誤報 0（第二種句型已修）；缺四版本並列。 |
+
+核對器第一、二種誤報（比較動詞、間接比較）在 F1 沒再出現；第三種（括號成對數字）接著修。
+
 ## 寬標準的判定（使用者 16:40：「如果寬標準 (錯誤資訊除外) 但全部等等論文提到的 是可以接受的」）
 
 寬標準＝回答裡沒有錯誤資訊，且內容都出自論文；不要求 key-facts 的每一項都到齊。正式判定仍是 key-facts 標準（A6 維持，D87）。
@@ -176,7 +186,7 @@ C1、C3 用的事實塊說明比 A1 多一句（16:19 改，使用者核准：�
 8. **目前解析器對不同表格的既有限制是否仍然存在？**
    程式碼：存在。矩陣只處理 `_LINEAR_ROW` 格式（「列 — 群組: 欄 值, 欄 值」），`paired_with` 只在同一條件剛好兩個子欄時成立；多層表頭、合併儲存格、非百分比表格沒有驗證過。GraphRAG 論文的 Table 6 在 D81 已能偵測，但本輪沒有測 G1、G2。
 9. **最終應該採用哪一組配置作為預設？**
-   實測＋推測：`ANSWER_FACTS=inject` 可以開（Q2 由 0 變通過、Q3 數字全對、無已知傷害），**但開之前要先修標籤核對的配對條件**，否則 UI 會把正確答案標成 FACTUALLY_INCORRECT（A1 11 條、C1n 22 條全是誤報）。`SUMMARY_REPAIR` 暫不預設開：三次觸發裡一次刪掉正確句子，同樣卡在那個誤報；修好核對器後可開。
+   實測＋推測：`ANSWER_FACTS=inject` 可以開（Q2 由 0 變通過、Q3 數字全對、無已知傷害）。開之前要先修標籤核對的配對條件——**已修（`d14229e` 與後續）**：三種誤報句型修正後，A1／F1 的 Q2、Q3 標籤報錯歸零，標註集的精確率與召回率不變。`SUMMARY_REPAIR`：四次觸發裡三次修對真錯（76.0%、54.4%／77.2%、34.8%——最後一條是任務書點名的「基準數字當變體」錯型），一次因誤報刪掉正確句子（51.6%，已修的句型）；核對器修好後可開。兩者預設值的切換（`.env.sample`）留給使用者決定，本輪沒改。
 10. **還有哪些改善值得留到 Future Work？**
    - 標籤核對：以句子主詞／動詞方向判斷歸屬，而不是最近的方法名；配對條件接受「各自對同一基準」的間接比較。
    - 事實塊加一行「同一條件四版本數字」（A6 需要；程式從矩陣算，不寫死名稱）。
@@ -202,4 +212,6 @@ C1、C3 用的事實塊說明比 A1 多一句（16:19 改，使用者核准：�
 
 1. **比較動詞不在比較詞清單**：「It also outperforms GraphRAG … 52.8%」把 GraphRAG 當數字的主人。加入 outperform／surpass／exceed／beat／ahead of／behind／trail／lag（及 高於／低於／超過／領先／落後）為比較詞，其後的方法成為比較對象；主詞「it」未命名時結果是 unresolved（missing），不再是 contradicted。
 2. **間接比較被當成配對錯誤**：「LightRAG (62.0%) is lower than -High (63.2%)」要求格子的配對對象＝句子的比較對象，而 Table 2 把兩者各自配 NaiveRAG。新規則（`_Pairing`）：句子**同時列出兩個表格數字**、且表格**沒有**該方法與該比較對象的直接配對、而比較對象在同一條件有自己的格子時，接受為間接比較；表格有直接配對時（Table 1 的 LightRAG 對 GraphRAG）仍要求數字來自該配對（B5 那種拿錯區塊的錯照抓）；只有一個數字的「67.6% against -High」仍視為宣稱配對、照抓。
-3. 單元測試新增 4 條（兩個誤報案例、直接配對仍抓、單數字仍抓）；`evaluation/number-check/replay.py` 的 D67 標註集：precision 1.0、recall 1.0、recall_strict 0.733，與修正前相同（沒有漏掉原本抓到的真錯）。
+3. **括號成對數字**（F1 之後補）：「GraphRAG performs better … (50.4% vs 49.6%)」只點名一個方法時，第一個數字是它的、第二個是對方的（方法留空，比較對象＝它）；「GraphRAG outperforms NaiveRAG … (23.6% vs 22.8%)」點名兩個時，第一個數字歸主詞（不在比較詞後的那個）、第二個歸比較對象，並保留「順序顛倒」的另一種讀法——只有顛倒讀法符合表格時判 unresolved（ambiguous），兩種都不符才判 contradicted。
+4. 單元測試新增 7 條；`evaluation/number-check/replay.py` 的 D67 標註集：precision 1.0、recall 1.0、recall_strict 0.733，三次修正前後相同（沒有漏掉原本抓到的真錯）。
+5. 以新核對器離線重判本資料夾全部記錄（`judge.py` 現場跑 `verify_numbers`）：A1-Q2 標籤報錯 14→0、A1-Q3-2 7→0、C1n-Q3 22→0、F1-Q2 6→0；C3n-Q2 3→1，留下的那 1 條（23.6% 被寫成 GraphRAG 的）是**真錯**。記錄裡的 `analysis_status` 欄位是當時舊核對器寫入的，沿用不改。

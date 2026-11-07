@@ -358,17 +358,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -403,17 +404,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -448,17 +450,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -493,17 +496,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -538,17 +542,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -583,17 +588,18 @@
    "replaced_sources": []
   },
   "table_figures": 14,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "49.6%",
    "49.2%",
+   "54.4%",
    "45.6%",
+   "54.8%",
    "45.2%",
    "23.6%",
-   "29.2%"
-  ],
-  "figures_unresolved": [
-   "54.4%",
-   "54.8%"
+   "22.8%",
+   "29.2%",
+   "22.8%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -778,12 +784,7 @@
    ]
   },
   "table_figures": 22,
-  "figures_mislabelled": [
-   "49.6%",
-   "26.4%",
-   "49.2%",
-   "49.6%"
-  ],
+  "figures_mislabelled": [],
   "figures_unresolved": [],
   "overstated_by_program": [],
   "universal_wording": [
@@ -820,7 +821,8 @@
    ]
   },
   "table_figures": 16,
-  "figures_mislabelled": [
+  "figures_mislabelled": [],
+  "figures_unresolved": [
    "62.0%",
    "61.2%",
    "57.2%",
@@ -830,7 +832,6 @@
    "67.6%",
    "67.6%"
   ],
-  "figures_unresolved": [],
   "overstated_by_program": [],
   "universal_wording": [
    "in all",
@@ -1005,11 +1006,12 @@
   },
   "table_figures": 8,
   "figures_mislabelled": [
-   "49.6%",
-   "49.2%",
    "23.6%"
   ],
-  "figures_unresolved": [],
+  "figures_unresolved": [
+   "49.6%",
+   "49.2%"
+  ],
   "overstated_by_program": [],
   "universal_wording": [
    "consistently"
@@ -1041,24 +1043,12 @@
    "replaced_sources": []
   },
   "table_figures": 26,
-  "figures_mislabelled": [
-   "63.2%",
-   "64.0%",
-   "64.8%",
-   "64.8%",
-   "75.2%",
-   "74.4%",
-   "68.0%",
-   "74.4%",
-   "32.4%",
-   "13.6%",
-   "62.0%",
-   "57.2%",
-   "67.6%"
-  ],
+  "figures_mislabelled": [],
   "figures_unresolved": [
    "67.6%",
-   "86.4%"
+   "32.4%",
+   "86.4%",
+   "13.6%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -1161,11 +1151,12 @@
   },
   "table_figures": 8,
   "figures_mislabelled": [
-   "49.6%",
-   "49.2%",
    "23.6%"
   ],
-  "figures_unresolved": [],
+  "figures_unresolved": [
+   "49.6%",
+   "49.2%"
+  ],
   "overstated_by_program": [],
   "universal_wording": [
    "consistently"
@@ -1197,24 +1188,12 @@
    "replaced_sources": []
   },
   "table_figures": 26,
-  "figures_mislabelled": [
-   "63.2%",
-   "64.0%",
-   "64.8%",
-   "64.8%",
-   "75.2%",
-   "74.4%",
-   "68.0%",
-   "74.4%",
-   "32.4%",
-   "13.6%",
-   "62.0%",
-   "57.2%",
-   "67.6%"
-  ],
+  "figures_mislabelled": [],
   "figures_unresolved": [
    "67.6%",
-   "86.4%"
+   "32.4%",
+   "86.4%",
+   "13.6%"
   ],
   "overstated_by_program": [],
   "universal_wording": [
@@ -1235,5 +1214,124 @@
   },
   "lightrag_own_figures": 11,
   "variant_figures": 15
+ },
+ {
+  "arm": "F1",
+  "question": "Q1",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "UNCERTAIN",
+  "answer_prompt_tokens": 3392,
+  "answer_completion_tokens": 584,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 2,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms baselines like Naive RAG, RQ-RAG, HyDE, and GraphRAG in most cases across four evaluation dimensions: comprehensiveness, diver"
+  ],
+  "figures_in_answer": [
+   "83.6%",
+   "16.4%"
+  ],
+  "summaries_contradicted": [
+   "EVALUATION p.5-10: ['34.8%']"
+  ],
+  "repairs": [
+   {
+    "summary": "EVALUATION",
+    "before": "CONTRADICTED",
+    "after": "VERIFIED",
+    "rewritten": true,
+    "removed": [
+     "For example, the full version of LightRAG achieves 67.6% comprehensiveness in Agriculture versus 34.8% for the -High variant (p. 8)."
+    ]
+   }
+  ]
+ },
+ {
+  "arm": "F1",
+  "question": "Q2",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [],
+  "figures_unresolved": [
+   "49.6%",
+   "49.2%",
+   "54.4%",
+   "45.6%",
+   "54.8%",
+   "45.2%",
+   "23.6%",
+   "22.8%",
+   "29.2%",
+   "22.8%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "F1",
+  "question": "Q3",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 794,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "in all"
+  ],
+  "sentences_with_universal_wording": [
+   "**LightRAG vs NaiveRAG (direct pair; higher is better)**: LightRAG outperforms NaiveRAG in all 16 conditions, with no cases where NaiveRAG performs better [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 7,
+  "variant_figures": 9
  }
 ]

@@ -25,7 +25,7 @@ unresolved: the check does not guess, and says so.
 import re
 import uuid
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import pairwise
 
 from app.ingestion.tables import cells_of
@@ -60,6 +60,8 @@ _BEFORE_FIGURE = re.compile(r"(?:['’]s)?[\s:(]{0,4}")
 _AFTER_FIGURE = re.compile(r"[\s(]{0,4}|\s+(?:in|for|on|of)\s+(?:the\s+)?")
 # Two figures joined into a range ("32.4%–38.8%") share their labels.
 _RANGE = re.compile(r"\s*[-–]\s*")
+# Two figures set against each other: "(50.4% vs 49.6%)", "54.4% against 45.6%".
+_PAIR_JOIN = re.compile(r"\s*(?:vs\.?|versus|against|v\.s\.|對|比)\s*", re.IGNORECASE)
 # What stands right before the name of the method a figure is compared against.
 _COMPARISON_CUE = re.compile(
     r"(?:\b(?:over|against|than|versus|vs\.?|compared\s+(?:to|with)|relative\s+to"
@@ -316,6 +318,10 @@ class _Claim:
     labels: list[str | None]  # one per label category, None when not given
     comparator: str | None
     ambiguous: bool  # some category had two candidate labels and none attached
+    # The other reading of a "x vs y" pair that names two methods: (method, comparator)
+    # swapped. "GraphRAG beats NaiveRAG … (23.6% vs 22.8%)" may list the figures in either
+    # order; when only the swapped reading fits the table, the pair is ambiguous, not wrong.
+    alternative: tuple[str | None, str | None] | None = None
 
     @property
     def empty(self) -> bool:
@@ -414,6 +420,65 @@ def _claims(
                     comparator = scope[0][2]
                     break
         claims.append(_Claim(figure, labels, comparator, ambiguous))
+    cue_labels = {m[2] for m in per_category[method] if owner[m] is None and after_cue(m)}
+    return _paired(
+        sentence, figures, claims, clauses, per_category[method], owner, method, cue_labels
+    )
+
+
+def _paired(
+    sentence: str,
+    figures: Sequence[Span],
+    claims: list[_Claim],
+    clauses: Sequence[Span],
+    method_mentions: Sequence[Mention],
+    owner: dict[Mention, Span | None],
+    method: int,
+    cue_labels: set[str],
+) -> list[_Claim]:
+    """Figures written as a pair, "x vs y", are the two sides of one comparison (D87). With
+    one method named in the clause, x is that method's and y is the other side's, left
+    unnamed; with two, x is the subject's and y the comparator's, and the swapped reading is
+    kept as the alternative. Figures that carry their own method label are left alone."""
+    for index, (previous, figure) in enumerate(pairwise(figures)):
+        if not _PAIR_JOIN.fullmatch(sentence[previous[1] : figure[0]]):
+            continue
+        first, second = claims[index], claims[index + 1]
+        if any(owner[m] in (previous, figure) for m in method_mentions):
+            continue
+        clause = next((c for c in clauses if c[0] <= previous[0] < c[1]), (0, len(sentence)))
+        free = [m for m in method_mentions if owner[m] is None]
+        in_clause = [m for m in free if clause[0] <= m[0] < clause[1]]
+        named: list[str] = []
+        for _, _, label in sorted(in_clause or free):
+            if label not in named:
+                named.append(label)
+        if len(named) == 1:
+            (only,) = named
+            first_labels = [*first.labels[:method], only, *first.labels[method + 1 :]]
+            second_labels = [*second.labels[:method], None, *second.labels[method + 1 :]]
+            claims[index] = replace(first, labels=first_labels, ambiguous=False)
+            claims[index + 1] = replace(
+                second, labels=second_labels, comparator=only, ambiguous=False
+            )
+        elif len(named) == 2:
+            # The subject is the method not introduced by a comparison word.
+            subject = next((n for n in named if n not in cue_labels), named[0])
+            other = next(n for n in named if n != subject)
+            claims[index] = replace(
+                first,
+                labels=[*first.labels[:method], subject, *first.labels[method + 1 :]],
+                comparator=other,
+                ambiguous=False,
+                alternative=(other, subject),
+            )
+            claims[index + 1] = replace(
+                second,
+                labels=[*second.labels[:method], other, *second.labels[method + 1 :]],
+                comparator=subject,
+                ambiguous=False,
+                alternative=(subject, other),
+            )
     return claims
 
 
@@ -561,11 +626,17 @@ def label_outcomes(
             candidates = cells.get(_key(number))
             if not candidates:
                 continue
-            fitting = [
-                cell for cell in candidates if _fits(claim, cell, pairing if compares else None)
-            ]
+            scope = pairing if compares else None
+            fitting = [cell for cell in candidates if _fits(claim, cell, scope)]
+            swapped = _swapped(claim, categories - 1) if not fitting else None
             if claim.empty:
                 status, reason, shown = "unchecked", None, fitting
+            elif (
+                not fitting
+                and swapped is not None
+                and any(_fits(swapped, cell, scope) for cell in candidates)
+            ):
+                status, reason, shown = "unresolved", "ambiguous", candidates
             elif not fitting:
                 status, reason, shown = "contradicted", None, candidates
             elif claim.ambiguous:
@@ -595,6 +666,15 @@ def label_outcomes(
             for found_mentions in mentions
         ]
     return outcomes
+
+
+def _swapped(claim: _Claim, method: int) -> _Claim | None:
+    """The alternative reading of a paired figure, if the claim has one."""
+    if claim.alternative is None:
+        return None
+    other, comparator = claim.alternative
+    labels = [*claim.labels[:method], other, *claim.labels[method + 1 :]]
+    return replace(claim, labels=labels, comparator=comparator, alternative=None)
 
 
 def _is_heading(sentence: str, mentions: Sequence[Sequence[Mention]]) -> bool:

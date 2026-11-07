@@ -404,6 +404,41 @@ def test_a_single_figure_against_an_unpaired_method_still_claims_the_pairing() -
     assert wrong.answer_labels == ["Comprehensiveness", "Agriculture", "LightRAG", "vs -High"]
 
 
+def test_a_paired_figure_after_vs_belongs_to_the_other_unnamed_side() -> None:
+    """D87 (the F1 false positives): one method named, two figures set against each other:
+    50.4% is GraphRAG's and 49.6% is the other side's, whose name the sentence leaves out."""
+    answer = (
+        "The exceptions where GraphRAG performs better are in the Mix dataset for "
+        "Comprehensiveness (50.4% vs 49.6%) [1]."
+    )
+
+    mislabelled, unresolved = outcomes(answer)
+
+    assert mislabelled == [] and unresolved == [("49.6%", "missing")]
+
+
+def test_a_pair_naming_two_methods_in_either_order_is_ambiguous_not_wrong() -> None:
+    # 23.6% is NaiveRAG's and 22.8% GraphRAG's: the pair is written loser-first here.
+    answer = (
+        "GraphRAG outperforms NaiveRAG in 15 of 16 conditions, with the only exception being "
+        "Agriculture Diversity (23.6% vs 22.8%) [1]."
+    )
+
+    mislabelled, unresolved = outcomes(answer)
+
+    assert mislabelled == []
+    assert unresolved == [("23.6%", "ambiguous"), ("22.8%", "ambiguous")]
+
+
+def test_a_paired_figure_that_fits_neither_reading_is_still_contradicted() -> None:
+    # 49.6% is LightRAG's in Mix Comprehensiveness, not GraphRAG's.
+    [wrong] = verify_numbers(
+        "GraphRAG performs better in Mix Comprehensiveness (49.6% vs 50.4%) [1].", PAGES
+    ).mislabelled
+
+    assert wrong.number == "49.6%" and wrong.answer_labels[-1] == "GraphRAG"
+
+
 def test_a_direct_pair_the_table_has_must_be_the_pair_the_figure_comes_from() -> None:
     # Table 1 pairs LightRAG with GraphRAG directly: 67.6% is its figure against NaiveRAG.
     [wrong] = verify_numbers(
