@@ -69,8 +69,9 @@ test: db ## Run the backend tests only
 smoke: migrate ## Minimal end-to-end check: bge-m3 -> pgvector -> qwen3 (AC-47)
 	$(VENV)/bin/python scripts/smoke_rag.py
 
-eval: ## Run the retrieval/answer evaluation (added in P4)
-	@echo "evaluation is implemented in phase P4" && exit 1
+eval: db ## P4: retrieval-parameter experiment with the real embedding model (writes evaluation/retrieval-parameters/runs/)
+	cd $(BACKEND) && pytest -q -p no:cacheprovider -o addopts="" -m "llm and db" tests/integration/test_retrieval_parameters_real.py -s
+	cd evaluation/retrieval-parameters && ../../.venv/bin/python analyse.py
 
 transcript: ## Export Claude Code session transcripts to docs/05-ai-collaboration/sessions/raw
 	python3 scripts/export_transcript.py

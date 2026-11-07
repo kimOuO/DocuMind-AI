@@ -1,0 +1,8215 @@
+{
+ "config": {
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "embed_model": "bge-m3",
+  "candidates_per_ranking": 20,
+  "rrf_k": 60,
+  "fulltext_config": "simple; OR of the question's Latin/numeric tokens",
+  "coverage_rule": "same document and page; evidence text contained, or longest common block >= 50% of its characters"
+ },
+ "ingest_seconds": 5.3,
+ "chunk_count": 130,
+ "questions": [
+  {
+   "id": "Q2",
+   "kind": "required",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6454791155582024,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.25,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph"
+     ],
+     "evidence_tokens": 1071,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph",
+      "4.5 incremental update cost"
+     ],
+     "evidence_tokens": 1757,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph",
+      "4.5 incremental update cost"
+     ],
+     "evidence_tokens": 2831,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.25,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph"
+     ],
+     "evidence_tokens": 1071,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "Table 1, GraphRAG block",
+      "4.2 superiority paragraph"
+     ],
+     "evidence_tokens": 2844,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "Table 1, GraphRAG block",
+      "4.2 superiority paragraph"
+     ],
+     "evidence_tokens": 4044,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       4
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 0.25,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph"
+     ],
+     "evidence_tokens": 1071,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph",
+      "4.5 incremental update cost"
+     ],
+     "evidence_tokens": 1757,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "4.2 superiority paragraph",
+      "4.5 incremental update cost"
+     ],
+     "evidence_tokens": 2831,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6454791155582024
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.6298601008128818
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.6264526133189918
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.6123116672937247
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.6049217692158313
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.6040397138311525
+    },
+    {
+     "chunk_id": "d129574a-a498-4c2f-a525-83bca26206ce",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5915211489670623
+    },
+    {
+     "chunk_id": "017ad7e7-d898-4352-bee3-4dc9c5e3a2d7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.5895700730431196
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6454791155582024
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.6298601008128818
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.6264526133189918
+    },
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.5818557348939418
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.6123116672937247
+    },
+    {
+     "chunk_id": "d129574a-a498-4c2f-a525-83bca26206ce",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5915211489670623
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.5677922640837525
+    },
+    {
+     "chunk_id": "8954f5fd-410d-4825-b467-b274b2c67a58",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 10,
+     "token_count": 400,
+     "score": 0.5878192258958704
+    }
+   ]
+  },
+  {
+   "id": "Q3",
+   "kind": "required",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6267690070959775,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "Table 2"
+     ],
+     "evidence_tokens": 2158,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "Table 2"
+     ],
+     "evidence_tokens": 2844,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       1
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 4041,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "Table 2"
+     ],
+     "evidence_tokens": 2156,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 2955,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 5128,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 2557,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 1
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 3243,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 1
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2",
+      "4.3 variant definitions and observations"
+     ],
+     "evidence_tokens": 4041,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.6267690070959775
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.6037787097830933
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.574019093168462
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.558843700334549
+    },
+    {
+     "chunk_id": "c3e00ace-6eae-4612-b66c-da1192ee197d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 1,
+     "token_count": 400,
+     "score": 0.5574677459801715
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.5518868505112264
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5460586769457356
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.5459887549838852
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.6267690070959775
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.6037787097830933
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.5459887549838852
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5460586769457356
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.5518868505112264
+    },
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.5224011051184584
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.558843700334549
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.5267497428655745
+    }
+   ]
+  },
+  {
+   "id": "D1",
+   "kind": "detail",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6368675012186208,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 985,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 1594,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       3
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 2794,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       2
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 1072,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 2843,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 3770,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 985,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 1594,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       3
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 datasets"
+     ],
+     "evidence_tokens": 2794,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       2
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.6368675012186208
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.578743439020307
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.5643870921981378
+    },
+    {
+     "chunk_id": "ed34b9c1-6aa8-4c1f-a4cd-4dd18f1c351e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 40,
+     "token_count": 209,
+     "score": 0.554993702473142
+    },
+    {
+     "chunk_id": "ae67e588-8e0a-4e89-b969-ab86e3717e49",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 3,
+     "ordinal": 7,
+     "token_count": 400,
+     "score": 0.5544232000295797
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.5527179052646538
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.5505699126893683
+    },
+    {
+     "chunk_id": "d129574a-a498-4c2f-a525-83bca26206ce",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5491475228559862
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.5527179052646538
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.6368675012186208
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.5381068405595586
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.5432584727078217
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.5271769068800581
+    },
+    {
+     "chunk_id": "d129574a-a498-4c2f-a525-83bca26206ce",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5491475228559862
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.5322474125931017
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.5299957776099993
+    }
+   ]
+  },
+  {
+   "id": "D2",
+   "kind": "detail",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6071534625108926,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1074,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1874,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       1
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 2739,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1198,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1833,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 2999,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1074,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 1874,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       1
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 implementation details"
+     ],
+     "evidence_tokens": 2739,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.6071534625108926
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.5800981831199838
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.5538669035911067
+    },
+    {
+     "chunk_id": "c3e00ace-6eae-4612-b66c-da1192ee197d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 1,
+     "token_count": 400,
+     "score": 0.5473473825015721
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.5406577313338368
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.5341335535049438
+    },
+    {
+     "chunk_id": "e97ef7b1-207c-4924-b8de-99f4f8171bea",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 38,
+     "token_count": 116,
+     "score": 0.5330142021749935
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.532592630253913
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.6071534625108926
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.5800981831199838
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.5215485044602294
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.5285007323621868
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.5341335535049438
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.532592630253913
+    },
+    {
+     "chunk_id": "afe2adb6-bc52-4cab-8f46-7a1747053cff",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 13,
+     "token_count": 400,
+     "score": 0.5322927236557007
+    },
+    {
+     "chunk_id": "2f153f02-35f2-4879-9d13-0a30f4f04aae",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 366,
+     "score": 0.4986823200394115
+    }
+   ]
+  },
+  {
+   "id": "D3",
+   "kind": "detail",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6336283365182255,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 877,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 1563,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 2608,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 940,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 1563,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 2633,
+     "pages": [
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 877,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 1563,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1 evaluation dimensions"
+     ],
+     "evidence_tokens": 2608,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.6336283365182255
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.6317187954671455
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.607620102677289
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.5835041105136518
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.5820247606613392
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5816034501313716
+    },
+    {
+     "chunk_id": "c16b08c6-4cdb-4a5c-8d4d-bbafb723284b",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 12,
+     "token_count": 246,
+     "score": 0.5696625120855827
+    },
+    {
+     "chunk_id": "9814613c-767f-45d4-b71b-d6c0e82b295f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 16,
+     "token_count": 400,
+     "score": 0.5686669004958343
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.5835041105136518
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.607620102677289
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.5594867851185414
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.6317187954671455
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.6336283365182255
+    },
+    {
+     "chunk_id": "2c432d48-316e-4618-ad7c-7886e24f48eb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 44,
+     "token_count": 399,
+     "score": 0.5615686627462874
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.5400870847286774
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.5492731156564576
+    }
+   ]
+  },
+  {
+   "id": "D4",
+   "kind": "detail",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.7026742567990705,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 1200,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 1998,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 3164,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1198,
+     "pages": [
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 1998,
+     "pages": [
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       2
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 3164,
+     "pages": [
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 1200,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 1998,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.5 incremental update"
+     ],
+     "evidence_tokens": 3164,
+     "pages": [
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       2
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.7026742567990705
+    },
+    {
+     "chunk_id": "8954f5fd-410d-4825-b467-b274b2c67a58",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 10,
+     "token_count": 400,
+     "score": 0.6951816059732223
+    },
+    {
+     "chunk_id": "ec81e9b6-da85-4262-a380-26dce2d3f4c2",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 400,
+     "score": 0.6752478434307002
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.6279464350003238
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6270897297760236
+    },
+    {
+     "chunk_id": "d129574a-a498-4c2f-a525-83bca26206ce",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.6248391793424567
+    },
+    {
+     "chunk_id": "0965a92e-0cda-44a6-a30a-d04dedd77a11",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 3,
+     "token_count": 400,
+     "score": 0.618467228960948
+    },
+    {
+     "chunk_id": "2f153f02-35f2-4879-9d13-0a30f4f04aae",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 366,
+     "score": 0.6147077728712349
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "ec81e9b6-da85-4262-a380-26dce2d3f4c2",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 400,
+     "score": 0.6752478434307002
+    },
+    {
+     "chunk_id": "8954f5fd-410d-4825-b467-b274b2c67a58",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 10,
+     "token_count": 400,
+     "score": 0.6951816059732223
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6270897297760236
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.7026742567990705
+    },
+    {
+     "chunk_id": "0965a92e-0cda-44a6-a30a-d04dedd77a11",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 3,
+     "token_count": 400,
+     "score": 0.618467228960948
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.6279464350003238
+    },
+    {
+     "chunk_id": "ae67e588-8e0a-4e89-b969-ab86e3717e49",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 3,
+     "ordinal": 7,
+     "token_count": 400,
+     "score": 0.61071446559258
+    },
+    {
+     "chunk_id": "2f153f02-35f2-4879-9d13-0a30f4f04aae",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 366,
+     "score": 0.6147077728712349
+    }
+   ]
+  },
+  {
+   "id": "T1",
+   "kind": "table",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6726891192568398,
+   "fulltext_candidates": 16,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 615,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 1289,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 2489,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 615,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 1415,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 3576,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 615,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 1289,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 4"
+     ],
+     "evidence_tokens": 2489,
+     "pages": [
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "ed34b9c1-6aa8-4c1f-a4cd-4dd18f1c351e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 40,
+     "token_count": 209,
+     "score": 0.6726891192568398
+    },
+    {
+     "chunk_id": "611f5618-91a7-4d04-a47b-6dfaf64598a4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 39,
+     "token_count": 95,
+     "score": 0.6505678863349047
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.5241537973789107
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.471393239512901
+    },
+    {
+     "chunk_id": "9814613c-767f-45d4-b71b-d6c0e82b295f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 16,
+     "token_count": 400,
+     "score": 0.470944141757105
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.46571245380789816
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.42810360882813847
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.4280302311209143
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "ed34b9c1-6aa8-4c1f-a4cd-4dd18f1c351e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 40,
+     "token_count": 209,
+     "score": 0.6726891192568398
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.5241537973789107
+    },
+    {
+     "chunk_id": "611f5618-91a7-4d04-a47b-6dfaf64598a4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 39,
+     "token_count": 95,
+     "score": 0.6505678863349047
+    },
+    {
+     "chunk_id": "9814613c-767f-45d4-b71b-d6c0e82b295f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 16,
+     "token_count": 400,
+     "score": 0.470944141757105
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.46571245380789816
+    },
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.3955794759548654
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.471393239512901
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.4280302311209143
+    }
+   ]
+  },
+  {
+   "id": "T2",
+   "kind": "table",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6861036946402737,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 3370,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 4023,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 4970,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 3370,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 4168,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 5095,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 3769,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 1
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 4422,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 1
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 1, NaiveRAG block, Diversity row"
+     ],
+     "evidence_tokens": 5369,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 1
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.6861036946402737
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.6493951143997545
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6287857276030886
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.6039494128589233
+    },
+    {
+     "chunk_id": "2c432d48-316e-4618-ad7c-7886e24f48eb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 44,
+     "token_count": 399,
+     "score": 0.5947556865797959
+    },
+    {
+     "chunk_id": "1dd2d523-0d97-4c9e-99d0-44a56717b613",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 43,
+     "token_count": 400,
+     "score": 0.5717936156657164
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.5700012791152235
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.5691306775029477
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.6861036946402737
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.6493951143997545
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.6287857276030886
+    },
+    {
+     "chunk_id": "2c432d48-316e-4618-ad7c-7886e24f48eb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 44,
+     "token_count": 399,
+     "score": 0.5947556865797959
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5435587005747295
+    },
+    {
+     "chunk_id": "1dd2d523-0d97-4c9e-99d0-44a56717b613",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 43,
+     "token_count": 400,
+     "score": 0.5717936156657164
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.6039494128589233
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.5700012791152235
+    }
+   ]
+  },
+  {
+   "id": "T3",
+   "kind": "table",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.6297328913530286,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 3371,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 4169,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 5007,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 3371,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 4042,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 5044,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 4042,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ],
+     "added": 2
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 4169,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2, -High block, Overall row"
+     ],
+     "evidence_tokens": 5007,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       16
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.6297328913530286
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.5873501792728729
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5225360291526492
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.49024114245388883
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.48931266208182256
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.4873472214474176
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.45257890224456787
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.45022965070848175
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.6297328913530286
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.5873501792728729
+    },
+    {
+     "chunk_id": "aa9b282a-8e82-4929-abe7-8fb60e583ee4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 23,
+     "token_count": 399,
+     "score": 0.5225360291526492
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.49024114245388883
+    },
+    {
+     "chunk_id": "0a8464a2-8e7e-41b5-bbf9-30b88b941c5e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 21,
+     "token_count": 273,
+     "score": 0.45022965070848175
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.4231078028678894
+    },
+    {
+     "chunk_id": "2c432d48-316e-4618-ad7c-7886e24f48eb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 44,
+     "token_count": 399,
+     "score": 0.4498045742511749
+    },
+    {
+     "chunk_id": "a941527b-b4f3-4066-9a23-41f3f9984646",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 45,
+     "token_count": 254,
+     "score": 0.4873472214474176
+    }
+   ]
+  },
+  {
+   "id": "G1",
+   "kind": "detail",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "graphrag"
+   ],
+   "top1_similarity": 0.780922834634729,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1033,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1832,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 2684,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1199,
+     "pages": [
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1999,
+     "pages": [
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       6
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 3125,
+     "pages": [
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       7
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1033,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 2450,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ],
+     "added": 2
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 3702,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       12
+      ]
+     ],
+     "added": 3
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.780922834634729
+    },
+    {
+     "chunk_id": "b2163256-7248-409b-84d5-91d6d697b8ec",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 233,
+     "score": 0.6524086400148704
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.6510090245894542
+    },
+    {
+     "chunk_id": "0b7308de-a487-4409-9f04-31692146e924",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 399,
+     "score": 0.6404857156490392
+    },
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.5904524854230125
+    },
+    {
+     "chunk_id": "add9015b-73f6-44db-9165-e19ad3625f6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 35,
+     "token_count": 400,
+     "score": 0.5895482653110186
+    },
+    {
+     "chunk_id": "83bae237-7430-4a2e-af58-9f5382dafadb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 164,
+     "score": 0.5757823162013985
+    },
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.5707768031723283
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "a356d698-ce0a-475e-8633-4b11d0542807",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 6,
+     "ordinal": 16,
+     "token_count": 400,
+     "score": 0.5588838835207073
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.780922834634729
+    },
+    {
+     "chunk_id": "0b7308de-a487-4409-9f04-31692146e924",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 399,
+     "score": 0.6404857156490392
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.6510090245894542
+    },
+    {
+     "chunk_id": "cfeb1f4c-d16c-4e53-8c52-a144920d02d6",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 6,
+     "ordinal": 15,
+     "token_count": 400,
+     "score": 0.5142685907243019
+    },
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.5904524854230125
+    },
+    {
+     "chunk_id": "7bc09492-a14b-45e3-8c19-5415fa21c2f3",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 327,
+     "score": 0.5108682082397077
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.5397751199261199
+    }
+   ]
+  },
+  {
+   "id": "G2",
+   "kind": "detail",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "graphrag"
+   ],
+   "top1_similarity": 0.7028166941354702,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 921,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 1720,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 2683,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 1087,
+     "pages": [
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 1886,
+     "pages": [
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       20
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 3085,
+     "pages": [
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       20
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       23
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 1539,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ],
+     "added": 2
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 1720,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "5.1 win-rate ranges"
+     ],
+     "evidence_tokens": 2683,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.7028166941354702
+    },
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.6932119679668315
+    },
+    {
+     "chunk_id": "b2163256-7248-409b-84d5-91d6d697b8ec",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 233,
+     "score": 0.6186850015267824
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.5836525833090171
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.5816643335420132
+    },
+    {
+     "chunk_id": "0b7308de-a487-4409-9f04-31692146e924",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 399,
+     "score": 0.5799976015108262
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.5796316577321364
+    },
+    {
+     "chunk_id": "83bae237-7430-4a2e-af58-9f5382dafadb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 164,
+     "score": 0.535206071089266
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.6932119679668315
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.5836525833090171
+    },
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.7028166941354702
+    },
+    {
+     "chunk_id": "78a1bf82-dd33-4ce5-946e-255304767c6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 20,
+     "ordinal": 60,
+     "token_count": 400,
+     "score": 0.49623608589178003
+    },
+    {
+     "chunk_id": "0b7308de-a487-4409-9f04-31692146e924",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 399,
+     "score": 0.5799976015108262
+    },
+    {
+     "chunk_id": "bbb2f0d1-da5b-4ece-8705-c6d46b8b5966",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 20,
+     "token_count": 400,
+     "score": 0.48275056789807413
+    },
+    {
+     "chunk_id": "b2d37a4e-7cfd-4037-9334-b16683acec6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.4871260508450004
+    },
+    {
+     "chunk_id": "7455a58b-b2cd-46ff-b6c1-a10aeed08675",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 23,
+     "ordinal": 67,
+     "token_count": 399,
+     "score": null
+    }
+   ]
+  },
+  {
+   "id": "G3",
+   "kind": "table",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "graphrag"
+   ],
+   "top1_similarity": 0.6098044383758976,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 921,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 1721,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 2824,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       1
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 1088,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 1721,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 2921,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       3
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 921,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 2339,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ]
+     ],
+     "added": 2
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "5.1 Experiment 1"
+     ],
+     "evidence_tokens": 3842,
+     "pages": [
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       1
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       12
+      ]
+     ],
+     "added": 3
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.6098044383758976
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.5979349736091553
+    },
+    {
+     "chunk_id": "b2163256-7248-409b-84d5-91d6d697b8ec",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 233,
+     "score": 0.5972165349463778
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.5944984538849079
+    },
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.546324849128727
+    },
+    {
+     "chunk_id": "49e28ace-7948-40c7-8e9a-af85910f87c5",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 24,
+     "token_count": 400,
+     "score": 0.5359931459451545
+    },
+    {
+     "chunk_id": "add9015b-73f6-44db-9165-e19ad3625f6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 35,
+     "token_count": 400,
+     "score": 0.5349083979455136
+    },
+    {
+     "chunk_id": "68f7e9a2-c3ea-4c92-adda-ec050124deb4",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 1,
+     "ordinal": 1,
+     "token_count": 303,
+     "score": 0.5046872502192701
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.6098044383758976
+    },
+    {
+     "chunk_id": "7e0dcc9b-36c6-48c9-b8a1-3e9a36e52c3f",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 32,
+     "token_count": 400,
+     "score": 0.546324849128727
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.5944984538849079
+    },
+    {
+     "chunk_id": "b2163256-7248-409b-84d5-91d6d697b8ec",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 31,
+     "token_count": 233,
+     "score": 0.5972165349463778
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.5979349736091553
+    },
+    {
+     "chunk_id": "b895f429-bde2-401c-bb13-b3a32a98229b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 6,
+     "token_count": 400,
+     "score": 0.489221929219013
+    },
+    {
+     "chunk_id": "49e28ace-7948-40c7-8e9a-af85910f87c5",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 24,
+     "token_count": 400,
+     "score": 0.5359931459451545
+    },
+    {
+     "chunk_id": "ce590266-9ddf-46fd-aaec-33677fb4aa2c",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 7,
+     "token_count": 400,
+     "score": 0.4892521241001778
+    }
+   ]
+  },
+  {
+   "id": "G4",
+   "kind": "detail",
+   "keyword_type": false,
+   "expect_refusal": false,
+   "documents": [
+    "graphrag"
+   ],
+   "top1_similarity": 0.6051942800549512,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1199,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ]
+     ]
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1.2 Conditions"
+     ],
+     "evidence_tokens": 1947,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       4
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1.2 Conditions"
+     ],
+     "evidence_tokens": 2813,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       1
+      ],
+      [
+       "graphrag",
+       1
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1148,
+     "pages": [
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       4
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1946,
+     "pages": [
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       1
+      ],
+      [
+       "graphrag",
+       26
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 3111,
+     "pages": [
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       1
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       25
+      ],
+      [
+       "graphrag",
+       25
+      ],
+      [
+       "graphrag",
+       12
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1199,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1.2 Conditions"
+     ],
+     "evidence_tokens": 1947,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       4
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1.2 Conditions"
+     ],
+     "evidence_tokens": 2813,
+     "pages": [
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       1
+      ],
+      [
+       "graphrag",
+       1
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "e6926c23-6185-4c58-ba45-1da1bea9cedb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 74,
+     "token_count": 399,
+     "score": 0.6051942800549512
+    },
+    {
+     "chunk_id": "daf5a288-06c3-42b2-96a1-4d82b44345fb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 36,
+     "token_count": 400,
+     "score": 0.5647555021472161
+    },
+    {
+     "chunk_id": "b2d37a4e-7cfd-4037-9334-b16683acec6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5640481374236764
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.5624329410853356
+    },
+    {
+     "chunk_id": "5a8c1680-3889-4661-a5fb-9a3b47f16d32",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 348,
+     "score": 0.5592393259314586
+    },
+    {
+     "chunk_id": "83bae237-7430-4a2e-af58-9f5382dafadb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 164,
+     "score": 0.5586988979046661
+    },
+    {
+     "chunk_id": "68f7e9a2-c3ea-4c92-adda-ec050124deb4",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 1,
+     "ordinal": 1,
+     "token_count": 303,
+     "score": 0.5531161896906429
+    },
+    {
+     "chunk_id": "0787d7bc-9e82-4302-acd9-783f2dd9bd5e",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 399,
+     "score": 0.5468361750430576
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "b2d37a4e-7cfd-4037-9334-b16683acec6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5640481374236764
+    },
+    {
+     "chunk_id": "1be48288-ee18-4066-bfe8-2ee6e1d21e8b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 3,
+     "token_count": 400,
+     "score": 0.5416966366155607
+    },
+    {
+     "chunk_id": "5a8c1680-3889-4661-a5fb-9a3b47f16d32",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 348,
+     "score": 0.5592393259314586
+    },
+    {
+     "chunk_id": "0787d7bc-9e82-4302-acd9-783f2dd9bd5e",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 399,
+     "score": 0.5468361750430576
+    },
+    {
+     "chunk_id": "e6926c23-6185-4c58-ba45-1da1bea9cedb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 74,
+     "token_count": 399,
+     "score": 0.6051942800549512
+    },
+    {
+     "chunk_id": "f0181e37-0a1c-4194-83fd-763c723ba79c",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 25,
+     "ordinal": 73,
+     "token_count": 365,
+     "score": null
+    },
+    {
+     "chunk_id": "c694950a-0247-43d7-9783-1e922b4b2f89",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 25,
+     "ordinal": 72,
+     "token_count": 400,
+     "score": null
+    },
+    {
+     "chunk_id": "daf5a288-06c3-42b2-96a1-4d82b44345fb",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 36,
+     "token_count": 400,
+     "score": 0.5647555021472161
+    }
+   ]
+  },
+  {
+   "id": "X1",
+   "kind": "cross",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag",
+    "graphrag"
+   ],
+   "top1_similarity": 0.5423049876326376,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1148,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1612,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       4
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 2526,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1097,
+     "pages": [
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1793,
+     "pages": [
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "graphrag",
+       2
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 2993,
+     "pages": [
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "graphrag",
+       2
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "graphrag",
+       7
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1148,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 1612,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       4
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 0.5,
+     "hit": true,
+     "covered": [
+      "LightRAG: GPT-4o-mini"
+     ],
+     "evidence_tokens": 2526,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       4
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       3
+      ],
+      [
+       "lightrag",
+       16
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.5423049876326376
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.5398180740584431
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.5391138605528696
+    },
+    {
+     "chunk_id": "e97ef7b1-207c-4924-b8de-99f4f8171bea",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 38,
+     "token_count": 116,
+     "score": 0.5323528849026913
+    },
+    {
+     "chunk_id": "5a8c1680-3889-4661-a5fb-9a3b47f16d32",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 348,
+     "score": 0.5243802012490746
+    },
+    {
+     "chunk_id": "b97e97ef-b33e-4444-9513-d1d9f2296991",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 34,
+     "token_count": 219,
+     "score": 0.5242206298047231
+    },
+    {
+     "chunk_id": "23ac91bb-f2a6-45fb-909f-3480e8468a50",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 9,
+     "token_count": 296,
+     "score": 0.5183016636012039
+    },
+    {
+     "chunk_id": "2c432d48-316e-4618-ad7c-7886e24f48eb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 44,
+     "token_count": 399,
+     "score": 0.5124069437495573
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "5a8c1680-3889-4661-a5fb-9a3b47f16d32",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 348,
+     "score": 0.5243802012490746
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.5391138605528696
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.5423049876326376
+    },
+    {
+     "chunk_id": "23ac91bb-f2a6-45fb-909f-3480e8468a50",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 9,
+     "token_count": 296,
+     "score": 0.5183016636012039
+    },
+    {
+     "chunk_id": "b2d37a4e-7cfd-4037-9334-b16683acec6b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 400,
+     "score": 0.5065002456904619
+    },
+    {
+     "chunk_id": "bbb2f0d1-da5b-4ece-8705-c6d46b8b5966",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 20,
+     "token_count": 400,
+     "score": 0.5064562257256454
+    },
+    {
+     "chunk_id": "b9397381-2b1d-42c8-b6f3-a2c9dca481a2",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 8,
+     "token_count": 400,
+     "score": 0.5037974869903535
+    },
+    {
+     "chunk_id": "fe01edde-fcdb-4e0a-9d23-2907c9489ef2",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 7,
+     "ordinal": 18,
+     "token_count": 400,
+     "score": 0.5007063896516922
+    }
+   ]
+  },
+  {
+   "id": "X2",
+   "kind": "cross",
+   "keyword_type": true,
+   "expect_refusal": false,
+   "documents": [
+    "lightrag",
+    "graphrag"
+   ],
+   "top1_similarity": 0.627840236167976,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 744,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 1353,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 2352,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 1111,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ]
+    },
+    "5": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 1909,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ]
+    },
+    "8": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 3057,
+     "pages": [
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       23
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 744,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 1353,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       10
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": 0.6666666666666666,
+     "hit": true,
+     "covered": [
+      "GraphRAG: Podcast ~1M",
+      "GraphRAG: News ~1.7M"
+     ],
+     "evidence_tokens": 2352,
+     "pages": [
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       19
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.627840236167976
+    },
+    {
+     "chunk_id": "b97e97ef-b33e-4444-9513-d1d9f2296991",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 34,
+     "token_count": 219,
+     "score": 0.5480627426114789
+    },
+    {
+     "chunk_id": "7c2d1c36-0ab6-4ab7-87c9-023efdcffc10",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 19,
+     "ordinal": 58,
+     "token_count": 125,
+     "score": 0.541768100139895
+    },
+    {
+     "chunk_id": "ed34b9c1-6aa8-4c1f-a4cd-4dd18f1c351e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 40,
+     "token_count": 209,
+     "score": 0.5317868945217776
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.5229162710406049
+    },
+    {
+     "chunk_id": "49cbf534-873d-4e5b-b6e4-e80e24fe7139",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 23,
+     "token_count": 400,
+     "score": 0.5136077042151087
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.5132478507156162
+    },
+    {
+     "chunk_id": "21a9f1ac-44a0-4017-ae46-2a96b2dc01cc",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 288,
+     "score": 0.49388709555039734
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.4743204980278912
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.5132478507156162
+    },
+    {
+     "chunk_id": "bbb2f0d1-da5b-4ece-8705-c6d46b8b5966",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 20,
+     "token_count": 400,
+     "score": 0.47363930155018774
+    },
+    {
+     "chunk_id": "fe01edde-fcdb-4e0a-9d23-2907c9489ef2",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 7,
+     "ordinal": 18,
+     "token_count": 400,
+     "score": 0.4661456920050613
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.4651107192040018
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": null
+    },
+    {
+     "chunk_id": "cb5cde38-b975-4281-8e59-8a318599dab1",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 21,
+     "token_count": 400,
+     "score": 0.627840236167976
+    },
+    {
+     "chunk_id": "7455a58b-b2cd-46ff-b6c1-a10aeed08675",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 23,
+     "ordinal": 67,
+     "token_count": 399,
+     "score": null
+    }
+   ]
+  },
+  {
+   "id": "N1",
+   "kind": "none",
+   "keyword_type": false,
+   "expect_refusal": true,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.46231333125218366,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 2161,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 4046,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5157,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 3372,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 3932,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5128,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       4
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 2832,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ]
+     ],
+     "added": 2
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5116,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 3
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 6227,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       1
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 3
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.46231333125218366
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.4588454169490015
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.44671301702530697
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.4416790631936467
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.4384026845938045
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.43670215617789343
+    },
+    {
+     "chunk_id": "f34f4282-c758-4a2c-a28f-548ceef44d8d",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 1,
+     "ordinal": 0,
+     "token_count": 400,
+     "score": 0.43651705010897457
+    },
+    {
+     "chunk_id": "bf9edb38-5f4c-478b-a793-7914eead25a9",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 25,
+     "token_count": 400,
+     "score": 0.434756325639698
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.46231333125218366
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.4416790631936467
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.4384026845938045
+    },
+    {
+     "chunk_id": "8b4ec68d-7168-4d07-a87c-252856a4571c",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 15,
+     "token_count": 274,
+     "score": 0.44671301702530697
+    },
+    {
+     "chunk_id": "7ca15f50-6fa5-4d95-8c68-67f2c8cc877f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 24,
+     "token_count": 286,
+     "score": 0.4300622943174095
+    },
+    {
+     "chunk_id": "eb7be95f-4510-4674-8d7f-db7b15e7606e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 20,
+     "token_count": 398,
+     "score": 0.41684231908706426
+    },
+    {
+     "chunk_id": "637ce6e8-d30c-45c3-93b3-3af2366369b6",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 26,
+     "token_count": 398,
+     "score": 0.43265375580125276
+    },
+    {
+     "chunk_id": "ec81e9b6-da85-4262-a380-26dce2d3f4c2",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 11,
+     "token_count": 400,
+     "score": 0.4346469277476367
+    }
+   ]
+  },
+  {
+   "id": "N2",
+   "kind": "none",
+   "keyword_type": false,
+   "expect_refusal": true,
+   "documents": [
+    "lightrag"
+   ],
+   "top1_similarity": 0.44430317486413884,
+   "fulltext_candidates": 20,
+   "vector": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 920,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 1720,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 2281,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       12
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 1060,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 1860,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 3060,
+     "pages": [
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       5
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       4
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       3
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 920,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ]
+     ],
+     "added": 0
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 1720,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       9
+      ]
+     ],
+     "added": 0
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 2281,
+     "pages": [
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       10
+      ],
+      [
+       "lightrag",
+       9
+      ],
+      [
+       "lightrag",
+       6
+      ],
+      [
+       "lightrag",
+       13
+      ],
+      [
+       "lightrag",
+       12
+      ]
+     ],
+     "added": 0
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.44430317486413884
+    },
+    {
+     "chunk_id": "ed34b9c1-6aa8-4c1f-a4cd-4dd18f1c351e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 40,
+     "token_count": 209,
+     "score": 0.41636288675428057
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.40404737898298815
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.37754391833359935
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.3749927096084549
+    },
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.3716673713920218
+    },
+    {
+     "chunk_id": "611f5618-91a7-4d04-a47b-6dfaf64598a4",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 39,
+     "token_count": 95,
+     "score": 0.3619805738949735
+    },
+    {
+     "chunk_id": "318ae4be-24c6-45ce-8458-a6e21b9aea9b",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 12,
+     "ordinal": 37,
+     "token_count": 117,
+     "score": 0.34948460484286115
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "22b74213-c21f-4f26-b68b-4c26de9119e8",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 18,
+     "token_count": 349,
+     "score": 0.3716673713920218
+    },
+    {
+     "chunk_id": "f7f0cd2b-7cfc-471a-8647-afd35bb784ed",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 28,
+     "token_count": 311,
+     "score": 0.44430317486413884
+    },
+    {
+     "chunk_id": "b754024d-2477-4a2d-88e8-b5772f45b1b7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 17,
+     "token_count": 400,
+     "score": 0.40404737898298815
+    },
+    {
+     "chunk_id": "d05d61bc-060f-45f8-9e46-c0d80433f517",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 14,
+     "token_count": 400,
+     "score": 0.3340922193087581
+    },
+    {
+     "chunk_id": "e7f2d77b-7eef-499e-ae93-83f4e112086f",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 9,
+     "ordinal": 27,
+     "token_count": 400,
+     "score": 0.3749927096084549
+    },
+    {
+     "chunk_id": "8954f5fd-410d-4825-b467-b274b2c67a58",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 4,
+     "ordinal": 10,
+     "token_count": 400,
+     "score": 0.30853157727028513
+    },
+    {
+     "chunk_id": "beabf0b3-ebc1-4888-a057-8ae386edc148",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 10,
+     "ordinal": 29,
+     "token_count": 400,
+     "score": 0.37754391833359935
+    },
+    {
+     "chunk_id": "ae67e588-8e0a-4e89-b969-ab86e3717e49",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 3,
+     "ordinal": 7,
+     "token_count": 400,
+     "score": 0.30929253365070397
+    }
+   ]
+  },
+  {
+   "id": "N3",
+   "kind": "none",
+   "keyword_type": false,
+   "expect_refusal": true,
+   "documents": [
+    "lightrag",
+    "graphrag"
+   ],
+   "top1_similarity": 0.33394354549100036,
+   "fulltext_candidates": 0,
+   "vector": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 3372,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 4171,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5371,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       26
+      ]
+     ]
+    }
+   },
+   "hybrid": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 3372,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 4171,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ]
+     ]
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5371,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       26
+      ]
+     ]
+    }
+   },
+   "vector_context": {
+    "3": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 4442,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 3
+    },
+    "5": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 5241,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 3
+    },
+    "8": {
+     "recall": null,
+     "hit": null,
+     "covered": [],
+     "evidence_tokens": 6441,
+     "pages": [
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       9
+      ],
+      [
+       "lightrag",
+       3
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       7
+      ],
+      [
+       "lightrag",
+       8
+      ]
+     ],
+     "added": 3
+    }
+   },
+   "vector_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.33394354549100036
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.3334549068752579
+    },
+    {
+     "chunk_id": "49e28ace-7948-40c7-8e9a-af85910f87c5",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 24,
+     "token_count": 400,
+     "score": 0.33023959619551213
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.3290411731887579
+    },
+    {
+     "chunk_id": "49cbf534-873d-4e5b-b6e4-e80e24fe7139",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 23,
+     "token_count": 400,
+     "score": 0.32832192396168836
+    },
+    {
+     "chunk_id": "038102c6-08d1-41da-a422-6cc2e21513a7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 3,
+     "ordinal": 6,
+     "token_count": 400,
+     "score": 0.3269597944976743
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.3255710407752156
+    },
+    {
+     "chunk_id": "ed1d02b9-f325-4757-a660-7a8c6c0f5b95",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 75,
+     "token_count": 400,
+     "score": 0.32449797762936483
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "482d9bca-4f7d-4938-871d-f71fc7eacafb",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 19,
+     "token_count": 1487,
+     "score": 0.33394354549100036
+    },
+    {
+     "chunk_id": "a8892a64-6baa-453e-adc4-d217c15f5f8e",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 8,
+     "ordinal": 22,
+     "token_count": 1485,
+     "score": 0.3334549068752579
+    },
+    {
+     "chunk_id": "49e28ace-7948-40c7-8e9a-af85910f87c5",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 24,
+     "token_count": 400,
+     "score": 0.33023959619551213
+    },
+    {
+     "chunk_id": "dd250743-869a-44c2-b486-4f7ffd86034b",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 33,
+     "token_count": 399,
+     "score": 0.3290411731887579
+    },
+    {
+     "chunk_id": "49cbf534-873d-4e5b-b6e4-e80e24fe7139",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 23,
+     "token_count": 400,
+     "score": 0.32832192396168836
+    },
+    {
+     "chunk_id": "038102c6-08d1-41da-a422-6cc2e21513a7",
+     "document_id": "51b6d25c-7c87-4b53-900d-89193d16d5c6",
+     "document": "lightrag",
+     "page": 3,
+     "ordinal": 6,
+     "token_count": 400,
+     "score": 0.3269597944976743
+    },
+    {
+     "chunk_id": "a418e9cb-6b73-4bcb-be18-47e1c93a9b43",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 30,
+     "token_count": 400,
+     "score": 0.3255710407752156
+    },
+    {
+     "chunk_id": "ed1d02b9-f325-4757-a660-7a8c6c0f5b95",
+     "document_id": "28beacfd-37ec-4fa9-93fe-4214f62b6014",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 75,
+     "token_count": 400,
+     "score": 0.32449797762936483
+    }
+   ]
+  }
+ ]
+}
