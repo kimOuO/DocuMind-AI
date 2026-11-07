@@ -951,11 +951,14 @@ def comparison_facts(cells: Sequence[MatrixCell], question: str) -> list[Fact]:
 
 
 def _named_labels(labels: Iterable[str], question: str) -> set[str]:
-    """The table labels the question mentions as whole words (a label of a letter or two,
-    or a bare number such as a threshold, is not looked for: too easy to hit by chance)."""
+    """The table labels the question mentions as whole words. A bare number (a threshold
+    row such as "0.5") or a single letter is not looked for — too easy to hit by chance; a
+    two-letter label is, only when it is all capitals ("CS", "TS", "SS")."""
     found = set()
     for label in labels:
-        if len(label) < 3 or not any(ch.isalpha() for ch in label):
+        if not any(ch.isalpha() for ch in label):
+            continue
+        if len(label) < 3 and not (len(label) == 2 and label.isupper()):
             continue
         if _label_pattern(label).search(question) is not None:
             found.add(label)

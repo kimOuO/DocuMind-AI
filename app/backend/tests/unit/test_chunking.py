@@ -156,3 +156,26 @@ def test_a_table_region_is_one_chunk_and_the_prose_around_it_is_chunked_as_usual
     assert chunks[-1].text.endswith("w111")
     assert [c.ordinal for c in chunks] == list(range(len(chunks)))
     assert all(c.page == 3 for c in chunks)
+
+
+def test_a_chunk_boundary_never_falls_inside_a_word_or_a_number(
+    tokenizer: Qwen3TokenCounter,
+) -> None:
+    """D87 (the G3 case): the tokenizer splits "8,564" into "8", ",", "564"; a chunk that
+    begins at the comma reads ",564 nodes" and the model answered 564. Boundaries move
+    back to the token before the word."""
+    sentence = "The indexing process resulted in a graph of 8,564 nodes and 20,691 edges. "
+    text = sentence * 40
+
+    chunks = chunk_pages([Page(9, text)], tokenizer, chunk_size=23, overlap=7)
+
+    assert len(chunks) > 20
+    for chunk in chunks:
+        assert chunk.text[0] not in ",.0123456789" or chunk.text.startswith(("8,564", "20,691"))
+        assert chunk.token_count <= 23
+        where = text.find(chunk.text)
+        assert where >= 0
+        before = text[where - 1] if where else " "
+        after = text[where + len(chunk.text)] if where + len(chunk.text) < len(text) else " "
+        assert before == " " and after == " ", (chunk.text[:30], chunk.text[-30:])
+    assert "8,564" in " ".join(c.text for c in chunks)

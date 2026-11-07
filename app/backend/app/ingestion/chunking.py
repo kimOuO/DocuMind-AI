@@ -8,6 +8,7 @@ its own, up to TABLE_CHUNK_FACTOR times the chunk size, so that its numbers
 stay next to the headers that give them meaning (AC-14).
 """
 
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Protocol
@@ -89,17 +90,38 @@ def _chunk_prose(
     start = 0
     while start < len(spans):
         end = min(start + chunk_size, len(spans))
-        piece, count = _window(text, spans, start, end, tokenizer)
         # A slice of text does not always tokenize exactly like the same
-        # tokens did inside the page; shrink until the count really fits.
-        while count > chunk_size and end - start > 1:
+        # tokens did inside the page; shrink until the count really fits. A boundary
+        # inside a word or a number ("8,|564") is moved back to the token before it (D87:
+        # a chunk that began ",564 nodes" lost the 8).
+        while end - start > 1 and (
+            _splits_a_word(text, spans[end - 1][1])
+            or _window(text, spans, start, end, tokenizer)[1] > chunk_size
+        ):
             end -= 1
-            piece, count = _window(text, spans, start, end, tokenizer)
+        piece, count = _window(text, spans, start, end, tokenizer)
         if piece:
             chunks.append(ChunkDraft(len(chunks), page_number, piece, count))
         if end >= len(spans):
             break
+        previous = start
         start = max(end - overlap, start + 1)
+        while start > previous + 1 and _splits_a_word(text, spans[start][0]):
+            start -= 1
+
+
+_WORD_CHARACTER = re.compile(r"[A-Za-z0-9,.%\-]")
+
+
+def _splits_a_word(text: str, position: int) -> bool:
+    """Whether a boundary at `position` falls between two characters of one word or
+    number ("8,|564", "Light|RAG"). Scripts without spaces (Chinese) are not words in
+    this sense and may be cut anywhere."""
+    return (
+        0 < position < len(text)
+        and _WORD_CHARACTER.match(text[position - 1]) is not None
+        and _WORD_CHARACTER.match(text[position]) is not None
+    )
 
 
 def _window(

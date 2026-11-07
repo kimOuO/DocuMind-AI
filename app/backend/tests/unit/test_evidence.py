@@ -629,3 +629,15 @@ def test_columns_of_a_wide_row_are_compared_only_against_a_named_column() -> Non
         "same row",
         "direct",
     )
+
+
+def test_a_two_letter_capitalised_label_narrows_the_facts_but_a_threshold_row_does_not() -> None:
+    cells = build_matrix([(1, chunk(21, 10, MANY_COLUMNS))])
+
+    facts = comparison_facts(cells, "How many tokens do C0 and TS use on Podcast Transcripts?")
+    assert {f.group for f in facts} == {"Podcast Transcripts"}
+
+    # "TS" (two capitals) is a column name here and is looked for; a bare number never is.
+    from app.chat.evidence import _named_labels
+
+    assert _named_labels({"TS", "CS", "0.5", "x"}, "the CS and TS rows at 0.5") == {"CS", "TS"}
