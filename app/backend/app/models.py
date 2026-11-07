@@ -159,6 +159,28 @@ class Chunk(Base):
     created_at: Mapped[datetime] = _created()
 
 
+class ChunkVector(Base):
+    """One vector per block of a multi-block table chunk (D82). A chunk's search score is
+    the best of its own vector and these; prose chunks have none."""
+
+    __tablename__ = "chunk_vectors"
+    __table_args__ = (
+        UniqueConstraint("chunk_id", "ordinal", name="uq_chunk_vectors_chunk_ordinal"),
+        Index(
+            "ix_chunk_vectors_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = _pk()
+    chunk_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("chunks.id", ondelete="CASCADE"))
+    ordinal: Mapped[int] = mapped_column(Integer)  # position of the block in the table
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIMENSIONS))
+    created_at: Mapped[datetime] = _created()
+
+
 class Summary(Base):
     __tablename__ = "summaries"
     __table_args__ = (

@@ -14,14 +14,14 @@ after the other:
 """
 
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Chunk, Document, IngestionJob, Summary
+from app.models import Chunk, ChunkVector, Document, IngestionJob, Summary
 
 ACTIVE_STATUSES = ("queued", "running")
 RESTART_REASON = "Processing was interrupted because the service restarted. Please retry."
@@ -65,6 +65,8 @@ class ChunkRecord:
     text: str
     token_count: int
     embedding: list[float]
+    # D82: one vector per block of a multi-block table; empty for every other chunk.
+    block_embeddings: list[list[float]] = field(default_factory=list)
 
 
 class IngestionRepository:
@@ -154,6 +156,26 @@ class IngestionRepository:
                     for chunk in chunks
                 ],
             )
+            with_blocks = [chunk for chunk in chunks if chunk.block_embeddings]
+            if with_blocks:
+                ids = dict(
+                    (
+                        await self._db.execute(
+                            select(Chunk.ordinal, Chunk.id).where(
+                                Chunk.document_id == document.id,
+                                Chunk.ordinal.in_([c.ordinal for c in with_blocks]),
+                            )
+                        )
+                    ).all()
+                )
+                await self._db.execute(
+                    insert(ChunkVector),
+                    [
+                        {"chunk_id": ids[chunk.ordinal], "ordinal": index, "embedding": vector}
+                        for chunk in with_blocks
+                        for index, vector in enumerate(chunk.block_embeddings)
+                    ],
+                )
         document.status = "ready"
         document.page_count = page_count
         document.error = None

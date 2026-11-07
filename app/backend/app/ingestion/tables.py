@@ -134,6 +134,40 @@ def header_lines(lines: list[str], first_row: int) -> list[str]:
     return list(reversed(run))
 
 
+def table_blocks(text: str) -> list[str]:
+    """A table chunk split at its block headers — the header lines between groups of rows,
+    one per compared system in a results table — each block with the caption and the group
+    header. Empty when the chunk is not a table or has a single block.
+
+    D82 (user's idea): a table chunk holding several comparisons embeds as their average,
+    so the one the question asks about ranks low; each block gets a vector of its own and
+    the chunk scores by its best one (see RetrievalRepository.search)."""
+    lines = text.splitlines()
+    if not lines or not _CAPTION.match(lines[0].strip()):
+        return []
+    first_row = next((i for i, line in enumerate(lines) if _is_row(line)), None)
+    if first_row is None:
+        return []
+    head = [lines[0], *header_lines(lines, first_row)]
+    blocks: list[list[str]] = []
+    current: list[str] = []
+    for line in lines[first_row:]:
+        if not _is_row(line) and _is_header_line(line) and not _is_prose_line(line):
+            if current:
+                blocks.append(current)
+            current = [line]
+        else:
+            current.append(line)
+    if current:
+        blocks.append(current)
+    if len(blocks) <= 1:
+        return []
+    # The first block's column header is the last header line; the later blocks each start
+    # with their own, so they take the caption and the group header only.
+    shared = head[:-1] if len(head) > 1 else head
+    return ["\n".join([*head, *blocks[0]])] + ["\n".join([*shared, *block]) for block in blocks[1:]]
+
+
 def _is_row(line: str) -> bool:
     """A row as pypdf wrote it, or as linearize_table rewrote it."""
     return _is_number_row(line) or " — " in line

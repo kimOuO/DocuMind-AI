@@ -209,3 +209,39 @@ async def test_repeating_a_document_in_the_selection_changes_nothing(
 
     assert [str(i) for i in scope.document_ids] == [graph]
     assert len(chunks) == 1
+
+
+TWO_BLOCK_TABLE = (
+    "Table 7: Win rates (%) of two baselines v.s. Ours.\n"
+    "Alpha Beta\n"
+    "BaseOne Ours BaseOne Ours\n"
+    "Accuracy 30.0% 70.0% 40.0% 60.0%\n"
+    "BaseTwo Ours BaseTwo Ours\n"
+    "Accuracy 45.0% 55.0% 48.0% 52.0%\n"
+)
+
+
+async def test_a_table_is_found_by_the_block_the_question_is_about(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D82: a multi-block table chunk scores by the best of its own vector and its blocks'
+    vectors. With the fake embedder a text embeds to itself, so a question equal to the
+    second block's text is a perfect match for the table through that block, while the
+    chunk's own vector (the whole table) is not."""
+    from app.ingestion.tables import linearize_table, table_blocks
+
+    table_id = await add_document(kim, tokenizer, "table.txt", TWO_BLOCK_TABLE)
+    await add_document(kim, tokenizer, "bread.md", BREAD)
+    stored = db.execute("SELECT text FROM chunks WHERE document_id = %s", (table_id,)).fetchone()[0]
+    blocks = table_blocks(stored)
+    assert len(blocks) == 2 and stored == linearize_table(TWO_BLOCK_TABLE.rstrip("\n"))
+    assert db.execute("SELECT count(*) FROM chunk_vectors").fetchone() == (2,)
+
+    _, chunks = await search("kim", blocks[1])
+
+    assert str(chunks[0].document_id) == table_id
+    assert chunks[0].score == pytest.approx(1.0, abs=1e-4)
+    assert chunks[0].text == stored  # the whole table is returned, not the block
+    # Asking with the whole table's text still matches through the chunk's own vector.
+    _, again = await search("kim", stored)
+    assert str(again[0].document_id) == table_id and again[0].score == pytest.approx(1.0, abs=1e-4)

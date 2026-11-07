@@ -270,13 +270,22 @@ async def test_every_source_snippet_is_on_the_cited_page_of_the_paper(
     )
 
     sources = stream["sources"]
-    assert len(sources) == get_settings().top_k
+    # Top-K, plus the discussion that follows a table among them (D62) — with the fake
+    # embedder which chunks rank is arbitrary, and a table's block vectors (D82) can put a
+    # table there.
+    assert get_settings().top_k <= len(sources) <= get_settings().top_k + 2
     pages = {page.number: page.text for page in parse_document(SAMPLE_PDF, "pdf")}
     for source in sources:
         assert source["filename"] == "2410.05779v3.pdf"
         assert source["document_id"] == paper
         assert source["page_start"] == source["page_end"]
-        assert source["snippet"] and source["snippet"] in pages[source["page_start"]]
+        snippet = source["snippet"]
+        assert snippet
+        if snippet.startswith("Table "):
+            # A table's rows are rewritten cell by cell (ADR 0007): its caption is on the page.
+            assert snippet.splitlines()[0] in pages[source["page_start"]]
+        else:
+            assert snippet in pages[source["page_start"]]
     assert stream["done"]["cited"] == [1, 2]
 
 

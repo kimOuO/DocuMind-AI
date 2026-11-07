@@ -136,9 +136,27 @@ async def test_the_paper_is_stored_as_chunks_within_the_size_and_with_pages(
     assert all(0 < row[2] <= 4 * get_settings().chunk_size for row in rows)
     assert all(row[2] == tokenizer.count(row[3]) for row in rows)
     assert all(row[4] == 1024 for row in rows)
-    # Embedded in batches, in order, each chunk exactly once.
-    assert [len(call) for call in embedder.calls] == [EMBED_BATCH_SIZE, EMBED_BATCH_SIZE, 14]
-    assert [text for call in embedder.calls for text in call] == [row[3] for row in rows]
+    # Embedded in batches, in order, each chunk exactly once; then the blocks of the two
+    # multi-block tables (four baselines in Table 1, four variants in Table 2), D82.
+    assert [len(call) for call in embedder.calls] == [EMBED_BATCH_SIZE, EMBED_BATCH_SIZE, 14, 8]
+    assert [text for call in embedder.calls[:3] for text in call] == [row[3] for row in rows]
+    blocks = db.execute(
+        "SELECT c.page, v.ordinal, vector_dims(v.embedding) FROM chunk_vectors v "
+        "JOIN chunks c ON c.id = v.chunk_id WHERE c.document_id = %s ORDER BY c.page, v.ordinal",
+        (document_id,),
+    ).fetchall()
+    assert [(row[0], row[1]) for row in blocks] == [
+        (7, 0),
+        (7, 1),
+        (7, 2),
+        (7, 3),
+        (8, 0),
+        (8, 1),
+        (8, 2),
+        (8, 3),
+    ]
+    assert all(row[2] == 1024 for row in blocks)
+    assert all(text.startswith("Table ") for text in embedder.calls[3])
 
 
 async def test_progress_is_recorded_on_the_job_while_it_runs(
@@ -162,6 +180,8 @@ async def test_progress_is_recorded_on_the_job_while_it_runs(
     assert seen == [
         ("running", "embedding", 0, 46, "processing"),
         ("running", "embedding", 16, 46, "processing"),
+        ("running", "embedding", 32, 46, "processing"),
+        # The fourth embedding call is the tables' blocks (D82); it adds no progress step.
         ("running", "embedding", 32, 46, "processing"),
     ]
 
@@ -245,6 +265,7 @@ async def test_deleting_a_ready_document_removes_chunks_jobs_and_file(
     for table in ("documents", "ingestion_jobs", "chunks"):
         assert one(db, f"SELECT count(*) FROM {table}")[0] == 0
     assert stored_files() == []
+    assert one(db, "SELECT count(*) FROM chunk_vectors") == (0,)  # D82: cascades with the chunks
 
 
 async def test_deleting_a_document_while_it_is_processed_leaves_nothing_behind(

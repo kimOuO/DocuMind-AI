@@ -10,6 +10,7 @@ that it is still wanted: if its document was deleted, it stops without writing.
 import asyncio
 import logging
 import uuid
+from collections.abc import Sequence
 from enum import StrEnum
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -81,9 +82,17 @@ class IndexJobRunner:
                 batch = drafts[start : start + EMBED_BATCH_SIZE]
                 vectors.extend(await self._embedder.embed([draft.text for draft in batch]))
 
+            # D82: the blocks of multi-block tables, embedded on their own. Few per document,
+            # so no progress step of their own; a deletion meanwhile is caught by the write.
+            block_texts = [block for draft in drafts for block in draft.blocks]
+            block_vectors: list[list[float]] = []
+            for start in range(0, len(block_texts), EMBED_BATCH_SIZE):
+                block_batch = block_texts[start : start + EMBED_BATCH_SIZE]
+                block_vectors.extend(await self._embedder.embed(block_batch))
+
             async with self._sessions() as session, session.begin():
                 summary_job = await IngestionRepository(session).complete_index_job(
-                    job_id, page_count=len(pages), chunks=_records(drafts, vectors)
+                    job_id, page_count=len(pages), chunks=_records(drafts, vectors, block_vectors)
                 )
             if summary_job is None:
                 return JobOutcome.ABANDONED
@@ -107,12 +116,27 @@ class IndexJobRunner:
         return JobOutcome.FAILED if failed else JobOutcome.ABANDONED
 
 
-def _records(drafts: list[ChunkDraft], vectors: list[list[float]]) -> list[ChunkRecord]:
+def _records(
+    drafts: list[ChunkDraft],
+    vectors: list[list[float]],
+    block_vectors: Sequence[Sequence[float]] = (),
+) -> list[ChunkRecord]:
     if len(drafts) != len(vectors):
         raise EmbeddingError(
             f"Expected {len(drafts)} embeddings for the chunks, received {len(vectors)}."
         )
-    return [
-        ChunkRecord(draft.ordinal, draft.page, draft.text, draft.token_count, vector)
-        for draft, vector in zip(drafts, vectors, strict=True)
-    ]
+    expected_blocks = sum(len(draft.blocks) for draft in drafts)
+    if len(block_vectors) != expected_blocks:
+        raise EmbeddingError(
+            f"Expected {expected_blocks} embeddings for the table blocks, "
+            f"received {len(block_vectors)}."
+        )
+    records = []
+    position = 0
+    for draft, vector in zip(drafts, vectors, strict=True):
+        blocks = [list(v) for v in block_vectors[position : position + len(draft.blocks)]]
+        position += len(draft.blocks)
+        records.append(
+            ChunkRecord(draft.ordinal, draft.page, draft.text, draft.token_count, vector, blocks)
+        )
+    return records

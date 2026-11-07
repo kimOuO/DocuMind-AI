@@ -9,11 +9,11 @@ stay next to the headers that give them meaning (AC-14).
 """
 
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Protocol
 
 from app.ingestion.parsing import Page
-from app.ingestion.tables import find_table_regions, linearize_table, split_table
+from app.ingestion.tables import find_table_regions, linearize_table, split_table, table_blocks
 
 # A table may be this many times the chunk size before it is split by rows.
 TABLE_CHUNK_FACTOR = 4
@@ -31,6 +31,8 @@ class ChunkDraft:
     page: int
     text: str
     token_count: int
+    # D82: the blocks of a multi-block table, each embedded on its own; empty otherwise.
+    blocks: list[str] = field(default_factory=list)
 
 
 def chunk_pages(
@@ -50,7 +52,13 @@ def chunk_pages(
                 )
                 for piece in pieces:
                     chunks.append(
-                        ChunkDraft(len(chunks), page.number, piece, tokenizer.count(piece))
+                        ChunkDraft(
+                            len(chunks),
+                            page.number,
+                            piece,
+                            tokenizer.count(piece),
+                            table_blocks(piece),
+                        )
                     )
             else:
                 _chunk_prose(text, page.number, tokenizer, chunk_size, overlap, chunks)

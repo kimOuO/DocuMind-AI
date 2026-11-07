@@ -9,12 +9,12 @@ import re
 import uuid
 from dataclasses import dataclass
 
-from sqlalchemy import and_, or_, select, text
+from sqlalchemy import and_, func, or_, select, text, union_all
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ingestion.headings import find_headings
 from app.ingestion.parsing import Page
-from app.models import Chunk, Document
+from app.models import Chunk, ChunkVector, Document
 
 _CAPTION_LINE = re.compile(r"^\s*(?:Table|Figure|Fig\.)\s*\d+\s*[.:]", re.IGNORECASE)
 # A line that may be a numbered heading ("4.3 ABLATION STUDIES"); the recogniser decides.
@@ -68,7 +68,35 @@ class RetrievalRepository:
         # With the approximate index, a filter is applied after the nearest
         # neighbours are found; keep scanning until enough rows pass the filter.
         await self._db.execute(text("SET LOCAL hnsw.iterative_scan = strict_order"))
-        distance = Chunk.embedding.cosine_distance(embedding)
+        # D82: a chunk's distance is the best of its own vector and its table blocks'
+        # vectors, so that a table holding several comparisons is found by the one asked
+        # about. Prose chunks have no block vectors and score by their own.
+        in_scope = (
+            select(Chunk.id)
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Document.owner_id == owner_id,
+                Document.status == "ready",
+                Document.id.in_(document_ids),
+            )
+        )
+        own = select(
+            Chunk.id.label("chunk_id"),
+            Chunk.embedding.cosine_distance(embedding).label("distance"),
+        ).where(Chunk.id.in_(in_scope))
+        blocks = select(
+            ChunkVector.chunk_id.label("chunk_id"),
+            ChunkVector.embedding.cosine_distance(embedding).label("distance"),
+        ).where(ChunkVector.chunk_id.in_(in_scope))
+        candidates = union_all(own, blocks).subquery("candidates")
+        best = (
+            select(
+                candidates.c.chunk_id,
+                func.min(candidates.c.distance).label("distance"),
+            )
+            .group_by(candidates.c.chunk_id)
+            .subquery("best")
+        )
         rows = await self._db.execute(
             select(
                 Chunk.id,
@@ -78,15 +106,11 @@ class RetrievalRepository:
                 Chunk.ordinal,
                 Chunk.text,
                 Chunk.token_count,
-                (1 - distance).label("score"),
+                (1 - best.c.distance).label("score"),
             )
+            .join(best, best.c.chunk_id == Chunk.id)
             .join(Document, Document.id == Chunk.document_id)
-            .where(
-                Document.owner_id == owner_id,
-                Document.status == "ready",
-                Document.id.in_(document_ids),
-            )
-            .order_by(distance, Chunk.id)
+            .order_by(best.c.distance, Chunk.id)
             .limit(top_k)
         )
         return [

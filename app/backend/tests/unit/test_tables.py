@@ -240,3 +240,37 @@ def test_split_pieces_repeat_only_the_caption_line_and_the_header_lines() -> Non
         assert piece.startswith("Table 6: Pairwise comparisons of six conditions")
         assert "datasets. For each" not in piece  # the caption's prose is not repeated
         assert "Condition 1 Condition 2" in piece  # the header lines are
+
+
+# --- Blocks of a multi-block table, one vector each (D82) ----------------------------------
+
+
+def test_a_table_with_several_blocks_splits_into_one_block_each_with_the_caption() -> None:
+    from app.ingestion.tables import table_blocks
+
+    blocks = table_blocks(linearize_table(TABLE))
+
+    assert len(blocks) == 2
+    # The first block keeps the full header (group names and its own column line).
+    assert blocks[0].splitlines()[:3] == [
+        "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.",
+        "Agriculture CS Legal Mix",
+        "NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG",
+    ]
+    assert "Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%" in blocks[0]
+    # A later block takes the caption and the group header, then its own column line.
+    assert blocks[1].splitlines()[:3] == [
+        "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.",
+        "Agriculture CS Legal Mix",
+        "NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High",
+    ]
+    assert "Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%" in blocks[1]
+    assert "LightRAG 67.6%" not in blocks[1]
+
+
+def test_a_single_block_table_or_prose_has_no_blocks() -> None:
+    from app.ingestion.tables import table_blocks
+
+    single = "Table 9: Made-up numbers.\nA B C\nx 1.0% 2.0% 3.0%\ny 4.0% 5.0% 6.0%"
+    assert table_blocks(linearize_table(single)) == []
+    assert table_blocks("Prose that mentions Table 9 but is not one.") == []
