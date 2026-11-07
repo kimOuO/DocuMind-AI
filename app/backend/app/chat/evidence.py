@@ -1000,11 +1000,22 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
             + "."
         )
         if minority:
-            shown = "; ".join(
-                f"{f.group + ' / ' if f.group else ''}{f.row}: {f.value_a} vs {f.value_b}"
-                f"{_delta(f.value_a, f.value_b)}"
-                for f in minority[:6]
-            )
+            # D92: each exception names both sides with their figures and says which is
+            # above — "62.0% vs 63.2%" after "LightRAG lower in" was rewritten by the model
+            # as "-High performs worse", the subject swapped and the direction kept.
+            def exception(f: Fact) -> str:
+                condition = f"{f.group + ' / ' if f.group else ''}{f.row}"
+                if f.relation == "LESS":
+                    return (
+                        f"{condition}: {f.method_b} {f.value_b} above {f.method_a} {f.value_a}"
+                        f"{_delta(f.value_b, f.value_a)}"
+                    )
+                return (
+                    f"{condition}: {f.method_a} {f.value_a} above {f.method_b} {f.value_b}"
+                    f"{_delta(f.value_a, f.value_b)}"
+                )
+
+            shown = "; ".join(exception(f) for f in minority[:6])
             head += f" {a} {word} in: {shown}" + ("; …" if len(minority) > 6 else "") + "."
         cost = counter.count(head)
         if spent + cost > budget:

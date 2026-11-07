@@ -430,8 +430,11 @@ def test_the_facts_text_summarises_each_pair_with_its_exceptions_and_limits() ->
 
     assert "Full vs Other" in text
     assert "higher in 2 of 4" in text and "lower in 2" in text
-    assert "Mix / Comprehensiveness: 49.6% vs 50.4%" in text
-    assert "Mix / Overall: 49.6% vs 50.4%" in text
+    # D92: an exception names both sides and says which is above, so that a rewrite cannot
+    # swap the subject and keep the direction.
+    assert "Mix / Comprehensiveness: Other 50.4% above Full 49.6% (+0.8 pp" in text
+    assert "Mix / Overall: Other 50.4% above Full 49.6%" in text
+    assert "49.6% vs 50.4%" not in text
     assert "direct pair" in text
 
 
@@ -537,7 +540,7 @@ def test_exception_lines_carry_the_difference_in_points_and_relative_terms() -> 
     text = facts_text(facts, WordCounter(), budget=400)
 
     # 49.6% vs 50.4%: -0.8 percentage points, -1.6% relative to the compared figure.
-    assert "Mix / Comprehensiveness: 49.6% vs 50.4% (-0.8 pp, -1.6% relative)" in text
+    assert "Mix / Comprehensiveness: Other 50.4% above Full 49.6% (+0.8 pp, +1.6% relative)" in text
 
 
 def test_the_facts_block_introduces_the_facts_and_is_empty_without_them() -> None:
