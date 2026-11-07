@@ -525,3 +525,54 @@ def test_a_ratio_without_two_base_figures_in_the_sentence_is_unchecked_not_wrong
     page = [PageText(DOC, 10, COUNTS)]
     [issue] = check_arithmetic("C0 uses about 38x fewer tokens than TS on Podcast [1].", page)
     assert issue.status == "unchecked"
+
+
+# --- D87 experiment A: the facts as prompt evidence --------------------------------------
+
+
+def test_exception_lines_carry_the_difference_in_points_and_relative_terms() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    text = facts_text(facts, WordCounter(), budget=400)
+
+    # 49.6% vs 50.4%: -0.8 percentage points, -1.6% relative to the compared figure.
+    assert "Mix / Comprehensiveness: 49.6% vs 50.4% (-0.8 pp, -1.6% relative)" in text
+
+
+def test_the_facts_block_introduces_the_facts_and_is_empty_without_them() -> None:
+    from app.chat.evidence import facts_block
+
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    block = facts_block(facts, WordCounter(), budget=400)
+
+    assert block.startswith("Comparison facts computed by the program")
+    assert "name every exception listed" in block and "Full vs Other" in block
+    assert block.endswith("\n\n")
+    assert facts_block([], WordCounter(), budget=400) == ""
+
+
+def test_a_table_is_reduced_to_the_rows_of_the_columns_the_question_names() -> None:
+    from app.chat.evidence import minimal_table_text, named_columns
+    from app.ingestion.tables import cells_of, is_table_chunk
+
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    named = named_columns(cells, "compare Full with Other")
+    assert named == ["Full", "Other"]
+
+    text = minimal_table_text(cells, PAIRED.splitlines()[0], named)
+
+    assert text is not None
+    assert text.startswith("Table 1: Win rates (%) of the baselines v.s. Full across two datasets.")
+    assert "columns the question names: Full, Other" in text
+    # Only the Other | Full pairs remain, in the chunker's own row form; the Naive block is gone.
+    assert "Comprehensiveness — Agri: Other 45.6%, Full 54.4%; Mix: Other 50.4%, Full 49.6%" in text
+    assert "Naive" not in text
+    assert is_table_chunk(text) and sum(bool(cells_of(line)) for line in text.splitlines()) == 2
+    # A question naming no column of the table changes nothing.
+    assert (
+        minimal_table_text(cells, PAIRED.splitlines()[0], named_columns(cells, "what is it"))
+        is None
+    )

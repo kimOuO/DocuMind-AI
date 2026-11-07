@@ -36,10 +36,13 @@ from app.chat.evidence import (
     check_conclusions,
     check_directions,
     comparison_facts,
+    facts_block,
     matrix_cells_of_pages,
     matrix_text,
     method_aliases,
     method_definitions,
+    minimal_table_text,
+    named_columns,
     overall_status,
 )
 from app.chat.memory import (
@@ -115,6 +118,8 @@ _TABLE_CAPTION_LINE = re.compile(r"^\s*(Table\s+\d+)\s*[.:]", re.IGNORECASE)
 NAVIGATION_CANDIDATES_PER_TARGET = 3 * CHUNKS_PER_TARGET
 DELIVERY_PIECE = 400  # characters per delta when a finished text is delivered (two-call mode)
 EVIDENCE_TOKEN_BUDGET = 5_500
+# D87 experiment A: the room the comparison facts may take before the sources (single mode).
+FACTS_TOKEN_BUDGET = 500
 # The answer is saved to the database every this many pieces while it streams.
 SAVE_EVERY = 20
 
@@ -168,6 +173,8 @@ class Evidence:
     sources: list[dict[str, Any]]
     # Shown after the answer: documents whose summary could not be used, if any.
     note: str
+    # D87 experiment A: what the program's comparison facts did to this prompt.
+    facts_info: dict[str, Any] | None = None
 
 
 class ChatService:
@@ -291,11 +298,16 @@ class ChatService:
                         cells = build_matrix(indexed)
                         definitions = method_definitions(indexed, {c.column for c in cells})
                         facts = comparison_facts(cells, question)
-                        # B5 baseline (2026-11-07, user's decision): the D76 facts are
-                        # recorded and used by the checks, not shown to the model (B3's
-                        # preamble). To restore: pass facts=facts.
+                        # B5 baseline (2026-11-07, user's decision): the facts are recorded
+                        # and used by the checks, not shown to the model — unless
+                        # ANSWER_FACTS says so (D87 experiment A).
+                        shown_facts = facts if self._settings.answer_facts != "off" else ()
                         preamble += analysis_preamble(
-                            cells, definitions, self._counter, budget=MATRIX_TOKEN_BUDGET
+                            cells,
+                            definitions,
+                            self._counter,
+                            budget=MATRIX_TOKEN_BUDGET,
+                            facts=shown_facts,
                         )
                         # D76: tables the sources name but the chunker did not rewrite cell
                         # by cell have no matrix — a coverage gap, not a verified table.
@@ -360,6 +372,7 @@ class ChatService:
                         "revision": None,
                         "navigation": navigation,
                         "correction": None,
+                        "facts": evidence.facts_info,
                     },
                 )
                 return
@@ -558,6 +571,7 @@ class ChatService:
                     "revision": None,
                     "navigation": navigation,
                     "correction": None,
+                    "facts": evidence.facts_info,
                 },
             )
         except (asyncio.CancelledError, GeneratorExit):
@@ -728,7 +742,13 @@ class ChatService:
             yield ChatEvent(
                 "done",
                 self._done_payload(
-                    "interrupted", None, None, result.finish_reason.value, None, navigation
+                    "interrupted",
+                    None,
+                    None,
+                    result.finish_reason.value,
+                    None,
+                    navigation,
+                    facts_info=evidence.facts_info,
                 ),
             )
             return
@@ -776,7 +796,14 @@ class ChatService:
         yield ChatEvent(
             "done",
             self._done_payload(
-                "completed", answered, final, result.finish_reason.value, None, navigation, info
+                "completed",
+                answered,
+                final,
+                result.finish_reason.value,
+                None,
+                navigation,
+                info,
+                facts_info=evidence.facts_info,
             ),
         )
 
@@ -850,6 +877,7 @@ class ChatService:
                     first.finish_reason.value,
                     {"mode": mode},
                     navigation,
+                    facts_info=evidence.facts_info,
                 ),
             )
             return
@@ -925,7 +953,13 @@ class ChatService:
         yield ChatEvent(
             "done",
             self._done_payload(
-                "completed", answered, final, calls[-1].finish_reason.value, info, navigation
+                "completed",
+                answered,
+                final,
+                calls[-1].finish_reason.value,
+                info,
+                navigation,
+                facts_info=evidence.facts_info,
             ),
         )
 
@@ -950,6 +984,7 @@ class ChatService:
         revision: dict[str, Any] | None,
         navigation: dict[str, Any] | None = None,
         correction: dict[str, Any] | None = None,
+        facts_info: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         check = assessment.check if assessment else NumberCheck([], [], [], [], [])
         doubts = assessment.doubts if assessment else []
@@ -1037,6 +1072,7 @@ class ChatService:
             "revision": revision,
             "navigation": navigation,
             "correction": correction,
+            "facts": facts_info,
         }
 
     async def _search(
@@ -1069,11 +1105,63 @@ class ChatService:
     ) -> Evidence:
         if chunks is None:
             return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
+        candidates = [*chunks, *added]
+        facts_info = None
+        if self._settings.answer_facts != "off":
+            candidates, block, facts_info = self._with_facts(question, candidates)
+            preamble = block + preamble
         prompt, used = build_answer_prompt(
-            question, [*chunks, *added], self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
+            question, candidates, self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
-        return Evidence(prompt, sources, "")
+        return Evidence(prompt, sources, "", facts_info)
+
+    def _with_facts(
+        self, question: str, candidates: list[RetrievedChunk]
+    ) -> tuple[list[RetrievedChunk], str, dict[str, Any]]:
+        """D87 experiment A. inject: the comparison facts that bear on the question, as a
+        block before the sources. replace: also, a table chunk whose cells the facts come
+        from is shown as the rows of the columns the question names (caption kept, same
+        source number); a table whose columns the question does not name is left whole."""
+        indexed = list(enumerate(candidates, start=1))
+        cells = build_matrix(indexed)
+        facts = comparison_facts(cells, question)
+        block = facts_block(facts, self._counter, budget=FACTS_TOKEN_BUDGET)
+        replaced: list[int] = []
+        if self._settings.answer_facts == "replace" and facts:
+            named = named_columns(cells, question)
+            rewritten = []
+            for index, chunk in indexed:
+                own = [c for c in cells if c.source_index == index]
+                minimal = (
+                    minimal_table_text(own, chunk.text.splitlines()[0], named) if own else None
+                )
+                if minimal is None:
+                    rewritten.append(chunk)
+                else:
+                    replaced.append(index)
+                    rewritten.append(
+                        RetrievedChunk(
+                            chunk.chunk_id,
+                            chunk.document_id,
+                            chunk.filename,
+                            chunk.page,
+                            chunk.ordinal,
+                            minimal,
+                            self._counter.count(minimal),
+                            chunk.score,
+                            chunk.origin,
+                        )
+                    )
+            candidates = rewritten
+        info = {
+            "mode": self._settings.answer_facts,
+            "cells": len(cells),
+            "facts": len(facts),
+            "block_tokens": self._counter.count(block) if block else 0,
+            "replaced_sources": replaced,
+        }
+        return candidates, block, info
 
     async def _retrieval_evidence(self, prepared: PreparedQuestion, question: str) -> Evidence:
         chunks, _ = await self._search(prepared, question)

@@ -229,6 +229,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         },
         "conclusion_issues": [],
         "arithmetic_issues": [],
+        "facts": None,
         "analysis_status": "UNCERTAIN",
         "revision": None,
         "navigation": None,
@@ -544,6 +545,7 @@ async def test_a_question_unlike_any_chunk_is_refused_without_an_llm_call(
         },
         "conclusion_issues": [],
         "arithmetic_issues": [],
+        "facts": None,
         "analysis_status": None,
         "revision": None,
         "navigation": None,
@@ -831,4 +833,67 @@ async def test_the_answer_temperature_setting_reaches_the_model_and_is_absent_by
     use_model(kim, tokenizer, model)
     events(ask(kim, new_conversation(kim), "What does LightRAG build?"))
     assert model.options[-1]["temperature"] == 0
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+
+
+async def test_answer_facts_inject_puts_the_programs_comparison_facts_before_the_sources(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D87 experiment A1: with ANSWER_FACTS=inject the single-mode prompt starts with the
+    facts the program computed for the methods the question names; the table chunk stays."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"answer_facts": "inject"}
+    )
+    model = StubOllama(["-High is lower in most conditions [1]."])
+    use_model(kim, tokenizer, model)
+
+    stream = dict(events(ask(kim, new_conversation(kim), "Compare LightRAG with -High")))
+
+    prompt = model.prompts[-1]
+    assert prompt.startswith("Comparison facts computed by the program")
+    assert "LightRAG vs -High (direct pair; higher is better)" in prompt
+    assert "higher in 4 of 6 conditions, lower in 2" in prompt
+    assert "Agriculture / Diversity: 60.0% vs 62.0% (-2.0 pp, -3.2% relative)" in prompt
+    assert "Comprehensiveness — Agriculture: LightRAG 67.6%, -High 65.2%" in prompt  # table kept
+    facts = stream["done"]["facts"]
+    assert facts["mode"] == "inject" and facts["facts"] == 6 and facts["replaced_sources"] == []
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+
+
+async def test_answer_facts_replace_shows_a_covered_table_as_the_compared_rows_only(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D87 experiment A2: the table chunk keeps its number, caption and page, but its body
+    is the rows of the two compared columns; a question naming no column leaves it whole."""
+    await add_document(kim, tokenizer, "ablation.txt", ABLATION_TABLE.encode())
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"answer_facts": "replace"}
+    )
+    model = StubOllama(["-High is lower in most conditions [1]."])
+    use_model(kim, tokenizer, model)
+
+    stream = dict(events(ask(kim, new_conversation(kim), "Compare LightRAG with -High")))
+
+    prompt = model.prompts[-1]
+    table = next(s for s in stream["sources"] if s["snippet"].startswith("Table 2:"))
+    assert (
+        f"[{table['index']}] ablation.txt, page 1 (a table)\nTable 2: Win rates of the variants."
+        in prompt
+    )
+    assert (
+        "Rows reduced by the program to the columns the question names: LightRAG, -High" in prompt
+    )
+    assert (
+        "Diversity — Agriculture: LightRAG 60.0%, -High 62.0%; Mix: LightRAG 50.0%, -High 52.0%"
+        in prompt
+    )
+    # The prose chunk (the definition) is kept whole: only the table was reduced.
+    assert "The -High variant removes high-level retrieval." in prompt
+    assert stream["done"]["facts"]["replaced_sources"] == [table["index"]]
+
+    use_model(kim, tokenizer, model)
+    stream = dict(events(ask(kim, new_conversation(kim), "What do the variants show?")))
+    assert "Comprehensiveness — Agriculture: LightRAG 67.6%, -High 65.2%" in model.prompts[-1]
+    assert stream["done"]["facts"]["replaced_sources"] == []
     kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]

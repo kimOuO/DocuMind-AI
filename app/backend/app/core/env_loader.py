@@ -75,12 +75,25 @@ class Settings(BaseSettings):
     # Analyst; the revision draft). None keeps the model's default (qwen3:32b: 0.6). 0 makes
     # the same evidence give the same answer — not a better one, a repeatable one.
     answer_temperature: float | None = None
+    # D87 experiment A: what the program's comparison facts do at answer time.
+    #   off     — computed for the checks only (the behaviour so far)
+    #   inject  — the facts that bear on the question go into the prompt before the sources
+    #   replace — as inject, and a table chunk whose figures the facts cover is shown as the
+    #             rows of the compared columns only (its caption and page kept)
+    answer_facts: str = "off"
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at
     # third-party/qwen3.6-tokenizer (see its README).
     tokenizer_path: str = "third-party/qwen3-tokenizer/tokenizer.json"
     tokenizer_sha256: str = "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+
+    @field_validator("answer_facts")
+    @classmethod
+    def _known_facts_mode(cls, value: str) -> str:
+        if value not in ("off", "inject", "replace"):
+            raise ValueError("ANSWER_FACTS must be off, inject or replace")
+        return value
 
     @field_validator("navigation_temperature", "answer_temperature", mode="before")
     @classmethod

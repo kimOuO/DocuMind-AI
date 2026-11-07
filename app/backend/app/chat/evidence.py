@@ -1025,6 +1025,7 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
         if minority:
             shown = "; ".join(
                 f"{f.group + ' / ' if f.group else ''}{f.row}: {f.value_a} vs {f.value_b}"
+                f"{_delta(f.value_a, f.value_b)}"
                 for f in minority[:6]
             )
             head += f" {a} {word} in: {shown}" + ("; …" if len(minority) > 6 else "") + "."
@@ -1034,6 +1035,86 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
             continue
         lines.append(head)
         spent += cost
+    return "\n".join(lines)
+
+
+def _delta(a: str, b: str) -> str:
+    """The difference of two figures, as the program computes it: percentage points for
+    percentages (and the relative change), a plain difference otherwise (D87 A3.4)."""
+    x, y = _as_float(a), _as_float(b)
+    if x is None or y is None or y == 0:
+        return ""
+    diff = x - y
+    if a.endswith("%") and b.endswith("%"):
+        return f" ({diff:+.1f} pp, {diff / y * 100:+.1f}% relative)"
+    return f" ({diff:+g})"
+
+
+FACTS_INTRODUCTION = (
+    "Comparison facts computed by the program from the tables among the sources (each fact "
+    "gives the two figures as written, which is higher, whether the metric's higher is "
+    "better, the difference, and every condition that goes the other way). A conclusion must "
+    "agree with these counts and name every exception listed; an indirect comparison is a "
+    "trend, not a result:"
+)
+
+
+def facts_block(facts: Sequence["Fact"], counter: TokenCounter, *, budget: int) -> str:
+    """The facts as a block of the prompt, or "" when there are none (D87 experiment A)."""
+    if not facts:
+        return ""
+    return FACTS_INTRODUCTION + "\n" + facts_text(facts, counter, budget=budget) + "\n\n"
+
+
+def named_columns(cells: Sequence[MatrixCell], question: str) -> list[str]:
+    """The table columns the question names, in the order it names them."""
+    columns = sorted({c.column for c in cells})
+    positions = {
+        c: m.start() for c in columns if (m := _label_pattern(c).search(question)) is not None
+    }
+    return sorted(positions, key=lambda c: positions[c])
+
+
+def minimal_table_text(
+    cells: Sequence[MatrixCell], caption: str, named: Sequence[str]
+) -> str | None:
+    """A table chunk reduced to the rows of the compared columns (D87 experiment A2): the
+    caption, a note, then — in the same cell-by-cell form the chunker writes, so the chunk
+    still reads as a table — only the pairs that involve the named columns: between them
+    when two or more are named, every pair of the one column otherwise. None when the
+    question names no column of this table: then nothing is replaced and no figure the
+    model may need is lost."""
+    wanted = [c for c in named if any(x.column == c for x in cells)]
+    if not wanted:
+        return None
+    if len(wanted) >= 2:
+        keep = [c for c in cells if c.column in wanted and c.paired_with in wanted]
+    else:
+        keep = [c for c in cells if c.column == wanted[0] or c.paired_with == wanted[0]]
+    if not keep:
+        return None
+    lines = [
+        caption,
+        f"(Rows reduced by the program to the columns the question names: {', '.join(wanted)}; "
+        "each pair is as the table pairs it. The full table is on the same page.)",
+    ]
+    # One block at a time, as the chunker wrote it: a header of the pair, then one line per
+    # row with the groups of that row.
+    blocks: dict[int, dict[str, dict[str, list[MatrixCell]]]] = {}
+    for c in keep:
+        blocks.setdefault(c.block, {}).setdefault(c.row, {}).setdefault(c.group, []).append(c)
+    for block in sorted(blocks):
+        rows = blocks[block]
+        first = next(iter(next(iter(rows.values())).values()))
+        pair = [first[0].column, first[0].paired_with or ""]
+        lines.append(" ".join(name for name in pair * 2 if name))
+        for row, groups in rows.items():
+            segments = [
+                (f"{group}: " if group else "")
+                + ", ".join(f"{c.column} {c.value}" for c in members)
+                for group, members in groups.items()
+            ]
+            lines.append(f"{row} — " + "; ".join(segments))
     return "\n".join(lines)
 
 
