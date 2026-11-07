@@ -12,9 +12,12 @@ os.environ["DB_NULL_POOL"] = "true"
 # The tests run with the answering improvements off and no fixed temperature, whatever the
 # developer's .env or the code defaults (D89: inject/true/0.5) say: they describe the
 # mechanisms one at a time, turning each on where it is the subject.
-os.environ["ANSWER_FACTS"] = "off"
-os.environ["SUMMARY_REPAIR"] = "false"
-os.environ["ANSWER_TEMPERATURE"] = ""
+# setdefault: the real-model experiment harness (test_navigator_abc_real.py) sets these on
+# purpose; it must not be overridden (D93: four batches ran with facts off, repair off and
+# the model's default temperature because this used to assign unconditionally).
+os.environ.setdefault("ANSWER_FACTS", "off")
+os.environ.setdefault("SUMMARY_REPAIR", "false")
+os.environ.setdefault("ANSWER_TEMPERATURE", "")
 # Uploaded files written by tests go to a throwaway directory.
 os.environ["DATA_DIR"] = tempfile.mkdtemp(prefix="documind-test-data-")
 
