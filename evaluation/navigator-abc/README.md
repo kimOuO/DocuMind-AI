@@ -704,3 +704,63 @@ Q2：B7 1/3，B6 2/3，B5 1/3。
 - 3 次對 3 次，1/3 對 2/3 在噪音範圍內；不能說新提示詞更差，也沒有證據說它更好。
 - 這批沒有 Q3，提示詞第 (7) 步（變體要與母方法並列、要從來源定義）沒有被測到。
 - 核對器的「A vs. B (a% vs. b%)」第二個數字歸屬誤報再次出現（B5-Q2-3、B6-Q2-3、B7-Q2-2），要修。
+
+## D83／C8 對 B8：三個必答題，預設 single 對目前的 navigate（2026-11-07，各 3 次，1,170 秒含入庫）
+
+### 設定
+
+兩臂共用：D81 的表格偵測修正、D82 的區塊向量（多向量）、切塊 400、K 5、門檻 0.50（ADR 0010）。**C8**＝預設 `single`：向量前五＋表格後文、一次呼叫，Q1 走摘要樹。**B8**＝`navigate` 到今天：Navigator（表格規則、temperature 0）→ 補取 → Analyst（矩陣進 prompt、D79 計數式結論與變體並列規則、定義附註已拿掉、自動修正關閉）。使用者決定納入多向量後重跑（第一批在第二次時停止、紀錄刪除）。
+
+### 機制指標（`analyse.py`）
+
+| 題 | 臂 | 呼叫 | tokens | 秒 | 備註 |
+|---|---|---|---|---|---|
+| Q1 | C8 | 1 | 4,132 | 29.7 | 摘要樹 |
+| Q1 | B8 | 2 | 5,855 | 35.6 | 摘要樹＋Navigator 補一段 |
+| Q2 | C8 | 1 | 3,634 | 17.6 | **前五含 Table 1**（區塊向量的效果；C 臂歷史上拿不到） |
+| Q2 | B8 | 2 | 9,062 | 57.8 | 矩陣 1,348 tokens 進 prompt |
+| Q3 | C8 | 1 | 4,297 | 26.5 | 前五含 Table 2 與其後文 |
+| Q3 | B8 | 2 | 9,064 | 87.4 | 矩陣進 prompt |
+
+### 表格數字逐格核對（腳本對 `paper-structure.json`）
+
+B8-Q2-1、B8-Q2-3 各 32 格全對；B8-Q2-2 以列式寫 32 格全對；B8-Q3-1（48 格）、B8-Q3-2（64 格）、B8-Q3-3（80 格）表格內的數字與配對全對（腳本第一版把「NaiveRAG｜變體」雙欄讀反，人工複核為全對）。C8 沒有表格，散文中的數字見下表。
+
+### 人工判定（同 key-facts 標準）
+
+| 題 | C 臂歷史 | **C8** | B6 | B7 | **B8** |
+|---|---|---|---|---|---|
+| Q1 摘要 | 1/3 | **0/3** | — | — | **0/3** |
+| Q2 比較 | 2/3 | **0/3** | 2/3 | 1/3 | **1/3** |
+| Q3 消融 | 2/3 | **0/3** | 1/3 | — | **0/3** |
+
+| 次 | 判定 | 原因 |
+|---|---|---|
+| C8-Q1-1～3、B8-Q1-1～3 | 不通過 ×6 | 六篇都寫「LightRAG outperforms all baselines in (all) four evaluation dimensions (and datasets)」——S-X2 全面領先（Mix 對 GraphRAG 三個面向落後）。這句出自本批的**全文摘要與 EVALUATION 章節摘要原文**（來源 [1]、[6]），兩種模式都照抄；摘要驗證只核對數字，這兩份摘要沒有錯數字，標 VERIFIED／UNCERTAIN，抓不到全稱句。C8-Q1-2 另把 RQ-RAG 的 Legal Diversity 11.6% 寫成 Comprehensiveness。其餘 S1–S5 與數字（83.6／86.4／83.6、54.4 對 45.6、51.6 對 48.4）都對 |
+| C8-Q2-1 | 不通過 | 「Empowerment Legal LightRAG 74.0% vs GraphRAG 43.6%」——74.0 是 HyDE 區塊的 LightRAG 值（正確 56.4）；例外只點 Mix Comprehensiveness，漏 Empowerment、Overall；「consistently outperforms」 |
+| C8-Q2-2 | 不通過 | 四個數字錯配（Legal Overall 寫 54.8 應 52.8；Diversity Legal 寫 85.6 對 73.6，應 73.6 對 26.4；Mix Comprehensiveness GraphRAG 寫 54.4 應 50.4）；標籤核對 4 條全部命中、全稱檢查命中並附警語 |
+| C8-Q2-3 | 不通過 | 32 個數字以散文列出全對；結論「Mix 的 Empowerment 與 Overall GraphRAG 略勝」漏了 Comprehensiveness；「consistently outperforms」。標籤核對 3 條是誤報（把「GraphRAG 45.6%, LightRAG 54.4%」的配對讀成 LightRAG vs LightRAG） |
+| C8-Q3-1 | 不通過 | 四個變體定義全對（含 Hybrid）；數字 7 個中 1 個錯配（-Low CS Comprehensiveness 對 NaiveRAG 寫 42.8 應 43.2）；完全沒有 LightRAG 自己的數字，四版本沒有同條件並列（A6 缺；程式判 incomplete 正確） |
+| C8-Q3-2 | 不通過 | 「-Low … comprehensiveness increases from 67.6% to 64.0%」方向反；「empowerment Legal dropping from 83.6% to 80.8%」80.8 是 -Low 的 Comprehensiveness；定義對 |
+| C8-Q3-3 | 不通過 | 「-Low Legal comprehensiveness 80.8%, higher than LightRAG's 83.6%」方向反；「-Origin Mix comprehensiveness improves from 61.2% to 55.6%」方向反；方向核對 4 條命中 |
+| B8-Q2-1 | 不通過 | 32 格全對；「14 of 16, only exceptions Mix Comprehensiveness and Overall」——漏 Mix Empowerment（49.2<50.8），應為 13 of 16、三個例外；全稱檢查命中 |
+| B8-Q2-2 | 不通過 | 32 格列式全對，接著「LightRAG wins in 4 of 4 … all 16 conditions」與自己列的三個 Mix 例外矛盾；全稱檢查命中 |
+| B8-Q2-3 | **通過** | 32 格全對；四個指標各寫 3 of 4／4 of 4 並點名 Mix 例外，總結列出三個例外。標籤核對 4 條誤報（「GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)」兩數互換，第四次出現） |
+| B8-Q3-1 | 不通過 | 表格 48 格全對，但散文的計數句把勝的條件寫進「lower in」清單（「-High lower in 3: Agriculture/Comprehensiveness (34.8% vs 65.2%)」——65.2 是贏）；「-Origin lower in 12」實際 16 全贏；**-Origin 的定義寫反**（「eliminates the use of semantic graphs and uses original text」）；沒有 LightRAG 的數字 |
+| B8-Q3-2 | 不通過 | 表格 64 格全對、四版本同條件（A6）；-Origin 定義寫反（「uses original text in retrieval」）；「-Origin … except in Mix (NaiveRAG 44.4%, -Origin 55.6%)」55.6>44.4 不是例外 |
+| B8-Q3-3 | 不通過 | 表格 80 格、五欄並列全對；散文「LightRAG outperforms -High in 12 of 16, worse in 4: Agriculture Comprehensiveness (67.6% vs. 65.2%) …」把 LightRAG 較高的條件列為 worse，六組比較全部如此 |
+
+### 要誠實說的
+
+- **Q1 六次全敗，原因在摘要層，兩種模式一樣**：全文摘要與章節摘要本身寫了「全面領先」，問答照抄。摘要驗證只核對數字，對全稱句沒有覆蓋；B5 之前 Q1 的錯也是摘要原句（「best baseline 16.4%」）。要修 Q1 得在建摘要時擋全稱句，不在問答層。
+- **區塊向量在正式程式裡成立**：C8 的 Q2 前五第一次拿到 Table 1（C 臂歷史上從未拿到），C8-Q2-3 因此能列出 32 個正確數字。拿到表沒有讓 single 模式答對：三次的結論句都錯，兩次還錯配數字。
+- **D79 的計數規則對 Q3 有害**：B6（B3 的提示詞＋矩陣）Q3 1/3，B8 Q3 0/3，三次都把「贏的條件」填進「lower in／worse in」清單——跨配對的比較（變體對 LightRAG，各以 NaiveRAG 為對照）被規則要求計數，模型數反了。B6-Q3-3 用 B3 提示詞寫對的那種結論，B8 一次都沒出現。
+- **拿掉定義附註後 -Origin 的定義寫反兩次**（B8-Q3-1、Q3-2）。B6 有附註（寫「no definition found」）時，模型自己讀來源寫對了三個。附註的措辭誤導是真的，但拿掉之後模型沒有必然去讀來源——這一步要再想。
+- Q2：B8 1/3 與 B6 2/3、B7 1/3 在同一噪音帶；錯誤型態仍是結論句脫離自己列的數字。
+- 核對器：標籤核對對「A x%, B y%」配對句與「A outperforms B (x vs y)」句的兩數互換誤報已在 B5、B6、B7、C8、B8 五批出現，是穩定的誤報源；全稱檢查這批 4 次命中都正確。
+- 3 對 3 的噸音仍在；能肯定的是三個結構性事實：Q1 的錯在摘要層、區塊向量讓 single 模式拿到表、計數規則讓 Q3 的跨配對計數反向。
+
+### 結論（供使用者決定）
+
+- 預設模式：兩臂這批都沒有通過 Q3，Q2 只有 B8 一次。以成本看 single 每題約 4,000 tokens、20–30 秒，navigate 約 9,000 tokens、60–90 秒。
+- 建議把 Analyst 的分析順序退回 B6 的版本（B3 文字），保留矩陣、區塊向量、Table 6 修正與 0.50，再測一次 Q2、Q3；若回到 B6 的水準（Q2 2/3、Q3 1/3），navigate 作為進階模式展示，single 維持預設。

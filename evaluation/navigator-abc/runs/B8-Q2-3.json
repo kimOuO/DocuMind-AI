@@ -1,0 +1,1673 @@
+{
+ "arm": "B8",
+ "answer_mode": "navigate",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "run": 3,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 70.0,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "Table 1: Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\nComprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%\nDiversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightRAG 60.8%; Legal: RQ-RAG 11.6%, LightRAG 88.4%; Mix: RQ-RAG 30.8%, LightRAG 69.2%\nEmpowerment — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 36.4%, LightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6%\nOverall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0%\nHyDE LightRAG HyDE LightRAG HyDE LightRAG HyDE LightRAG\nComprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6%\nDiversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 38.8%, LightRAG 61.2%; Legal: HyDE 20.0%, LightRAG 80.0%; Mix: HyDE 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0%\nOverall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6%\nGraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG\nComprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6%\nDiversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0%\nEmpowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2%\nOverall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6%",
+   "score": 0.6504,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handling large\ntoken counts and complex queries that require a thorough understanding of the dataset’s context,\ngraph-based RAG systems like LightRAG and GraphRAG consistently outperform purely chunk-\nbased retrieval methods such as NaiveRAG, HyDE, and RQRAG. This performance gap becomes\nparticularly pronounced as the dataset size increases. For instance, in the largest dataset (Legal), the\ndisparity widens significantly, with baseline methods achieving only about 20% win rates compared\nto the dominance of LightRAG. This trend underscores the advantages of graph-enhanced RAG\nsystems in capturing complex semantic dependencies within large-scale corpora, facilitating a more\ncomprehensive understanding of knowledge and leading to improved generalization performance.\nEnhancing Response Diversity with LightRAG: Compared to various baselines, LightRAG demon-\nstrates a significant advantage in the Diversity metric, particularly within the larger Legal dataset.\nIts consistent lead in this area underscores LightRAG’s effectiveness in generating a wider range\nof responses, especially in scenarios where diverse content is essential. We attribute this advantage\nto LightRAG’s dual-level retrieval paradigm, which facilitates comprehensive information retrieval\nfrom both low-level and high-level dimensions. This approach effectively leverages graph-based text\nindexing to consistently capture the full context in response to queries.\nLightRAG’s Superiority over GraphRAG: While both LightRAG and GraphRAG use graph-based\nretrieval mechanisms, LightRAG consistently outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of",
+   "score": 0.6455,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+   "score": 0.6299,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+   "score": 0.6265,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+   "score": 0.6123,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "Table 3: Case Study: Comparison Between LightRAG and the Baseline Method GraphRAG.\nQuery Which methods can normalize the feature values for effective machine learning?\nGraphRAG Key Metrics for Evaluating Movie Recommendation Systems: Evaluating the effectiveness of movie\nrecommendation systems is crucial for ensuring user satisfaction and improving the overall performance of\nthese systems. Several metrics are widely recognized for their ability to provide insights into how well a\nrecommendation system performs. Below are the most informative metrics: 1. Precision [...] 2. Recall [...]\n3. F1 Score [...] 4. Mean Average Precision (MAP)[...] 5. Root Mean Squared Error (RMSE) [...] 6.\nUser Satisfaction Metrics [...] Conclusion: In summary, metrics such as precision, recall, F1 score, MAP,\nRMSE, and user satisfaction are critical for evaluating the performance of movie recommendation systems.\nEach metric provides unique insights that can help developers and researchers refine their algorithms and\nenhance user experiences. By focusing on these metrics, stakeholders can ensure that their recommendation\nsystems effectively meet user preferences and expectations.\nLightRAG Key Metrics for Evaluating Movie Recommendation Systems: Evaluating movie recommendation systems\ninvolves multiple metrics that assess the effectiveness and accuracy of the recommendations provided to\nusers. Below are some of the most informative metrics commonly used in this context, derived from the\ndata and concepts surrounding recommendation systems. 1. Mean Average Precision at K (MAPK) [...] 2.\nPrecision and Recall [...] 3. Root Mean Squared Error (RMSE) and Mean Squared Error (MSE) [...]\n4. Area Under the Curve (AUC) [...] 5. F-Measure [...] 6. User Engagement Metrics [...] Conclusion: A\ncomprehensive evaluation of movie recommendation systems employs a range of metrics that capture both\nthe accuracy of the recommendations and user satisfaction. By effectively leveraging these metrics, system\ndesigners can optimize recommendation engines to deliver",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 7,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "Squared Error (MSE) [...]\n4. Area Under the Curve (AUC) [...] 5. F-Measure [...] 6. User Engagement Metrics [...] Conclusion: A\ncomprehensive evaluation of movie recommendation systems employs a range of metrics that capture both\nthe accuracy of the recommendations and user satisfaction. By effectively leveraging these metrics, system\ndesigners can optimize recommendation engines to deliver more personalized and relevant experiences.\nLLM Decision Comprehensiveness: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 provides a broader array of metrics including MAPK, AUC, and user engagement\nmetrics alongside precision, recall, RMSE, and F-Measure. This gives a fuller view of how recommendation\nsystems can be evaluated. Answer 1, while detailed, is more focused on traditional metrics and lacks the\ninclusion of engagement metrics which are crucial for understanding user interaction.\"\nDiversity: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 not only covers a wide variety of metrics but also includes nuanced explanations\nof how some metrics interrelate and differ from one another, like the inclusion of both RMSE and MSE, as\nwell as the details behind AUC. In contrast, Answer 1 sticks primarily to standard metrics without much\nexploration of potential nuances.\"\nEmpowerment: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 empowers the reader more effectively by detailing how each metric functions and\nits importance in evaluating recommendation systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 8,
+   "kind": "chunk",
+   "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+   "score": 0.5073,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "The question asks to compare **LightRAG** with **GraphRAG** across **four datasets** (Agriculture, CS, Legal, Mix) and **four metrics** (Comprehensiveness, Diversity, Empowerment, Overall). The comparison is based on **win rates** in which LightRAG is compared against GraphRAG for each dataset and metric.\n\n### Comparison Table of Relevant Figures\n\n| Dataset | Metric         | GraphRAG Win Rate | LightRAG Win Rate | Source |\n|---------|----------------|-------------------|-------------------|--------|\n| Agriculture | Comprehensiveness | 45.6%             | 54.4%             | [1]    |\n| CS          | Comprehensiveness | 48.4%             | 51.6%             | [1]    |\n| Legal       | Comprehensiveness | 48.4%             | 51.6%             | [1]    |\n| Mix         | Comprehensiveness | 50.4%             | 49.6%             | [1]    |\n| Agriculture | Diversity         | 22.8%             | 77.2%             | [1]    |\n| CS          | Diversity         | 40.8%             | 59.2%             | [1]    |\n| Legal       | Diversity         | 26.4%             | 73.6%             | [1]    |\n| Mix         | Diversity         | 36.0%             | 64.0%             | [1]    |\n| Agriculture | Empowerment       | 41.2%             | 58.8%             | [1]    |\n| CS          | Empowerment       | 45.2%             | 54.8%             | [1]    |\n| Legal       | Empowerment       | 43.6%             | 56.4%             | [1]    |\n| Mix         | Empowerment       | 50.8%             | 49.2%             | [1]    |\n| Agriculture | Overall           | 45.2%             | 54.8%             | [1]    |\n| CS          | Overall           | 48.0%             | 52.0%             | [1]    |\n| Legal       | Overall           | 47.2%             | 52.8%             | [1]    |\n| Mix         | Overall           | 50.4%             | 49.6%             | [1]    |\n\n---\n\n### Analysis\n\n- **Comprehensiveness**:\n  - LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.4% vs. 45.6%), CS (51.6% vs. 48.4%), and Legal (51.6% vs. 48.4%). The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%). [1]\n  \n- **Diversity**:\n  - LightRAG outperforms GraphRAG in **all 4 datasets**: Agriculture (77.2% vs. 22.8%), CS (59.2% vs. 40.8%), Legal (73.6% vs. 26.4%), and Mix (64.0% vs. 36.0%). [1]\n\n- **Empowerment**:\n  - LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (58.8% vs. 41.2%), CS (54.8% vs. 45.2%), and Legal (56.4% vs. 43.6%). The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.8% vs. 49.2%). [1]\n\n- **Overall**:\n  - LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.8% vs. 45.2%), CS (52.0% vs. 48.0%), and Legal (52.8% vs. 47.2%). The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%). [1]\n\n---\n\n### Summary of Findings\n\n- **Comprehensiveness**: LightRAG outperforms GraphRAG in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.4% vs. 49.6%) [1].\n- **Diversity**: LightRAG consistently outperforms GraphRAG in all 4 datasets [1].\n- **Empowerment**: LightRAG outperforms in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.8% vs. 49.2%) [1].\n- **Overall**: LightRAG outperforms in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.4% vs. 49.6%) [1].\n\nThe only exceptions are in the **Mix** dataset for Comprehensiveness, Empowerment, and Overall, where GraphRAG slightly outperforms LightRAG in each. LightRAG shows a clear advantage in most conditions, particularly in Diversity, and in most metrics across the Agriculture, CS, and Legal datasets.\n\nFigures whose labels differ from the source table: 50.4% (answer: Mix, LightRAG; source: Comprehensiveness, Mix, GraphRAG, vs LightRAG / Overall, Mix, GraphRAG, vs LightRAG); 49.6% (answer: Mix, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG); 50.8% (answer: Mix, LightRAG; source: Empowerment, Mix, GraphRAG, vs LightRAG); 49.2% (answer: Mix, GraphRAG; source: Empowerment, Mix, LightRAG, vs GraphRAG); 49.6% (answer: Comprehensiveness, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG); 49.2% (answer: Empowerment, GraphRAG; source: Empowerment, Mix, LightRAG, vs GraphRAG); 49.6% (answer: Overall, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG).",
+ "usage": {
+  "prompt_tokens": 7907,
+  "completion_tokens": 1439,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "45.6%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…G GraphRAG LightRAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, Lig…"
+   },
+   {
+    "number": "54.4%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix…"
+   },
+   {
+    "number": "48.4%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…G Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, Li…"
+   },
+   {
+    "number": "51.6%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…ess — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Div…"
+   },
+   {
+    "number": "50.4%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+   },
+   {
+    "number": "49.6%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+   },
+   {
+    "number": "22.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…AG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, Lig…"
+   },
+   {
+    "number": "77.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…raphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix…"
+   },
+   {
+    "number": "40.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…LightRAG 67.6% Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 5…"
+   },
+   {
+    "number": "59.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — A…"
+   },
+   {
+    "number": "26.4%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…ulture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG Lig…"
+   },
+   {
+    "number": "73.6%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG LightRAG GraphRAG L…"
+   },
+   {
+    "number": "36.0%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS:…"
+   },
+   {
+    "number": "64.0%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%,…"
+   },
+   {
+    "number": "41.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, Lig…"
+   },
+   {
+    "number": "58.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…phRAG 36.0%, LightRAG 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix…"
+   },
+   {
+    "number": "45.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…G 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, Li…"
+   },
+   {
+    "number": "54.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…ent — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Ove…"
+   },
+   {
+    "number": "43.6%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…hRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: Gra…"
+   },
+   {
+    "number": "56.4%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…tRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, Lig…"
+   },
+   {
+    "number": "50.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+   },
+   {
+    "number": "49.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+   },
+   {
+    "number": "48.0%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…htRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, Li…"
+   },
+   {
+    "number": "52.0%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…all — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The…"
+   },
+   {
+    "number": "47.2%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…hRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-e…"
+   },
+   {
+    "number": "52.8%",
+    "document_id": "a3dcc36a-0ca1-4d73-8ecb-ba824f22ca95",
+    "page": 7,
+    "snippet": "…tRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-enhanced RAG Syst…"
+   }
+  ],
+  "mislabelled_numbers": [
+   {
+    "number": "50.4%",
+    "answer_labels": [
+     "Mix",
+     "LightRAG"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)."
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Mix",
+     "GraphRAG"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)."
+   },
+   {
+    "number": "50.8%",
+    "answer_labels": [
+     "Mix",
+     "LightRAG"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.8% vs. 49.2%)."
+   },
+   {
+    "number": "49.2%",
+    "answer_labels": [
+     "Mix",
+     "GraphRAG"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.8% vs. 49.2%)."
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "GraphRAG"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Comprehensiveness**: LightRAG outperforms GraphRAG in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.4% vs. 49.6%)."
+   },
+   {
+    "number": "49.2%",
+    "answer_labels": [
+     "Empowerment",
+     "GraphRAG"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Empowerment**: LightRAG outperforms in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.8% vs. 49.2%)."
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Overall",
+     "GraphRAG"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ],
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Overall**: LightRAG outperforms in 3 out of 4 datasets (Agriculture, CS, Legal), but GraphRAG outperforms in Mix (50.4% vs. 49.6%)."
+   }
+  ],
+  "unresolved_numbers": [
+   {
+    "number": "45.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Comprehensiveness | 45.6% | 54.4% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "54.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Comprehensiveness | 45.6% | 54.4% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "48.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| CS | Comprehensiveness | 48.4% | 51.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "51.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| CS | Comprehensiveness | 48.4% | 51.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "48.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Legal | Comprehensiveness | 48.4% | 51.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "51.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Legal | Comprehensiveness | 48.4% | 51.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "50.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Mix | Comprehensiveness | 50.4% | 49.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Mix | Comprehensiveness | 50.4% | 49.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "22.8%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Diversity | 22.8% | 77.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "77.2%",
+    "answer_labels": [
+     "Diversity",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Diversity | 22.8% | 77.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "40.8%",
+    "answer_labels": [
+     "Diversity",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| CS | Diversity | 40.8% | 59.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "59.2%",
+    "answer_labels": [
+     "Diversity",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| CS | Diversity | 40.8% | 59.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "26.4%",
+    "answer_labels": [
+     "Diversity",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Legal | Diversity | 26.4% | 73.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "73.6%",
+    "answer_labels": [
+     "Diversity",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Legal | Diversity | 26.4% | 73.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "36.0%",
+    "answer_labels": [
+     "Diversity",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Mix | Diversity | 36.0% | 64.0% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "64.0%",
+    "answer_labels": [
+     "Diversity",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Mix | Diversity | 36.0% | 64.0% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "41.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Empowerment | 41.2% | 58.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "58.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Agriculture",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Empowerment | 41.2% | 58.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "45.2%",
+    "answer_labels": [
+     "Empowerment",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| CS | Empowerment | 45.2% | 54.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "54.8%",
+    "answer_labels": [
+     "Empowerment",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "CS",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| CS | Empowerment | 45.2% | 54.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "43.6%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Legal | Empowerment | 43.6% | 56.4% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "56.4%",
+    "answer_labels": [
+     "Empowerment",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Legal",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Legal | Empowerment | 43.6% | 56.4% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "50.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Mix | Empowerment | 50.8% | 49.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "49.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Mix | Empowerment | 50.8% | 49.2% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "45.2%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Overall | 45.2% | 54.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "54.8%",
+    "answer_labels": [
+     "Overall",
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Agriculture | Overall | 45.2% | 54.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "48.0%",
+    "answer_labels": [
+     "Overall",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| CS | Overall | 48.0% | 52.0% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "52.0%",
+    "answer_labels": [
+     "Overall",
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "CS",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| CS | Overall | 48.0% | 52.0% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "47.2%",
+    "answer_labels": [
+     "Overall",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Legal | Overall | 47.2% | 52.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "52.8%",
+    "answer_labels": [
+     "Overall",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Legal | Overall | 47.2% | 52.8% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "50.4%",
+    "answer_labels": [
+     "Overall",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "| Mix | Overall | 50.4% | 49.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Overall",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "| Mix | Overall | 50.4% | 49.6% | |",
+    "reason": "missing"
+   },
+   {
+    "number": "45.6%",
+    "answer_labels": [
+     "Comprehensiveness"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.4% vs. 45.6%), CS (51.6% vs. 48.4%), and Legal (51.6% vs. 48.4%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "48.4%",
+    "answer_labels": [
+     "Comprehensiveness"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.4% vs. 45.6%), CS (51.6% vs. 48.4%), and Legal (51.6% vs. 48.4%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "22.8%",
+    "answer_labels": [
+     "Diversity"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **all 4 datasets**: Agriculture (77.2% vs. 22.8%), CS (59.2% vs. 40.8%), Legal (73.6% vs. 26.4%), and Mix (64.0% vs. 36.0%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "40.8%",
+    "answer_labels": [
+     "Diversity"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **all 4 datasets**: Agriculture (77.2% vs. 22.8%), CS (59.2% vs. 40.8%), Legal (73.6% vs. 26.4%), and Mix (64.0% vs. 36.0%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "26.4%",
+    "answer_labels": [
+     "Diversity"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **all 4 datasets**: Agriculture (77.2% vs. 22.8%), CS (59.2% vs. 40.8%), Legal (73.6% vs. 26.4%), and Mix (64.0% vs. 36.0%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "36.0%",
+    "answer_labels": [
+     "Diversity"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **all 4 datasets**: Agriculture (77.2% vs. 22.8%), CS (59.2% vs. 40.8%), Legal (73.6% vs. 26.4%), and Mix (64.0% vs. 36.0%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "41.2%",
+    "answer_labels": [
+     "Empowerment"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (58.8% vs. 41.2%), CS (54.8% vs. 45.2%), and Legal (56.4% vs. 43.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "45.2%",
+    "answer_labels": [
+     "Empowerment"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (58.8% vs. 41.2%), CS (54.8% vs. 45.2%), and Legal (56.4% vs. 43.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "43.6%",
+    "answer_labels": [
+     "Empowerment"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (58.8% vs. 41.2%), CS (54.8% vs. 45.2%), and Legal (56.4% vs. 43.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "45.2%",
+    "answer_labels": [
+     "Overall"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Agriculture",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.8% vs. 45.2%), CS (52.0% vs. 48.0%), and Legal (52.8% vs. 47.2%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "48.0%",
+    "answer_labels": [
+     "Overall"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "CS",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.8% vs. 45.2%), CS (52.0% vs. 48.0%), and Legal (52.8% vs. 47.2%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "47.2%",
+    "answer_labels": [
+     "Overall"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.8% vs. 45.2%), CS (52.0% vs. 48.0%), and Legal (52.8% vs. 47.2%).",
+    "reason": "ambiguous"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [
+   {
+    "sentence": "- LightRAG outperforms GraphRAG in **3 out of 4 datasets**: Agriculture (54.8% vs. 45.2%), CS (52.0% vs. 48.0%), and Legal (52.8% vs. 47.2%).",
+    "left": "54.8%",
+    "right": "45.2%",
+    "status": "incomparable",
+    "detail": "Agriculture / Overall / LightRAG against CS / Empowerment / GraphRAG: different conditions"
+   }
+  ],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [
+   {
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%).",
+    "status": "contradicted",
+    "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (49.6% vs 50.4%); Mix / Empowerment (49.2% vs 50.8%); Mix / Overall (49.6% vs 50.4%)"
+   },
+   {
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.8% vs. 49.2%).",
+    "status": "contradicted",
+    "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (49.6% vs 50.4%); Mix / Empowerment (49.2% vs 50.8%); Mix / Overall (49.6% vs 50.4%)"
+   },
+   {
+    "sentence": "The only exception is Mix, where GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%).",
+    "status": "contradicted",
+    "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (49.6% vs 50.4%); Mix / Empowerment (49.2% vs 50.8%); Mix / Overall (49.6% vs 50.4%)"
+   },
+   {
+    "sentence": "The only exceptions are in the **Mix** dataset for Comprehensiveness, Empowerment, and Overall, where GraphRAG slightly outperforms LightRAG in each.",
+    "status": "contradicted",
+    "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (49.6% vs 50.4%); Mix / Empowerment (49.2% vs 50.8%); Mix / Overall (49.6% vs 50.4%)"
+   }
+  ],
+  "arithmetic_issues": [],
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 38,
+   "plan": "- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing  \n- Table 1 (page 7) | need: win rates including GraphRAG | priority: required | status: covered  \n- Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing  \n- Table 3 (page 9) | need: case study comparison with GraphRAG | priority: required | status: missing  \n- Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method differences | priority: supplementary | status: missing  \n- Figure 1 (page 3) | need: architecture differences | priority: supplementary | status: missing",
+   "items": [
+    {
+     "text": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      6,
+      7
+     ],
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "need": "comparison with GraphRAG",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "candidates": 4,
+     "selected": [
+      18
+     ],
+     "excluded": [
+      {
+       "ordinal": 20,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 19,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Table 1 (page 7) | need: win rates including GraphRAG | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      7
+     ],
+     "location": "Table 1 (page 7)",
+     "need": "win rates including GraphRAG",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "covered",
+     "label": "Table 1",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      8,
+      9
+     ],
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "need": "case study comparison with GraphRAG",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.4 CASE STUDY (RQ3)",
+     "candidates": 5,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 26,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 27,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 24,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 25,
+       "reason": "already selected for another target"
+      },
+      {
+       "ordinal": 23,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Table 3 (page 9) | need: case study comparison with GraphRAG | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      9
+     ],
+     "location": "Table 3 (page 9)",
+     "need": "case study comparison with GraphRAG",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 3",
+     "candidates": 3,
+     "selected": [
+      25,
+      26
+     ],
+     "excluded": [
+      {
+       "ordinal": 27,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method differences | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      4,
+      5
+     ],
+     "location": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "need": "method differences",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 11,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 12,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 13,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Figure 1 (page 3) | need: architecture differences | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      3
+     ],
+     "location": "Figure 1 (page 3)",
+     "need": "architecture differences",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Figure 1",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 6,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 7,
+       "reason": "over the evidence budget"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 17,
+   "kept": 3,
+   "excluded_budget": 6,
+   "skipped": null,
+   "budget": 1156,
+   "retrieved_tokens": 2844,
+   "evidence_tokens": 3991,
+   "embedding": {
+    "texts": 4,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 26,
+     "page": 9,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4807
+    },
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": true,
+     "reason": "plan: Table 3 (page 9)",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.6353
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.6175
+    },
+    {
+     "ordinal": 26,
+     "page": 9,
+     "kept": true,
+     "reason": "plan: Table 3 (page 9)",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.6169
+    },
+    {
+     "ordinal": 24,
+     "page": 8,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.6002
+    },
+    {
+     "ordinal": 27,
+     "page": 9,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": null
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.5689
+    },
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": false,
+     "reason": "already selected for another target",
+     "target": 2,
+     "score": 0.553
+    },
+    {
+     "ordinal": 23,
+     "page": 8,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.5528
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": true,
+     "reason": "plan: Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "target": 0,
+     "score": 0.5073
+    },
+    {
+     "ordinal": 6,
+     "page": 3,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": null
+    },
+    {
+     "ordinal": 11,
+     "page": 4,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": 0.5154
+    },
+    {
+     "ordinal": 7,
+     "page": 3,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 5,
+     "score": null
+    },
+    {
+     "ordinal": 12,
+     "page": 4,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": 0.4787
+    },
+    {
+     "ordinal": 13,
+     "page": 5,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": 0.4621
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "status": "partial",
+     "reason": "3 of the section's 4 chunks are among the sources"
+    },
+    {
+     "location": "Table 1 (page 7)",
+     "status": "covered",
+     "reason": "the table's chunk, with its rows, is among the sources"
+    },
+    {
+     "location": "Section 4.4 CASE STUDY (RQ3)",
+     "status": "partial",
+     "reason": "2 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Table 3 (page 9)",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    },
+    {
+     "location": "Figure 1 (page 3)",
+     "status": "missing",
+     "reason": "the figure's chunk is not among the sources"
+    }
+   ],
+   "unmet_required": [
+    "Section 4.4 CASE STUDY (RQ3)"
+   ],
+   "supplementary_used": 0,
+   "matrix": {
+    "cells": 128,
+    "tables": [
+     "Table 1 [1]"
+    ],
+    "shown_tokens": 1348,
+    "left_out": [],
+    "definitions": [
+     "LightRAG"
+    ],
+    "facts": 112,
+    "coverage_gaps": [
+     "Table 3 [6]"
+    ]
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [
+    "50.4% (Mix, LightRAG)",
+    "49.6% (Mix, GraphRAG)",
+    "50.8% (Mix, LightRAG)",
+    "49.2% (Mix, GraphRAG)",
+    "50.4% (Mix, LightRAG)",
+    "49.6% (Mix, GraphRAG)"
+   ],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1527,
+   "completion_tokens": 185,
+   "estimated_prompt_tokens": 1543,
+   "finish_reason": "stop",
+   "duration_ms": 9002
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 6380,
+   "completion_tokens": 1254,
+   "estimated_prompt_tokens": 6396,
+   "finish_reason": "stop",
+   "duration_ms": 60215
+  }
+ ]
+}
