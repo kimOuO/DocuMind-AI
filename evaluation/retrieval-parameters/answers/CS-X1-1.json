@@ -1,0 +1,135 @@
+{
+ "arm": "CS",
+ "answer_mode": "single",
+ "question": "X1",
+ "question_text": "兩篇論文各用哪個 LLM 做實驗？",
+ "document": "lightrag+graphrag",
+ "expectation": {
+  "kind": "cross",
+  "expected": "LightRAG 論文：GPT-4o-mini；GraphRAG 論文：gpt-4-turbo。兩份文件都要引用",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 4.7,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "兩篇論文各用哪個 LLM 做實驗？"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won over SS in three out of five judgments for comprehensiveness on a given\nquestion, C0 was labeled the winner and SS the loser. However, ifC0 won twice, SS won once, and\nthey tied twice, then there was no majority outcome, so the final label was a tie.\nWe found that exact ties were rare for the claim-based metrics. One possible solution is to define a\ntie based on a threshold (e.g., the absolute difference between the claim-based results for condition\nA and condition B must be less than or equal to x). However, we observed that the results were\nsensitive to the choice of threshold. As a result, we focused on cases where the aggregated LLM\nlabel was not a tie, representing 33% and 39% of pairwise comparisons for comprehensiveness and\ndiversity, respectively. In these cases, the aggregated LLM label matched the claim-based label in\n78% of pairwise comparisons for comprehensiveness and 69-70% for diversity (across all distance\nthresholds), indicating moderately strong alignment.\n6 Discussion\n6.1 Limitations of evaluation approach\nOur evaluation to date has focused on sensemaking questions specific to two corpora each containing\napproximately 1 million tokens. More work is needed to understand how performance generalizes to\ndatasets from various domains with different use cases. Comparison of fabrication rates, e.g., using\napproaches like SelfCheckGPT (Manakul et al., 2023), would also strengthen the current",
+   "score": 0.5746,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+   "score": 0.5423,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "their representations, ensuring efficient and straightforward matching.\n• RQ-RAG (Chan et al., 2024): This approach leverages the LLM to decompose the input query\ninto multiple sub-queries. These sub-queries are designed to enhance search accuracy by utilizing\nexplicit techniques such as rewriting, decomposition, and disambiguation.\n• HyDE (Gao et al., 2022): This method utilizes the LLM to generate a hypothetical document based\non the input query. This generated document is then employed to retrieve relevant text chunks,\nwhich are subsequently used to formulate the final answer.\n• GraphRAG (Edge et al., 2024): This is a graph-enhanced RAG system that utilizes an LLM to\nextract entities and relationships from the text, representing them as nodes and edges. It generates\ncorresponding descriptions for these elements, aggregates nodes into communities, and produces a\ncommunity report to capture global information. When handling high-level queries, GraphRAG\nretrieves more comprehensive information by traversing these communities.\nImplementation and Evaluation Details. In our experiments, we utilize the nano vector database\nfor vector data management and access. For all LLM-based operations in LightRAG, we default\nto using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets.\nAdditionally, the gleaning parameter is fixed at 1 for both GraphRAG and LightRAG.\nDefining ground truth for many RAG queries, particularly those involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7",
+   "score": 0.5391,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "7 A PPENDIX\nIn this section, we elaborate on the methodologies and experimental settings used in the LightRAG\nframework. It describes the specific steps for extracting entities and relationships from documents,\ndetailing how large language models (LLMs) are utilized for this purpose. The section also specifies\nthe prompt templates and configurations used in LLM operations, ensuring clarity in the experimental\nsetup. Additionally, it outlines the evaluation criteria and dimensions used to assess the performance\nof LightRAG against baselines from various dimensions.\n7.1 E XPERIMENTAL DATA DETAILS",
+   "score": 0.5324,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 4,
+   "page_end": 4,
+   "section_title": null,
+   "snippet": "). Lacking a gold standard for evaluation, one can\nquantify relative performance for a given criterion by prompting the LLM to compare generations\nfrom two different competing models (LLM-as-a-judge, (Zheng et al., 2024)). In this work, we de-\nsign criteria for evaluating RAG-generated answers to global sensemaking questions and evaluate\nour results using the comparative approach. We also validate results using statistics derived from\nLLM-extracted statements of verifiable facts, or “claims.”\n3 Methods\n3.1 GraphRAG Workflow\nFigure 1 illustrates the high-level data flow of the GraphRAG approach and pipeline. In this section,\nwe describe the key design parameters, techniques, and implementation details for each step.\n3.1.1 Source Documents → Text Chunks\nTo start, the documents in the corpus are split into text chunks. The LLM extracts information from\neach chunk for downstream processing. Selecting the size of the chunk is a fundamental design\ndecision; longer text chunks require fewer LLM calls for such extraction (which reduces cost) but\nsuffer from degraded recall of information that appears early in the chunk (Kuratov et al., 2024; Liu\net al., 2023). See Section A.1 for prompts and examples of the recall-precision trade-offs.\n3.1.2 Text Chunks → Entities & Relationships\nIn this step, the LLM is prompted to extract instances of important entities and the relationships\nbetween the entities from a given chunk. Additionally, the LLM generates short descriptions for the\nentities and relationships. To illustrate, suppose a chunk contained the following text:\n4",
+   "score": 0.5244,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "第一篇論文 [1] 使用了大型語言模型（LLM）來進行實驗，但未明確指出具體是哪個 LLM。第二篇論文 [2] 明確提到使用了 GPT-4o-mini 作為實驗中的 LLM。",
+ "usage": {
+  "prompt_tokens": 2061,
+  "completion_tokens": 62,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2061,
+   "completion_tokens": 62,
+   "estimated_prompt_tokens": 2077,
+   "finish_reason": "stop",
+   "duration_ms": 4347
+  }
+ ]
+}

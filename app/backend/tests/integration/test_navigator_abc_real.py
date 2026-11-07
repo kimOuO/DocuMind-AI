@@ -37,7 +37,7 @@ pytestmark = [pytest.mark.llm, pytest.mark.db]
 ROOT = Path(__file__).resolve().parents[4]
 LIGHTRAG = ROOT / "sample-documents" / "2410.05779v3.pdf"
 GRAPHRAG = ROOT / "sample-documents" / "2404.16130v2.pdf"
-RUNS_DIR = ROOT / "evaluation" / "navigator-abc" / "runs"
+RUNS_DIR = Path(os.environ.get("ABC_RUNS_DIR") or ROOT / "evaluation" / "navigator-abc" / "runs")
 
 QUESTIONS = {
     "Q1": ("summary this document.", "lightrag"),
@@ -57,9 +57,31 @@ QUESTIONS = {
 ARMS = {"C": "single", "A": "roles", "B": "navigate"}
 
 
+def _questions() -> dict[str, tuple[str, list[str], dict]]:
+    """The questions to run: the five above, or — with ABC_QUESTION_SET=<path> — every
+    question of a P4 question set (id, text, documents, and its expectation for the judge).
+    ABC_QUESTIONS narrows either."""
+    path = os.environ.get("ABC_QUESTION_SET")
+    if path:
+        loaded = json.loads(Path(path).read_text())
+        return {
+            q["id"]: (
+                q["question"],
+                list(q["documents"]),
+                {
+                    "kind": q["kind"],
+                    "expected": q["expected"],
+                    "expect_refusal": q["expect_refusal"],
+                },
+            )
+            for q in loaded["questions"]
+        }
+    return {key: (text, [doc], {}) for key, (text, doc) in QUESTIONS.items()}
+
+
 def _plan() -> dict[str, dict[str, int]]:
     arms = os.environ.get("ABC_ARMS", "C,A,B").split(",")
-    questions = os.environ.get("ABC_QUESTIONS", ",".join(QUESTIONS)).split(",")
+    questions = os.environ.get("ABC_QUESTIONS", ",".join(_questions())).split(",")
     runs = int(os.environ.get("ABC_RUNS", "3"))
     return {arm: {q: runs for q in questions} for arm in arms}
 
@@ -102,7 +124,7 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
         # Both documents get their summaries: the document map needs the section titles
         # and page ranges, and Q1 needs the stored summaries.
         assert await summary.run(index.queued_summary_jobs[job]) is SummaryOutcome.COMPLETED
-    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    RUNS_DIR.mkdir(parents=True, exist_ok=True)  # noqa: ASYNC240
     # D75: what the summary verification found and corrected, for the experiment's records.
     label_for_files = (os.environ.get("ABC_LABEL") or "-".join(_plan())).replace(",", "-")
     (RUNS_DIR / f"{label_for_files}-summaries.json").write_text(
@@ -121,14 +143,17 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
             get_settings().model_copy(update={"answer_mode": m})
         )
         for key, runs in questions.items():
-            question, document = QUESTIONS[key]
+            question, question_documents, expectation = _questions()[key]
             for run in range(1, runs + 1):
                 conversation = client.post("/api/v1/conversations", json={}).json()["id"]
                 before = db.execute("SELECT count(*) FROM llm_calls").fetchone()[0]
                 started = time.perf_counter()
                 response = client.post(
                     f"/api/v1/conversations/{conversation}/messages",
-                    json={"question": question, "document_ids": [documents[document]]},
+                    json={
+                        "question": question,
+                        "document_ids": [documents[d] for d in question_documents],
+                    },
                 )
                 elapsed = time.perf_counter() - started
                 assert response.status_code == 200, response.text
@@ -146,7 +171,8 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
                     "answer_mode": answer_mode,
                     "question": key,
                     "question_text": question,
-                    "document": document,
+                    "document": "+".join(question_documents),
+                    "expectation": expectation,
                     "run": run,
                     "settings": {
                         "model": settings.llm_model,

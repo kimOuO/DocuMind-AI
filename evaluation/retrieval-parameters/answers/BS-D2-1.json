@@ -1,0 +1,457 @@
+{
+ "arm": "BS",
+ "answer_mode": "navigate",
+ "question": "D2",
+ "question_text": "Which LLM and chunk size does LightRAG use in its experiments?",
+ "document": "lightrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "GPT-4o-mini；chunk size 1200；gleaning 1",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 12.7,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Which LLM and chunk size does LightRAG use in its experiments?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "WORK\nIn this section, we analyze the complexity of our proposed LightRAG framework, which can be\ndivided into two main parts. The first part is the graph-based Index phase. During this phase, we use\nthe large language model (LLM) to extract entities and relationships from each chunk of text. As\na result, the LLM needs to be called total tokenschunk size times. Importantly, there is no additional overheadinvolved in this process, making our approach highly efficient in managing updates to new text.\nThe second part of the process involves the graph-based retrieval phase. For each query, we first\nutilize the large language model (LLM) to generate relevant keywords. Similar to current Retrieval-\nAugmented Generation (RAG) systems Gao et al. (2023; 2022); Chan et al. (2024), our retrieval\nmechanism relies on vector-based search. However, instead of retrieving chunks as in conventional\nRAG, we concentrate on retrieving entities and relationships. This approach markedly reduces\nretrieval overhead compared to the community-based traversal method used in GraphRAG.\n4 E VALUATION\nWe conduct empirical evaluations on benchmark data to assess the effectiveness of the proposed\nLightRAG framework by addressing the following research questions:• (RQ1): How does LightRAG\ncompare to existing RAG baseline methods in terms of generation performance? • (RQ2): How do\ndual-level retrieval and graph-based indexing enhance the generation quality of LightRAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom",
+   "score": 0.6072,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "their representations, ensuring efficient and straightforward matching.\n• RQ-RAG (Chan et al., 2024): This approach leverages the LLM to decompose the input query\ninto multiple sub-queries. These sub-queries are designed to enhance search accuracy by utilizing\nexplicit techniques such as rewriting, decomposition, and disambiguation.\n• HyDE (Gao et al., 2022): This method utilizes the LLM to generate a hypothetical document based\non the input query. This generated document is then employed to retrieve relevant text chunks,\nwhich are subsequently used to formulate the final answer.\n• GraphRAG (Edge et al., 2024): This is a graph-enhanced RAG system that utilizes an LLM to\nextract entities and relationships from the text, representing them as nodes and edges. It generates\ncorresponding descriptions for these elements, aggregates nodes into communities, and produces a\ncommunity report to capture global information. When handling high-level queries, GraphRAG\nretrieves more comprehensive information by traversing these communities.\nImplementation and Evaluation Details. In our experiments, we utilize the nano vector database\nfor vector data management and access. For all LLM-based operations in LightRAG, we default\nto using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets.\nAdditionally, the gleaning parameter is fixed at 1 for both GraphRAG and LightRAG.\nDefining ground truth for many RAG queries, particularly those involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7",
+   "score": 0.5801,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "RAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom the UltraDomain benchmark (Qian et al., 2024). The UltraDomain data is sourced from 428\ncollege textbooks and encompasses 18 distinct domains, including agriculture, social sciences, and\nhumanities. From these, we chose the Agriculture, CS, Legal, and Mix datasets. Each dataset contains\nbetween 600,000 and 5,000,000 tokens, with detailed information provided in Table 4. Below is a\nspecific introduction to the four domains utilized in our experiments:\n• Agriculture: This domain focuses on agricultural practices, covering a range of topics including\nbeekeeping, hive management, crop production, and disease prevention.\n• CS: This domain focuses on computer science and encompasses key areas of data science and\nsoftware engineering. It particularly highlights machine learning and big data processing, featuring\ncontent on recommendation systems, classification algorithms, and real-time analytics using Spark.\n5",
+   "score": 0.5539,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al. (2024);\nSalemi & Zamani (2024). This innovative integration allows LLMs to generate more accurate and\ncontextually relevant responses, significantly improving their utility in real-world applications. By\nadapting to specific domain knowledge Tu et al. (2024), RAG systems ensure that the information\nprovided is not only pertinent but also tailored to the user’s needs. Furthermore, they offer access to\nup-to-date information Zhao et al. (2024), which is crucial in rapidly evolving fields. Chunking plays\na vital role in facilitating the retrieval-augmented generation process Lyu et al. (2024). By breaking\ndown a large external text corpus into smaller, more manageable segments, chunking significantly\nenhances the accuracy of information retrieval. This approach allows for more targeted similarity\nsearches, ensuring that the retrieved content is directly relevant to user queries.\nHowever, existing RAG systems have key limitations that hinder their performance. First, many\nmethods rely on flat data representations, restricting their ability to understand and retrieve information\nbased on intricate relationships between entities. Second, these systems often lack the contextual\nawareness needed to maintain coherence across various entities and their interrelations, resulting\nin responses that may not fully address user queries. For example, consider a user asking, “How\ndoes the rise of electric vehicles influence urban air quality and public transportation infrastructure?”\nExisting RAG methods might retrieve separate documents on electric vehicles, air pollution, and\npublic transportation challenges but struggle to syn",
+   "score": 0.5473,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Lianghao Xia2, Yanhua Yu1,∗, Tu Ao1, Chao Huang2∗\nBeijing University of Posts and Telecommunications1\nUniversity of Hong Kong2\nzrguo101@hku.hk aka_xia@foxmail.com chaohuang75@gmail.com\nABSTRACT\nRetrieval-Augmented Generation (RAG) systems enhance large language models\n(LLMs) by integrating external knowledge sources, enabling more accurate and\ncontextually relevant responses tailored to user needs. However, existing RAG\nsystems have significant limitations, including reliance on flat data representa-\ntions and inadequate contextual awareness, which can lead to fragmented answers\nthat fail to capture complex inter-dependencies. To address these challenges, we\npropose LightRAG, which incorporates graph structures into text indexing and\nretrieval processes. This innovative framework employs a dual-level retrieval sys-\ntem that enhances comprehensive information retrieval from both low-level and\nhigh-level knowledge discovery. Additionally, the integration of graph structures\nwith vector representations facilitates efficient retrieval of related entities and their\nrelationships, significantly improving response times while maintaining contextual\nrelevance. This capability is further enhanced by an incremental update algorithm\nthat ensures the timely integration of new data, allowing the system to remain\neffective and responsive in rapidly changing data environments. Extensive experi-\nmental validation demonstrates considerable improvements in retrieval accuracy\nand efficiency compared to existing approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al.",
+   "score": 0.5407,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+   "score": 0.5372,
+   "origin": "navigation"
+  },
+  {
+   "index": 7,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "Table 1: Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\nComprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%\nDiversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightRAG 60.8%; Legal: RQ-RAG 11.6%, LightRAG 88.4%; Mix: RQ-RAG 30.8%, LightRAG 69.2%\nEmpowerment — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 36.4%, LightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6%\nOverall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0%\nHyDE LightRAG HyDE LightRAG HyDE LightRAG HyDE LightRAG\nComprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6%\nDiversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 38.8%, LightRAG 61.2%; Legal: HyDE 20.0%, LightRAG 80.0%; Mix: HyDE 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0%\nOverall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6%\nGraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG\nComprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6%\nDiversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0%\nEmpowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2%\nOverall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6%",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 8,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4: Statistical information of the datasets.\nStatistics Agriculture CS Legal Mix\nTotal Documents — Agriculture: 12; CS: 10; Legal: 94; Mix: 61\nTotal Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009",
+   "score": null,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "LightRAG uses GPT-4o-mini as the LLM and a chunk size of 1200 in its experiments [2].",
+ "usage": {
+  "prompt_tokens": 7604,
+  "completion_tokens": 103,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "1200",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 6,
+    "snippet": "…e default to using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets. Additionally, the gleaning parameter is fixed at 1 for bot…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 38,
+   "plan": "- Section 4.1 EXPERIMENTAL SETTINGS | need: LLM and chunk size information | priority: required | status: missing  \n- Table 1 | need: LLM and chunk size information | priority: supplementary | status: missing  \n- Table 4 | need: LLM and chunk size information | priority: supplementary | status: missing",
+   "items": [
+    {
+     "text": "Section 4.1 EXPERIMENTAL SETTINGS | need: LLM and chunk size information | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      5,
+      6
+     ],
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS",
+     "need": "LLM and chunk size information",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.1 EXPERIMENTAL SETTINGS",
+     "candidates": 5,
+     "selected": [
+      18
+     ],
+     "excluded": [
+      {
+       "ordinal": 16,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 14,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 17,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 15,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Table 1 | need: LLM and chunk size information | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      7
+     ],
+     "location": "Table 1",
+     "need": "LLM and chunk size information",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 1",
+     "candidates": 3,
+     "selected": [
+      19
+     ],
+     "excluded": [
+      {
+       "ordinal": 20,
+       "reason": "supplementary cap reached"
+      },
+      {
+       "ordinal": 21,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    },
+    {
+     "text": "Table 4 | need: LLM and chunk size information | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      13
+     ],
+     "location": "Table 4",
+     "need": "LLM and chunk size information",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 4",
+     "candidates": 2,
+     "selected": [
+      39
+     ],
+     "excluded": [
+      {
+       "ordinal": 40,
+       "reason": "supplementary cap reached"
+      }
+     ]
+    }
+   ],
+   "located": 3,
+   "fetched": 10,
+   "kept": 3,
+   "excluded_budget": 0,
+   "skipped": null,
+   "budget": 2126,
+   "retrieved_tokens": 1874,
+   "evidence_tokens": 3805,
+   "embedding": {
+    "texts": 1,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 17,
+     "page": 6,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 15,
+     "page": 5,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 1,
+     "page": 1,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 0,
+     "page": 1,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 16,
+     "page": 6,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4833
+    },
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.6086
+    },
+    {
+     "ordinal": 17,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.5826
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": true,
+     "reason": "plan: Section 4.1 EXPERIMENTAL SETTINGS",
+     "target": 0,
+     "score": 0.5372
+    },
+    {
+     "ordinal": 15,
+     "page": 5,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.4892
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": true,
+     "reason": "plan: Table 1",
+     "target": 1,
+     "score": null
+    },
+    {
+     "ordinal": 39,
+     "page": 13,
+     "kept": true,
+     "reason": "plan: Table 4",
+     "target": 2,
+     "score": null
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 1,
+     "score": null
+    },
+    {
+     "ordinal": 40,
+     "page": 13,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 2,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "supplementary cap reached",
+     "target": 1,
+     "score": null
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS",
+     "status": "partial",
+     "reason": "3 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Table 1",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Table 4",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    }
+   ],
+   "unmet_required": [],
+   "supplementary_used": 2,
+   "matrix": {
+    "cells": 136,
+    "tables": [
+     "Table 1 [7]",
+     "Table 4 [8]"
+    ],
+    "shown_tokens": 1440,
+    "left_out": [],
+    "definitions": [],
+    "facts": 64,
+    "coverage_gaps": []
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1524,
+   "completion_tokens": 72,
+   "estimated_prompt_tokens": 1540,
+   "finish_reason": "stop",
+   "duration_ms": 4466
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 6080,
+   "completion_tokens": 31,
+   "estimated_prompt_tokens": 6096,
+   "finish_reason": "stop",
+   "duration_ms": 7576
+  }
+ ]
+}

@@ -1,0 +1,681 @@
+{
+ "arm": "BS",
+ "answer_mode": "navigate",
+ "question": "X2",
+ "question_text": "How large (in tokens) are the corpora each paper evaluates on?",
+ "document": "lightrag+graphrag",
+ "expectation": {
+  "kind": "cross",
+  "expected": "LightRAG：每個資料集 60 萬到 500 萬 tokens（Table 4 有各別數字）；GraphRAG：Podcast 約 100 萬、News 約 170 萬。兩份文件都要引用",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 26.3,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "How large (in tokens) are the corpora each paper evaluates on?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Our evaluation to date has focused on sensemaking questions specific to two corpora each containing\napproximately 1 million tokens. More work is needed to understand how performance generalizes to\ndatasets from various domains with different use cases. Comparison of fabrication rates, e.g., using\napproaches like SelfCheckGPT (Manakul et al., 2023), would also strengthen the current analysis.\n11",
+   "score": 0.6413,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+   "score": 0.6278,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 19,
+   "page_end": 19,
+   "section_title": null,
+   "snippet": "sizes: 8k, 16k, 32k and 64k. Surprisingly, the smallest context window size tested (8k)\nwas universally better for all comparisons on comprehensiveness (average win rate of 58.1%), while\nperforming comparably with larger context sizes on diversity (average win rate = 52.4%), and em-\npowerment (average win rate = 51.3%). Given our preference for more comprehensive and diverse\nanswers, we therefore used a fixed context window size of 8k tokens for the final evaluation.\n19",
+   "score": 0.5418,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4 presents statistical information for four datasets: Agriculture, CS, Legal, and Mix. The\nAgriculture dataset consists of 12 documents totaling 2,017,886 tokens, while the CS dataset contains\n10 documents with 2,306,535 tokens. The Legal dataset is the largest, comprising 94 documents and\n5,081,069 tokens. Lastly, the Mix dataset includes 61 documents with a total of 619,009 tokens.\n7.2 C ASE EXAMPLE OF RETRIEVAL -AUGMENTED GENERATION IN LIGHT RAG.\nFigure 3: A retrieval and generation example.\nIn Figure 3, we illustrate the retrieve-and-generate process. When presented with the query, “What\nmetrics are most informative for evaluating movie recommendation systems?”, the LLM first extracts\nboth low-level and high-level keywords. These keywords guide the dual-level retrieval process on the\n13",
+   "score": 0.5318,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "Table 2: Number of context units (community summaries forC0-C3 and text chunks for TS), corre-\nsponding token counts, and percentage of the maximum token count. Map-reduce summarization of\nsource texts is the most resource-intensive approach requiring the highest number of context tokens.\nRoot-level community summaries (C0) require dramatically fewer tokens per query (9x-43x).\nPodcast Transcripts News Articles\nC0 C1 C2 C3 TS C0 C1 C2 C3 TS\nUnits 34 367 969 1310 1669 55 555 1797 2142 3197\nTokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694\n% Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 100",
+   "score": 0.522,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": null,
+   "origin": "table_context"
+  },
+  {
+   "index": 7,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 12,
+   "page_end": 12,
+   "section_title": null,
+   "snippet": "Table 4: Average number of clusters across different distance thresholds, reported by condition and\ndataset type. Bolded values represent the highest score in each row.\nDataset Distance Threshold Average Number of Clusters\nC0 C1 C2 C3 TS SS\nNews Articles\n0.5 23.42 21.85 21.90 22.13 21.80 17.92\n0.6 21.65 20.38 20.30 20.52 20.13 16.78\n0.7 20.19 19.06 19.03 19.13 18.62 15.80\n0.8 18.86 17.78 17.82 17.79 17.30 14.80\nPodcast Transcripts\n0.5 23.16 22.62 22.52 21.93 21.14 18.55\n0.6 21.65 21.33 21.21 20.62 19.70 17.39\n0.7 20.41 20.04 19.79 19.22 18.08 16.28\n0.8 19.26 18.77 18.46 17.89 16.66 15.07\n6.2 Future work",
+   "score": null,
+   "origin": "navigation"
+  },
+  {
+   "index": 8,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 12,
+   "page_end": 12,
+   "section_title": null,
+   "snippet": "The graph index, rich text annotations, and hierarchical community structure supporting the current\nGraphRAG approach offer many possibilities for refinement and adaptation. This includes RAG\napproaches that operate in a more local manner, via embedding-based matching of user queries and\ngraph annotations. In particular, we see potential in hybrid RAG schemes that combine embedding-\nbased matching with just-in-time community report generation before employing our map-reduce\nsummarization mechanisms. This “roll-up” approach could also be extended across multiple levels\nof the community hierarchy, as well as implemented as a more exploratory “drill down” mechanism\nthat follows the information scent contained in higher-level community summaries.\nBroader impacts. As a mechanism for question answering over large document collections, there\nare risks to downstream sensemaking and decision-making tasks if the generated answers do not\naccurately represent the source data. System use should be accompanied by clear disclosures of AI\nuse and the potential for errors in outputs. Compared to vector RAG, however, GraphRAG shows\npromise as a way to mitigate these downstream risks for questions of a global nature, which might\notherwise be answered by samples of retrieved facts falsely presented as global summaries.\n7 Conclusion\nWe have presented GraphRAG, a RAG approach that combines knowledge graph generation and\nquery-focused summarization (QFS) to support human sensemaking over entire text corpora. Initial\nevaluations show substantial improvements over a vector RAG baseline for both the comprehensive-\nness and diversity of answers, as well as favorable comparisons to a global but graph-free approach\nusing map-reduce source text summarization. For situations requiring many global queries over the\nsame dataset, summaries of root-level communities in the entity-based graph index provide a data\nindex that is both superior to vector RAG and achieves competitive performance to other global\nmethods at a fraction of the token cost.\nAcknowledgements\nWe would also like to thank the following people who contributed to",
+   "score": null,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "The question asks for the size in tokens of the corpora each paper evaluates on.\n\nFrom the sources provided, the following information regarding the sizes of the corpora in tokens is available:\n\n- The first paper evaluates on corpora each containing approximately 1 million tokens [1].\n- The podcast transcripts corpus is divided into 1669 × 600-token text chunks, with 100-token overlaps between chunks, resulting in approximately 1 million tokens [2].\n- The news articles corpus is divided into 3197 × 600-token text chunks, with 100-token overlaps between chunks, resulting in approximately 1.7 million tokens [2].\n- The Agriculture dataset consists of 2,017,886 tokens [4].\n- The CS dataset contains 2,306,535 tokens [4].\n- The Legal dataset comprises 5,081,069 tokens [4].\n- The Mix dataset includes 619,009 tokens [4].\n\nTherefore, the corpora sizes for each dataset are as follows:\n\n- Podcast Transcripts: ~1 million tokens [2]\n- News Articles: ~1.7 million tokens [2]\n- Agriculture: 2,017,886 tokens [4]\n- CS: 2,306,535 tokens [4]\n- Legal: 5,081,069 tokens [4]\n- Mix: 619,009 tokens [4]",
+ "usage": {
+  "prompt_tokens": 5468,
+  "completion_tokens": 489,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   2,
+   4
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "1669",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 8,
+    "snippet": "…leaders in science and tech- nology (Scott, 2024). This corpus was divided into 1669 × 600-token text chunks, with 100-token overlaps between chunks (∼1 million tok…"
+   },
+   {
+    "number": "600",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 8,
+    "snippet": "…in science and tech- nology (Scott, 2024). This corpus was divided into 1669 × 600-token text chunks, with 100-token overlaps between chunks (∼1 million tokens).…"
+   },
+   {
+    "number": "100",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 8,
+    "snippet": "…(Scott, 2024). This corpus was divided into 1669 × 600-token text chunks, with 100-token overlaps between chunks (∼1 million tokens). News articles. A benchmark d…"
+   },
+   {
+    "number": "3197",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 8,
+    "snippet": "…chnology, health, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text chunks, with 100-token overlaps between chunks (∼1.7 million t…"
+   },
+   {
+    "number": "1.7",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 8,
+    "snippet": "…ded into 3197 × 600-token text chunks, with 100-token overlaps between chunks (∼1.7 million tokens). 4.1.2 Conditions We compared six conditions including GraphRAG…"
+   },
+   {
+    "number": "2,017,886",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…ments — Agriculture: 12; CS: 10; Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical inf…"
+   },
+   {
+    "number": "2,306,535",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…ture: 12; CS: 10; Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for fo…"
+   },
+   {
+    "number": "5,081,069",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for four datasets: Agric…"
+   },
+   {
+    "number": "619,009",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for four datasets: Agriculture, CS, Le…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "2,017,886",
+    "answer_labels": [
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Agriculture"
+     ]
+    ],
+    "sentence": "- The Agriculture dataset consists of 2,017,886 tokens.",
+    "reason": "missing"
+   },
+   {
+    "number": "2,306,535",
+    "answer_labels": [
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "CS"
+     ]
+    ],
+    "sentence": "- The CS dataset contains 2,306,535 tokens.",
+    "reason": "missing"
+   },
+   {
+    "number": "5,081,069",
+    "answer_labels": [
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Legal"
+     ]
+    ],
+    "sentence": "- The Legal dataset comprises 5,081,069 tokens.",
+    "reason": "missing"
+   },
+   {
+    "number": "619,009",
+    "answer_labels": [
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Mix"
+     ]
+    ],
+    "sentence": "- The Mix dataset includes 619,009 tokens.",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 77,
+   "plan": "- Section 4.1.2 Conditions | need: corpus size description | priority: required | status: covered  \n- Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG | need: dataset sizes | priority: required | status: covered  \n- Section 4.1.2 Conditions | need: token count details | priority: required | status: covered  \n- Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG | need: dataset token sizes | priority: required | status: covered  \n- Table 4 | need: dataset token sizes | priority: required | status: covered  \n- Section 6.1 Limitations of evaluation approach | need: corpus size reference | priority: supplementary | status: covered",
+   "items": [
+    {
+     "text": "Section 4.1.2 Conditions | need: corpus size description | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      8
+     ],
+     "location": "Section 4.1.2 Conditions",
+     "need": "corpus size description",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "4.1.2 Conditions",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 22,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG | need: dataset sizes | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      13,
+      14
+     ],
+     "location": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "need": "dataset sizes",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 41,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 40,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 4.1.2 Conditions | need: token count details | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      8
+     ],
+     "location": "Section 4.1.2 Conditions",
+     "need": "token count details",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "4.1.2 Conditions",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 22,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 21,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG | need: dataset token sizes | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      13,
+      14
+     ],
+     "location": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "need": "dataset token sizes",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 41,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 40,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Table 4 | need: dataset token sizes | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      12
+     ],
+     "location": "Table 4",
+     "need": "dataset token sizes",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "missing",
+     "label": "Table 4",
+     "candidates": 2,
+     "selected": [
+      36,
+      37
+     ],
+     "excluded": []
+    },
+    {
+     "text": "Section 6.1 Limitations of evaluation approach | need: corpus size reference | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      11,
+      12
+     ],
+     "location": "Section 6.1 Limitations of evaluation approach",
+     "need": "corpus size reference",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "6.1 Limitations of evaluation approach",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 36,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 34,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 35,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 13,
+   "kept": 2,
+   "excluded_budget": 0,
+   "skipped": null,
+   "budget": 2595,
+   "retrieved_tokens": 1405,
+   "evidence_tokens": 2189,
+   "embedding": {
+    "texts": 5,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 35,
+     "page": 11,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 8,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 59,
+     "page": 19,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 40,
+     "page": 13,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 30,
+     "page": 10,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": true,
+     "reason": "table_context",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 22,
+     "page": 8,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4035
+    },
+    {
+     "ordinal": 41,
+     "page": 14,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.3977
+    },
+    {
+     "ordinal": 22,
+     "page": 8,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4126
+    },
+    {
+     "ordinal": 41,
+     "page": 14,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 3,
+     "score": 0.375
+    },
+    {
+     "ordinal": 36,
+     "page": 12,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4127
+    },
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.41
+    },
+    {
+     "ordinal": 36,
+     "page": 12,
+     "kept": true,
+     "reason": "plan: Table 4",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 21,
+     "page": 8,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.5923
+    },
+    {
+     "ordinal": 40,
+     "page": 13,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": 0.5639
+    },
+    {
+     "ordinal": 40,
+     "page": 13,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 1,
+     "score": 0.5614
+    },
+    {
+     "ordinal": 21,
+     "page": 8,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.5529
+    },
+    {
+     "ordinal": 37,
+     "page": 12,
+     "kept": true,
+     "reason": "plan: Table 4",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 35,
+     "page": 11,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 5,
+     "score": 0.5223
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.1.2 Conditions",
+     "status": "partial",
+     "reason": "1 of the section's 2 chunks are among the sources"
+    },
+    {
+     "location": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "status": "partial",
+     "reason": "1 of the section's 2 chunks are among the sources"
+    },
+    {
+     "location": "Section 4.1.2 Conditions",
+     "status": "partial",
+     "reason": "1 of the section's 2 chunks are among the sources"
+    },
+    {
+     "location": "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+     "status": "partial",
+     "reason": "1 of the section's 2 chunks are among the sources"
+    },
+    {
+     "location": "Table 4",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Section 6.1 Limitations of evaluation approach",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    }
+   ],
+   "unmet_required": [
+    "Section 4.1.2 Conditions",
+    "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG",
+    "Section 4.1.2 Conditions",
+    "Section 7.2 CASE EXAMPLE OF RETRIEVAL-AUGMENTED GENERATION IN LIGHT RAG"
+   ],
+   "supplementary_used": 0,
+   "matrix": {
+    "cells": 0,
+    "tables": [],
+    "shown_tokens": 0,
+    "left_out": [],
+    "definitions": [],
+    "facts": 0,
+    "coverage_gaps": [
+     "Table 2 [5]",
+     "Table 4 [7]"
+    ]
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 2382,
+   "completion_tokens": 168,
+   "estimated_prompt_tokens": 2398,
+   "finish_reason": "stop",
+   "duration_ms": 9222
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3086,
+   "completion_tokens": 321,
+   "estimated_prompt_tokens": 3102,
+   "finish_reason": "stop",
+   "duration_ms": 16333
+  }
+ ]
+}

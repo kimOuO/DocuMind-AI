@@ -1,0 +1,691 @@
+{
+ "arm": "BS",
+ "answer_mode": "navigate",
+ "question": "G2",
+ "question_text": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets",
+ "document": "graphrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "依 graphrag-key-facts.md 的 G2 標準",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 32.2,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": ",564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2 and Table 6, global approaches signifi-\ncantly outperformed conventional vector RAG (SS) in both comprehensiveness and diversity criteria\nacross datasets. Specifically, global approaches achieved comprehensiveness win rates between 72-\n83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win\nrates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a\nvalidity test confirmed that vector RAG produces the most direct responses across all comparisons.\nEmpowerment. Empowerment comparisons showed mixed results for both global approaches ver-\nsus vector RAG (SS) and GraphRAG approaches versus source text summarization ( TS). Using an\nLLM to analyze LLM reasoning for this measure indicated that the ability to provide specific exam-\n9",
+   "score": 0.7028,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+   "score": 0.6918,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": 0.5987,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nC1 C3 45.44 54.56 -2.98 0.026 49.52 50.48 -0.01 1\nC2 C3 48.48 51.52 -0.96 1 50.96 49.04 -0.39 1\nEmpowerment\nC0 TS 40.96 59.04 -4.3 <0.001 42.24 57.76 -3.32 0.012\nC1 TS 45.2 54.8 -3.76 0.002 50 50 -0.12 1\nC2 TS 47.68 52.32 -2.2 0.281 49.52 50.48 -0.22 1\nC3 TS 48.72 51.28 -1.27 1 51.68 48.32 -1.2 1\nC0 SS 42.96 57.04 -3.71 0.003 42.72 57.28 -3.12 0.022\nC1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1\nC2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1\nC3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1\nTS SS 57.52 42.48 -4.1 <0.001 52.88 47.12 -1.1 1\nC0 C1 48.72 51.28 -1.23 1 42.4 57.6 -3.9 0.001\nC0 C2 46.64 53.36 -2.54 0.12 44.8 55.2 -2.16 0.336\nC1 C2 49.28 50.72 -1.73 0.682 52 48 -1.45 1\nC0 C3 47.6 52.4 -1.78 0.682 44.32 55.68 -3.45 0.008\nC1 C3 50 50 0 1 51.44 48.56 -1.02 1\nC2 C3 50.72 49.28 -0.86 1 50.4 49.6 -0.22 1\nDirectness\nC0 TS 44.96 55.04 -4.09 <0.001 45.2 54.8 -3.68 0.003\nC1 TS 47.92 52.08 -2.41 0.126 46.64 53.36 -2.91 0.04\nC2 TS 48.8 51.2 -2.23 0.179 48.32 51.68 -2.12 0.179\nC3 TS 48.08 51.92 -2.23 0.179 48.32 51.68 -2.56 0.074\nC0 SS 35.12 64.88 -6.17 <0.001 41.44 58.56 -4.82 <0.001\nC1 SS 40.32 59.68 -4.83 <0.001 45.2 54.8 -3.19 0.017\nC2 SS 40.4 59.6 -4.67 <0.001 44.88 55.12 -3.65 0.003\nC3 SS 40.48 59.52 -4.69 <0.001 45.6 54.4 -2.86 0.043\nTS SS 43.6 56.4 -3.96 <0.001 46 54 -2.68 0.066\nC0 C1 46.96 53.04 -2.87 0.037 47.6 52.4 -2.17 0.179\nC0 C2 48.4 51.6 -2.06 0.197 48.48 51.52 -1.61 0.321\nC1 C2 49.84 50.16 -1 0.952 49.28 50.72 -1.6 0.321\nC0 C3 48.4 51.6 -1.8 0.29 47.2 52.8 -2.62 0.071\nC1 C3 49.76 50.24 0 1 48.8 51.2 -1.29 0.321\nC2 C3 50 50 0 1 48.8 51.2 -1.84 0.262",
+   "score": 0.5893,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\ndatasets. For each question and metric, the winning condition received a score of 100, the losing\ncondition received a score of 0, and in the event of a tie, each condition was scored 50. These scores\nwere then averaged over five evaluation runs for each condition. Results of Shapiro-Wilk tests in-\ndicated that the data did not follow a normal distribution. Thus, non-parametric tests (Wilcoxon\nsigned-rank tests) were employed to assess the performance differences between pairs of condi-\ntions, with Holm-Bonferroni correction applied to account for multiple pairwise comparisons. The\ncorrected p-values that indicated statistically significant differences are highlighted in bold.\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nC0 TS 50.24 49.76 -0.06 1 55.52 44.48 -2.03 0.17\nC1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002\nC2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001\nC3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001\nC0 SS 71.92 28.08 -6.2 <0.001 71.76 28.24 -6.3 <0.001\nC1 SS 75.44 24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001\nC2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001\nC3 SS 78.96 21.04 -8.12 <0.001 79.44 20.56 -8.44 <0.001\nTS SS 83.12 16.88 -8.85 <0.001 79.6 20.4 -8.27 <0.001\nC0 C1 53.2 46.8 -1.96 0.389 51.92 48.08 -0.45 0.777\nC0 C2 50.24 49.76 -0.23 1 53.68 46.32 -1.54 0.371\nC1 C2 51.52 48.48 -1.62 0.633 57.76 42.24 -4.01 <0.001\nC0 C3 49.12 50.88 -0.56 1 52.16 47.84 -0.86 0.777\nC1 C3 50.32 49.68 -0.66 1 55.12 44.88 -2.94 0.016\nC2 C3 52.24 47.76 -1.97 0.389 58.64 41.36 -3.68 0.002\nDiversity\nC0 TS 50.24 49.76 -0.11 1 46.88 53.12 -1.38 0.676\nC1 TS 50.48 49.52 -0.12 1 54.64 45.36 -1.88 0.298\nC2 TS 57.12 42.88 -2.84 0.036 55.76 44.24 -2.16 0.184\nC3 TS 54.32 45.68 -2.39 0.1 60.16 39.84 -4.07 <0.001\nC0 SS 76.56 23.44 -7.12 <0.001 62.08 37.92 -3.57 0.003\nC1 SS 75.44 24.56 -7.33 <0.001 64.96 35.04 -4.92 <0.001\nC2 SS 80.56 19.44 -8.21 <0.001 70.56 29.44 -6.29 <0.001\nC3 SS 80.8 19.2 -8.3 <0.001 69.12 30.88 -5.53 <0.001\nTS SS 82.08 17.92 -8.43 <0.001 67.2 32.8 -4.85 <0.001\nC0 C1 49.76 50.24 -0.13 1 39.68 60.32 -3.61 0.003\nC0 C2 46.32 53.68 -1.5 0.669 40.96 59.04 -3.14 0.012\nC1 C2 44.08 55.92 -3.27 0.011 50.24 49.76 -0.22 1\nC0 C3 44 56 -2.6 0.065 41.04 58.96 -3.47 0.004",
+   "score": 0.5857,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "26",
+   "score": null,
+   "origin": "table_context"
+  }
+ ],
+ "final_answer": "| Dataset      | Method | Metric         | Mean 1 | Mean 2 | p-value |\n|--------------|--------|----------------|--------|--------|---------|\n| Podcast      | C2     | Comprehensiveness | 57.28  | 42.72  | <0.001  |\n| Podcast      | C2     | Comprehensiveness | 50.72  | 49.28  | 1       |\n| News         | C2     | Comprehensiveness | 62.08  | 37.92  | <0.001  |\n| News         | C2     | Comprehensiveness | 49.84  | 50.16  | 0.2     |\n\nCondition C2 outperformed vector RAG (SS) in comprehensiveness for the Podcast dataset with a mean score of 57.28 for C2 versus 42.72 for SS (p < 0.001) [5]. Similarly, in the News dataset, C2 achieved a mean score of 62.08 compared to 37.92 for SS (p < 0.001) [5]. However, in another comparison for the Podcast dataset, the mean scores were 50.72 for C2 and 49.28 for SS, with no significant difference (p = 1) [4]. In the News dataset, C2 had a mean score of 49.84 compared to 50.16 for SS, with no significant difference (p = 0.2) [4]. Thus, C2 generally outperforms SS in comprehensiveness, with one exception in each dataset where there was no significant difference.",
+ "usage": {
+  "prompt_tokens": 6471,
+  "completion_tokens": 596,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   5,
+   4
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "57.28",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…5.52 44.48 -2.03 0.17 C1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 3…"
+   },
+   {
+    "number": "42.72",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…4.48 -2.03 0.17 C1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5…"
+   },
+   {
+    "number": "0.001",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "….17 C1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001 C…"
+   },
+   {
+    "number": "50.72",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…42.72 57.28 -3.12 0.022 C1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1 C2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1 C3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1…"
+   },
+   {
+    "number": "49.28",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…57.28 -3.12 0.022 C1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1 C2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1 C3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1 TS SS…"
+   },
+   {
+    "number": "62.08",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001 C0 SS 7…"
+   },
+   {
+    "number": "37.92",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "….92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001 C0 SS 71.92 2…"
+   },
+   {
+    "number": "49.84",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "….022 C1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1 C2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1 C3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1 TS SS 57.52 42.48 -4…"
+   },
+   {
+    "number": "50.16",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "…1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1 C2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1 C3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1 TS SS 57.52 42.48 -4.1 <0.…"
+   },
+   {
+    "number": "0.2",
+    "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+    "page": 26,
+    "snippet": "….68 52.32 -1.5 0.936 51.36 48.64 -0.84 1 C2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1 C3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1 TS SS 57.52 42.48 -4.1 <0.001 5…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 39,
+   "plan": "- Table 3 (page 11) | need: average number of extracted claims by condition and dataset | priority: required | status: missing  \n- Table 6 (page 26) | need: pairwise comparisons including C2 and SS on comprehensiveness | priority: required | status: covered  \n- Section 5.1 Experiment 1 (page 9) | need: context on comprehensiveness evaluation for Podcast dataset | priority: supplementary | status: covered  \n- Section 5.2 Experiment 2 (page 11) | need: context on comprehensiveness evaluation for News dataset | priority: supplementary | status: missing  \n- Table 2 (page 10) | need: number of context units for C2 and SS | priority: supplementary | status: covered  \n- Section 3.3 Criteria for Evaluating Global Sensemaking (pages 7-8) | need: definition of comprehensiveness metric | priority: supplementary | status: missing",
+   "items": [
+    {
+     "text": "Table 3 (page 11) | need: average number of extracted claims by condition and dataset | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      11
+     ],
+     "location": "Table 3 (page 11)",
+     "need": "average number of extracted claims by condition and dataset",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "Table 3",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 32,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 33,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 34,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Table 6 (page 26) | need: pairwise comparisons including C2 and SS on comprehensiveness | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      26
+     ],
+     "location": "Table 6 (page 26)",
+     "need": "pairwise comparisons including C2 and SS on comprehensiveness",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "covered",
+     "label": "Table 6",
+     "candidates": 0,
+     "selected": [],
+     "excluded": []
+    },
+    {
+     "text": "Section 5.1 Experiment 1 (page 9) | need: context on comprehensiveness evaluation for Podcast dataset | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      9,
+      10,
+      11
+     ],
+     "location": "Section 5.1 Experiment 1 (page 9)",
+     "need": "context on comprehensiveness evaluation for Podcast dataset",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "5.1 Experiment 1",
+     "candidates": 9,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 24,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 28,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 27,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 25,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 31,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 26,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 30,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 29,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 32,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Section 5.2 Experiment 2 (page 11) | need: context on comprehensiveness evaluation for News dataset | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      11
+     ],
+     "location": "Section 5.2 Experiment 2 (page 11)",
+     "need": "context on comprehensiveness evaluation for News dataset",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "5.2 Experiment 2",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 34,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 33,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 32,
+       "reason": "over the evidence budget"
+      }
+     ]
+    },
+    {
+     "text": "Table 2 (page 10) | need: number of context units for C2 and SS | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      10
+     ],
+     "location": "Table 2 (page 10)",
+     "need": "number of context units for C2 and SS",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "missing",
+     "label": "Table 2",
+     "candidates": 2,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 30,
+       "reason": "over the evidence budget"
+      },
+      {
+       "ordinal": 31,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 3.3 Criteria for Evaluating Global Sensemaking (pages 7-8) | need: definition of comprehensiveness metric | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      7,
+      8
+     ],
+     "location": "Section 3.3 Criteria for Evaluating Global Sensemaking (pages 7-8)",
+     "need": "definition of comprehensiveness metric",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "missing",
+     "label": "3.3 Criteria for Evaluating Global Sensemaking",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 20,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 19,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 18,
+       "reason": "low relevance"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 20,
+   "kept": 0,
+   "excluded_budget": 8,
+   "skipped": null,
+   "budget": 0,
+   "retrieved_tokens": 4062,
+   "evidence_tokens": 4062,
+   "embedding": {
+    "texts": 5,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 33,
+     "page": 11,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 77,
+     "page": 26,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 76,
+     "page": 26,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 78,
+     "page": 26,
+     "kept": true,
+     "reason": "table_context",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 24,
+     "page": 9,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4897
+    },
+    {
+     "ordinal": 28,
+     "page": 10,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4251
+    },
+    {
+     "ordinal": 27,
+     "page": 10,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4136
+    },
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 3,
+     "score": 0.4709
+    },
+    {
+     "ordinal": 20,
+     "page": 8,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4603
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4
+    },
+    {
+     "ordinal": 18,
+     "page": 7,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.3558
+    },
+    {
+     "ordinal": 32,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 0,
+     "score": null
+    },
+    {
+     "ordinal": 33,
+     "page": 11,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": null
+    },
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 0,
+     "score": null
+    },
+    {
+     "ordinal": 30,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 25,
+     "page": 9,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.6531
+    },
+    {
+     "ordinal": 33,
+     "page": 11,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": 0.6509
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 4,
+     "score": null
+    },
+    {
+     "ordinal": 31,
+     "page": 10,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.5887
+    },
+    {
+     "ordinal": 32,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 3,
+     "score": 0.4805
+    },
+    {
+     "ordinal": 26,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.5281
+    },
+    {
+     "ordinal": 30,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.522
+    },
+    {
+     "ordinal": 29,
+     "page": 10,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.5047
+    },
+    {
+     "ordinal": 32,
+     "page": 11,
+     "kept": false,
+     "reason": "over the evidence budget",
+     "target": 2,
+     "score": 0.5041
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Table 3 (page 11)",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Table 6 (page 26)",
+     "status": "covered",
+     "reason": "the table's chunk, with its rows, is among the sources"
+    },
+    {
+     "location": "Section 5.1 Experiment 1 (page 9)",
+     "status": "partial",
+     "reason": "2 of the section's 9 chunks are among the sources"
+    },
+    {
+     "location": "Section 5.2 Experiment 2 (page 11)",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    },
+    {
+     "location": "Table 2 (page 10)",
+     "status": "missing",
+     "reason": "the table's chunk is not among the sources"
+    },
+    {
+     "location": "Section 3.3 Criteria for Evaluating Global Sensemaking (pages 7-8)",
+     "status": "missing",
+     "reason": "none of the section's chunks is among the sources"
+    }
+   ],
+   "unmet_required": [
+    "Table 3 (page 11)"
+   ],
+   "supplementary_used": 0,
+   "matrix": {
+    "cells": 0,
+    "tables": [],
+    "shown_tokens": 0,
+    "left_out": [],
+    "definitions": [],
+    "facts": 0,
+    "coverage_gaps": [
+     "Table 6 [4]",
+     "Table 6 [5]"
+    ]
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 1523,
+   "completion_tokens": 204,
+   "estimated_prompt_tokens": 1539,
+   "finish_reason": "stop",
+   "duration_ms": 9772
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 4948,
+   "completion_tokens": 392,
+   "estimated_prompt_tokens": 4964,
+   "finish_reason": "stop",
+   "duration_ms": 21531
+  }
+ ]
+}

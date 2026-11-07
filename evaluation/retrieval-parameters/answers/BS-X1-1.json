@@ -1,0 +1,670 @@
+{
+ "arm": "BS",
+ "answer_mode": "navigate",
+ "question": "X1",
+ "question_text": "兩篇論文各用哪個 LLM 做實驗？",
+ "document": "lightrag+graphrag",
+ "expectation": {
+  "kind": "cross",
+  "expected": "LightRAG 論文：GPT-4o-mini；GraphRAG 論文：gpt-4-turbo。兩份文件都要引用",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 18.3,
+ "stages": [
+  "navigating",
+  "generating",
+  "verifying",
+  "finalizing"
+ ],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "兩篇論文各用哪個 LLM 做實驗？"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won over SS in three out of five judgments for comprehensiveness on a given\nquestion, C0 was labeled the winner and SS the loser. However, ifC0 won twice, SS won once, and\nthey tied twice, then there was no majority outcome, so the final label was a tie.\nWe found that exact ties were rare for the claim-based metrics. One possible solution is to define a\ntie based on a threshold (e.g., the absolute difference between the claim-based results for condition\nA and condition B must be less than or equal to x). However, we observed that the results were\nsensitive to the choice of threshold. As a result, we focused on cases where the aggregated LLM\nlabel was not a tie, representing 33% and 39% of pairwise comparisons for comprehensiveness and\ndiversity, respectively. In these cases, the aggregated LLM label matched the claim-based label in\n78% of pairwise comparisons for comprehensiveness and 69-70% for diversity (across all distance\nthresholds), indicating moderately strong alignment.\n6 Discussion\n6.1 Limitations of evaluation approach\nOur evaluation to date has focused on sensemaking questions specific to two corpora each containing\napproximately 1 million tokens. More work is needed to understand how performance generalizes to\ndatasets from various domains with different use cases. Comparison of fabrication rates, e.g., using\napproaches like SelfCheckGPT (Manakul et al., 2023), would also strengthen the current",
+   "score": 0.5746,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+   "score": 0.5423,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "their representations, ensuring efficient and straightforward matching.\n• RQ-RAG (Chan et al., 2024): This approach leverages the LLM to decompose the input query\ninto multiple sub-queries. These sub-queries are designed to enhance search accuracy by utilizing\nexplicit techniques such as rewriting, decomposition, and disambiguation.\n• HyDE (Gao et al., 2022): This method utilizes the LLM to generate a hypothetical document based\non the input query. This generated document is then employed to retrieve relevant text chunks,\nwhich are subsequently used to formulate the final answer.\n• GraphRAG (Edge et al., 2024): This is a graph-enhanced RAG system that utilizes an LLM to\nextract entities and relationships from the text, representing them as nodes and edges. It generates\ncorresponding descriptions for these elements, aggregates nodes into communities, and produces a\ncommunity report to capture global information. When handling high-level queries, GraphRAG\nretrieves more comprehensive information by traversing these communities.\nImplementation and Evaluation Details. In our experiments, we utilize the nano vector database\nfor vector data management and access. For all LLM-based operations in LightRAG, we default\nto using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets.\nAdditionally, the gleaning parameter is fixed at 1 for both GraphRAG and LightRAG.\nDefining ground truth for many RAG queries, particularly those involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7",
+   "score": 0.5391,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "7 A PPENDIX\nIn this section, we elaborate on the methodologies and experimental settings used in the LightRAG\nframework. It describes the specific steps for extracting entities and relationships from documents,\ndetailing how large language models (LLMs) are utilized for this purpose. The section also specifies\nthe prompt templates and configurations used in LLM operations, ensuring clarity in the experimental\nsetup. Additionally, it outlines the evaluation criteria and dimensions used to assess the performance\nof LightRAG against baselines from various dimensions.\n7.1 E XPERIMENTAL DATA DETAILS",
+   "score": 0.5324,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 4,
+   "page_end": 4,
+   "section_title": null,
+   "snippet": "). Lacking a gold standard for evaluation, one can\nquantify relative performance for a given criterion by prompting the LLM to compare generations\nfrom two different competing models (LLM-as-a-judge, (Zheng et al., 2024)). In this work, we de-\nsign criteria for evaluating RAG-generated answers to global sensemaking questions and evaluate\nour results using the comparative approach. We also validate results using statistics derived from\nLLM-extracted statements of verifiable facts, or “claims.”\n3 Methods\n3.1 GraphRAG Workflow\nFigure 1 illustrates the high-level data flow of the GraphRAG approach and pipeline. In this section,\nwe describe the key design parameters, techniques, and implementation details for each step.\n3.1.1 Source Documents → Text Chunks\nTo start, the documents in the corpus are split into text chunks. The LLM extracts information from\neach chunk for downstream processing. Selecting the size of the chunk is a fundamental design\ndecision; longer text chunks require fewer LLM calls for such extraction (which reduces cost) but\nsuffer from degraded recall of information that appears early in the chunk (Kuratov et al., 2024; Liu\net al., 2023). See Section A.1 for prompts and examples of the recall-precision trade-offs.\n3.1.2 Text Chunks → Entities & Relationships\nIn this step, the LLM is prompted to extract instances of important entities and the relationships\nbetween the entities from a given chunk. Additionally, the LLM generates short descriptions for the\nentities and relationships. To illustrate, suppose a chunk contained the following text:\n4",
+   "score": 0.5244,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "WORK\nIn this section, we analyze the complexity of our proposed LightRAG framework, which can be\ndivided into two main parts. The first part is the graph-based Index phase. During this phase, we use\nthe large language model (LLM) to extract entities and relationships from each chunk of text. As\na result, the LLM needs to be called total tokenschunk size times. Importantly, there is no additional overheadinvolved in this process, making our approach highly efficient in managing updates to new text.\nThe second part of the process involves the graph-based retrieval phase. For each query, we first\nutilize the large language model (LLM) to generate relevant keywords. Similar to current Retrieval-\nAugmented Generation (RAG) systems Gao et al. (2023; 2022); Chan et al. (2024), our retrieval\nmechanism relies on vector-based search. However, instead of retrieving chunks as in conventional\nRAG, we concentrate on retrieving entities and relationships. This approach markedly reduces\nretrieval overhead compared to the community-based traversal method used in GraphRAG.\n4 E VALUATION\nWe conduct empirical evaluations on benchmark data to assess the effectiveness of the proposed\nLightRAG framework by addressing the following research questions:• (RQ1): How does LightRAG\ncompare to existing RAG baseline methods in terms of generation performance? • (RQ2): How do\ndual-level retrieval and graph-based indexing enhance the generation quality of LightRAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom",
+   "score": 0.5237,
+   "origin": "navigation"
+  },
+  {
+   "index": 7,
+   "kind": "chunk",
+   "document_id": "b1d8e1e0-6d37-4f86-9f88-2dc9dbc2d842",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "-context learning exemplars can provide domain-specific guidance.\nClaim descriptions extracted from the example tetx chunk are as follows:\n• NeoChip’s shares surged during their first week of trading on the NewTech Exchange.\n• NeoChip debuted as a publicly listed company on the NewTech Exchange.\n• Quantum Systems acquired NeoChip in 2016 and held ownership until NeoChip went pub-\nlic.\nSee Appendix A for prompts and details on our implementation of entity and claim extraction.\n3.1.3 Entities & Relationships → Knowledge Graph\nThe use of an LLM to extract entities, relationships, and claims is a form of abstractive summariza-\ntion – these are meaningful summaries of concepts that, in the case of relationships and claims, may\nnot be explicitly stated in the text. The entity/relationship/claim extraction processes creates mul-\ntiple instances of a single element because an element is typically detected and extracted multiple\ntimes across documents.\nIn the final step of the knowledge graph extraction process, these instances of entities and rela-\ntionships become individual nodes and edges in the graph. Entity descriptions are aggregated and\nsummarized for each node and edge. Relationships are aggregated into graph edges, where the num-\nber of duplicates for a given relationship becomes edge weights. Claims are aggregated similarly.\nIn this manuscript, our analysis uses exact string matching forentity matching – the task of reconcil-\ning different extracted names for the same entity (Barlaug and Gulla, 2021; Christen and Christen,\n2012; Elmagarmid et al., 2006). However, softer matching approaches can be used with minor ad-\njustments to prompts or code. Furthermore, GraphRAG is generally resilient to duplicate entities\nsince duplicates are typically clustered together for summarization in subsequent steps.\n3.1.4 Knowledge Graph → Graph Communities\nGiven the graph index created in the previous step, a variety of community detection",
+   "score": 0.5125,
+   "origin": "navigation"
+  }
+ ],
+ "final_answer": "1. 2404.16130v2.pdf 論文中使用的 LLM 是未明確指出的大型語言模型（LLM），但未指定具體模型名稱 [5]。\n2. 2410.05779v3.pdf 論文中使用的 LLM 是 GPT-4o-mini [2]。\n\n以下數字未能在引用的原文頁面中核對：2404.16130、2410.05779。",
+ "usage": {
+  "prompt_tokens": 5646,
+  "completion_tokens": 294,
+  "limit": null,
+  "calls": 2
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   5,
+   2
+  ],
+  "unverified_numbers": [
+   "2404.16130",
+   "2410.05779"
+  ],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": {
+   "map_entries": 77,
+   "plan": "- Section 4.1 EXPERIMENTAL SETTINGS | need: 實驗所用 LLM | priority: required | status: missing  \n- Section 7.1 EXPERIMENTAL DATA DETAILS | need: 實驗所用 LLM | priority: required | status: missing  \n- Section 4.1 EXPERIMENTAL SETTINGS (2410.05779v3.pdf) | need: 實驗所用 LLM | priority: required | status: covered  \n- Section 3.1.2 Text Chunks → Entities & Relationships | need: 實驗所用 LLM | priority: supplementary | status: missing  \n- Section 6.1 Limitations of evaluation approach | need: 實驗所用 LLM | priority: supplementary | status: covered  \n- Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: 實驗所用 LLM | priority: supplementary | status: covered",
+   "items": [
+    {
+     "text": "Section 4.1 EXPERIMENTAL SETTINGS | need: 實驗所用 LLM | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      5,
+      6
+     ],
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS",
+     "need": "實驗所用 LLM",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "4.1 EXPERIMENTAL SETTINGS",
+     "candidates": 5,
+     "selected": [
+      14
+     ],
+     "excluded": [
+      {
+       "ordinal": 16,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 15,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 18,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 17,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 7.1 EXPERIMENTAL DATA DETAILS | need: 實驗所用 LLM | priority: required | status: missing",
+     "located": true,
+     "pages": [
+      13
+     ],
+     "location": "Section 7.1 EXPERIMENTAL DATA DETAILS",
+     "need": "實驗所用 LLM",
+     "priority": "required",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "7.1 EXPERIMENTAL DATA DETAILS",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 40,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 39,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 38,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 4.1 EXPERIMENTAL SETTINGS (2410.05779v3.pdf) | need: 實驗所用 LLM | priority: required | status: covered",
+     "located": true,
+     "pages": [
+      5,
+      6
+     ],
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS (2410.05779v3.pdf)",
+     "need": "實驗所用 LLM",
+     "priority": "required",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "4.1 EXPERIMENTAL SETTINGS",
+     "candidates": 5,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 16,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 15,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 18,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 17,
+       "reason": "already among the retrieved sources"
+      },
+      {
+       "ordinal": 14,
+       "reason": "already selected for another target"
+      }
+     ]
+    },
+    {
+     "text": "Section 3.1.2 Text Chunks → Entities & Relationships | need: 實驗所用 LLM | priority: supplementary | status: missing",
+     "located": true,
+     "pages": [
+      4,
+      5
+     ],
+     "location": "Section 3.1.2 Text Chunks → Entities & Relationships",
+     "need": "實驗所用 LLM",
+     "priority": "supplementary",
+     "status": "missing",
+     "coverage": "partial",
+     "label": "3.1.2 Text Chunks → Entities & Relationships",
+     "candidates": 3,
+     "selected": [
+      13
+     ],
+     "excluded": [
+      {
+       "ordinal": 12,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 11,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 6.1 Limitations of evaluation approach | need: 實驗所用 LLM | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      11,
+      12
+     ],
+     "location": "Section 6.1 Limitations of evaluation approach",
+     "need": "實驗所用 LLM",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "6.1 Limitations of evaluation approach",
+     "candidates": 3,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 35,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 36,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 34,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    },
+    {
+     "text": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: 實驗所用 LLM | priority: supplementary | status: covered",
+     "located": true,
+     "pages": [
+      6,
+      7
+     ],
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "need": "實驗所用 LLM",
+     "priority": "supplementary",
+     "status": "covered",
+     "coverage": "partial",
+     "label": "4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "candidates": 4,
+     "selected": [],
+     "excluded": [
+      {
+       "ordinal": 21,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 19,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 20,
+       "reason": "low relevance"
+      },
+      {
+       "ordinal": 18,
+       "reason": "already among the retrieved sources"
+      }
+     ]
+    }
+   ],
+   "located": 6,
+   "fetched": 23,
+   "kept": 2,
+   "excluded_budget": 0,
+   "skipped": null,
+   "budget": 2387,
+   "retrieved_tokens": 1613,
+   "evidence_tokens": 2413,
+   "embedding": {
+    "texts": 1,
+    "failed": null
+   },
+   "log": [
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 17,
+     "page": 6,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 38,
+     "page": 13,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 11,
+     "page": 4,
+     "kept": true,
+     "reason": "retrieval",
+     "target": null,
+     "score": null
+    },
+    {
+     "ordinal": 16,
+     "page": 6,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.4748
+    },
+    {
+     "ordinal": 15,
+     "page": 5,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 0,
+     "score": 0.434
+    },
+    {
+     "ordinal": 40,
+     "page": 13,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.4621
+    },
+    {
+     "ordinal": 39,
+     "page": 13,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 1,
+     "score": 0.3618
+    },
+    {
+     "ordinal": 16,
+     "page": 6,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.4748
+    },
+    {
+     "ordinal": 15,
+     "page": 5,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 2,
+     "score": 0.434
+    },
+    {
+     "ordinal": 12,
+     "page": 5,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 3,
+     "score": 0.4392
+    },
+    {
+     "ordinal": 35,
+     "page": 11,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 4,
+     "score": 0.436
+    },
+    {
+     "ordinal": 36,
+     "page": 12,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 4,
+     "score": 0.3733
+    },
+    {
+     "ordinal": 21,
+     "page": 7,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4501
+    },
+    {
+     "ordinal": 19,
+     "page": 7,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4267
+    },
+    {
+     "ordinal": 20,
+     "page": 7,
+     "kept": false,
+     "reason": "low relevance",
+     "target": 5,
+     "score": 0.4089
+    },
+    {
+     "ordinal": 38,
+     "page": 13,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 1,
+     "score": 0.5709
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.5626
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.5626
+    },
+    {
+     "ordinal": 17,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 0,
+     "score": 0.5603
+    },
+    {
+     "ordinal": 17,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 2,
+     "score": 0.5603
+    },
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": true,
+     "reason": "plan: Section 4.1 EXPERIMENTAL SETTINGS",
+     "target": 0,
+     "score": 0.5237
+    },
+    {
+     "ordinal": 14,
+     "page": 5,
+     "kept": false,
+     "reason": "already selected for another target",
+     "target": 2,
+     "score": 0.5237
+    },
+    {
+     "ordinal": 34,
+     "page": 11,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 4,
+     "score": 0.5894
+    },
+    {
+     "ordinal": 18,
+     "page": 6,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 5,
+     "score": 0.5626
+    },
+    {
+     "ordinal": 11,
+     "page": 4,
+     "kept": false,
+     "reason": "already among the retrieved sources",
+     "target": 3,
+     "score": 0.5423
+    },
+    {
+     "ordinal": 13,
+     "page": 5,
+     "kept": true,
+     "reason": "plan: Section 3.1.2 Text Chunks → Entities & Relationships",
+     "target": 3,
+     "score": 0.5125
+    }
+   ],
+   "coverage": [
+    {
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS",
+     "status": "partial",
+     "reason": "2 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Section 7.1 EXPERIMENTAL DATA DETAILS",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    },
+    {
+     "location": "Section 4.1 EXPERIMENTAL SETTINGS (2410.05779v3.pdf)",
+     "status": "partial",
+     "reason": "2 of the section's 5 chunks are among the sources"
+    },
+    {
+     "location": "Section 3.1.2 Text Chunks → Entities & Relationships",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    },
+    {
+     "location": "Section 6.1 Limitations of evaluation approach",
+     "status": "partial",
+     "reason": "1 of the section's 3 chunks are among the sources"
+    },
+    {
+     "location": "Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)",
+     "status": "partial",
+     "reason": "1 of the section's 4 chunks are among the sources"
+    }
+   ],
+   "unmet_required": [
+    "Section 7.1 EXPERIMENTAL DATA DETAILS",
+    "Section 4.1 EXPERIMENTAL SETTINGS (2410.05779v3.pdf)"
+   ],
+   "supplementary_used": 1,
+   "matrix": {
+    "cells": 0,
+    "tables": [],
+    "shown_tokens": 0,
+    "left_out": [],
+    "definitions": [],
+    "facts": 0,
+    "coverage_gaps": []
+   }
+  },
+  "correction": {
+   "applied": false,
+   "changed": false,
+   "edits": [],
+   "removed": [],
+   "remaining": [],
+   "reverted": [],
+   "uncertain": [],
+   "step_numbering_stripped": false
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "navigate",
+   "status": "completed",
+   "prompt_tokens": 2318,
+   "completion_tokens": 211,
+   "estimated_prompt_tokens": 2334,
+   "finish_reason": "stop",
+   "duration_ms": 10920
+  },
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3328,
+   "completion_tokens": 83,
+   "estimated_prompt_tokens": 3344,
+   "finish_reason": "stop",
+   "duration_ms": 6762
+  }
+ ]
+}

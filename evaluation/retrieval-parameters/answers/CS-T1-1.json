@@ -1,0 +1,176 @@
+{
+ "arm": "CS",
+ "answer_mode": "single",
+ "question": "T1",
+ "question_text": "Legal 資料集總共有多少 tokens？有幾份文件？",
+ "document": "lightrag",
+ "expectation": {
+  "kind": "table",
+  "expected": "5,081,069 tokens；94 份文件",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 3.2,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Legal 資料集總共有多少 tokens？有幾份文件？"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4 presents statistical information for four datasets: Agriculture, CS, Legal, and Mix. The\nAgriculture dataset consists of 12 documents totaling 2,017,886 tokens, while the CS dataset contains\n10 documents with 2,306,535 tokens. The Legal dataset is the largest, comprising 94 documents and\n5,081,069 tokens. Lastly, the Mix dataset includes 61 documents with a total of 619,009 tokens.\n7.2 C ASE EXAMPLE OF RETRIEVAL -AUGMENTED GENERATION IN LIGHT RAG.\nFigure 3: A retrieval and generation example.\nIn Figure 3, we illustrate the retrieve-and-generate process. When presented with the query, “What\nmetrics are most informative for evaluating movie recommendation systems?”, the LLM first extracts\nboth low-level and high-level keywords. These keywords guide the dual-level retrieval process on the\n13",
+   "score": 0.6727,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4: Statistical information of the datasets.\nStatistics Agriculture CS Legal Mix\nTotal Documents — Agriculture: 12; CS: 10; Legal: 94; Mix: 61\nTotal Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009",
+   "score": 0.6506,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "00\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these metrics in relation\nto handling data changes in dynamic environments.\nThe results of this evaluation on the legal dataset are\npresented in Table 2. In this context, Textract repre-\nsents the token overhead for entity and relationship extraction, Cmax denotes the maximum number\nof tokens allowed per API call, and Cextract indicates the number of API calls required for extraction.\nIn the retrieval phase, GraphRAG generates 1,399 communities, with 610 level-2 communities\nactively utilized for retrieval in this experiment. Each community report averages 1,000 tokens,\nresulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per\ncommunity). Additionally, GraphRAG’s requirement to traverse each community individually leads\nto hundreds of API calls, significantly increasing retrieval overhead. In contrast, LightRAG optimizes\nthis process by using fewer than 100 tokens for keyword generation and retrieval, requiring only a\nsingle API call for the entire process. This efficiency is achieved through our retrieval mechanism,\n9",
+   "score": 0.5242,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "RAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom the UltraDomain benchmark (Qian et al., 2024). The UltraDomain data is sourced from 428\ncollege textbooks and encompasses 18 distinct domains, including agriculture, social sciences, and\nhumanities. From these, we chose the Agriculture, CS, Legal, and Mix datasets. Each dataset contains\nbetween 600,000 and 5,000,000 tokens, with detailed information provided in Table 4. Below is a\nspecific introduction to the four domains utilized in our experiments:\n• Agriculture: This domain focuses on agricultural practices, covering a range of topics including\nbeekeeping, hive management, crop production, and disease prevention.\n• CS: This domain focuses on computer science and encompasses key areas of data science and\nsoftware engineering. It particularly highlights machine learning and big data processing, featuring\ncontent on recommendation systems, classification algorithms, and real-time analytics using Spark.\n5",
+   "score": 0.4714,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "• Legal: This domain centers on corporate legal practices, addressing corporate restructuring, legal\nagreements, regulatory compliance, and governance, with a focus on the legal and financial sectors.\n• Mixed: This domain presents a rich variety of literary, biographical, and philosophical texts,\nspanning a broad spectrum of disciplines, including cultural, historical, and philosophical studies.\nQuestion Generation. To evaluate the effectiveness of RAG systems for high-level sensemaking\ntasks, we consolidate all text content from each dataset as context and adopt the generation method\noutlined in Edge et al. (2024). Specifically, we instruct an LLM to generate five RAG users, along\nwith five tasks for each user. Each generated user is accompanied by a textual description detailing\ntheir expertise and traits that motivate their question-raising activities. Each user task is also described,\nemphasizing one of the user’s potential intentions when interacting with RAG systems. For each\nuser-task combination, the LLM generates five questions that require an understanding of the entire\ncorpus. In total, this process results in 125 questions for each dataset.\nBaselines. LightRAG is compared against the following state-of-the-art methods across all datasets:\n• Naive RAG (Gao et al., 2023): This model serves as a standard baseline in existing RAG systems.\nIt segments raw texts into chunks and stores them in a vector database using text embeddings. For\nqueries, Naive RAG generates vectorized representations to directly retrieve text chunks based on\nthe highest similarity in their representations, ensuring efficient and straightforward matching.\n• RQ-RAG (Chan et al., 2024): This approach leverages the LLM to decompose the input query\ninto multiple sub-queries. These sub-queries are designed to enhance search accuracy by utilizing\nexplicit techniques such as rewriting, decomposition, and disambiguation.\n• HyDE (Gao et al",
+   "score": 0.4709,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "Legal 資料集總共有 5,081,069 tokens，並且包含 94 份文件 [2]。",
+ "usage": {
+  "prompt_tokens": 1739,
+  "completion_tokens": 33,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "5,081,069",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for four datasets: Agric…"
+   },
+   {
+    "number": "94",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 13,
+    "snippet": "…tics Agriculture CS Legal Mix Total Documents — Agriculture: 12; CS: 10; Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "5,081,069",
+    "answer_labels": [
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Legal"
+     ]
+    ],
+    "sentence": "Legal 資料集總共有 5,081,069 tokens，並且包含 94 份文件 。",
+    "reason": "missing"
+   },
+   {
+    "number": "94",
+    "answer_labels": [
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Total Documents",
+      "Legal"
+     ]
+    ],
+    "sentence": "Legal 資料集總共有 5,081,069 tokens，並且包含 94 份文件 。",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 1739,
+   "completion_tokens": 33,
+   "estimated_prompt_tokens": 1755,
+   "finish_reason": "stop",
+   "duration_ms": 2849
+  }
+ ]
+}

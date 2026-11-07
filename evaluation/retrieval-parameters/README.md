@@ -90,3 +90,33 @@
 ## 重現
 
 `make eval`（約 30 秒：三次入庫各 5 到 8 秒＋ 18 題檢索）。縮小：`EVAL_CHUNK_SIZES=400 EVAL_QUESTIONS=Q2,T1 make eval`。
+
+## 回答正確性：題庫 19 題 × 預設 single（CS）與 navigate（BS）各一次（2026-11-07，D85）
+
+使用者要求「拿剛剛建立的驗證資料集來測試一次，我需要確定問題在哪」。工具：`test_navigator_abc_real.py` 以 `ABC_QUESTION_SET` 讀題庫、`ABC_RUNS_DIR` 寫到 `answers/`；設定同 B9（區塊向量、Table 6 修正、0.50、矩陣進 prompt、B6 文字）。38 次、1,027 秒含入庫。人工依每題的 `expected` 判定；Q1–Q3、G1、G2 依 key-facts。
+
+| 題型 | 題 | CS（single） | BS（navigate） | 失敗原因 |
+|---|---|---|---|---|
+| 必答 | Q1 | ✗ | ✗ | 兩種模式照抄本批摘要樹的錯句「in the Legal dataset, GraphRAG outperformed LightRAG in Comprehensiveness (51.6% vs 48.4%)」——Legal 是 LightRAG 51.6 勝，例外在 Mix。**摘要層** |
+| 必答 | Q2 | ✗ | ✗ | CS：Legal 四個數字對，「exceptions are not explicitly mentioned」、「consistently outperforms」。BS：32 格全對，結論「Comprehensiveness 在 CS、Mix 勝、Agriculture、Legal 敗」方向全反。**結論句** |
+| 必答 | Q3 | ✗ | ✗ | CS：定義全對、四版本有，「-Low Agriculture Comprehensiveness improves from 67.6% to 64.0%」方向反。BS：48 格全對，「-High drops in all metrics and datasets」且把 CS Diversity 63.2>62.0 寫成 underperforms。**結論句** |
+| 細節 | D1–D4 | ✓✓✓✓ | ✓✓✓✓ | — |
+| 表格數字 | T1、T2 | ✓✓ | ✓✓ | — |
+| 表格數字 | T3 | ✓ | ✗ | BS 把 NaiveRAG 的 CS Overall 寫成 38.8%（LightRAG 配對那一格），應為 44.0%（-High 配對）；矩陣同一行有兩個 NaiveRAG 值，模型取了第一個。**配對** |
+| GraphRAG | G1、G3、G4 | ✓✓✓ | ✓✓✓ | — |
+| GraphRAG | G2 | ✗ | ✗ | CS：拿到 Table 6 的塊但沒讀出 77.76／79.2，寫「News 不顯著」（實際 p<0.001）。BS：選到 C2 對 TS 的列（57.28／42.72）當成 C2 對 SS。**表格列選錯**（Table 6 無矩陣） |
+| 跨文件 | X1 | ✗ | ✗ | 兩種模式都說 GraphRAG 論文「未明確指出 LLM」——gpt-4-turbo 那句排第 10 名，前五被另一份文件與泛論 LLM 的段落佔滿。**檢索（跨文件名額）** |
+| 跨文件 | X2 | ✓ | ✓ | 兩篇的語料大小都列出並各自引用 |
+| 無答案 | N1–N3 | ✓✓✓ | ✓✓✓ | 0.2–0.3 秒拒答、零次模型呼叫 |
+| **合計** | | **14/19** | **13/19** | |
+
+成本：single 每題 1,800–4,900 tokens、3–31 秒；navigate 3,800–8,900 tokens、8–60 秒，多一次呼叫沒有多答對任何一題，還多錯一題（T3）。
+
+### 讀法
+
+- **單一事實的查找全對**：細節 4 題、表格數字 3 題（single）、GraphRAG 的數字與定義 3 題、跨文件的數字題、無答案 3 題，兩種模式 27/28。表格數字一格一格問都答得對，含逐格改寫的 Table 2、Table 4 與 Table 6 修正後的 GraphRAG 表。
+- **要「綜合多格下結論」的題全錯**：Q2、Q3、G2 兩種模式各 0/3。錯的不是數字（BS 的 Q2、Q3 共 80 格全對），是把多格數字變成「全部」「方向」「例外」「哪一列」的那一步。這和 B3 到 B9 的紀錄一致。
+- **Q1 的錯在摘要層**：本批摘要樹把例外寫到錯的資料集，兩種模式照抄。D83 那批是「全面領先」，兩批錯法不同、來源相同——摘要驗證只核對數字，這兩句都沒有錯數字。
+- **X1 的錯在檢索層**：跨文件共用前五，第二份文件的答案句第 10 名。規格的 Document-aware Retrieval（每份文件保底名額）就是解這個，列為選做。
+- **navigate 沒有在這組題上帶來價值**：多一次呼叫、兩倍 tokens，單一事實題一樣對，綜合題一樣錯，T3 還因矩陣同一行有兩個 NaiveRAG 值而選錯。預設維持 single 有數據支持。
+- 樣本：每題各一次，單題結果有噪音；但「查找全對、綜合全錯」的分界在 38 次裡沒有例外。

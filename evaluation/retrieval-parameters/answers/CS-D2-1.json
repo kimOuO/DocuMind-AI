@@ -1,0 +1,141 @@
+{
+ "arm": "CS",
+ "answer_mode": "single",
+ "question": "D2",
+ "question_text": "Which LLM and chunk size does LightRAG use in its experiments?",
+ "document": "lightrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "GPT-4o-mini；chunk size 1200；gleaning 1",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 3.6,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Which LLM and chunk size does LightRAG use in its experiments?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "WORK\nIn this section, we analyze the complexity of our proposed LightRAG framework, which can be\ndivided into two main parts. The first part is the graph-based Index phase. During this phase, we use\nthe large language model (LLM) to extract entities and relationships from each chunk of text. As\na result, the LLM needs to be called total tokenschunk size times. Importantly, there is no additional overheadinvolved in this process, making our approach highly efficient in managing updates to new text.\nThe second part of the process involves the graph-based retrieval phase. For each query, we first\nutilize the large language model (LLM) to generate relevant keywords. Similar to current Retrieval-\nAugmented Generation (RAG) systems Gao et al. (2023; 2022); Chan et al. (2024), our retrieval\nmechanism relies on vector-based search. However, instead of retrieving chunks as in conventional\nRAG, we concentrate on retrieving entities and relationships. This approach markedly reduces\nretrieval overhead compared to the community-based traversal method used in GraphRAG.\n4 E VALUATION\nWe conduct empirical evaluations on benchmark data to assess the effectiveness of the proposed\nLightRAG framework by addressing the following research questions:• (RQ1): How does LightRAG\ncompare to existing RAG baseline methods in terms of generation performance? • (RQ2): How do\ndual-level retrieval and graph-based indexing enhance the generation quality of LightRAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom",
+   "score": 0.6072,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 6,
+   "page_end": 6,
+   "section_title": null,
+   "snippet": "their representations, ensuring efficient and straightforward matching.\n• RQ-RAG (Chan et al., 2024): This approach leverages the LLM to decompose the input query\ninto multiple sub-queries. These sub-queries are designed to enhance search accuracy by utilizing\nexplicit techniques such as rewriting, decomposition, and disambiguation.\n• HyDE (Gao et al., 2022): This method utilizes the LLM to generate a hypothetical document based\non the input query. This generated document is then employed to retrieve relevant text chunks,\nwhich are subsequently used to formulate the final answer.\n• GraphRAG (Edge et al., 2024): This is a graph-enhanced RAG system that utilizes an LLM to\nextract entities and relationships from the text, representing them as nodes and edges. It generates\ncorresponding descriptions for these elements, aggregates nodes into communities, and produces a\ncommunity report to capture global information. When handling high-level queries, GraphRAG\nretrieves more comprehensive information by traversing these communities.\nImplementation and Evaluation Details. In our experiments, we utilize the nano vector database\nfor vector data management and access. For all LLM-based operations in LightRAG, we default\nto using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets.\nAdditionally, the gleaning parameter is fixed at 1 for both GraphRAG and LightRAG.\nDefining ground truth for many RAG queries, particularly those involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7",
+   "score": 0.5801,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "RAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom the UltraDomain benchmark (Qian et al., 2024). The UltraDomain data is sourced from 428\ncollege textbooks and encompasses 18 distinct domains, including agriculture, social sciences, and\nhumanities. From these, we chose the Agriculture, CS, Legal, and Mix datasets. Each dataset contains\nbetween 600,000 and 5,000,000 tokens, with detailed information provided in Table 4. Below is a\nspecific introduction to the four domains utilized in our experiments:\n• Agriculture: This domain focuses on agricultural practices, covering a range of topics including\nbeekeeping, hive management, crop production, and disease prevention.\n• CS: This domain focuses on computer science and encompasses key areas of data science and\nsoftware engineering. It particularly highlights machine learning and big data processing, featuring\ncontent on recommendation systems, classification algorithms, and real-time analytics using Spark.\n5",
+   "score": 0.5539,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al. (2024);\nSalemi & Zamani (2024). This innovative integration allows LLMs to generate more accurate and\ncontextually relevant responses, significantly improving their utility in real-world applications. By\nadapting to specific domain knowledge Tu et al. (2024), RAG systems ensure that the information\nprovided is not only pertinent but also tailored to the user’s needs. Furthermore, they offer access to\nup-to-date information Zhao et al. (2024), which is crucial in rapidly evolving fields. Chunking plays\na vital role in facilitating the retrieval-augmented generation process Lyu et al. (2024). By breaking\ndown a large external text corpus into smaller, more manageable segments, chunking significantly\nenhances the accuracy of information retrieval. This approach allows for more targeted similarity\nsearches, ensuring that the retrieved content is directly relevant to user queries.\nHowever, existing RAG systems have key limitations that hinder their performance. First, many\nmethods rely on flat data representations, restricting their ability to understand and retrieve information\nbased on intricate relationships between entities. Second, these systems often lack the contextual\nawareness needed to maintain coherence across various entities and their interrelations, resulting\nin responses that may not fully address user queries. For example, consider a user asking, “How\ndoes the rise of electric vehicles influence urban air quality and public transportation infrastructure?”\nExisting RAG methods might retrieve separate documents on electric vehicles, air pollution, and\npublic transportation challenges but struggle to syn",
+   "score": 0.5473,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": null,
+   "snippet": "LIGHT RAG: S IMPLE AND FAST\nRETRIEVAL -AUGMENTED GENERATION\nZirui Guo1,2, Lianghao Xia2, Yanhua Yu1,∗, Tu Ao1, Chao Huang2∗\nBeijing University of Posts and Telecommunications1\nUniversity of Hong Kong2\nzrguo101@hku.hk aka_xia@foxmail.com chaohuang75@gmail.com\nABSTRACT\nRetrieval-Augmented Generation (RAG) systems enhance large language models\n(LLMs) by integrating external knowledge sources, enabling more accurate and\ncontextually relevant responses tailored to user needs. However, existing RAG\nsystems have significant limitations, including reliance on flat data representa-\ntions and inadequate contextual awareness, which can lead to fragmented answers\nthat fail to capture complex inter-dependencies. To address these challenges, we\npropose LightRAG, which incorporates graph structures into text indexing and\nretrieval processes. This innovative framework employs a dual-level retrieval sys-\ntem that enhances comprehensive information retrieval from both low-level and\nhigh-level knowledge discovery. Additionally, the integration of graph structures\nwith vector representations facilitates efficient retrieval of related entities and their\nrelationships, significantly improving response times while maintaining contextual\nrelevance. This capability is further enhanced by an incremental update algorithm\nthat ensures the timely integration of new data, allowing the system to remain\neffective and responsive in rapidly changing data environments. Extensive experi-\nmental validation demonstrates considerable improvements in retrieval accuracy\nand efficiency compared to existing approaches. We have made our LightRAG\nopen-source and available at the link: https://github.com/HKUDS/LightRAG.\n1 I NTRODUCTION\nRetrieval-Augmented Generation (RAG) systems have been developed to enhance large language\nmodels (LLMs) by integrating external knowledge sources Sudhi et al. (2024); Es et al.",
+   "score": 0.5407,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "LightRAG uses the GPT-4o-mini LLM and a chunk size of 1200 in its experiments [2].",
+ "usage": {
+  "prompt_tokens": 2300,
+  "completion_tokens": 30,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "1200",
+    "document_id": "7e5b1e23-2ed1-4113-887d-5f5ce7103266",
+    "page": 6,
+    "snippet": "…e default to using GPT-4o-mini. To ensure consistency, the chunk size is set to 1200 across all datasets. Additionally, the gleaning parameter is fixed at 1 for bot…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2300,
+   "completion_tokens": 30,
+   "estimated_prompt_tokens": 2316,
+   "finish_reason": "stop",
+   "duration_ms": 3281
+  }
+ ]
+}
