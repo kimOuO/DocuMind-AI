@@ -1,0 +1,11 @@
+[
+ {"id": "Q1", "question": "summary this document."},
+ {"id": "Q2", "question": "compare lightRAG with GraphRAG"},
+ {"id": "Q3", "question": "Performance of ablated versions of LightRAG"},
+ {"id": "U1", "question": "我想知道這個論文的的重點"},
+ {"id": "U2", "question": "你能做到甚麼"},
+ {"id": "U3", "question": "你好"},
+ {"id": "N3", "question": "如何在家烤酸種麵包？"},
+ {"id": "U4", "question": "LightRAG 跟傳統 RAG 比起來好在哪裡？"},
+ {"id": "G2", "question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets."}
+]

@@ -1,0 +1,1229 @@
+[
+ {
+  "id": "Q1",
+  "question": "summary this document.",
+  "seconds": 53.3,
+  "usage": {
+   "prompt_tokens": 5614,
+   "completion_tokens": 678,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    2,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    3,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    5,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    10,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    2,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    4,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    8,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    9,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1,
+    8
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "2410.05779",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 1,
+     "snippet": "…which in turn ∗Both Chao Huang and Yanhua Yu are corresponding authors. 1 arXiv:2410.05779v3 [cs.IR] 28 Apr 2025"
+    },
+    {
+     "number": "83.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+    },
+    {
+     "number": "16.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+    },
+    {
+     "number": "2404.16130",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 1,
+     "snippet": "…into the context window of the LLM. The LLM then Preprint. Under review. arXiv:2404.16130v2 [cs.CL] 19 Feb 2025"
+    },
+    {
+     "number": "1.7",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 8,
+     "snippet": "…ded into 3197 × 600-token text chunks, with 100-token overlaps between chunks (∼1.7 million tokens). 4.1.2 Conditions We compared six conditions including GraphRAG…"
+    },
+    {
+     "number": "72",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…s. Specifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, w…"
+    },
+    {
+     "number": "83%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…pecifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while…"
+    },
+    {
+     "number": "75",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…s and 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a vali…"
+    },
+    {
+     "number": "82%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…nd 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity…"
+    },
+    {
+     "number": "80%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…rehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.…"
+    },
+    {
+     "number": "62",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity test confirmed t…"
+    },
+    {
+     "number": "71%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…or News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity test confirmed that…"
+    },
+    {
+     "number": "26",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 10,
+     "snippet": "…text summarization: for low-level community summaries ( C3), GraphRAG required 26- 33% fewer context tokens, while for root-level community summaries ( C0), it r…"
+    },
+    {
+     "number": "33%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 10,
+     "snippet": "…0 59 79 64 48 45 41 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Comprehensiveness 50 33 38 35 29 31 46 42 50 59 79 64 48 45 41 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 C…"
+    },
+    {
+     "number": "97%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 10,
+     "snippet": "…ontext tokens, while for root-level community summaries ( C0), it required over 97% fewer tokens. For a modest drop in performance compared with other global metho…"
+    }
+   ],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": null
+  },
+  "answer": "### 2410.05779v3.pdf\nThis document addresses the limitations of current Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack contextual awareness, leading to fragmented and incomplete answers for complex queries [1]. To solve this, the document proposes LightRAG, a framework that integrates graph structures into text indexing and retrieval to better capture interdependencies among entities and improve retrieval effectiveness [1]. LightRAG features a dual-level retrieval system—low-level for specific entity relationships and high-level for broader topics—and combines graph-based indexing with vector representations to enable efficient and comprehensive retrieval [1]. An incremental update mechanism ensures the system remains up to date without full reprocessing [1]. Experimental evaluations across four datasets (Agriculture, CS, Legal, and Mix) show LightRAG outperforms existing methods in retrieval accuracy and efficiency [1]. For example, in the Legal dataset, LightRAG achieves an 83.6% win rate in Comprehensiveness compared to 16.4% for Naive RAG [1]. LightRAG is open-source and available at https://github.com/HKUDS/LightRAG [1].\n\n### 2404.16130v2.pdf\nThis document addresses the problem of answering global sensemaking questions over large text corpora, which conventional retrieval-augmented generation (RAG) methods fail to support effectively [8]. RAG is effective for localized queries but struggles with global questions that require synthesizing information across an entire dataset [8]. Query-focused summarization (QFS) methods, while capable of global summarization, do not scale well to the large volumes of text that RAG systems can handle [8]. The document proposes GraphRAG, a method that combines the strengths of RAG and QFS by using a knowledge graph to index data and generate community-based summaries [8]. This approach enables global sensemaking by creating hierarchical community summaries, which are used to generate partial responses to user queries, which are then aggregated into a final answer [8]. The document evaluates GraphRAG using two datasets: Podcast transcripts (approximately 1 million tokens) and News articles (approximately 1.7 million tokens) [8]. Across these datasets, GraphRAG showed substantial improvements over a conventional vector RAG baseline in comprehensiveness and diversity of answers [8]. For the Podcast dataset, comprehensiveness win rates ranged from 72–83% (p<.001), and diversity win rates ranged from 75–82% (p<.001) [8]. For the News dataset, comprehensiveness win rates ranged from 72–80% (p<.001), and diversity win rates ranged from 62–71% (p<.01) [8]. GraphRAG used 26–33% fewer tokens for low-level summaries and over 97% fewer tokens for root-level summaries compared to source text summarization [8]. In claim-based evaluations, global search conditions outperformed vector RAG in comprehensiveness (p<.05) and diversity for both datasets, though results for News diversity were limited to C0 [8]."
+ },
+ {
+  "id": "Q2",
+  "question": "compare lightRAG with GraphRAG",
+  "seconds": 26.4,
+  "usage": {
+   "prompt_tokens": 4117,
+   "completion_tokens": 462,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.65
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.645
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.63
+   ],
+   [
+    "2410.05779v3.pdf",
+    9,
+    0.626
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.612
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    2,
+    3,
+    1
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "49.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+    },
+    {
+     "number": "50.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+    },
+    {
+     "number": "49.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+    },
+    {
+     "number": "50.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+    },
+    {
+     "number": "22.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…AG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, Lig…"
+    },
+    {
+     "number": "77.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…raphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix…"
+    },
+    {
+     "number": "48.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…G Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, Li…"
+    },
+    {
+     "number": "51.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…ess — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Div…"
+    },
+    {
+     "number": "43.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…hRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: Gra…"
+    },
+    {
+     "number": "56.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…tRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, Lig…"
+    }
+   ],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [
+    {
+     "number": "50.4%",
+     "answer_labels": [
+      "Mix",
+      "vs LightRAG"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Mix",
+       "GraphRAG",
+       "vs LightRAG"
+      ],
+      [
+       "Overall",
+       "Mix",
+       "GraphRAG",
+       "vs LightRAG"
+      ]
+     ],
+     "sentence": "In the Mix dataset, LightRAG achieves higher scores in **Comprehensiveness** (49.6% vs 50.4%, -0.8 pp), **Empowerment** (49.2% vs 50.8%, -1.6 pp), and **Overall** (49.6% vs 50.4%, -0.8 pp).",
+     "reason": "missing"
+    },
+    {
+     "number": "50.8%",
+     "answer_labels": [
+      "Mix",
+      "vs LightRAG"
+     ],
+     "source_labels": [
+      [
+       "Empowerment",
+       "Mix",
+       "GraphRAG",
+       "vs LightRAG"
+      ]
+     ],
+     "sentence": "In the Mix dataset, LightRAG achieves higher scores in **Comprehensiveness** (49.6% vs 50.4%, -0.8 pp), **Empowerment** (49.2% vs 50.8%, -1.6 pp), and **Overall** (49.6% vs 50.4%, -0.8 pp).",
+     "reason": "missing"
+    }
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 128,
+    "facts": 112,
+    "block_tokens": 508,
+    "replaced_sources": []
+   }
+  },
+  "answer": "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets and complex language contexts [2]. Across the Agriculture, CS, and Legal datasets, LightRAG demonstrates a clear advantage, significantly surpassing GraphRAG in comprehensive information understanding within diverse environments [3].\n\nIn the Mix dataset, LightRAG achieves higher scores in **Comprehensiveness** (49.6% vs 50.4%, -0.8 pp), **Empowerment** (49.2% vs 50.8%, -1.6 pp), and **Overall** (49.6% vs 50.4%, -0.8 pp) [1]. LightRAG is higher in 13 of 16 conditions compared to GraphRAG, with three exceptions where GraphRAG performs slightly better in the Mix dataset [1].\n\nRepresentative figures supporting LightRAG's superiority include:\n- **Agriculture / Diversity**: GraphRAG 22.8% vs LightRAG 77.2% [1].\n- **CS / Comprehensiveness**: GraphRAG 48.4% vs LightRAG 51.6% [1].\n- **Legal / Empowerment**: GraphRAG 43.6% vs LightRAG 56.4% [1].\n\nExceptions where GraphRAG performs better are:\n- **Mix / Comprehensiveness**: GraphRAG 50.4% vs LightRAG 49.6% (-0.8 pp, -1.6% relative).\n- **Mix / Empowerment**: GraphRAG 50.8% vs LightRAG 49.2% (-1.6 pp, -3.1% relative).\n- **Mix / Overall**: GraphRAG 50.4% vs LightRAG 49.6% (-0.8 pp, -1.6% relative) [1].\n\nIn conclusion, LightRAG outperforms GraphRAG in most conditions, especially in larger datasets and complex contexts, though GraphRAG shows slight advantages in specific metrics of the Mix dataset [1][2][3]."
+ },
+ {
+  "id": "Q3",
+  "question": "Performance of ablated versions of LightRAG",
+  "seconds": 38.3,
+  "usage": {
+   "prompt_tokens": 4586,
+   "completion_tokens": 797,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.677
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.604
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.574
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.559
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.558
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "63.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+    },
+    {
+     "number": "62.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+    },
+    {
+     "number": "64.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -Hi…"
+    },
+    {
+     "number": "61.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+    },
+    {
+     "number": "64.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+    },
+    {
+     "number": "57.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+    },
+    {
+     "number": "60.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High Comprehensiveness —…"
+    },
+    {
+     "number": "75.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…rigin NaiveRAG -Origin Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix:…"
+    },
+    {
+     "number": "67.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+    },
+    {
+     "number": "74.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…rigin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -…"
+    },
+    {
+     "number": "68.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…aiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix:…"
+    },
+    {
+     "number": "83.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+    },
+    {
+     "number": "16.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+    }
+   ],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [
+    {
+     "number": "64.0%",
+     "answer_labels": [
+      "Comprehensiveness",
+      "Mix",
+      "vs -Low"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Mix",
+       "-Low",
+       "vs NaiveRAG"
+      ]
+     ],
+     "sentence": "- **LightRAG vs -Low (Mix / Comprehensiveness)**: -Low achieves 64.0% vs LightRAG's 61.2%.",
+     "reason": "ambiguous"
+    },
+    {
+     "number": "75.2%",
+     "answer_labels": [
+      "Comprehensiveness",
+      "Agriculture",
+      "vs -Origin"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Agriculture",
+       "-Origin",
+       "vs NaiveRAG"
+      ]
+     ],
+     "sentence": "- **LightRAG vs -Origin (Agriculture / Comprehensiveness)**: -Origin achieves 75.2% vs LightRAG's 67.6%.",
+     "reason": "ambiguous"
+    }
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "incomplete",
+    "required": [
+     "-High",
+     "-Low",
+     "-Origin",
+     "LightRAG"
+    ],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [
+    {
+     "sentence": "The only exception is in the CS / Diversity metric, where -High outperforms LightRAG by 1.2 percentage points (63.2% vs 62.0%).",
+     "status": "contradicted",
+     "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (61.2% vs 64.0%); Mix / Empowerment (57.2% vs 64.8%); Mix / Overall (60.0% vs 64.8%)"
+    }
+   ],
+   "arithmetic_issues": [],
+   "analysis_status": "FACTUALLY_INCORRECT",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 128,
+    "facts": 64,
+    "block_tokens": 548,
+    "replaced_sources": []
+   }
+  },
+  "answer": "The performance of ablated versions of LightRAG was evaluated using NaiveRAG as a reference, and the results show varying degrees of effectiveness depending on the retrieval method and dataset [1]. Here is a summary of the findings:\n\n### Main Findings\n- **LightRAG vs NaiveRAG**: LightRAG consistently outperforms NaiveRAG across all metrics and datasets. It achieves higher scores in Comprehensiveness, Diversity, Empowerment, and Overall quality in all 16 conditions [1].\n- **LightRAG vs -High (high-level retrieval only)**: LightRAG performs better in 15 out of 16 conditions. The only exception is in the CS / Diversity metric, where -High outperforms LightRAG by 1.2 percentage points (63.2% vs 62.0%) [1].\n- **LightRAG vs -Low (low-level retrieval only)**: LightRAG outperforms -Low in 11 out of 16 conditions, but there are notable exceptions:\n  - Mix / Comprehensiveness: -Low outperforms LightRAG by 2.8 percentage points (64.0% vs 61.2%).\n  - Mix / Empowerment: -Low outperforms LightRAG by 7.6 percentage points (64.8% vs 57.2%).\n  - Mix / Overall: -Low outperforms LightRAG by 4.8 percentage points (64.8% vs 60.0%) [1].\n- **LightRAG vs -Origin (semantic graph-based retrieval)**: LightRAG performs better in 11 out of 16 conditions, but there are four exceptions:\n  - Agriculture / Comprehensiveness: -Origin outperforms LightRAG by 7.6 percentage points (75.2% vs 67.6%).\n  - Mix / Diversity: -Origin outperforms LightRAG by 6.8 percentage points (74.4% vs 67.6%).\n  - Agriculture / Empowerment: -Origin outperforms LightRAG by 0.4 percentage points (68.0% vs 67.6%).\n  - Agriculture / Overall: -Origin outperforms LightRAG by 6.8 percentage points (74.4% vs 67.6%) [1].\n\n### Representative Figures\n- **LightRAG vs NaiveRAG (Legal / Empowerment)**: LightRAG achieves 83.6% vs NaiveRAG's 16.4% [1].\n- **LightRAG vs -High (CS / Diversity)**: LightRAG achieves 62.0% vs -High's 63.2% [1].\n- **LightRAG vs -Low (Mix / Comprehensiveness)**: -Low achieves 64.0% vs LightRAG's 61.2% [1].\n- **LightRAG vs -Origin (Agriculture / Comprehensiveness)**: -Origin achieves 75.2% vs LightRAG's 67.6% [1].\n\n### Conclusion\nLightRAG demonstrates superior performance in most cases compared to its ablated versions, particularly in terms of comprehensiveness, diversity, and empowerment. However, the ablated versions (-High, -Low, -Origin) show competitive or even superior performance in specific scenarios, such as in Mix / Comprehensiveness for -Low and in Agriculture / Comprehensiveness for -Origin. Therefore, while LightRAG generally offers balanced and robust performance, the choice of ablated version may depend on the specific requirements of the task [1]."
+ },
+ {
+  "id": "U1",
+  "question": "我想知道這個論文的的重點",
+  "seconds": 51.7,
+  "usage": {
+   "prompt_tokens": 5637,
+   "completion_tokens": 640,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    2,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    3,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    5,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    10,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    2,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    4,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    8,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    9,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1,
+    8
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "2410.05779",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 1,
+     "snippet": "…which in turn ∗Both Chao Huang and Yanhua Yu are corresponding authors. 1 arXiv:2410.05779v3 [cs.IR] 28 Apr 2025"
+    },
+    {
+     "number": "83.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+    },
+    {
+     "number": "16.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+    },
+    {
+     "number": "100",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 6,
+     "snippet": "…are generated in parallel. The LLM is also asked to generate a score between 0-100 indicating how helpful the generated answer is in answering the target question…"
+    },
+    {
+     "number": "610,000",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 9,
+     "snippet": "…mmunity report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per community). Additionally, GraphRAG’s…"
+    },
+    {
+     "number": "2404.16130",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 1,
+     "snippet": "…into the context window of the LLM. The LLM then Preprint. Under review. arXiv:2404.16130v2 [cs.CL] 19 Feb 2025"
+    },
+    {
+     "number": "72",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…s. Specifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, w…"
+    },
+    {
+     "number": "83%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…pecifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while…"
+    },
+    {
+     "number": "75",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…s and 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a vali…"
+    },
+    {
+     "number": "82%",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 9,
+     "snippet": "…nd 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity…"
+    }
+   ],
+   "mislabelled_numbers": [
+    {
+     "number": "100",
+     "answer_labels": [
+      "Comprehensiveness"
+     ],
+     "source_labels": [
+      [
+       "% Max",
+       "Podcast Transcripts",
+       "TS"
+      ],
+      [
+       "% Max",
+       "News Articles",
+       "TS"
+      ]
+     ],
+     "sentence": "實驗結果顯示，LightRAG 在多個數據集（農業、計算機科學、法律、混合）中表現優於現有方法。例如，在法律數據集中，LightRAG 在完整性（Comprehensiveness）方面的勝率達 83.6%，而 Naive RAG 僅有 16.4% 。此外，LightRAG 在成本和適應性方面也表現出色，例如在法律數據集中，LightRAG 的檢索僅使用不到 100 個 token，而 GraphRAG 需要 610,000 個 token 。"
+    }
+   ],
+   "unresolved_numbers": [
+    {
+     "number": "83.6%",
+     "answer_labels": [
+      "Comprehensiveness",
+      "LightRAG"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Legal",
+       "LightRAG",
+       "vs NaiveRAG"
+      ]
+     ],
+     "sentence": "實驗結果顯示，LightRAG 在多個數據集（農業、計算機科學、法律、混合）中表現優於現有方法。例如，在法律數據集中，LightRAG 在完整性（Comprehensiveness）方面的勝率達 83.6%，而 Naive RAG 僅有 16.4% 。此外，LightRAG 在成本和適應性方面也表現出色，例如在法律數據集中，LightRAG 的檢索僅使用不到 100 個 token，而 GraphRAG 需要 610,000 個 token 。",
+     "reason": "missing"
+    },
+    {
+     "number": "16.4%",
+     "answer_labels": [
+      "Comprehensiveness"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Legal",
+       "NaiveRAG",
+       "vs LightRAG"
+      ],
+      [
+       "Comprehensiveness",
+       "Legal",
+       "NaiveRAG",
+       "vs -Origin"
+      ]
+     ],
+     "sentence": "實驗結果顯示，LightRAG 在多個數據集（農業、計算機科學、法律、混合）中表現優於現有方法。例如，在法律數據集中，LightRAG 在完整性（Comprehensiveness）方面的勝率達 83.6%，而 Naive RAG 僅有 16.4% 。此外，LightRAG 在成本和適應性方面也表現出色，例如在法律數據集中，LightRAG 的檢索僅使用不到 100 個 token，而 GraphRAG 需要 610,000 個 token 。",
+     "reason": "ambiguous"
+    }
+   ],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "FACTUALLY_INCORRECT",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": null
+  },
+  "answer": "2410.05779v3.pdf  \n這篇論文的重點是提出一個名為 LightRAG 的框架，用於改進現有的檢索增強生成（RAG）系統。傳統的 RAG 系統通常使用平面數據表示法，缺乏對語境的感知能力，導致對複雜查詢的回應不完整或碎片化。LightRAG 通過在文本索引和檢索中引入圖結構，來更好地捕捉實體之間的依存關係，從而提升檢索效果 [1]。  \n\nLightRAG 的核心特點包括雙層檢索系統：低層次檢索用於處理具體實體關係，而高層次檢索則針對更廣泛的主題 [1]。此外，LightRAG 結合圖結構與向量表示法，實現高效且全面的檢索 [1]。為了確保系統的即時性，LightRAG 還引入了一種增量更新機制，可以在不重新處理全部數據的情況下更新知識庫 [1]。  \n\n實驗結果顯示，LightRAG 在多個數據集（農業、計算機科學、法律、混合）中表現優於現有方法。例如，在法律數據集中，LightRAG 在完整性（Comprehensiveness）方面的勝率達 83.6%，而 Naive RAG 僅有 16.4% [1]。此外，LightRAG 在成本和適應性方面也表現出色，例如在法律數據集中，LightRAG 的檢索僅使用不到 100 個 token，而 GraphRAG 需要 610,000 個 token [1]。  \n\n2404.16130v2.pdf  \n這篇論文提出了一種名為 GraphRAG 的方法，旨在解決傳統 RAG 系統在處理全局理解（sensemaking）問題時的不足。RAG 雖然擅長處理局部查詢，但對於需要整合整個數據集的全局問題，傳統方法往往表現不佳 [8]。  \n\nGraphRAG 的核心創新在於使用知識圖來索引數據，並生成社區總結（community summaries）。這種方法結合了 RAG 和查詢聚焦總結（QFS）的優點，使得系統能夠處理大規模文本數據並生成全面且多樣的回應 [8]。  \n\n實驗結果顯示，GraphRAG 在多個數據集（Podcast 和 News）中表現優於傳統向量 RAG。例如，在 Podcast 數據集中，GraphRAG 在完整性方面的勝率範圍為 72–83%，在多樣性方面則為 75–82% [8]。此外，GraphRAG 在生成社區總結時使用的 token 數量遠低於直接對原始文本進行總結，從而節省了計算資源 [8]。\n\n以下數字的標籤與原文表格不符：100（答案：Comprehensiveness；原文：% Max、Podcast Transcripts、TS / % Max、News Articles、TS）。"
+ },
+ {
+  "id": "U2",
+  "question": "你能做到甚麼",
+  "seconds": 6.7,
+  "usage": {
+   "prompt_tokens": 1860,
+   "completion_tokens": 113,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    7,
+    0.462
+   ],
+   [
+    "2404.16130v2.pdf",
+    22,
+    0.459
+   ],
+   [
+    "2404.16130v2.pdf",
+    25,
+    0.458
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": false,
+   "cited": [],
+   "unverified_numbers": [],
+   "verified_numbers": [],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 0,
+    "facts": 0,
+    "block_tokens": 0,
+    "replaced_sources": []
+   }
+  },
+  "answer": "我可以幫助您總結您上傳的文件內容、解釋文件中的資訊、比較不同文件之間的觀點、閱讀並解析表格資料，並告訴您文件中沒有涵蓋的部分。我根據您提供的 PDF、TXT 或 Markdown 格式的文件來回答問題，並會引用文件名稱和頁碼來支持我的回應。\n\n如果您有任何與文件內容相關的問題，例如「這篇論文提出了什麼方法？」或「這份報告的數據顯示了什麼趨勢？」，歡迎隨時問我！"
+ },
+ {
+  "id": "U3",
+  "question": "你好",
+  "seconds": 6.3,
+  "usage": {
+   "prompt_tokens": 3055,
+   "completion_tokens": 63,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    23,
+    0.487
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.479
+   ],
+   [
+    "2404.16130v2.pdf",
+    7,
+    0.478
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": false,
+   "cited": [],
+   "unverified_numbers": [],
+   "verified_numbers": [],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 144,
+    "facts": 0,
+    "block_tokens": 0,
+    "replaced_sources": []
+   }
+  },
+  "answer": "你好！我是 DocuMind-AI 的助手，可以幫助你與上傳的文件進行對話，例如總結文件內容、解釋資訊、比較數據，或告訴你文件中沒有涵蓋的部分。你可以問我任何關於文件的問題。需要我幫你做什麼呢？"
+ },
+ {
+  "id": "N3",
+  "question": "如何在家烤酸種麵包？",
+  "seconds": 8.0,
+  "usage": {
+   "prompt_tokens": 4753,
+   "completion_tokens": 74,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.36
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.36
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.355
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": false,
+   "cited": [],
+   "unverified_numbers": [],
+   "verified_numbers": [],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 360,
+    "facts": 0,
+    "block_tokens": 0,
+    "replaced_sources": []
+   }
+  },
+  "answer": "這份文件並未提及如何在家烤酸種麵包。它主要探討的是圖形 RAG（GraphRAG）方法在查詢專注摘要中的應用，並提供不同條件下多項指標的比較結果。若你需要學習如何在家製作酸種麵包，建議參考專業的烘焙食譜或教學資源。"
+ },
+ {
+  "id": "U4",
+  "question": "LightRAG 跟傳統 RAG 比起來好在哪裡？",
+  "seconds": 18.9,
+  "usage": {
+   "prompt_tokens": 2543,
+   "completion_tokens": 401,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.622
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.598
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.594
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.593
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.584
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1,
+    4,
+    3,
+    5
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 0,
+    "facts": 0,
+    "block_tokens": 0,
+    "replaced_sources": []
+   }
+  },
+  "answer": "LightRAG 相較於傳統 RAG 系統的優勢主要體現在以下幾個方面：\n\n1. **圖結構的引入提升資訊理解**：LightRAG 在文本索引和檢索過程中引入圖結構，使其能更有效地捕捉實體之間的複雜語義依賴關係，從而提升對知識的全面理解與生成回應的準確性 [1]。\n\n2. **雙層檢索機制提高回應多樣性**：LightRAG 透過結合低階（具體實體）與高階（主題層面）的檢索機制，不僅能針對詳細查詢提供精準資訊，也能處理抽象或跨主題的複雜問題，進而提升回應的多樣性與全面性 [1]。\n\n3. **處理大型資料集的表現更優**：在處理大型資料集（如 Agriculture、CS、Legal）時，LightRAG 明顯優於傳統圖結構 RAG 系統（如 GraphRAG），特別是在語言語境複雜的情況下，其表現更具優勢 [4]。\n\n4. **更高的檢索效率與準確性**：LightRAG 的圖向量整合方法不僅提升了檢索效率，還能維持語境相關性，同時其增量更新演算法確保系統能即時整合新資料，適應快速變化的資料環境 [3]。\n\n5. **實證表現優於基準模型**：實驗結果顯示，LightRAG 在多項評估指標（如完整性、多樣性、權威性）上均優於其他基準方法，例如 GraphRAG 和 NaiveRAG [5]。\n\n這些優勢使 LightRAG 在處理複雜查詢與大型語料時更具優勢，並能提供更全面、多樣且高品質的回應。"
+ },
+ {
+  "id": "G2",
+  "question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets.",
+  "seconds": 12.9,
+  "usage": {
+   "prompt_tokens": 5422,
+   "completion_tokens": 159,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    9,
+    0.707
+   ],
+   [
+    "2404.16130v2.pdf",
+    11,
+    0.692
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.651
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.648
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.63
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    3
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "77.76",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…e -7.78, p-value <0.001 Comprehensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean…"
+    },
+    {
+     "number": "22.24",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…ue <0.001 Comprehensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-valu…"
+    },
+    {
+     "number": "8.17",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…hensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-valu…"
+    },
+    {
+     "number": "0.001",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…C2 TS — Podcast Transcripts: Mean 1 57.28, Mean 2 42.72, Z-value -4.1, p-value <0.001; News Articles: Mean 1 62.08, Mean 2 37.92, Z-value -5.07, p-value <0.001 Compr…"
+    },
+    {
+     "number": "79.2",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…ean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast…"
+    },
+    {
+     "number": "20.8",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast Transcripts:…"
+    },
+    {
+     "number": "8.34",
+     "document_id": "0a57e4b0-c7dc-4055-8ce3-684c716b0283",
+     "page": 26,
+     "snippet": "…-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast Transcripts: Mean 1 78.96,…"
+    }
+   ],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [
+    {
+     "sentence": "Condition C2 significantly outperformed vector RAG (SS) in comprehensiveness for both the Podcast and News datasets.",
+     "cited": [
+      3
+     ],
+     "closer": [
+      2,
+      1
+     ],
+     "coverage_cited": 0.25,
+     "coverage_closer": 1.0
+    }
+   ],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "UNCERTAIN",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 336,
+    "facts": 0,
+    "block_tokens": 0,
+    "replaced_sources": []
+   }
+  },
+  "answer": "Condition C2 significantly outperformed vector RAG (SS) in comprehensiveness for both the Podcast and News datasets. For the Podcast dataset, the mean score for C2 was 77.76, while SS had a mean score of 22.24, with a Z-value of -8.17 and a p-value <0.001 [3]. For the News dataset, the mean score for C2 was 79.2, compared to SS's mean score of 20.8, with a Z-value of -8.34 and a p-value <0.001 [3]. These results indicate that C2 achieved a much higher level of comprehensiveness than vector RAG across both datasets."
+ }
+]

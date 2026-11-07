@@ -1,0 +1,392 @@
+[
+ {
+  "id": "Q1",
+  "question": "summary this document.",
+  "seconds": 69.4,
+  "usage": {
+   "prompt_tokens": 5294,
+   "completion_tokens": 915,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    2,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    3,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    5,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    10,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    2,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    4,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    8,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "answer": "### 2410.05779v3.pdf  \nThe document introduces **LightRAG**, a Retrieval-Augmented Generation (RAG) system designed to improve the accuracy and contextual relevance of large language models by integrating external knowledge sources [1]. Existing RAG systems are limited by flat data representations and poor contextual awareness, leading to fragmented answers that fail to capture complex interdependencies [3]. LightRAG addresses these limitations by incorporating **graph structures** into text indexing and retrieval processes [1]. It uses a **dual-level retrieval system** to extract information from both low-level specific entities and high-level abstract themes, enabling more comprehensive and contextually relevant responses [1]. The graph-based indexing is combined with vector representations to enhance retrieval efficiency and facilitate the integration of new data through an **incremental update algorithm** [1].  \n\nLightRAG was evaluated across four domains—Agriculture, CS, Legal, and Mix—each containing between 600,000 and 5,000,000 tokens [1]. It outperformed four baselines (NaiveRAG, RQ-RAG, HyDE, and GraphRAG) in terms of **Comprehensiveness (67.6%)**, **Diversity (71.2%)**, and **Overall (71.5%)** [1]. Ablation studies confirmed the importance of the dual-level retrieval paradigm, as removing either component led to performance drops [1].  \n\nIn terms of cost efficiency, LightRAG significantly reduced **token and API usage** during retrieval and updates. For example, in the Legal dataset, LightRAG used fewer than **100 tokens and one API call**, while GraphRAG consumed **610,000 tokens and hundreds of API calls** [1]. LightRAG is open-source and available at https://github.com/HKUDS/LightRAG [1].  \n\n---\n\n### 2404.16130v2.pdf  \nThe document introduces **GraphRAG**, a graph-based RAG approach designed to improve the ability of large language models (LLMs) to answer **global sensemaking questions** over large private text corpora [9]. Traditional **vector RAG methods** are effective for retrieving information to answer specific questions but struggle with global queries that require synthesizing knowledge across the entire dataset [10]. **Query-focused summarization (QFS)** methods, while suitable for global questions, do not scale to the large volumes of text typically handled by RAG systems [9].  \n\nGraphRAG addresses this by using an LLM to build a **knowledge graph** from source documents, partitioning it into **hierarchical communities**, and generating **community-level summaries** [9]. When a query is made, these summaries are used to generate **partial responses**, which are then combined into a **final answer** [9]. The method is evaluated on two real-world datasets: **podcast transcripts** and **news articles**, each containing around **1 million tokens** [8].  \n\nGraphRAG is compared with **vector RAG** and a **text summarization method** using an LLM to generate test questions and assess the **comprehensiveness**, **diversity**, **directness**, and **empowerment** of the answers [8]. GraphRAG significantly outperforms vector RAG in **comprehensiveness and diversity**. For the podcast dataset, comprehensiveness win rates range from **72–83%** and diversity win rates from **75–82%**. For the news dataset, comprehensiveness win rates range from **72–80%** and diversity win rates from **62–71%** [8]. Community summaries at intermediate levels also show improvements, with **57% comprehensiveness win rate** and **57% diversity win rate** for the podcast dataset, and **64% comprehensiveness** and **60% diversity** for the news dataset [8].  \n\nHowever, **empowerment comparisons** show **mixed outcomes**, and **vector RAG** produces the **most direct responses** [8]. GraphRAG also reduces the number of **context tokens required** for root-level summaries by over **97%** [8]. The method is open-source and available as extensions to multiple open-source libraries [10].\n\nNumbers that could not be checked against the cited pages of the original text: 71.2%, 71.5%.\n\nFigures whose labels differ from the source table: 67.6% (answer: Comprehensiveness, GraphRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs RQ-RAG / Diversity, Mix, LightRAG, vs HyDE); 100 (answer: Tokens, Legal, LightRAG; source: % Max, Podcast Transcripts, TS / % Max, News Articles, TS)."
+ },
+ {
+  "id": "Q2",
+  "question": "compare lightRAG with GraphRAG",
+  "seconds": 20.8,
+  "usage": {
+   "prompt_tokens": 4112,
+   "completion_tokens": 393,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.65
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.645
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.63
+   ],
+   [
+    "2410.05779v3.pdf",
+    9,
+    0.626
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.612
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "answer": "LightRAG consistently outperforms GraphRAG across most conditions, though there are a few exceptions. In 13 of the 16 conditions, LightRAG achieves higher scores, particularly in metrics like comprehensiveness, diversity, and empowerment across the Agriculture, CS, and Legal datasets [1]. For example, in the Agriculture dataset, LightRAG scores 74.0% in comprehensiveness compared to HyDE's 26.0%, and in the Legal dataset, it achieves 83.6% in comprehensiveness compared to NaiveRAG's 16.4% [1].\n\nHowever, there are three specific conditions where GraphRAG performs better than LightRAG:\n- **Mix / Comprehensiveness**: GraphRAG scores 50.4% compared to LightRAG's 49.6% (a -0.8 percentage point difference, or -1.6% relative).\n- **Mix / Empowerment**: GraphRAG scores 50.8% compared to LightRAG's 49.2% (a -1.6 percentage point difference, or -3.1% relative).\n- **Mix / Overall**: GraphRAG scores 50.4% compared to LightRAG's 49.6% (a -0.8 percentage point difference, or -1.6% relative) [1].\n\nIn general, the superior performance of LightRAG is attributed to its dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics. This mechanism enhances both the comprehensiveness and diversity of responses, especially in larger datasets with complex language contexts [2][3]. \n\nDespite these advantages, the performance gap between LightRAG and GraphRAG is relatively small in the Mix dataset, indicating that both systems perform similarly in certain mixed contexts [1].\n\nNumbers that could not be checked against the cited pages of the original text: 13, 16, 0.8, 1.6%, 1.6, 3.1%."
+ },
+ {
+  "id": "Q3",
+  "question": "Performance of ablated versions of LightRAG",
+  "seconds": 36.0,
+  "usage": {
+   "prompt_tokens": 4581,
+   "completion_tokens": 743,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.677
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.604
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.574
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.559
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.558
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "answer": "The performance of ablated versions of LightRAG, as compared to the full version (referred to as LightRAG), is detailed in the provided sources, particularly in the ablation studies presented in Table 2 [1].\n\n### Main Findings:\n- **LightRAG vs NaiveRAG**: LightRAG outperforms NaiveRAG in all 16 conditions across the metrics of Comprehensiveness, Diversity, Empowerment, and Overall, across the Agriculture, CS, Legal, and Mix datasets [1].\n- **LightRAG vs -High**: LightRAG performs better in 15 of 16 conditions. The only exception is in the CS / Diversity metric, where -High (63.2%) slightly outperforms LightRAG (62.0%) by 1.2 percentage points (-1.9% relative) [1].\n- **LightRAG vs -Low**: LightRAG performs better in 11 of 16 conditions. It underperforms in 3 cases: Mix / Comprehensiveness (61.2% vs 64.0%), Mix / Empowerment (57.2% vs 64.8%), and Mix / Overall (60.0% vs 64.8%) [1].\n- **LightRAG vs -Origin**: LightRAG performs better in 11 of 16 conditions. It underperforms in 4 cases: Agriculture / Comprehensiveness (67.6% vs 75.2%), Mix / Diversity (67.6% vs 74.4%), Agriculture / Empowerment (67.6% vs 68.0%), and Agriculture / Overall (67.6% vs 74.4%) [1].\n\n### Representative Figures:\n- **LightRAG vs NaiveRAG**:\n  - Agriculture / Comprehensiveness: LightRAG (67.6%) vs NaiveRAG (32.4%) [1].\n  - Mix / Overall: LightRAG (60.0%) vs NaiveRAG (40.0%) [1].\n- **LightRAG vs -High**:\n  - CS / Diversity: LightRAG (62.0%) vs -High (63.2%) [1].\n- **LightRAG vs -Low**:\n  - Mix / Empowerment: LightRAG (57.2%) vs -Low (64.8%) [1].\n- **LightRAG vs -Origin**:\n  - Agriculture / Comprehensiveness: LightRAG (67.6%) vs -Origin (75.2%) [1].\n\n### Exceptions:\n- **-High outperforms LightRAG** in CS / Diversity [1].\n- **-Low outperforms LightRAG** in Mix / Comprehensiveness, Mix / Empowerment, and Mix / Overall [1].\n- **-Origin outperforms LightRAG** in Agriculture / Comprehensiveness, Mix / Diversity, Agriculture / Empowerment, and Agriculture / Overall [1].\n\n### Conclusion:\nThe full version of LightRAG generally outperforms its ablated variants across most metrics and datasets. However, there are notable exceptions, particularly in the Mix dataset for -Low and in the Agriculture dataset for -Origin. These results suggest that the dual-level retrieval system in LightRAG contributes to its superior performance, but in certain contexts, specialized ablations may offer advantages.\n\nNumbers that could not be checked against the cited pages of the original text: 16, 15, 1.2, 1.9%, 11."
+ },
+ {
+  "id": "U1",
+  "question": "我想知道這個論文的的重點",
+  "seconds": 60.1,
+  "usage": {
+   "prompt_tokens": 5317,
+   "completion_tokens": 693,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    2,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    3,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    5,
+    0
+   ],
+   [
+    "2410.05779v3.pdf",
+    10,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    1,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    2,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    4,
+    0
+   ],
+   [
+    "2404.16130v2.pdf",
+    8,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "answer": "2410.05779v3.pdf  \n這篇論文提出了一個名為 LightRAG 的檢索增強生成（Retrieval-Augmented Generation, RAG）系統，旨在提高大型語言模型的準確性和上下文相關性 [1]。傳統的 RAG 系統受限於平面資料表示和缺乏上下文感知，導致產生的回應零散且無法捕捉複雜的依存關係 [2]。LightRAG 通過在文本索引和檢索過程中引入圖結構來解決這些問題，並採用雙層檢索系統，從低層級的具體實體和高層級的抽象主題中提取資訊，從而產生更全面且相關的回應 [3]。  \n\nLightRAG 的架構包括從文檔中提取實體和關係，形成知識圖，並用於高效的檢索 [5]。該系統在農業、計算機科學、法律和混合四個領域進行評估，結果顯示 LightRAG 在全面性（67.6%）、多樣性（71.2%）和整體表現（71.5%）方面優於其他基準系統，如 NaiveRAG、RQ-RAG、HyDE 和 GraphRAG [1]。此外，LightRAG 在成本分析中顯著降低了檢索和更新過程中的 token 和 API 使用量，特別是在法律數據集上，其 token 使用量少於 100 個，而 GraphRAG 使用了 610,000 個 token [1]。  \n\n2404.16130v2.pdf  \n這篇論文提出了一個名為 GraphRAG 的圖結構檢索增強生成（RAG）方法，旨在改善大型語言模型（LLMs）在處理大型私有文本語料時回答全局意義建構問題的能力 [8]。傳統的向量 RAG 方法在處理需要從整個數據集中合成知識的全局問題時表現不佳，而查詢專注摘要（Query-Focused Summarization, QFS）方法雖然適合處理全局問題，但無法擴展到 RAG 系統通常處理的大量文本 [9]。GraphRAG 通過使用 LLM 從來源文檔中建立知識圖，將其分割成層次社區，並生成社區級摘要來解決這個問題 [10]。  \n\n當有查詢時，GraphRAG 使用社區摘要生成部分回應，並將所有部分回應合併成最終答案 [9]。評估結果顯示，GraphRAG 在全面性和多樣性方面大幅優於向量 RAG 和文本摘要方法。例如，在播客數據集中，GraphRAG 的全面性勝率範圍為 72–83%，多樣性勝率範圍為 75–82%；在新聞數據集中，全面性勝率範圍為 72–80%，多樣性勝率範圍為 62–71% [8]。然而，向量 RAG 產生的回應最直接，且在某些情況下 empowerment 的比較結果呈現混合 [8]。\n\n以下數字未能在引用的原文頁面中核對：71.2%、71.5%。\n\n以下結論與原文表格不符：「當有查詢時，GraphRAG 使用社區摘要生成部分回應，並將所有部分回應合併成最終答案 。評估結果顯示，GraphRAG 在全面性和多樣性方面大幅優於向量 RAG 和文本摘要方法。例如，在播客數據集中，GraphRAG 的全面性勝率範圍為 72–83%，多樣性勝率範圍為 75–82%；在新聞數據集中，全面性勝率範圍為 72–80%，多樣性勝率範圍為 62–71% 。然而，向量 RAG 產生的回應最直接，且在某些情況下 empowerment 的比較結果呈現混合 。」——GraphRAG 在 13 格高於比較對象、3 格低於，例如 Empowerment / Agriculture: GraphRAG 41.2% vs LightRAG 58.8% (p. 7)；Empowerment / CS: GraphRAG 45.2% vs LightRAG 54.8% (p. 7)；Empowerment / Legal: GraphRAG 43.6% vs LightRAG 56.4% (p. 7)。"
+ },
+ {
+  "id": "U2",
+  "question": "你能做到甚麼",
+  "seconds": 6.3,
+  "usage": {
+   "prompt_tokens": 1855,
+   "completion_tokens": 104,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    7,
+    0.462
+   ],
+   [
+    "2404.16130v2.pdf",
+    22,
+    0.459
+   ],
+   [
+    "2404.16130v2.pdf",
+    25,
+    0.458
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "answer": "我可以協助您從您上傳的文件中尋找資訊、總結內容、解釋概念、比較不同文件的觀點，並根據文件中的表格或數據回答問題。如果您有具體問題，我可以引用文件名稱和頁碼來提供準確的資訊。例如，我可以告訴您某個概念在文件中的哪一頁被提到，或者比較兩個系統的優缺點。\n\n如果您有任何文件需要分析，或者想了解文件中的內容，歡迎隨時告訴我！"
+ },
+ {
+  "id": "U3",
+  "question": "你好",
+  "seconds": 6.3,
+  "usage": {
+   "prompt_tokens": 3050,
+   "completion_tokens": 63,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    23,
+    0.487
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.479
+   ],
+   [
+    "2404.16130v2.pdf",
+    7,
+    0.478
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "answer": "你好！我是DocuMind-AI的助手，可以根據你上傳的文件內容回答問題、總結文件、解釋並比較文件中的資訊，也可以閱讀表格並告訴你文件中沒有提到什麼。你可以問我與文件相關的任何問題，我會盡力幫助你。"
+ },
+ {
+  "id": "N3",
+  "question": "如何在家烤酸種麵包？",
+  "seconds": 8.1,
+  "usage": {
+   "prompt_tokens": 4748,
+   "completion_tokens": 77,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.36
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.36
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0.355
+   ],
+   [
+    "2404.16130v2.pdf",
+    26,
+    0
+   ]
+  ],
+  "answered": false,
+  "analysis": "UNCERTAIN",
+  "answer": "這份文件並未提及如何在家烤酸種麵包的相關內容。[2404.16130v2.pdf, 2410.05779v3.pdf]  \n如果您對酸種麵包的製作過程感興趣，我可以根據一般知識提供協助，請告訴我您需要哪方面的資訊。\n\n以下數字未能在引用的原文頁面中核對：2404.16130、2410.05779。"
+ },
+ {
+  "id": "U4",
+  "question": "LightRAG 跟傳統 RAG 比起來好在哪裡？",
+  "seconds": 20.1,
+  "usage": {
+   "prompt_tokens": 2538,
+   "completion_tokens": 429,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.622
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.598
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.594
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.593
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.584
+   ]
+  ],
+  "answered": true,
+  "analysis": "UNCERTAIN",
+  "answer": "LightRAG 相較於傳統 RAG 系統有幾個顯著的優勢。首先，LightRAG 透過圖結構（graph structure）整合到文本索引與檢索過程中，克服了傳統 RAG 系統依賴平坦數據表示（flat data representations）的限制，從而更有效地捕捉實體之間的複雜語義關聯 [3]。這種圖增強（graph-enhanced）的架構讓 LightRAG 能夠在處理大型語料和複雜查詢時表現更優，特別是在 Agriculture、CS 和 Legal 等包含數百萬 token 的數據集中，LightRAG 明顯優於 GraphRAG 和其他傳統 chunk-based 方法（如 NaiveRAG、HyDE、RQRAG）[1]。\n\n其次，LightRAG 采用雙層檢索機制（dual-level retrieval paradigm），結合低層級的特定實體檢索與高層級的主題檢索，有效提升回應的多樣性（diversity）和全面性（comprehensiveness）[1]。這種機制讓 LightRAG 能夠同時處理細節性與抽象性查詢，提供更具語境相關性的答案。\n\n此外，LightRAG 的圖索引方法在實驗中顯示出更高的檢索準確性與效率。例如，在對比基線方法（如 GraphRAG）的案例研究中，LightRAG 在全面性、多樣性、啟發性（empowerment）和整體品質等評估維度上都表現更佳 [5]。這歸功於其圖索引技術對關鍵資訊的有效提取，同時過濾掉原始文本中可能引入雜訊的無關資訊 [5]。\n\n總體而言，LightRAG 透過圖結構與雙層檢索機制，解決了傳統 RAG 在語境理解與資訊整合上的不足，使其在處理複雜查詢和大型語料時更具優勢。"
+ },
+ {
+  "id": "G2",
+  "question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets.",
+  "seconds": 0.4,
+  "usage": null,
+  "sources": [],
+  "answered": null,
+  "analysis": null,
+  "answer": ""
+ }
+]
