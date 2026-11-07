@@ -847,7 +847,10 @@ async def test_answer_facts_inject_puts_the_programs_comparison_facts_before_the
     assert prompt.startswith("Comparison facts computed by the program")
     assert "LightRAG vs -High (direct pair; higher is better)" in prompt
     assert "higher in 4 of 6 conditions, lower in 2" in prompt
-    assert "Agriculture / Diversity: 60.0% vs 62.0% (-2.0 pp, -3.2% relative)" in prompt
+    assert (
+        "Agriculture / Diversity: -High 62.0% above LightRAG 60.0% (+2.0 pp, +3.3% relative)"
+        in prompt
+    )
     assert "Comprehensiveness — Agriculture: LightRAG 67.6%, -High 65.2%" in prompt  # table kept
     facts = stream["done"]["facts"]
     assert facts["mode"] == "inject" and facts["facts"] == 6 and facts["replaced_sources"] == []
