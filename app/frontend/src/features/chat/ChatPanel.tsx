@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ConfirmDialog } from '../../components/ConfirmDialog'
@@ -577,6 +577,13 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
   const [panelOpen, setPanelOpen] = useState(false)
+  const transcriptRef = useRef<HTMLDivElement>(null)
+
+  // Keep the newest message in view while answers stream in.
+  useEffect(() => {
+    const box = transcriptRef.current
+    if (box) box.scrollTop = box.scrollHeight
+  }, [messages])
   const [viewer, setViewer] = useState<{
     source: Source
     sentence: string
@@ -899,50 +906,62 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
           </fieldset>
         )}
 
-        <div className="mt-3 grid min-h-0 flex-1 gap-4">
-          <div className="flex min-h-0 min-w-0 flex-col">
-            {messages.length > 0 ? (
-              <ul
-                className="min-h-0 flex-1 list-none space-y-1 overflow-y-auto p-0 pr-1"
-                aria-label="對話內容"
-              >
-                {messages.map((message) => (
-                  <MessageView
-                    key={message.id}
-                    message={message}
-                    onCite={(source, sentence) => {
-                      setViewer({ source, sentence })
-                      setPanelOpen(true)
-                    }}
-                  />
-                ))}
-              </ul>
-            ) : (
-              ready.length > 0 && (
-                <div className="rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted">
-                  還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
-                </div>
-              )
-            )}
-            {error && (
-              <p role="alert" className="mt-2 text-sm text-danger">
-                {error}
-              </p>
-            )}
+        <div className="mt-3 flex min-h-0 flex-1 flex-col">
+          {/* The transcript scrolls on its own; the composer stays at the bottom (GPT-style). */}
+          <div className="min-h-0 flex-1 overflow-y-auto pr-1" ref={transcriptRef}>
+            <div className="mx-auto w-full max-w-3xl">
+              {messages.length > 0 ? (
+                <ul className="list-none space-y-1 p-0" aria-label="對話內容">
+                  {messages.map((message) => (
+                    <MessageView
+                      key={message.id}
+                      message={message}
+                      onCite={(source, sentence) => {
+                        setViewer({ source, sentence })
+                        setPanelOpen(true)
+                      }}
+                    />
+                  ))}
+                </ul>
+              ) : (
+                ready.length > 0 && (
+                  <div className="mt-10 rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted">
+                    還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
+                  </div>
+                )
+              )}
+              {error && (
+                <p role="alert" className="mt-2 text-sm text-danger">
+                  {error}
+                </p>
+              )}
+            </div>
+          </div>
 
+          <div className="mx-auto w-full max-w-3xl pt-3">
             <form
-              className="mt-3 flex items-end gap-2 rounded-2xl border border-border bg-surface-2 p-2 focus-within:border-accent"
+              className="flex items-end gap-2 rounded-2xl border border-border bg-surface-2 p-2 shadow-sm focus-within:border-accent"
               onSubmit={handleAsk}
             >
               <label className="flex-1">
                 <span className="sr-only">問題</span>
                 <textarea
-                  className="w-full resize-none bg-transparent px-2 py-1 outline-none"
-                  rows={2}
-                  placeholder="針對文件提問，例如：summary this document."
+                  className="max-h-40 w-full resize-none bg-transparent px-2 py-1 outline-none"
+                  rows={1}
+                  placeholder="針對文件提問，例如：summary this document.（Enter 送出，Shift+Enter 換行）"
                   value={question}
                   disabled={asking || ready.length === 0}
-                  onChange={(event) => setQuestion(event.target.value)}
+                  onChange={(event) => {
+                    setQuestion(event.target.value)
+                    event.target.style.height = 'auto'
+                    event.target.style.height = `${Math.min(event.target.scrollHeight, 160)}px`
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+                      event.preventDefault()
+                      event.currentTarget.form?.requestSubmit()
+                    }
+                  }}
                 />
               </label>
               <span className="hidden pb-1 text-xs text-muted sm:block">

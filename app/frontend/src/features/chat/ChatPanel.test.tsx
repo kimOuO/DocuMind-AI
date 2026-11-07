@@ -697,3 +697,17 @@ test("the program's notes after an answer are folded away from the answer text",
   expect(within(conversation).getByText('核對結果（1 則註記）')).toBeInTheDocument()
   expect(within(conversation).getByText(/Numbers that could not be checked/)).toBeInTheDocument()
 })
+
+test('Enter sends the question and Shift+Enter only adds a line', async () => {
+  const calls = mockApi(routesFor(answerStream(), stored()))
+  render(<ChatPanel documents={[PAPER]} />)
+  const box = await screen.findByLabelText('問題')
+
+  await userEvent.type(box, 'first line{Shift>}{Enter}{/Shift}second')
+  expect(calls.some((c) => c.key === ASK)).toBe(false)
+  expect(box).toHaveValue('first line\nsecond')
+
+  await userEvent.type(box, '{Enter}')
+
+  expect(calls.find((c) => c.key === ASK)!.body).toEqual({ question: 'first line\nsecond', document_ids: [] })
+})
