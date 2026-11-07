@@ -137,21 +137,23 @@ class DocumentService:
         self._scheduler.cancel_document(document_id)
 
     async def retry(self, actor: User, document_id: uuid.UUID) -> DocumentView:
-        """Queue a new attempt: indexing if that failed, else the summary if that failed."""
+        """Queue a new attempt: indexing if that failed, else the summary if it failed or was
+        never built (a document indexed before summaries existed, D89)."""
         document = await self._repo.get_for_update(actor.id, document_id)
         if document is None:
             await self._db.rollback()
             raise ApiError(404, "DOCUMENT_NOT_FOUND", "Document not found.")
         if document.status == "failed":
             kind = "index"
-        elif document.status == "ready" and document.summary_status == "failed":
+        elif document.status == "ready" and document.summary_status in ("failed", "none"):
             kind = "summary"
         else:
             await self._db.rollback()
             raise ApiError(
                 409,
                 "RETRY_NOT_ALLOWED",
-                "Only a document whose processing or summary failed can be retried.",
+                "Only a document whose processing failed, or whose summary failed or was "
+                "never built, can be retried.",
             )
         try:
             job = await self._repo.add_retry_job(document, kind)

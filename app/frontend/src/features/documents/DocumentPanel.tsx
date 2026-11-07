@@ -305,6 +305,17 @@ export function DocumentPanel({
                       重試
                     </button>
                   )}
+                  {document.status === 'ready' &&
+                    (document.summary_status === 'none' || document.summary_status === 'failed') && (
+                      <button
+                        type="button"
+                        className="rounded-full border border-border px-2 py-0.5 text-xs hover:bg-surface"
+                        onClick={() => handleRetry(document)}
+                        aria-label={`建立摘要 ${document.filename}`}
+                      >
+                        建立摘要
+                      </button>
+                    )}
                   <button
                     type="button"
                     className="rounded-full border border-border px-2 py-0.5 text-xs text-danger hover:bg-surface"

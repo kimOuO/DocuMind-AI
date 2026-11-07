@@ -331,3 +331,22 @@ test('formats file sizes', () => {
   expect(formatSize(2048)).toBe('2.0 KB')
   expect(formatSize(1123301)).toBe('1.1 MB')
 })
+
+
+test('a ready document without a summary offers to build one', async () => {
+  const bare = { ...PAPER, status: 'ready', summary_status: 'none', page_count: 16, chunk_count: 48 }
+  const calls = mockApi({
+    'GET /api/v1/documents': [
+      { status: 200, body: [bare] },
+      { status: 200, body: [{ ...bare, summary_status: 'processing' }] },
+    ],
+    [`POST /api/v1/documents/${PAPER.id}/retry`]: { status: 202, body: { ...bare, summary_status: 'processing' } },
+  })
+  render(<DocumentPanel />)
+
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 尚無摘要')).toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: `建立摘要 ${PAPER.filename}` }))
+
+  expect(calls.some((c) => c.key === `POST /api/v1/documents/${PAPER.id}/retry`)).toBe(true)
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')).toBeInTheDocument()
+})

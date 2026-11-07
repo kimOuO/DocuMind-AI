@@ -285,3 +285,22 @@ def test_the_owner_can_open_the_original_file_and_nobody_else_can(
     assert response.content == b"# Notes\n\nLightRAG builds a graph.\n"
     assert other.get(f"{DOCUMENTS}/{body['id']}/file").status_code == 404
     assert user.get(f"{DOCUMENTS}/{uuid.uuid4()}/file").status_code == 404
+
+
+def test_a_ready_document_without_a_summary_can_have_one_queued(
+    user: TestClient, db: psycopg.Connection
+) -> None:
+    """D89: a document indexed before summaries existed has summary_status "none"; the
+    retry queues a summary job for it instead of refusing."""
+    body = upload(user, "notes.md", b"# Notes\n\nLightRAG builds a graph.\n").json()
+    db.execute(
+        "UPDATE documents SET status = 'ready', summary_status = 'none' WHERE id = %s",
+        (body["id"],),
+    )
+    db.commit()
+
+    response = user.post(f"{DOCUMENTS}/{body['id']}/retry")
+
+    assert response.status_code == 202
+    kinds = [(j["kind"], j["status"]) for j in response.json()["jobs"]]
+    assert ("summary", "queued") in kinds
