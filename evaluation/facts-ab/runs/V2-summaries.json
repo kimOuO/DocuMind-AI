@@ -1,0 +1,354 @@
+{
+ "summary_repair": true,
+ "verification": [
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "INTRODUCTION",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "RETRIEVAL-AUGMENTED GENERATION",
+   "pages": [
+    2,
+    3
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "THE LIGHT RAG ARCHITECTURE",
+   "pages": [
+    3,
+    5
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [],
+   "overstated": [
+    "Win rates from Table 1 show that LightRAG outperforms all baselines across all datasets and metrics."
+   ],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 7
+  },
+  {
+   "summary": "RELATED WORK",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 1
+  },
+  {
+   "summary": "CONCLUSION",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "APPENDIX",
+   "pages": [
+    13,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "12",
+    "10",
+    "94",
+    "61"
+   ],
+   "checked_figures": 8
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 4
+  },
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Introduction",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Background",
+   "pages": [
+    2,
+    4
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Methods",
+   "pages": [
+    4,
+    8
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 3
+  },
+  {
+   "summary": "Analysis",
+   "pages": [
+    8,
+    9
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 12
+  },
+  {
+   "summary": "Results",
+   "pages": [
+    9,
+    11
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 20
+  },
+  {
+   "summary": "Discussion",
+   "pages": [
+    11,
+    12
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "23.42",
+    "21.85",
+    "21.90",
+    "22.13",
+    "21.80",
+    "17.92",
+    "23.16",
+    "22.62",
+    "22.52",
+    "21.93",
+    "21.14",
+    "18.55"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 14
+  },
+  {
+   "summary": "Conclusion (part 1/3)",
+   "pages": [
+    12,
+    18
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Conclusion (part 2/3)",
+   "pages": [
+    18,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 12
+  },
+  {
+   "summary": "Conclusion (part 3/3)",
+   "pages": [
+    26,
+    26
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "0.12",
+    "0.298",
+    "0.036",
+    "0.1",
+    "0.001",
+    "0.669",
+    "0.011",
+    "0.065",
+    "0.026",
+    "0.002",
+    "0.126"
+   ],
+   "checked_figures": 48
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 10
+  }
+ ],
+ "repairs": [
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 7,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"Win rates from Table 1 show that LightRAG outperforms all baselines across all datasets and metrics.\": in the table LightRAG is above the compared methods in 306 cells and below in 11; the cases below: Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Comprehensiveness / Mix: LightRAG 61.2% vs -Low 64.0% (p. 8); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Diversity / CS: LightRAG 62.0% vs -High 63.2% (p. 8)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [],
+    "after": "VERIFIED"
+   }
+  },
+  {
+   "summary": "Discussion",
+   "pages": [
+    11,
+    12
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 14,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 23.42 is given as C0, News Articles, C0; in the table 23.42 is 0.5, News Articles, C0. The table's figures for that condition (Table 3, p. 11): News Articles 34.18; Podcast Transcripts 32.21. Differences: News Articles 34.18 vs Podcast Transcripts 32.21 (+1.97).",
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 21.85 is given as C1, News Articles, C1; in the table 21.85 is 0.5, News Articles, C1. The table's figures for that condition (Table 3, p. 11): News Articles 32.50; Podcast Transcripts 32.20. Differences: News Articles 32.50 vs Podcast Transcripts 32.20 (+0.3).",
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 21.90 is given as C2, News Articles, C2; in the table 21.90 is 0.5, News Articles, C2. The table's figures for that condition (Table 3, p. 11): News Articles 31.62; Podcast Transcripts 32.46. Differences: News Articles 31.62 vs Podcast Transcripts 32.46 (-0.84).",
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 22.13 is given as C3, News Articles, C3; in the table 22.13 is 0.5, News Articles, C3. The table's figures for that condition (Table 3, p. 11): News Articles 33.14; Podcast Transcripts 32.28. Differences: News Articles 33.14 vs Podcast Transcripts 32.28 (+0.86).",
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 21.80 is given as TS, News Articles, TS; in the table 21.80 is 0.5, News Articles, TS. The table's figures for that condition (Table 3, p. 11): News Articles 32.89; Podcast Transcripts 31.39. Differences: News Articles 32.89 vs Podcast Transcripts 31.39 (+1.5).",
+     "\"For News Articles at distance threshold 0.5, the average number of clusters is 23.42 for C0, 21.85 for C1, 21.90 for C2, 22.13 for C3, 21.80 for TS, and 17.92 for SS.\": 17.92 is given as SS, News Articles, SS; in the table 17.92 is 0.5, News Articles, SS. The table's figures for that condition (Table 3, p. 11): News Articles 25.23; Podcast Transcripts 26.50. Differences: News Articles 25.23 vs Podcast Transcripts 26.50 (-1.27).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 23.16 is given as C0, Podcast Transcripts, C0; in the table 23.16 is 0.5, Podcast Transcripts, C0. The table's figures for that condition (Table 3, p. 11): News Articles 34.18; Podcast Transcripts 32.21. Differences: Podcast Transcripts 32.21 vs News Articles 34.18 (-1.97).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 22.62 is given as C1, Podcast Transcripts, C1; in the table 22.62 is 0.5, Podcast Transcripts, C1. The table's figures for that condition (Table 3, p. 11): News Articles 32.50; Podcast Transcripts 32.20. Differences: Podcast Transcripts 32.20 vs News Articles 32.50 (-0.3).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 22.52 is given as C2, Podcast Transcripts, C2; in the table 22.52 is 0.5, Podcast Transcripts, C2. The table's figures for that condition (Table 3, p. 11): News Articles 31.62; Podcast Transcripts 32.46. Differences: Podcast Transcripts 32.46 vs News Articles 31.62 (+0.84).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 21.93 is given as C3, Podcast Transcripts, C3; in the table 21.93 is 0.5, Podcast Transcripts, C3. The table's figures for that condition (Table 3, p. 11): News Articles 33.14; Podcast Transcripts 32.28. Differences: Podcast Transcripts 32.28 vs News Articles 33.14 (-0.86).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 21.14 is given as TS, Podcast Transcripts, TS; in the table 21.14 is 0.5, Podcast Transcripts, TS. The table's figures for that condition (Table 3, p. 11): News Articles 32.89; Podcast Transcripts 31.39. Differences: Podcast Transcripts 31.39 vs News Articles 32.89 (-1.5).",
+     "\"For Podcast Transcripts at distance threshold 0.5, the average number of clusters is 23.16 for C0, 22.62 for C1, 22.52 for C2, 21.93 for C3, 21.14 for TS, and 18.55 for SS, also decreasing with higher thresholds.\": 18.55 is given as SS, Podcast Transcripts, SS; in the table 18.55 is 0.5, Podcast Transcripts, SS. The table's figures for that condition (Table 3, p. 11): News Articles 25.23; Podcast Transcripts 26.50. Differences: Podcast Transcripts 26.50 vs News Articles 25.23 (+1.27)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [],
+    "after": "VERIFIED"
+   }
+  }
+ ]
+}

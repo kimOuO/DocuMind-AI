@@ -1333,5 +1333,85 @@
   },
   "lightrag_own_figures": 7,
   "variant_figures": 9
+ },
+ {
+  "arm": "V1",
+  "question": "Q2",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 299,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [],
+  "figures_unresolved": [
+   "49.6%",
+   "49.2%",
+   "54.4%",
+   "45.6%",
+   "73.6%",
+   "26.4%",
+   "23.6%",
+   "22.8%",
+   "29.2%",
+   "22.8%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "V1",
+  "question": "Q3",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 794,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "in all"
+  ],
+  "sentences_with_universal_wording": [
+   "**LightRAG vs NaiveRAG (direct pair; higher is better)**: LightRAG outperforms NaiveRAG in all 16 conditions, with no cases where NaiveRAG performs better [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 7,
+  "variant_figures": 9
  }
 ]
