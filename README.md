@@ -3,8 +3,8 @@
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 Chat with your documents: upload a file, ask questions, get answers grounded in the document with citations.
 
-> 狀態 / Status：已完成帳號、文件管理、文件入庫與文件問答：登入後上傳文件，在聊天介面對指定或全部的文件提問，回答以串流顯示並附來源（檔名、頁碼、片段）。全文摘要、追問、找不到答案時的拒答門檻尚未實作。
-> Accounts, document management, ingestion and question answering are done: after logging in you upload documents and ask about selected or all of them in a chat panel; answers are streamed with their sources (file name, page, snippet). Whole-document summaries, follow-up questions and the refusal threshold for unanswerable questions are not implemented yet.
+> 狀態 / Status（2026-11-07）：帳號、文件管理（PDF／TXT／Markdown）、入庫（表格整塊保留並逐格改寫、多區塊表格一區塊一向量）、入庫時建立摘要樹（章節摘要 → 全文摘要，附數字驗證狀態）、聊天問答（串流、來源的檔名／頁碼／片段、追問改寫、相似度低於 0.50 時拒答、回答後的數字與結論核對）皆已完成；另有實驗性的兩次呼叫 `navigate` 模式（預設關閉）。已知限制：模型把正確數字總結成錯誤結論句的情況仍會發生，摘要樹可能寫出比表格更強的結論，見 `evaluation/`。
+> Accounts, document management (PDF/TXT/Markdown), ingestion (tables kept whole and rewritten cell by cell, one vector per block of a multi-block table), a summary tree built at ingestion (section summaries → document summary, with a numeric verification status), and chat (streaming, sources with file name/page/snippet, follow-up rewriting, refusal below similarity 0.50, post-answer checks of figures and conclusions) are done; an experimental two-call `navigate` mode exists (off by default). Known limits: the model still sometimes turns correct figures into wrong conclusion sentences, and a summary may state a stronger conclusion than its table supports — see `evaluation/`.
 
 ## 題目限制 / Constraints
 
@@ -84,10 +84,30 @@ DocuMind-AI/
 
 ## 兩個說明題 / The two required explanations
 
-設計已定案，實作完成後會在此補上實測數據。
+**文件 token 超過 context 怎麼辦？ / What if a document exceeds the context window?**
 
-- **文件 token 超過 context 怎麼辦？** 文件切塊後建立索引，提問時只檢索相關片段；每次呼叫前依預算裝填，裝不下就先壓縮證據而不截斷；呼叫前後各檢查一次 token 數。
-- **Summary 怎麼處理？** 入庫時以 map-reduce 建立摘要樹：先對各章節摘要，再合併成全文摘要；合併仍超量就遞迴再摺一層。
+一份論文約 20,000 到 40,000 tokens，從不整份送進模型。做法分四層，每層都有數據（`evaluation/`、`docs/03-decisions/0010`）：
+
+1. **切塊索引**：入庫時依 400 tokens、重疊 80 切塊（三種大小的實驗中 Recall 最高），表格整塊保留並逐格改寫欄位標籤；每塊一個 bge-m3 向量存進 pgvector，多區塊的表格另存每個區塊的向量。
+2. **只取相關片段**：提問時取相似度前 5 的切塊（約 2,100 tokens），命中表格時補入表格後面的討論段；證據預算 5,500 tokens，裝不下的不送也不截斷。
+3. **呼叫前守門**：以內附的 Qwen3 tokenizer 在本地計數，prompt 加上輸出保留 2,500 必須 ≤ 10,000，超過就拒絕呼叫；對 Ollama 的請求固定 `num_ctx=10000`、`truncate=false`、`shift=false`，模型端不會悄悄截斷。
+4. **呼叫後記帳**：Ollama 回報的 `prompt_eval_count + eval_count` 寫進 `llm_calls` 帳本，介面顯示用量條；實驗工具對每次呼叫斷言 ≤ 10,000，到目前 100 多次真實模型紀錄全部合規（單次最高約 9,900）。
+
+A paper is 20,000–40,000 tokens and is never sent whole. Four layers, each measured in `evaluation/`: (1) chunk at ingestion (400 tokens, 80 overlap — the best Recall of three sizes; tables kept whole and rewritten cell by cell; one bge-m3 vector per chunk in pgvector, plus one per block of a multi-block table); (2) retrieve only the top-5 similar chunks (~2,100 tokens) plus the discussion that follows a retrieved table, within a 5,500-token evidence budget — what does not fit is left out, never cut; (3) guard before the call: the bundled Qwen3 tokenizer counts locally, prompt + a 2,500-token output reserve must be ≤ 10,000 or the call is refused, and every Ollama request carries `num_ctx=10000`, `truncate=false`, `shift=false`; (4) account after the call: Ollama's `prompt_eval_count + eval_count` goes into the `llm_calls` ledger, shown in the UI; the experiment harness asserts ≤ 10,000 on every call — all 100+ recorded runs comply (peak ≈ 9,900).
+
+**Summary 怎麼處理？ / How is "summary this document" handled?**
+
+全文摘要在入庫時建好，不在提問時現做：
+
+1. **章節切分**：辨識標題的編號與頁碼，依章節切成摘要單位（參考文獻排除）；超過 6,000 tokens 的章節再往下切。
+2. **章節摘要**：每個單位一次呼叫，最多 250 字，保留關鍵數字並附頁碼；撞到輸出上限的摘要重試兩次。
+3. **全文摘要**：由各章節摘要合併成最多 400 字的全文摘要；合併仍超量就再摺一層。
+4. **驗證狀態**：每份摘要的數字對照原文核對，存 VERIFIED／CONTRADICTED／UNCERTAIN／NOT_CHECKED，不改寫摘要（自動改寫在實驗中改錯多於改對，已撤回）。
+5. **回答**：「summary this document」走摘要路徑，以全文摘要加章節摘要回答並引用摘要節點（章節標題與頁碼範圍）；索引完成即可問一般問題，摘要還沒好時摘要類問題會明說尚未可用。
+
+已知限制：摘要本身是模型寫的，可能出現比表格更強的結論句（例如把「整體較佳」寫成「全面領先」），目前的驗證只核對數字抓不到這種句子，見 `evaluation/navigator-abc/README.md` 的 D83 節。
+
+The whole-document summary is built at ingestion, not at question time: (1) sections are cut by heading numbers and pages (references excluded; sections over 6,000 tokens split further); (2) one call per section, ≤ 250 words, key figures kept with page numbers, retried twice when the output limit is hit; (3) section summaries merge into a ≤ 400-word document summary, folding again if still too long; (4) every summary's figures are checked against the source text and stored with a status — VERIFIED / CONTRADICTED / UNCERTAIN / NOT_CHECKED — without rewriting (automatic rewriting broke more than it fixed in our runs and was withdrawn); (5) "summary this document" answers from the document and section summaries and cites the summary nodes (section title and page range); ordinary questions work as soon as indexing finishes, and a summary question says so while the summary is still being built. Known limit: a summary is model-written and may overstate a table ("outperforms all baselines"), which the numeric check cannot catch — see `evaluation/navigator-abc/README.md`, section D83.
 
 ## 開發方式 / How this was built
 
