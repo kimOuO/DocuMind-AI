@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     db_null_pool: bool = False
 
     # Cross-module API: Ollama
+    # Cross-module API (HTTP_<module>_<field>): the Ollama server that serves the text-to-text
+    # model and the embedding model. The scheme is explicit so an https deployment needs no
+    # code change.
+    http_ollama_scheme: str = "http"
     http_ollama_host: str = "127.0.0.1"
     http_ollama_port: int = 11434
 
@@ -100,7 +104,7 @@ class Settings(BaseSettings):
 
     @property
     def ollama_base_url(self) -> str:
-        return f"http://{self.http_ollama_host}:{self.http_ollama_port}"
+        return f"{self.http_ollama_scheme}://{self.http_ollama_host}:{self.http_ollama_port}"
 
     @property
     def allowed_origin_set(self) -> frozenset[str]:
