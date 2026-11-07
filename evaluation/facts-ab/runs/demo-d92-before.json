@@ -1,0 +1,350 @@
+[
+ {
+  "id": "Q3",
+  "question": "Performance of ablated versions of LightRAG",
+  "seconds": 46.3,
+  "usage": {
+   "prompt_tokens": 4428,
+   "completion_tokens": 821,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.677
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.604
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.574
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.559
+   ],
+   [
+    "2410.05779v3.pdf",
+    1,
+    0.558
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1
+   ],
+   "unverified_numbers": [
+    "108.6%",
+    "535.3%",
+    "33.6%"
+   ],
+   "verified_numbers": [
+    {
+     "number": "63.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+    },
+    {
+     "number": "62.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+    },
+    {
+     "number": "64.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -Hi…"
+    },
+    {
+     "number": "61.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+    },
+    {
+     "number": "64.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+    },
+    {
+     "number": "57.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+    },
+    {
+     "number": "60.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High Comprehensiveness —…"
+    },
+    {
+     "number": "67.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+    },
+    {
+     "number": "32.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…G NaiveRAG LightRAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, Lig…"
+    },
+    {
+     "number": "35.2",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.…"
+    },
+    {
+     "number": "86.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…tRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture: NaiveRAG 32.4%,…"
+    },
+    {
+     "number": "13.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…eRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture:…"
+    },
+    {
+     "number": "72.8",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…Mix: NaiveRAG 40.4%, -High 59.6% Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: Naiv…"
+    },
+    {
+     "number": "42.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…RAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: Naiv…"
+    },
+    {
+     "number": "14.4",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 8,
+     "snippet": "…iveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: N…"
+    }
+   ],
+   "mislabelled_numbers": [],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "incomplete",
+    "required": [
+     "-High",
+     "-Low",
+     "-Origin",
+     "LightRAG"
+    ],
+    "missing": [
+     "-Origin"
+    ],
+    "condition": null
+   },
+   "conclusion_issues": [
+    {
+     "sentence": "The only exception was in the **CS / Diversity** metric, where -High scored 63.2% compared to LightRAG's 62.0% (a difference of +1.2 pp or +1.9% relative).",
+     "status": "contradicted",
+     "detail": "the facts hold 3 conditions where LightRAG is lower, not one: Mix / Comprehensiveness (61.2% vs 64.0%); Mix / Empowerment (57.2% vs 64.8%); Mix / Overall (60.0% vs 64.8%)"
+    }
+   ],
+   "arithmetic_issues": [],
+   "analysis_status": "FACTUALLY_INCORRECT",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 128,
+    "facts": 64,
+    "block_tokens": 390,
+    "replaced_sources": []
+   }
+  },
+  "answer": "The performance of ablated versions of LightRAG was evaluated using NaiveRAG as a reference, and the results are detailed in Table 2 [1]. Here is a summary of the key findings and comparisons:\n\n### Main Findings:\n- **LightRAG vs. NaiveRAG (Direct Pair)**: LightRAG consistently outperformed NaiveRAG in all 16 conditions, across all metrics (Comprehensiveness, Diversity, Empowerment, and Overall) and all four datasets (Agriculture, CS, Legal, and Mix) [1].\n- **LightRAG vs. -High (High-level-only Retrieval)**: LightRAG outperformed the -High variant in 15 out of 16 conditions. The only exception was in the **CS / Diversity** metric, where -High scored 63.2% compared to LightRAG's 62.0% (a difference of +1.2 pp or +1.9% relative) [1].\n- **LightRAG vs. -Low (Low-level-only Retrieval)**: LightRAG outperformed the -Low variant in 11 out of 16 conditions, but was outperformed in 3 conditions:\n  - **Mix / Comprehensiveness**: -Low scored 64.0% vs. LightRAG's 61.2% (+2.8 pp, +4.6% relative) [1].\n  - **Mix / Empowerment**: -Low scored 64.8% vs. LightRAG's 57.2% (+7.6 pp, +13.3% relative) [1].\n  - **Mix / Overall**: -Low scored 64.8% vs. LightRAG's 60.0% (+4.8 pp, +8.0% relative) [1].\n- **LightRAG vs. -Origin**: This comparison was omitted due to space constraints [1].\n\n### Representative Figures Supporting the Findings:\n- **Comprehensiveness - Agriculture**: LightRAG scored 67.6% vs. NaiveRAG's 32.4% (+35.2 pp, +108.6% relative) [1].\n- **Diversity - Legal**: LightRAG scored 86.4% vs. NaiveRAG's 13.6% (+72.8 pp, +535.3% relative) [1].\n- **Empowerment - Mix**: LightRAG scored 57.2% vs. NaiveRAG's 42.8% (+14.4 pp, +33.6% relative) [1].\n\n### Exceptions:\n- **CS / Diversity**: -High scored 63.2% vs. LightRAG's 62.0% [1].\n- **Mix / Comprehensiveness**: -Low scored 64.0% vs. LightRAG's 61.2% [1].\n- **Mix / Empowerment**: -Low scored 64.8% vs. LightRAG's 57.2% [1].\n- **Mix / Overall**: -Low scored 64.8% vs. LightRAG's 60.0% [1].\n\n### Conclusion:\nLightRAG demonstrates superior performance in most conditions compared to its ablated variants, particularly in comprehensiveness and diversity. However, there are notable exceptions where the ablated variants outperform LightRAG, such as in the **CS / Diversity**, **Mix / Comprehensiveness**, **Mix / Empowerment**, and **Mix / Overall** metrics. The hybrid dual-level retrieval system of LightRAG appears to balance the strengths of both low-level and high-level retrieval, but in specific cases, focusing solely on one level can yield better results.\n\nNumbers that could not be checked against the cited pages of the original text: 108.6%, 535.3%, 33.6%."
+ },
+ {
+  "id": "Q2",
+  "question": "compare lightRAG with GraphRAG",
+  "seconds": 20.4,
+  "usage": {
+   "prompt_tokens": 4149,
+   "completion_tokens": 387,
+   "limit": 10000
+  },
+  "sources": [
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.65
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.645
+   ],
+   [
+    "2410.05779v3.pdf",
+    7,
+    0.63
+   ],
+   [
+    "2410.05779v3.pdf",
+    9,
+    0.626
+   ],
+   [
+    "2410.05779v3.pdf",
+    8,
+    0.612
+   ]
+  ],
+  "answered": true,
+  "analysis": "FACTUALLY_INCORRECT",
+  "done": {
+   "status": "completed",
+   "answered": true,
+   "cited": [
+    1,
+    2,
+    3
+   ],
+   "unverified_numbers": [],
+   "verified_numbers": [
+    {
+     "number": "77.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…raphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix…"
+    },
+    {
+     "number": "22.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…AG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, Lig…"
+    },
+    {
+     "number": "51.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…ess — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Div…"
+    },
+    {
+     "number": "48.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…G Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, Li…"
+    },
+    {
+     "number": "74.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…DE LightRAG HyDE LightRAG Comprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 4…"
+    },
+    {
+     "number": "26.0%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…HyDE LightRAG HyDE LightRAG HyDE LightRAG Comprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73…"
+    },
+    {
+     "number": "50.4%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+    },
+    {
+     "number": "49.6%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+    },
+    {
+     "number": "50.8%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+    },
+    {
+     "number": "49.2%",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "page": 7,
+     "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+    }
+   ],
+   "mislabelled_numbers": [
+    {
+     "number": "26.0%",
+     "answer_labels": [
+      "Empowerment",
+      "Legal",
+      "GraphRAG"
+     ],
+     "source_labels": [
+      [
+       "Comprehensiveness",
+       "Agriculture",
+       "HyDE",
+       "vs LightRAG"
+      ],
+      [
+       "Empowerment",
+       "Legal",
+       "HyDE",
+       "vs LightRAG"
+      ]
+     ],
+     "sentence": "- **Legal / Empowerment**: LightRAG 74.0% vs. GraphRAG 26.0%."
+    }
+   ],
+   "unresolved_numbers": [],
+   "overstated_claims": [],
+   "doubtful_citations": [],
+   "direction_issues": [],
+   "completeness": {
+    "status": "not_applicable",
+    "required": [],
+    "missing": [],
+    "condition": null
+   },
+   "conclusion_issues": [],
+   "arithmetic_issues": [],
+   "analysis_status": "FACTUALLY_INCORRECT",
+   "finish_reason": "stop",
+   "revision": null,
+   "navigation": null,
+   "correction": null,
+   "facts": {
+    "mode": "inject",
+    "cells": 128,
+    "facts": 112,
+    "block_tokens": 540,
+    "replaced_sources": []
+   }
+  },
+  "answer": "LightRAG consistently outperforms GraphRAG in most conditions across four evaluation dimensions (Comprehensiveness, Diversity, Empowerment, and Overall) and three datasets (Agriculture, CS, and Legal). Specifically, LightRAG achieves a higher win rate in 13 out of 16 conditions compared to GraphRAG [1]. Representative figures that support this trend include:\n\n- **Agriculture / Diversity**: LightRAG 77.2% vs. GraphRAG 22.8% [1].\n- **CS / Comprehensiveness**: LightRAG 51.6% vs. GraphRAG 48.4% [1].\n- **Legal / Empowerment**: LightRAG 74.0% vs. GraphRAG 26.0% [1].\n\nHowever, there are three exceptions where GraphRAG performs better than LightRAG:\n- **Mix / Comprehensiveness**: GraphRAG 50.4% vs. LightRAG 49.6% (a difference of +0.8 pp, +1.6% relative) [1].\n- **Mix / Empowerment**: GraphRAG 50.8% vs. LightRAG 49.2% (a difference of +1.6 pp, +3.3% relative) [1].\n- **Mix / Overall**: GraphRAG 50.4% vs. LightRAG 49.6% (a difference of +0.8 pp, +1.6% relative) [1].\n\nThe conclusion is that LightRAG generally performs better than GraphRAG, particularly in larger datasets and more complex queries, but there are specific conditions (notably in the \"Mix\" dataset) where GraphRAG shows competitive performance [2][3].\n\nFigures whose labels differ from the source table: 26.0% (answer: Empowerment, Legal, GraphRAG; source: Comprehensiveness, Agriculture, HyDE, vs LightRAG / Empowerment, Legal, HyDE, vs LightRAG)."
+ }
+]
