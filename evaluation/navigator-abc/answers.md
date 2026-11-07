@@ -2119,6 +2119,180 @@ The only exceptions are in the **Mix** dataset for Comprehensiveness, Empowermen
 Figures whose labels differ from the source table: 50.4% (answer: Mix, LightRAG; source: Comprehensiveness, Mix, GraphRAG, vs LightRAG / Overall, Mix, GraphRAG, vs LightRAG); 49.6% (answer: Mix, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG); 50.8% (answer: Mix, LightRAG; source: Empowerment, Mix, GraphRAG, vs LightRAG); 49.2% (answer: Mix, GraphRAG; source: Empowerment, Mix, LightRAG, vs GraphRAG); 49.6% (answer: Comprehensiveness, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG); 49.2% (answer: Empowerment, GraphRAG; source: Empowerment, Mix, LightRAG, vs GraphRAG); 49.6% (answer: Overall, GraphRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG).
 ```
 
+## B9-Q2-1
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；50.5 秒；2 次呼叫；tokens 8754
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval, [6] p9 navigation, [7] p9 navigation, [8] p6 navigation
+- 閱讀計畫（定位 6/6，保留 3，超預算 6）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'already among the retrieved sources')]
+  - ✓ Table 1 (page 7) | need: win rates including GraphRAG | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 5，納入 []，排除 [(26, 'low relevance'), (27, 'already among the retrieved sources'), (24, 'already among the retrieved sources'), (25, 'already selected for another target'), (23, 'over the evidence budget')]
+  - ✓ Table 3 (page 9) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [25, 26]，排除 [(27, 'already among the retrieved sources')]
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method differences | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(11, 'over the evidence budget'), (12, 'over the evidence budget'), (13, 'over the evidence budget')]
+  - ✓ Figure 1 (page 3) | need: architecture differences | priority: supplementary | status: missing → 候選 2，納入 []，排除 [(6, 'over the evidence budget'), (7, 'over the evidence budget')]
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 修正：[]；刪除 []；仍不符 []；方向待定 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Table 1 (page 7)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Table 3 (page 9)→missing；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Figure 1 (page 3)→missing；required 未納入 ['Section 4.4 CASE STUDY (RQ3)']；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 1 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['LightRAG'], 'facts': 112, 'coverage_gaps': ['Table 3 [6]']}
+- 檢查：標籤不符 []；全稱宣稱 1；引用可疑 []；未解析 4；找不到的數字 []
+
+```text
+### Compact Comparison Table (GraphRAG vs. LightRAG)
+| Dataset | Metric | GraphRAG (%) | LightRAG (%) | Source |
+|---------|--------|--------------|--------------|--------|
+| Agriculture | Comprehensiveness | 45.6 | 54.4 | [1] |
+| CS | Comprehensiveness | 48.4 | 51.6 | [1] |
+| Legal | Comprehensiveness | 48.4 | 51.6 | [1] |
+| Mix | Comprehensiveness | 50.4 | 49.6 | [1] |
+| Agriculture | Diversity | 22.8 | 77.2 | [1] |
+| CS | Diversity | 40.8 | 59.2 | [1] |
+| Legal | Diversity | 26.4 | 73.6 | [1] |
+| Mix | Diversity | 36.0 | 64.0 | [1] |
+| Agriculture | Empowerment | 41.2 | 58.8 | [1] |
+| CS | Empowerment | 45.2 | 54.8 | [1] |
+| Legal | Empowerment | 43.6 | 56.4 | [1] |
+| Mix | Empowerment | 50.8 | 49.2 | [1] |
+| Agriculture | Overall | 45.2 | 54.8 | [1] |
+| CS | Overall | 48.0 | 52.0 | [1] |
+| Legal | Overall | 47.2 | 52.8 | [1] |
+| Mix | Overall | 50.4 | 49.6 | [1] |
+
+### Analysis
+LightRAG outperforms GraphRAG in **diversity**, **empowerment**, and **overall** metrics across all four datasets (Agriculture, CS, Legal, Mix), with significant improvements in the Legal dataset. For example, in Legal diversity, LightRAG achieves 73.6% win rate compared to GraphRAG's 26.4% [1]. Similarly, in Legal empowerment, LightRAG wins 56.4% of the time versus GraphRAG's 43.6% [1]. The overall win rate for LightRAG in the Legal dataset is 52.8%, compared to GraphRAG's 47.2% [1].
+
+However, in **comprehensiveness**, the performance is mixed. LightRAG outperforms GraphRAG in Agriculture (54.4% vs. 45.6%) [1] and CS (51.6% vs. 48.4%) [1], but underperforms slightly in Mix (49.6% vs. 50.4%) [1]. In Legal, both models are equal at 51.6% [1]. This shows that while LightRAG generally improves on GraphRAG, the comprehensiveness metric is not consistently better across all datasets.
+
+The case study in Table 3 further supports this conclusion. LightRAG is preferred over GraphRAG in all evaluation dimensions (comprehensiveness, diversity, empowerment, and overall) for a machine learning question [6]. LightRAG's responses are judged to be more comprehensive, diverse, and empowering, which is attributed to its dual-level retrieval paradigm [5]. 
+
+In summary, LightRAG shows consistent improvements over GraphRAG in diversity, empowerment, and overall performance. Comprehensiveness is a mixed result, with LightRAG performing better in most datasets but not all.
+
+A claim the source table does not bear out: "LightRAG outperforms GraphRAG in **diversity**, **empowerment**, and **overall** metrics across all four datasets (Agriculture, CS, Legal, Mix), with significant improvements in the Legal dataset." — LightRAG is above the compared methods in 46 cells and below in 2, for example Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
+```
+
+## B9-Q2-2
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；51.8 秒；2 次呼叫；tokens 8791
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval, [6] p9 navigation, [7] p9 navigation, [8] p6 navigation
+- 閱讀計畫（定位 6/6，保留 3，超預算 6）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'already among the retrieved sources')]
+  - ✓ Table 1 (page 7) | need: win rates including GraphRAG | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 5，納入 []，排除 [(26, 'low relevance'), (27, 'already among the retrieved sources'), (24, 'already among the retrieved sources'), (25, 'already selected for another target'), (23, 'over the evidence budget')]
+  - ✓ Table 3 (page 9) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [25, 26]，排除 [(27, 'already among the retrieved sources')]
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method differences | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(11, 'over the evidence budget'), (12, 'over the evidence budget'), (13, 'over the evidence budget')]
+  - ✓ Figure 1 (page 3) | need: architecture differences | priority: supplementary | status: missing → 候選 2，納入 []，排除 [(6, 'over the evidence budget'), (7, 'over the evidence budget')]
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 修正：[]；刪除 []；仍不符 []；方向待定 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Table 1 (page 7)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Table 3 (page 9)→missing；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Figure 1 (page 3)→missing；required 未納入 ['Section 4.4 CASE STUDY (RQ3)']；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 1 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['LightRAG'], 'facts': 112, 'coverage_gaps': ['Table 3 [6]']}
+- 檢查：標籤不符 []；全稱宣稱 3；引用可疑 []；未解析 32；找不到的數字 ['80%']
+
+```text
+LightRAG is compared with GraphRAG across four datasets (Agriculture, CS, Legal, Mix) and four evaluation metrics (Comprehensiveness, Diversity, Empowerment, Overall). The comparison is based on win rates, where a higher win rate indicates that LightRAG outperforms GraphRAG.
+
+### Compact Comparison Table (LightRAG vs GraphRAG):
+| Metric         | Dataset   | LightRAG Win Rate | GraphRAG Win Rate | Source |
+|----------------|-----------|-------------------|-------------------|--------|
+| Comprehensiveness | Agriculture | 67.6%             | 45.6%             | [1]    |
+| Comprehensiveness | CS          | 61.6%             | 48.4%             | [1]    |
+| Comprehensiveness | Legal       | 83.6%             | 48.4%             | [1]    |
+| Comprehensiveness | Mix         | 61.2%             | 50.4%             | [1]    |
+| Diversity      | Agriculture | 76.4%             | 22.8%             | [1]    |
+| Diversity      | CS          | 62.0%             | 40.8%             | [1]    |
+| Diversity      | Legal       | 86.4%             | 26.4%             | [1]    |
+| Diversity      | Mix         | 67.6%             | 36.0%             | [1]    |
+| Empowerment    | Agriculture | 67.6%             | 41.2%             | [1]    |
+| Empowerment    | CS          | 61.2%             | 45.2%             | [1]    |
+| Empowerment    | Legal       | 83.6%             | 43.6%             | [1]    |
+| Empowerment    | Mix         | 57.2%             | 50.8%             | [1]    |
+| Overall        | Agriculture | 67.6%             | 45.2%             | [1]    |
+| Overall        | CS          | 61.2%             | 48.0%             | [1]    |
+| Overall        | Legal       | 84.8%             | 47.2%             | [1]    |
+| Overall        | Mix         | 60.0%             | 50.4%             | [1]    |
+
+### Analysis:
+**Main Findings:**
+- LightRAG outperforms GraphRAG in all combinations of datasets and metrics.
+- The performance gap is particularly significant in the Legal dataset, where LightRAG achieves win rates over 80% in Comprehensiveness, Diversity, and Empowerment.
+- Across all metrics and datasets, LightRAG consistently achieves higher win rates than GraphRAG.
+
+**Representative Figures:**
+- In the Legal dataset for Comprehensiveness, LightRAG wins 83.6% of the time, while GraphRAG wins only 48.4% [1].
+- For Diversity in the Agriculture dataset, LightRAG wins 76.4% of the time, compared to 22.8% for GraphRAG [1].
+
+**Exceptions:**
+- There are no exceptions in the data provided. LightRAG consistently outperforms GraphRAG across all metrics and datasets.
+
+**Conclusion:**
+- LightRAG consistently outperforms GraphRAG in Comprehensiveness, Diversity, Empowerment, and Overall evaluation across all datasets. The greatest improvements are observed in the Legal dataset, where LightRAG achieves substantial lead in win rates. No regressions or exceptions are found in the data.
+
+Numbers that could not be checked against the cited pages of the original text: 80%.
+
+A claim the source table does not bear out: "- Across all metrics and datasets, LightRAG consistently achieves higher win rates than GraphRAG." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7) / "LightRAG consistently outperforms GraphRAG across all metrics and datasets." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7) / "- LightRAG consistently outperforms GraphRAG in Comprehensiveness, Diversity, Empowerment, and Overall evaluation across all datasets." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
+```
+
+## B9-Q2-3
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `navigate`；46.2 秒；2 次呼叫；tokens 8659
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval, [6] p9 navigation, [7] p9 navigation, [8] p6 navigation
+- 閱讀計畫（定位 6/6，保留 3，超預算 6）：
+  - ✓ Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1) | need: comparison with GraphRAG | priority: required | status: missing → 候選 4，納入 [18]，排除 [(20, 'already among the retrieved sources'), (21, 'already among the retrieved sources'), (19, 'already among the retrieved sources')]
+  - ✓ Table 1 (page 7) | need: win rates including GraphRAG | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 5，納入 []，排除 [(26, 'low relevance'), (27, 'already among the retrieved sources'), (24, 'already among the retrieved sources'), (25, 'already selected for another target'), (23, 'over the evidence budget')]
+  - ✓ Table 3 (page 9) | need: case study comparison with GraphRAG | priority: required | status: missing → 候選 3，納入 [25, 26]，排除 [(27, 'already among the retrieved sources')]
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method differences | priority: supplementary | status: missing → 候選 3，納入 []，排除 [(11, 'over the evidence budget'), (12, 'over the evidence budget'), (13, 'over the evidence budget')]
+  - ✓ Figure 1 (page 3) | need: architecture differences | priority: supplementary | status: missing → 候選 2，納入 []，排除 [(6, 'over the evidence budget'), (7, 'over the evidence budget')]
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 修正：[]；刪除 []；仍不符 []；方向待定 []
+- 涵蓋判定：Section 4.2 COMPARISON OF LIGHT RAG WITH EXISTING RAG METHODS (RQ1)→partial；Table 1 (page 7)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Table 3 (page 9)→missing；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Figure 1 (page 3)→missing；required 未納入 ['Section 4.4 CASE STUDY (RQ3)']；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 1 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['LightRAG'], 'facts': 112, 'coverage_gaps': ['Table 3 [6]']}
+- 檢查：標籤不符 []；全稱宣稱 2；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+The question asks for a comparison between LightRAG and GraphRAG, across four datasets (Agriculture, CS, Legal, Mix) and four metrics (Comprehensiveness, Diversity, Empowerment, Overall).
+
+The evidence matrix in Table 1 [1] provides win rates of GraphRAG versus LightRAG across these datasets and metrics. 
+
+Comparing LightRAG and GraphRAG on the same dataset and metric:
+
+- **Comprehensiveness:**
+  - Agriculture: GraphRAG 45.6% | LightRAG 54.4%
+  - CS: GraphRAG 48.4% | LightRAG 51.6%
+  - Legal: GraphRAG 48.4% | LightRAG 51.6%
+  - Mix: GraphRAG 50.4% | LightRAG 49.6%
+
+- **Diversity:**
+  - Agriculture: GraphRAG 22.8% | LightRAG 77.2%
+  - CS: GraphRAG 40.8% | LightRAG 59.2%
+  - Legal: GraphRAG 26.4% | LightRAG 73.6%
+  - Mix: GraphRAG 36.0% | LightRAG 64.0%
+
+- **Empowerment:**
+  - Agriculture: GraphRAG 41.2% | LightRAG 58.8%
+  - CS: GraphRAG 45.2% | LightRAG 54.8%
+  - Legal: GraphRAG 43.6% | LightRAG 56.4%
+  - Mix: GraphRAG 50.8% | LightRAG 49.2%
+
+- **Overall:**
+  - Agriculture: GraphRAG 45.2% | LightRAG 54.8%
+  - CS: GraphRAG 48.0% | LightRAG 52.0%
+  - Legal: GraphRAG 47.2% | LightRAG 52.8%
+  - Mix: GraphRAG 50.4% | LightRAG 49.6%
+
+**Improvements and regressions:**
+- **Comprehensiveness:** LightRAG outperforms GraphRAG in all four datasets.
+- **Diversity:** LightRAG outperforms GraphRAG in all four datasets.
+- **Empowerment:** LightRAG outperforms GraphRAG in all four datasets.
+- **Overall:** LightRAG outperforms GraphRAG in all four datasets.
+
+**Exceptions:**
+- No exceptions to the trend of LightRAG outperforming GraphRAG in this comparison.
+
+The cited win rates confirm that LightRAG consistently outperforms GraphRAG in all metrics and datasets.
+
+The comparison is based on Table 1 [1], and the superiority of LightRAG over GraphRAG is further supported by the passage on page 7 [2], which states that LightRAG consistently outperforms GraphRAG in larger datasets with complex language contexts.
+
+All required comparisons are included and supported by the sources.
+
+A claim the source table does not bear out: "The cited win rates confirm that LightRAG consistently outperforms GraphRAG in all metrics and datasets." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7) / "The comparison is based on Table 1, and the superiority of LightRAG over GraphRAG is further supported by the passage on page 7, which states that LightRAG consistently outperforms GraphRAG in larger datasets with complex language contexts." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
+```
+
 ## C-Q2-1
 
 - 問題：`compare lightRAG with GraphRAG`；模式 `single`；14.0 秒；1 次呼叫；tokens 2462
@@ -4075,6 +4249,131 @@ LightRAG consistently outperforms the ablated variants (-High, -Low, -Origin) in
 Numbers that could not be checked against the cited pages of the original text: 12, 16, 10.
 
 Figures whose labels differ from the source table: 67.6% (answer: Comprehensiveness, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 65.2% (answer: Comprehensiveness, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 64.0% (answer: Comprehensiveness, Agriculture, NaiveRAG; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 75.2% (answer: Comprehensiveness, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, -Origin, vs NaiveRAG); 61.6% (answer: CS, NaiveRAG; source: Comprehensiveness, CS, LightRAG, vs NaiveRAG); 57.2% (answer: CS, NaiveRAG; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 56.8% (answer: CS, NaiveRAG; source: Comprehensiveness, CS, -Low, vs NaiveRAG / Empowerment, CS, -Origin, vs NaiveRAG); 60.8% (answer: CS, NaiveRAG; source: Comprehensiveness, CS, -Origin, vs NaiveRAG / Overall, CS, -Origin, vs NaiveRAG); 83.6% (answer: Legal, NaiveRAG; source: Comprehensiveness, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, LightRAG, vs NaiveRAG / Empowerment, Legal, -Low, vs NaiveRAG / Comprehensiveness, Legal, -Origin, vs NaiveRAG); 76.4% (answer: Legal, NaiveRAG; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 80.8% (answer: Legal, NaiveRAG; source: Comprehensiveness, Legal, -Low, vs NaiveRAG); 61.2% (answer: Mix, NaiveRAG; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 59.6% (answer: Mix, NaiveRAG; source: Comprehensiveness, Mix, -High, vs NaiveRAG); 64.0% (answer: Mix, NaiveRAG; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 55.6% (answer: Mix, NaiveRAG; source: Comprehensiveness, Mix, -Origin, vs NaiveRAG / Overall, Mix, -Origin, vs NaiveRAG); 76.4% (answer: Diversity, Agriculture, NaiveRAG; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG); 72.8% (answer: Diversity, Agriculture, NaiveRAG; source: Diversity, Agriculture, -High, vs NaiveRAG); 72.0% (answer: Diversity, Agriculture, NaiveRAG; source: Diversity, Agriculture, -Low, vs NaiveRAG); 73.6% (answer: Diversity, Agriculture, NaiveRAG; source: Diversity, Agriculture, -Origin, vs NaiveRAG); 62.0% (answer: CS, NaiveRAG; source: Diversity, CS, LightRAG, vs NaiveRAG); 63.2% (answer: CS, NaiveRAG; source: Diversity, CS, -High, vs NaiveRAG); 60.4% (answer: CS, NaiveRAG; source: Diversity, CS, -Low, vs NaiveRAG); 55.2% (answer: CS, NaiveRAG; source: Diversity, CS, -Origin, vs NaiveRAG); 86.4% (answer: Legal, NaiveRAG; source: Diversity, Legal, LightRAG, vs NaiveRAG / Diversity, Legal, -Low, vs NaiveRAG); 83.2% (answer: Legal, NaiveRAG; source: Diversity, Legal, -High, vs NaiveRAG); 85.6% (answer: Legal, NaiveRAG; source: Diversity, Legal, -Origin, vs NaiveRAG); 67.6% (answer: Mix, NaiveRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 66.8% (answer: Mix, NaiveRAG; source: Diversity, Mix, -Low, vs NaiveRAG); 74.4% (answer: Mix, NaiveRAG; source: Diversity, Mix, -Origin, vs NaiveRAG / Overall, Agriculture, -Origin, vs NaiveRAG); 67.6% (answer: Empowerment, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.0% (answer: Empowerment, Agriculture, NaiveRAG; source: Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG); 65.2% (answer: Empowerment, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 68.0% (answer: Empowerment, Agriculture, NaiveRAG; source: Empowerment, Agriculture, -Origin, vs NaiveRAG); 77.2% (answer: Legal, NaiveRAG; source: Empowerment, Legal, -High, vs NaiveRAG); 82.8% (answer: Legal, NaiveRAG; source: Empowerment, Legal, -Origin, vs NaiveRAG); 57.2% (answer: Mix, NaiveRAG; source: Empowerment, Mix, LightRAG, vs NaiveRAG / Comprehensiveness, CS, -High, vs NaiveRAG / Empowerment, CS, -Low, vs NaiveRAG); 52.4% (answer: Mix, NaiveRAG; source: Empowerment, Mix, -High, vs NaiveRAG); 64.8% (answer: Mix, NaiveRAG; source: Overall, Agriculture, -High, vs NaiveRAG / Empowerment, Mix, -Low, vs NaiveRAG / Overall, Mix, -Low, vs NaiveRAG); 54.8% (answer: Mix, NaiveRAG; source: Empowerment, Mix, -Origin, vs NaiveRAG); 67.6% (answer: Overall, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG); 64.8% (answer: Overall, Agriculture, NaiveRAG; source: Overall, Agriculture, -High, vs NaiveRAG / Empowerment, Mix, -Low, vs NaiveRAG / Overall, Mix, -Low, vs NaiveRAG); 65.2% (answer: Overall, Agriculture, NaiveRAG; source: Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG); 74.4% (answer: Overall, Agriculture, NaiveRAG; source: Diversity, Mix, -Origin, vs NaiveRAG / Overall, Agriculture, -Origin, vs NaiveRAG); 61.2% (answer: CS, NaiveRAG; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 56.0% (answer: CS, NaiveRAG; source: Overall, CS, -High, vs NaiveRAG); 56.4% (answer: CS, NaiveRAG; source: Overall, CS, -Low, vs NaiveRAG); 84.8% (answer: Legal, NaiveRAG; source: Overall, Legal, LightRAG, vs NaiveRAG); 78.0% (answer: Legal, NaiveRAG; source: Overall, Legal, -High, vs NaiveRAG); 81.2% (answer: Legal, NaiveRAG; source: Overall, Legal, -Low, vs NaiveRAG); 84.4% (answer: Legal, NaiveRAG; source: Overall, Legal, -Origin, vs NaiveRAG); 60.0% (answer: Mix, NaiveRAG; source: Overall, Mix, LightRAG, vs NaiveRAG); 57.6% (answer: Mix, NaiveRAG; source: Empowerment, CS, -High, vs NaiveRAG / Overall, Mix, -High, vs NaiveRAG); 74.4% (answer: Comprehensiveness; source: Diversity, Mix, -Origin, vs NaiveRAG / Overall, Agriculture, -Origin, vs NaiveRAG); 84.4% (answer: Comprehensiveness; source: Overall, Legal, -Origin, vs NaiveRAG).
+```
+
+## B9-Q3-1
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；51.4 秒；2 次呼叫；tokens 8092
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: discussion of ablated versions | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Table 2 (page 8) | need: performance metrics | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method description | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：FACTUALLY_INCORRECT；完整性 complete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 []，條件 Agriculture / Comprehensiveness）；方向核對 []
+- 修正：[]；刪除 []；仍不符 ['39.2% (Comprehensiveness, CS, -Origin)']；方向待定 []
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2 (page 8)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Section 7.3.1 PROMPTS FOR GRAPH GENERATION→missing；Section 7.3.2 PROMPTS FOR QUERY GENERATION→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['NaiveRAG', 'LightRAG', '-High'], 'facts': 64, 'coverage_gaps': []}
+- 檢查：標籤不符 ['39.2%']；全稱宣稱 0；引用可疑 []；未解析 7；找不到的數字 []
+
+```text
+| Method | Dataset | Metric | Score | Reference |
+|--------|---------|--------|-------|----------|
+| LightRAG | Agriculture | Comprehensiveness | 67.6% | NaiveRAG 32.4% [1] |
+| LightRAG | CS | Comprehensiveness | 61.6% | NaiveRAG 38.4% [1] |
+| LightRAG | Legal | Comprehensiveness | 83.6% | NaiveRAG 16.4% [1] |
+| LightRAG | Mix | Comprehensiveness | 61.2% | NaiveRAG 38.8% [1] |
+| -High | Agriculture | Comprehensiveness | 65.2% | NaiveRAG 34.8% [1] |
+| -High | CS | Comprehensiveness | 57.2% | NaiveRAG 42.8% [1] |
+| -High | Legal | Comprehensiveness | 76.4% | NaiveRAG 23.6% [1] |
+| -High | Mix | Comprehensiveness | 59.6% | NaiveRAG 40.4% [1] |
+| -Low | Agriculture | Comprehensiveness | 64.0% | NaiveRAG 36.0% [1] |
+| -Low | CS | Comprehensiveness | 56.8% | NaiveRAG 43.2% [1] |
+| -Low | Legal | Comprehensiveness | 80.8% | NaiveRAG 19.2% [1] |
+| -Low | Mix | Comprehensiveness | 64.0% | NaiveRAG 36.0% [1] |
+| -Origin | Agriculture | Comprehensiveness | 75.2% | NaiveRAG 24.8% [1] |
+| -Origin | CS | Comprehensiveness | 60.8% | Na1veRAG 39.2% [1] |
+| -Origin | Legal | Comprehensiveness | 83.6% | NaiveRAG 16.4% [1] |
+| -Origin | Mix | Comprehensiveness | 55.6% | NaiveRAG 44.4% [1] |
+
+The ablation studies of LightRAG, as presented in Table 2 [1], show that the full version of LightRAG consistently outperforms the NaiveRAG baseline across all datasets and metrics in terms of Comprehensiveness. The highest improvements are observed in the Legal dataset, where LightRAG achieves 83.6% compared to NaiveRAG's 16.4% [1]. The -High variant, which removes high-level retrieval, shows a significant performance decline compared to the full LightRAG, particularly in the CS dataset, where it achieves 57.2% compared to LightRAG's 61.6% [1]. The -Low variant, which removes low-level retrieval, maintains high performance in Comprehensiveness but slightly underperforms the full LightRAG in CS and Mix datasets [1]. The -Origin variant, which eliminates the use of original text, performs surprisingly well in Agriculture and Mix datasets, outperforming the full LightRAG in Mix (55.6% vs. 61.2%) [1]. However, it underperforms in CS (60.8% vs. 61.6%) [1]. The results indicate that the dual-level retrieval paradigm in LightRAG is effective in enhancing retrieval performance. The semantic graph used in the retrieval process contributes positively to the performance, as seen in the -Origin variant's improvements in some datasets [1]. The ablation studies highlight the importance of combining low-level and high-level retrieval methods to achieve balanced performance across multiple dimensions [6].
+
+Figures whose labels differ from the source table: 39.2% (answer: Comprehensiveness, CS, -Origin; source: Comprehensiveness, CS, NaiveRAG, vs -Origin / Overall, CS, NaiveRAG, vs -Origin).
+```
+
+## B9-Q3-2
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；43.4 秒；2 次呼叫；tokens 7902
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: discussion of ablated versions | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Table 2 (page 8) | need: performance metrics | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method description | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：UNCERTAIN；完整性 uncertain（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 ['-High', '-Low', 'LightRAG']，條件 None）；方向核對 []
+- 修正：[]；刪除 []；仍不符 []；方向待定 []
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2 (page 8)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Section 7.3.1 PROMPTS FOR GRAPH GENERATION→missing；Section 7.3.2 PROMPTS FOR QUERY GENERATION→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['NaiveRAG', 'LightRAG', '-High'], 'facts': 64, 'coverage_gaps': []}
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 [([2], [6])]；未解析 15；找不到的數字 []
+
+```text
+| Dataset | Metric | Method | Score | Baseline |
+|---------|--------|--------|-------|----------|
+| Agriculture | Comprehensiveness | NaiveRAG | 32.4% | - |
+| Agriculture | Comprehensiveness | LightRAG | 67.6% | NaiveRAG |
+| Agriculture | Comprehensiveness | -High | 65.2% | NaiveRAG |
+| Agriculture | Comprehensiveness | -Low | 64.0% | NaiveRAG |
+| Agriculture | Comprehensiveness | -Origin | 75.2% | NaiveRAG |
+| CS | Comprehensiveness | NaiveRAG | 38.4% | - |
+| CS | Comprehensiveness | LightRAG | 61.6% | NaiveRAG |
+| CS | Comprehensiveness | -High | 57.2% | NaiveRAG |
+| CS | Comprehensiveness | -Low | 56.8% | NaiveRAG |
+| CS | Comprehensiveness | -Origin | 60.8% | NaiveRAG |
+| Legal | Comprehensiveness | NaiveRAG | 16.4% | - |
+| Legal | Comprehensiveness | LightRAG | 83.6% | NaiveRAG |
+| Legal | Comprehensiveness | -High | 76.4% | NaiveRAG |
+| Legal | Comprehensiveness | -Low | 80.8% | NaiveRAG |
+| Legal | Comprehensiveness | -Origin | 83.6% | NaiveRAG |
+| Mix | Comprehensiveness | NaiveRAG | 38.8% | - |
+| Mix | Comprehensiveness | LightRAG | 61.2% | NaiveRAG |
+| Mix | Comprehensiveness | -High | 59.6% | NaiveRAG |
+| Mix | Comprehensiveness | -Low | 64.0% | NaiveRAG |
+| Mix | Comprehensiveness | -Origin | 55.6% | Nai
+
+The ablated versions of LightRAG demonstrate varying performance across datasets and metrics. The full LightRAG consistently outperforms NaiveRAG in all cases, showing the most substantial improvements in the Legal dataset for Comprehensiveness (83.6% vs. 16.4%) [1]. The -Origin variant, which uses semantic graphs instead of original text, also shows improvements in some cases, particularly in the Agriculture and Mix datasets for Comprehensiveness [1]. However, the -High and -Low variants, which use only high-level or low-level retrieval, respectively, show mixed results. The -High variant performs well in Comprehensiveness but poorly in Diversity and Empowerment, while the -Low variant shows strong Comprehensiveness but weak Diversity and Empowerment [1]. These findings suggest that the full LightRAG, which combines both retrieval methods, provides the best balance of performance across multiple metrics [2].
+```
+
+## B9-Q3-3
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `navigate`；49.5 秒；2 次呼叫；tokens 8047
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 閱讀計畫（定位 6/6，保留 0，超預算 0）：
+  - ✓ Section 4.3 ABLATION STUDIES (RQ2) | need: discussion of ablated versions | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Table 2 (page 8) | need: performance metrics | priority: required | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 4.4 CASE STUDY (RQ3) | need: additional context on ablation effects | priority: supplementary | status: covered → 候選 0，納入 []，排除 []
+  - ✓ Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM | need: method description | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.1 PROMPTS FOR GRAPH GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+  - ✓ Section 7.3.2 PROMPTS FOR QUERY GENERATION | need: implementation details | priority: supplementary | status: missing → 候選 0，納入 []，排除 []
+- 分析狀態：FACTUALLY_INCORRECT；完整性 uncertain（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 ['-High', '-Low', '-Origin', 'LightRAG']，條件 None）；方向核對 []
+- 修正：[]；刪除 []；仍不符 ['59.6% (Comprehensiveness, Mix, -High, vs LightRAG)', '72.0% (Diversity, Agriculture, -Low, vs LightRAG)']；方向待定 []
+- 涵蓋判定：Section 4.3 ABLATION STUDIES (RQ2)→covered；Table 2 (page 8)→covered；Section 4.4 CASE STUDY (RQ3)→partial；Section 3.2 DUAL-LEVEL RETRIEVAL PARADIGM→missing；Section 7.3.1 PROMPTS FOR GRAPH GENERATION→missing；Section 7.3.2 PROMPTS FOR QUERY GENERATION→missing；required 未納入 []；supplementary 用 0；Matrix {'cells': 128, 'tables': ['Table 2 [1]'], 'shown_tokens': 1348, 'left_out': [], 'definitions': ['NaiveRAG', 'LightRAG', '-High'], 'facts': 64, 'coverage_gaps': []}
+- 檢查：標籤不符 ['59.6%', '61.2%', '72.0%', '76.4%']；全稱宣稱 0；引用可疑 []；未解析 65；找不到的數字 []
+
+```text
+| Method Pair | Dataset | Metric | LightRAG vs. NaiveRAG | -High vs. NaiveRAG | -Low vs. NaiveRAG | -Origin vs. NaiveRAG |
+|-------------|---------|--------|----------------------|------------------|------------------|---------------------|
+| Agriculture | Comprehensiveness | 67.6% | 65.2% | 64.0% | 75.2% |
+| Agriculture | Diversity | 76.4% | 72.8% | 72.0% | 73.6% |
+| Agriculture | Empowerment | 67.6% | 64.0% | 65.2% | 68.0% |
+| Agriculture | Overall | 67.6% | 64.8% | 65.2% | 74.4% |
+| CS | Comprehensiveness | 61.6% | 57.2% | 56.8% | 60.8% |
+| CS | Diversity | 62.0% | 63.2% | 60.4% | 55.2% |
+| CS | Empowerment | 61.2% | 57.6% | 57.2% | 56.8% |
+| CS | Overall | 61.2% | 56.0% | 56.4% | 60.8% |
+| Legal | Comprehensiveness | 83.6% | 76.4% | 80.8% | 83.6% |
+| Legal | Diversity | 86.4% | 83.2% | 86.4% | 85.6% |
+| Legal | Empowerment | 83.6% | 77.2% | 83.6% | 82.8% |
+| Legal | Overall | 84.8% | 78.0% | 81.2% | 84.4% |
+| Mix | Comprehensiveness | 61.2% | 59.6% | 64.0% | 55.6% |
+| Mix | Diversity | 67.6% | 64.0% | 66.8% | 74.4% |
+| Mix | Empowerment | 57.2% | 52.4% | 64.8% | 54.8% |
+| Mix | Overall | 60.0% | 57.6% | 64.8% | 55.6% |
+
+LightRAG consistently outperforms NaiveRAG across all datasets and metrics, with the most significant improvements observed in the Legal dataset for Comprehensiveness, Diversity, and Empowerment (83.6%, 86.4%, and 83.6%, respectively) [1]. The -High variant shows a performance decline compared to LightRAG in all datasets and metrics, with the largest drop in Mix for Comprehensiveness (59.6% vs. 61.2%) [1]. The -Low variant performs worse than LightRAG in Comprehensiveness and Empowerment but better in Diversity, with the most notable improvement in Agriculture for Diversity (72.0% vs. 76.4%) [1]. The -Origin variant shows mixed results, with improvements in Agriculture and Mix for Comprehensiveness (75.2% and 55.6%, respectively) but declines in CS and Mix for Diversity and Empowerment [1].
+
+Figures whose labels differ from the source table: 59.6% (answer: Comprehensiveness, Mix, -High, vs LightRAG; source: Comprehensiveness, Mix, -High, vs NaiveRAG); 61.2% (answer: Comprehensiveness, Mix, -High, vs LightRAG; source: Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG); 72.0% (answer: Diversity, Agriculture, -Low, vs LightRAG; source: Diversity, Agriculture, -Low, vs NaiveRAG); 76.4% (answer: Agriculture, -Low, vs LightRAG; source: Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG).
 ```
 
 ## C-Q3-1

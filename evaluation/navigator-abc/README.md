@@ -764,3 +764,47 @@ B8-Q2-1、B8-Q2-3 各 32 格全對；B8-Q2-2 以列式寫 32 格全對；B8-Q3-1
 
 - 預設模式：兩臂這批都沒有通過 Q3，Q2 只有 B8 一次。以成本看 single 每題約 4,000 tokens、20–30 秒，navigate 約 9,000 tokens、60–90 秒。
 - 建議把 Analyst 的分析順序退回 B6 的版本（B3 文字），保留矩陣、區塊向量、Table 6 修正與 0.50，再測一次 Q2、Q3；若回到 B6 的水準（Q2 2/3、Q3 1/3），navigate 作為進階模式展示，single 維持預設。
+
+## D84／B9：分析順序退回 B6 文字後重測 Q2、Q3（2026-11-07，各 3 次，683 秒含入庫）
+
+### 設定
+
+同 B8（區塊向量、Table 6 修正、0.50、矩陣進 prompt、定義附註拿掉），只把 Analyst 的分析順序由 D79 的計數式退回 B3／B6 的文字（2075a97；第 (2) 步仍指向「來源中定義各方法的段落」）。目的：確認 B8 的 Q3 反向計數是 D79 規則造成，並看能否回到 B6 的水準（Q2 2/3、Q3 1/3）。
+
+### 與 B6 的差別（紀錄比對）
+
+| | B6 | B9 |
+|---|---|---|
+| Q2 的 Top-5 | 無 Table 1；Navigator 補 Table 1、Table 3、p6 一段 | **Table 1 第 1 名**（區塊向量）；Navigator 補 Table 3 兩段、p6 一段 |
+| Q2 補取預算 | 2,243 | 1,156（Table 1 的 tokens 已在 Top-5 內） |
+| Q2 Analyst 輸入 | 6,388 | 6,242 |
+| Q3 的來源與矩陣 | Table 2＋後文，矩陣 1,348 | 完全相同 |
+
+### 人工判定（同 key-facts 標準；表格數字由腳本逐格對 `paper-structure.json`）
+
+| 題 | B6 | B7 | B8 | **B9** |
+|---|---|---|---|---|
+| Q2 | 2/3 | 1/3 | 1/3 | **0/3** |
+| Q3 | 1/3 | — | 0/3 | **0/3** |
+
+| 次 | 表格數字 | 判定 | 原因 |
+|---|---|---|---|
+| B9-Q2-1 | 32/32 | 不通過 | 「diversity, empowerment, and overall across all four datasets」錯（Mix 兩格反）；「In Legal, both models are equal at 51.6%」錯（48.4 對 51.6）；全稱檢查命中 |
+| B9-Q2-2 | 0/32 | 不通過 | 表格的 LightRAG 欄全取自 NaiveRAG 區塊（67.6、61.6、83.6…）配 GraphRAG 欄——**矩陣在 prompt 裡（1,348 tokens）仍發生的配對混淆**，B6 之後第一次；「no exceptions」；全稱檢查命中 3 句 |
+| B9-Q2-3 | 32/32（列式） | 不通過 | 列完三個 Mix 例外後寫四個指標「outperforms in all four datasets」「No exceptions」——與自己上一段矛盾；全稱檢查命中 |
+| B9-Q3-1 | 31/31 | 不通過 | 三個變體定義全對；「-Origin … outperforming the full LightRAG in Mix (55.6% vs. 61.2%)」方向反；只涵蓋 Comprehensiveness |
+| B9-Q3-2 | 表格列式，數字對 | 不通過 | 「-High performs well in Comprehensiveness but poorly in Diversity and Empowerment」「-Low … weak Diversity and Empowerment」——-Low 在 Mix Empowerment 64.8 高於 LightRAG 57.2；論文的主要觀察（-High 顯著下降）寫成「mixed results」；-Origin 定義寫成「uses semantic graphs instead of original text」（可接受） |
+| B9-Q3-3 | 48/48 | 不通過 | 「-High decline in all datasets and metrics」錯（CS Diversity 63.2>62.0）；「largest drop Mix Comprehensiveness (59.6 vs 61.2)」錯（Legal 76.4 對 83.6 更大）；「-Low … most notable improvement in Agriculture Diversity (72.0% vs. 76.4%)」方向反 |
+
+### 要誠實說的
+
+- **退回 B6 文字沒有回到 B6 的結果。** Q3 的來源、矩陣、提示詞與 B6 完全相同（只差定義附註），B6 1/3、B9 0/3；B9-Q3-3 的「lower in」反向清單沒有再出現，但換成方向反的個別句子。Q2 的輸入只差來源順序（Table 1 由 Navigator 補進變成 Top-5 第 1 名），B6 2/3、B9 0/3。
+- 把 B6、B7、B8、B9 放在一起看：navigate 模式對 Q2 在幾乎相同的證據下通過 2、1、1、0 次，Q3 通過 1、—、0、0 次。**B6 的 2/3 很可能是高點的抽樣**，不是穩定水準。這一層的結論：以目前的模型與提示詞，navigate 模式對兩個比較題的通過率在 0 到 2 之三之間晃，沒有一個版本能穩定。
+- B9-Q2-2 顯示矩陣在 prompt 裡也擋不住配對混淆（B5 的錯誤型態回來一次）。
+- 區塊向量讓 Table 1 進了 Top-5，Navigator 的補取預算因此變小、補進的是 Table 3 的個案文字。這對 Q2 無害也無益。
+- 定義：拿掉附註後 B9 三次 -Origin 定義都可接受（B8 兩次寫反），無法判定附註的影響。
+
+### 結論（供使用者決定）
+
+- 預設維持 `single`；`navigate` 作為進階模式展示，誠實說明它的成本（約 9,000 tokens、50 到 90 秒）與不穩定。
+- 問答層的提示詞路線到此停止；報告以 B3 到 B9 共 40 次 navigate、C8 九次 single 的紀錯當證據。
