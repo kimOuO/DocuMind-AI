@@ -104,15 +104,19 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
         assert await summary.run(index.queued_summary_jobs[job]) is SummaryOutcome.COMPLETED
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
     # D75: what the summary verification found and corrected, for the experiment's records.
-    label_for_files = os.environ.get("ABC_LABEL") or "-".join(_plan())
+    label_for_files = (os.environ.get("ABC_LABEL") or "-".join(_plan())).replace(",", "-")
     (RUNS_DIR / f"{label_for_files}-summaries.json").write_text(
         json.dumps(summary.verification_reports, indent=1, ensure_ascii=False) + "\n"
     )
 
-    label = os.environ.get("ABC_LABEL")
+    # ABC_LABEL names the records: one label for a single arm, or one per arm in the
+    # order of ABC_ARMS (D83: ABC_ARMS=C,B ABC_LABEL=C8,B8), so that a rerun never
+    # overwrites an earlier arm's records.
+    labels = [piece for piece in (os.environ.get("ABC_LABEL") or "").split(",") if piece]
+    arm_labels = dict(zip(_plan(), labels, strict=False)) if len(labels) == len(_plan()) else {}
     for arm, questions in _plan().items():
         answer_mode = ARMS[arm]
-        recorded_arm = label if label and len(_plan()) == 1 else arm
+        recorded_arm = arm_labels.get(arm, arm)
         client.app.dependency_overrides[get_settings] = lambda m=answer_mode: (  # type: ignore[attr-defined]
             get_settings().model_copy(update={"answer_mode": m})
         )
