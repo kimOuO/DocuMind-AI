@@ -103,7 +103,13 @@ class LLMGateway(Protocol):
     ) -> LLMResult: ...
 
     def stream(
-        self, prompt: str, *, purpose: str, max_output_tokens: int, context: CallContext
+        self,
+        prompt: str,
+        *,
+        purpose: str,
+        max_output_tokens: int,
+        context: CallContext,
+        temperature: float | None = None,
     ) -> AsyncIterator[LLMChunk]: ...
 
 
@@ -173,11 +179,22 @@ class OllamaGateway:
         )
 
     async def stream(
-        self, prompt: str, *, purpose: str, max_output_tokens: int, context: CallContext
+        self,
+        prompt: str,
+        *,
+        purpose: str,
+        max_output_tokens: int,
+        context: CallContext,
+        temperature: float | None = None,
     ) -> AsyncIterator[LLMChunk]:
+        """The answer, piece by piece. `temperature` as in `generate`."""
         call_id, started = await self._open(prompt, purpose, max_output_tokens, context)
         request = generate_request(
-            self._settings, prompt=prompt, max_output_tokens=max_output_tokens, stream=True
+            self._settings,
+            prompt=prompt,
+            max_output_tokens=max_output_tokens,
+            stream=True,
+            temperature=temperature,
         )
         received: list[str] = []
         final: dict[str, Any] | None = None

@@ -61,3 +61,10 @@ def test_a_long_prompt_is_refused_whatever_its_content(counter: Qwen3TokenCounte
             max_output_tokens=200,
             limit=SETTINGS.llm_context_limit,
         )
+
+
+def test_an_empty_answer_temperature_means_the_models_default() -> None:
+    """D86: ANSWER_TEMPERATURE= keeps the default; a value is a float."""
+    assert Settings(answer_temperature="").answer_temperature is None  # type: ignore[arg-type]
+    assert Settings(answer_temperature="0").answer_temperature == 0.0  # type: ignore[arg-type]
+    assert Settings().answer_temperature is None

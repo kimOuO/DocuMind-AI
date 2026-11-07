@@ -390,6 +390,7 @@ class ChatService:
             stream = self._gateway.stream(
                 evidence.prompt,
                 purpose="answer",
+                temperature=self._settings.answer_temperature,
                 max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
                 context=context,
             )
@@ -713,6 +714,7 @@ class ChatService:
         result = await self._gateway.generate(
             evidence.prompt,
             purpose="answer",
+            temperature=self._settings.answer_temperature,
             max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
             context=context,
         )
@@ -827,6 +829,7 @@ class ChatService:
         first = await self._gateway.generate(
             evidence.prompt,
             purpose="answer",
+            temperature=self._settings.answer_temperature,
             max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
             context=context,
         )

@@ -60,6 +60,7 @@ class StubOllama:
         self.error = error
         self.prompts: list[str] = []  # answer prompts
         self.rewrite_prompts: list[str] = []
+        self.options: list[dict] = []  # the options of each answer request
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
@@ -79,7 +80,11 @@ class StubOllama:
                 },
             )
         self.prompts.append(body["prompt"])
-        assert body["options"] == {"num_ctx": 10_000, "num_predict": 2_500}
+        self.options.append(body["options"])
+        assert {k: body["options"][k] for k in ("num_ctx", "num_predict")} == {
+            "num_ctx": 10_000,
+            "num_predict": 2_500,
+        }
         if self.status_code != 200:
             return httpx.Response(self.status_code, json={"error": self.error})
 
@@ -807,3 +812,23 @@ async def test_answers_left_unfinished_by_a_shutdown_are_interrupted_at_startup(
         ("was completed", "completed"),
         ("was failed", "failed"),
     ]
+
+
+async def test_the_answer_temperature_setting_reaches_the_model_and_is_absent_by_default(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D86: ANSWER_TEMPERATURE fixes the sampling of the answer call; unset, the request
+    carries no temperature and the model's default applies."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."])
+    use_model(kim, tokenizer, model)
+    events(ask(kim, new_conversation(kim), "What does LightRAG build?"))
+    assert "temperature" not in model.options[-1]
+
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"answer_temperature": 0.0}
+    )
+    use_model(kim, tokenizer, model)
+    events(ask(kim, new_conversation(kim), "What does LightRAG build?"))
+    assert model.options[-1]["temperature"] == 0
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]

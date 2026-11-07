@@ -71,6 +71,10 @@ class Settings(BaseSettings):
     # Navigator prompt, that plan named the needed table in 10/10 runs for the two questions
     # whose table is never among the Top-K. None keeps the model's default.
     navigation_temperature: float | None = 0.0
+    # D86: sampling temperature of the answer call (single mode's one call; navigate mode's
+    # Analyst; the revision draft). None keeps the model's default (qwen3:32b: 0.6). 0 makes
+    # the same evidence give the same answer — not a better one, a repeatable one.
+    answer_temperature: float | None = None
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at
@@ -78,10 +82,10 @@ class Settings(BaseSettings):
     tokenizer_path: str = "third-party/qwen3-tokenizer/tokenizer.json"
     tokenizer_sha256: str = "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
 
-    @field_validator("navigation_temperature", mode="before")
+    @field_validator("navigation_temperature", "answer_temperature", mode="before")
     @classmethod
     def _empty_means_default(cls, value: object) -> object:
-        """NAVIGATION_TEMPERATURE= (empty) keeps the model's default."""
+        """NAVIGATION_TEMPERATURE= or ANSWER_TEMPERATURE= (empty) keeps the model's default."""
         return None if isinstance(value, str) and not value.strip() else value
 
     # Uploads
