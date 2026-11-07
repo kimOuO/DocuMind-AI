@@ -16,6 +16,7 @@ import httpx
 import psycopg
 from fastapi.testclient import TestClient
 
+from app.chat.evidence import MATRIX_TOKEN_BUDGET
 from app.chat.router import get_embedder
 from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
@@ -391,7 +392,12 @@ async def test_targets_rank_the_chunks_of_their_subsection_by_the_need_and_take_
     assert navigation["embedding"]["failed"] is None
     assert navigation["embedding"]["texts"] == len(embedder.calls[-1]) in (2, 3)
     assert len(embedder.calls[-2]) == 1
+    # The budget the targets share: the evidence budget less the retrieved sources, less
+    # the room reserved for the evidence matrix (2026-11-07), so that the matrix of a
+    # fetched table fits the prompt instead of being left out for size.
     assert navigation["evidence_tokens"] <= 5_500 and navigation["budget"] > 0
+    assert navigation["budget"] == 5_500 - navigation["retrieved_tokens"] - MATRIX_TOKEN_BUDGET
+    assert navigation["evidence_tokens"] >= navigation["retrieved_tokens"]
     assert (
         "- Section 4.2 ABLATION STUDIES: definitions of the ablation variants" in model.prompts[1]
     )

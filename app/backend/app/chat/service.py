@@ -37,6 +37,7 @@ from app.chat.evidence import (
     check_directions,
     comparison_facts,
     matrix_cells_of_pages,
+    matrix_text,
     method_aliases,
     method_definitions,
     overall_status,
@@ -268,13 +269,16 @@ class ChatService:
                         if kind == "summary"
                         else sum(c.token_count for c in chunks or [])
                     )
+                    # The matrix of a fetched table (D74) goes into the same prompt: its
+                    # room is reserved here, or a full table's matrix would not fit.
+                    reserved = MATRIX_TOKEN_BUDGET if kind != "summary" else 0
                     navigation, items, added, nav_result = await self._navigate(
                         prepared,
                         question,
                         entries,
                         chunks or [],
                         embedding,
-                        budget=max(EVIDENCE_TOKEN_BUDGET - base_tokens, 0),
+                        budget=max(EVIDENCE_TOKEN_BUDGET - base_tokens - reserved, 0),
                     )
                     if nav_result is not None:
                         extra_calls.append(nav_result)
@@ -302,9 +306,15 @@ class ChatService:
                             if i not in with_cells
                             and (m := _TABLE_CAPTION_LINE.match(c.text.strip()))
                         )
+                        shown, left_out = matrix_text(
+                            cells, self._counter, budget=MATRIX_TOKEN_BUDGET
+                        )
                         navigation["matrix"] = {
                             "cells": len(cells),
                             "tables": sorted({f"{c.table} [{c.source_index}]" for c in cells}),
+                            # What the model was shown, and the tables left out for size.
+                            "shown_tokens": self._counter.count(shown) if shown else 0,
+                            "left_out": left_out,
                             "definitions": [d.method for d in definitions],
                             "facts": len(facts),
                             "coverage_gaps": gaps,
@@ -1171,6 +1181,9 @@ class ChatService:
             "excluded_budget": 0,
             "skipped": None,
             "budget": budget,
+            # The retrieved sources' tokens; evidence_tokens becomes the total once the
+            # targets' chunks are added.
+            "retrieved_tokens": sum(c.token_count for c in chunks),
             "evidence_tokens": sum(c.token_count for c in chunks),
             "embedding": {"texts": 0, "failed": None},
             "log": [

@@ -174,6 +174,59 @@ def test_the_preamble_shows_the_matrix_the_definitions_and_the_order_of_analysis
     assert "No structured table data" in plain
 
 
+def test_tables_too_large_for_the_matrix_are_named_not_called_unreadable() -> None:
+    """The Q2 trace of 2026-11-07: both tables exceeded the budget and the Analyst was
+    told that no table data could be read, although the sources held two tables. A
+    table left out is named, so that the model reads it in the sources."""
+    sources = [(1, chunk(23, 8, TABLE))]
+    cells = build_matrix(sources)
+
+    preamble = analysis_preamble(cells, [], WordCounter(), budget=10)
+
+    assert "No structured table data" not in preamble
+    assert "too large for the matrix" in preamble and "Table 2 [1]" in preamble
+    assert "read them in the sources" in preamble
+
+
+def _four_block_table() -> str:
+    """A table of the shape of a paper's main results: four datasets, four metrics, four
+    baseline blocks each paired with the same method — 128 cells, rewritten cell by cell
+    as the ingestion does (figures are synthetic)."""
+    datasets = ["Alpha", "Beta", "Gamma", "Delta"]
+    metrics = ["Comprehensiveness", "Diversity", "Empowerment", "Overall"]
+    baselines = ["BaseOne", "BaseTwo", "BaseThree", "BaseFour"]
+    lines = [
+        "Table 9: Win rates (%) of baselines v.s. Method across four datasets and four "
+        "evaluation dimensions.",
+        " ".join(datasets),
+    ]
+    value = 20.0
+    for baseline in baselines:
+        lines.append(" ".join(f"{baseline} Method" for _ in datasets))
+        for metric in metrics:
+            parts = []
+            for dataset in datasets:
+                value = 20.0 + ((value * 7.0) % 30.0)
+                parts.append(f"{dataset}: {baseline} {value:.1f}%, Method {100 - value:.1f}%")
+            lines.append(f"{metric} — " + "; ".join(parts))
+    return "\n".join(lines)
+
+
+def test_a_full_four_block_table_fits_the_matrix_budget_with_the_real_tokenizer() -> None:
+    """Measured, not assumed: before 2026-11-07 the budget (900) was below the cost of one
+    such table (about 1,350 tokens), so the matrix never reached the model for the
+    questions that need it. One full table must fit; two need not."""
+    from app.chat.evidence import MATRIX_TOKEN_BUDGET
+    from app.llm.tokenizer import Qwen3TokenCounter
+
+    cells = build_matrix([(1, chunk(23, 8, _four_block_table()))])
+    assert len(cells) == 128
+
+    text, left_out = matrix_text(cells, Qwen3TokenCounter(), budget=MATRIX_TOKEN_BUDGET)
+
+    assert left_out == [] and text.count("\n") == 16  # the heading and 16 condition rows
+
+
 # --- the direction check ---------------------------------------------------------------
 
 

@@ -47,7 +47,13 @@ from app.ingestion.tables import cells_of
 from app.llm.tokenizer import TokenCounter
 from app.retrieval.repository import RetrievedChunk
 
-MATRIX_TOKEN_BUDGET = 900  # tokens the matrix and the definitions may add to the prompt
+# Tokens the matrix may add to the prompt. One full results table of a paper (four
+# datasets × four metrics × four baseline blocks, 128 cells) costs about 1,350 tokens in the
+# matrix form; the budget must hold one such table whole. Until 2026-11-07 it was 900, so
+# for every question that needed such a table the matrix was left out and the model saw only
+# the source text (found by tracing a run; see ADR 0009). Reserved out of the navigate mode's
+# evidence budget, so the call stays within the context limit.
+MATRIX_TOKEN_BUDGET = 1_500
 _CAPTION = re.compile(r"^\s*(Table\s+\d+)\s*[.:]\s*(.*)$", re.IGNORECASE)
 # Generic measurement words that say which way a metric goes; anything else is unknown.
 _HIGHER_IS_BETTER = re.compile(
@@ -438,6 +444,12 @@ def analysis_preamble(
                 "Tables left out of the matrix for room (read them in the sources): "
                 + ", ".join(left_out)
             )
+    elif left_out:
+        parts.append(
+            "The tables in the sources were too large for the matrix (read them in the "
+            "sources, keeping each figure with the pairing written on its row): "
+            + ", ".join(left_out)
+        )
     else:
         parts.append(
             "No structured table data could be read from the sources: take every figure "
