@@ -33,15 +33,16 @@ def main() -> None:
     lines = []
     lines.append(
         "| 切塊 | 切塊數 | K | Vector Recall@K | 命中率 | Hybrid Recall@K | 命中率 | "
-        "Vector＋表格後文 Recall | 命中率 | 關鍵字型 Recall V/H | 證據 tokens V/H/V＋後文 |"
+        "Vector＋表格後文 Recall | 命中率 | 多向量（表格分區塊取最大）Recall | 命中率 | "
+        "關鍵字型 Recall V/H/M | 證據 tokens V/H/V＋後文 |"
     )
-    lines.append("|---|---|---|---|---|---|---|---|---|---|---|")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     for size, record in sorted(runs.items()):
         questions = [q for q in record["questions"] if not q["expect_refusal"]]
         keyword = [q for q in questions if q["keyword_type"]]
         for k in KS:
             row = {}
-            for method in ("vector", "hybrid", "vector_context"):
+            for method in ("vector", "hybrid", "vector_context", "vector_max"):
                 row[method] = {
                     "recall": mean(q[method][k]["recall"] for q in questions),
                     "hit": mean(1.0 if q[method][k]["hit"] else 0.0 for q in questions),
@@ -49,12 +50,18 @@ def main() -> None:
                     "tokens": mean(q[method][k]["evidence_tokens"] for q in questions),
                 }
             out["configs"][f"{size}x{k}"] = row
-            v, h, c = row["vector"], row["hybrid"], row["vector_context"]
+            v, h, c, m = (
+                row["vector"],
+                row["hybrid"],
+                row["vector_context"],
+                row["vector_max"],
+            )
             lines.append(
                 f"| {size} | {record['chunk_count']} | {k} | "
                 f"{fmt(v['recall'])} | {fmt(v['hit'])} | {fmt(h['recall'])} | {fmt(h['hit'])} | "
-                f"{fmt(c['recall'])} | {fmt(c['hit'])} | "
-                f"{fmt(v['keyword_recall'])} / {fmt(h['keyword_recall'])} | "
+                f"{fmt(c['recall'])} | {fmt(c['hit'])} | {fmt(m['recall'])} | {fmt(m['hit'])} | "
+                f"{fmt(v['keyword_recall'])} / {fmt(h['keyword_recall'])} / "
+                f"{fmt(m['keyword_recall'])} | "
                 f"{fmt(v['tokens'], 0)} / {fmt(h['tokens'], 0)} / {fmt(c['tokens'], 0)} |"
             )
     lines.append("")
@@ -77,7 +84,8 @@ def main() -> None:
                 cells.append(
                     f"R {fmt(q['vector']['5']['recall'])} / H {fmt(q['hybrid']['5']['recall'])}"
                     f" / C {fmt(q['vector_context']['5']['recall'])}"
-                    f" (top-1 {fmt(q['top1_similarity'])})"
+                    f" / M {fmt(q['vector_max']['5']['recall'])}"
+                    f" (top-1 {fmt(q['top1_similarity'])}; M top-1 {fmt(q.get('vector_max_top1'))})"
                 )
         kind = next(iter(runs.values()))["questions"][ids.index(qid)]["kind"]
         lines.append(f"| {qid} | {kind} | " + " | ".join(cells) + " |")

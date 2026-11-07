@@ -16,6 +16,7 @@ Narrow it:  EVAL_CHUNK_SIZES=400 EVAL_QUESTIONS=Q2,T1
 
 import difflib
 import json
+import math
 import os
 import re
 import time
@@ -31,6 +32,7 @@ from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
 from app.documents.storage import FileStorage
 from app.ingestion.indexing import IndexJobRunner, JobOutcome
+from app.ingestion.tables import _CAPTION, _is_header_line, _is_prose_line, _is_row, header_lines
 from app.llm.embedding import OllamaEmbedder
 from app.llm.tokenizer import get_token_counter
 from app.models import User
@@ -76,6 +78,42 @@ def covers(chunk_text: str, evidence: str) -> bool:
         0, len(chunk_text), 0, len(evidence)
     )
     return match.size >= len(evidence) / 2
+
+
+def table_blocks(text: str) -> list[str]:
+    """A linearised table chunk split at its block headers (the header lines between row
+    groups, e.g. one per baseline); each block carries the caption and the group headers.
+    One block (or none) means the chunk has nothing to split."""
+    lines = text.splitlines()
+    if not lines or not _CAPTION.match(lines[0].strip()):
+        return []
+    first_row = next((i for i, line in enumerate(lines) if _is_row(line)), None)
+    if first_row is None:
+        return []
+    head = [lines[0], *header_lines(lines, first_row)]
+    blocks: list[list[str]] = []
+    current: list[str] = []
+    for line in lines[first_row:]:
+        if not _is_row(line) and _is_header_line(line) and not _is_prose_line(line):
+            if current:
+                blocks.append(current)
+            current = [line]
+        else:
+            current.append(line)
+    if current:
+        blocks.append(current)
+    if len(blocks) <= 1:
+        return []
+    # The first block's column header is the last header line; the later blocks each start
+    # with their own, so they take the caption and the group header only.
+    shared = head[:-1] if len(head) > 1 else head
+    return ["\n".join([*head, *blocks[0]])] + ["\n".join([*shared, *block]) for block in blocks[1:]]
+
+
+def cosine(a: list[float], b: list[float]) -> float:
+    return sum(x * y for x, y in zip(a, b, strict=True)) / math.sqrt(
+        sum(x * x for x in a) * sum(y * y for y in b)
+    )
 
 
 def _without_text(chunk: dict) -> dict:
@@ -179,6 +217,27 @@ async def test_retrieval_parameters(client: TestClient, db: psycopg.Connection) 
         ingest_seconds = time.perf_counter() - started
         chunk_count = db.execute("SELECT count(*) FROM chunks").fetchone()[0]
 
+        # D82 (user's idea): besides the chunk's one vector — the average meaning of the
+        # whole chunk — a table chunk gets one vector per block, and its score is the best of
+        # them. Computed here from the stored chunks to measure the idea before any change
+        # to the production code.
+        all_chunks = db.execute(
+            "SELECT c.id, c.document_id, c.page, c.ordinal, c.text, c.token_count, "
+            "c.embedding::text FROM chunks c"
+        ).fetchall()
+        chunk_vectors = {row[0]: json.loads(row[6]) for row in all_chunks}
+        chunk_rows = {row[0]: row for row in all_chunks}
+        part_texts: list[tuple[uuid.UUID, str]] = []
+        for row in all_chunks:
+            for block in table_blocks(row[4]):
+                part_texts.append((row[0], block))
+        part_vectors: dict[uuid.UUID, list[list[float]]] = {}
+        if part_texts:
+            vectors = await embedder.embed([t for _, t in part_texts])
+            for (chunk_id, _), vector in zip(part_texts, vectors, strict=True):
+                part_vectors.setdefault(chunk_id, []).append(vector)
+        print(f"  table blocks embedded: {len(part_texts)} parts of {len(part_vectors)} chunks")
+
         results = []
         async with sessions() as session:
             repo = RetrievalRepository(session)
@@ -231,10 +290,39 @@ async def test_retrieval_parameters(client: TestClient, db: psycopg.Connection) 
                             score=None,
                         )
                 doc_key = {v: k for k, v in documents.items()}
+                # Max over the chunk's vector and its block vectors, ranked over every chunk
+                # of the question's documents.
+                scored = []
+                for chunk_id, row in chunk_rows.items():
+                    if row[1] not in doc_ids:
+                        continue
+                    best = cosine(embedding, chunk_vectors[chunk_id])
+                    for part in part_vectors.get(chunk_id, []):
+                        best = max(best, cosine(embedding, part))
+                    scored.append((best, chunk_id))
+                scored.sort(key=lambda pair: (-pair[0], str(pair[1])))
+                max_ids = [chunk_id for _, chunk_id in scored[:CANDIDATES]]
+                for chunk_id in max_ids:
+                    if chunk_id not in by_id:
+                        row = chunk_rows[chunk_id]
+                        by_id[chunk_id] = type(vector[0])(
+                            chunk_id=row[0],
+                            document_id=row[1],
+                            filename="",
+                            page=row[2],
+                            ordinal=row[3],
+                            text=row[4],
+                            token_count=row[5],
+                            score=None,
+                        )
+                max_scores = dict((cid, sc) for sc, cid in scored[:CANDIDATES])
                 vector_ids = [c.chunk_id for c in vector]
                 hybrid_ids = rrf(vector_ids, fulltext_ids)
                 v_ranked = _payload(vector_ids, by_id, doc_key)
                 h_ranked = _payload(hybrid_ids, by_id, doc_key)
+                m_ranked = _payload(max_ids, by_id, doc_key)
+                for c in m_ranked:
+                    c["score"] = round(max_scores[uuid.UUID(c["chunk_id"])], 4)
                 # The production path (D62): the Top-K, then the discussion that follows any
                 # table among them. Measured per K, since the expansion depends on the Top-K.
                 context_ranked = {}
@@ -254,6 +342,9 @@ async def test_retrieval_parameters(client: TestClient, db: psycopg.Connection) 
                         "fulltext_candidates": len(fulltext_ids),
                         "vector": _metrics(v_ranked, q["evidence"], documents),
                         "hybrid": _metrics(h_ranked, q["evidence"], documents),
+                        "vector_max": _metrics(m_ranked, q["evidence"], documents),
+                        "vector_max_top1": max_scores[max_ids[0]] if max_ids else None,
+                        "vector_max_top8": [_without_text(c) for c in m_ranked[:8]],
                         "vector_context": {
                             str(k): _metrics(
                                 context_ranked[k], q["evidence"], documents, whole=True
