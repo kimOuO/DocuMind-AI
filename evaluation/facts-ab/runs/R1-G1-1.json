@@ -1,0 +1,190 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "G1",
+ "question_text": "How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?",
+ "document": "graphrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "依 graphrag-key-facts.md 的 G1 標準：Podcast C0 34／26,657、TS 1,669／1,014,611；News C0 55／39,770、TS 3,197／1,707,694",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 10.4,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "How many context units and tokens do the root-level community summaries (C0) and the source-text summarization (TS) use on the Podcast and News datasets?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "Table 2: Number of context units (community summaries forC0-C3 and text chunks for TS), corre-\nsponding token counts, and percentage of the maximum token count. Map-reduce summarization of\nsource texts is the most resource-intensive approach requiring the highest number of context tokens.\nRoot-level community summaries (C0) require dramatically fewer tokens per query (9x-43x).\nPodcast Transcripts News Articles\nC0 C1 C2 C3 TS C0 C1 C2 C3 TS\nUnits 34 367 969 1310 1669 55 555 1797 2142 3197\nTokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694\n% Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 100",
+   "score": 0.7576,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+   "score": 0.651,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": 0.6508,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+   "score": 0.5922,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": ".\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and the prompts used for answer generation are the same across\nall six conditions (except for minor modifications to reference styles to match the types of context\ninformation used). Conditions only differ in how the contents of the context window are created.\nThe graph index supporting conditions C0-C3 was created using our generic prompts for entity and\nrelationship extraction, with entity types and few-shot examples tailored to the domain of the data.\n8",
+   "score": 0.5758,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "The root-level community summaries (C0) and the source-text summarization (TS) use the following context units and tokens on the Podcast and News datasets:\n\n- **Podcast Dataset**:\n  - **C0 (Root-level community summaries)**:\n    - Units: 34\n    - Tokens: 26,657\n  - **TS (Source-text summarization)**:\n    - Units: 1,669\n    - Tokens: 1,014,611\n- **News Dataset**:\n  - **C0 (Root-level community summaries)**:\n    - Units: 55\n    - Tokens: 39,770\n  - **TS (Source-text summarization)**:\n    - Units: 3,197\n    - Tokens: 1,707,694\n\nThese values are derived from the data presented in Table 2 [1].",
+ "usage": {
+  "prompt_tokens": 2001,
+  "completion_tokens": 199,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "34",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…(9x-43x). Podcast Transcripts News Articles C0 C1 C2 C3 TS C0 C1 C2 C3 TS Units 34 367 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 10146…"
+   },
+   {
+    "number": "26,657",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…C2 C3 TS C0 C1 C2 C3 TS Units 34 367 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694 % Max 2.6 22.2…"
+   },
+   {
+    "number": "1,669",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…t Transcripts News Articles C0 C1 C2 C3 TS C0 C1 C2 C3 TS Units 34 367 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 98…"
+   },
+   {
+    "number": "1,014,611",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…ts 34 367 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694 % Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4…"
+   },
+   {
+    "number": "55",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…2 50 50 50 43 46 77 50 50 50 46 44 75 50 50 50 44 45 81 57 54 56 50 48 81 54 56 55 52 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Diversity 50 42 57 52 49 51 58 50 59…"
+   },
+   {
+    "number": "39,770",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…7 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694 % Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 1…"
+   },
+   {
+    "number": "3,197",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…icles C0 C1 C2 C3 TS C0 C1 C2 C3 TS Units 34 367 969 1310 1669 55 555 1797 2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694 %…"
+   },
+   {
+    "number": "1,707,694",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 10,
+    "snippet": "…2142 3197 Tokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694 % Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 100 ples, quotes, and citations…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 0,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2001,
+   "completion_tokens": 199,
+   "estimated_prompt_tokens": 2017,
+   "finish_reason": "stop",
+   "duration_ms": 10086
+  }
+ ]
+}

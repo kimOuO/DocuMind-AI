@@ -274,3 +274,100 @@ def test_a_single_block_table_or_prose_has_no_blocks() -> None:
     single = "Table 9: Made-up numbers.\nA B C\nx 1.0% 2.0% 3.0%\ny 4.0% 5.0% 6.0%"
     assert table_blocks(linearize_table(single)) == []
     assert table_blocks("Prose that mentions Table 9 but is not one.") == []
+
+
+# --- D87 generalisation: the GraphRAG paper's four table shapes --------------------------
+
+GRAPHRAG_TABLE2 = (
+    "Table 2: Number of context units, corresponding token counts.\n"
+    "Podcast Transcripts News Articles\n"
+    "C0 C1 C2 C3 TS C0 C1 C2 C3 TS\n"
+    "Units 34 367 969 1310 1669 55 555 1797 2142 3197\n"
+    "% Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 100"
+)
+
+
+def test_group_names_of_several_words_are_told_apart_by_the_repeating_sub_columns() -> None:
+    lines = linearize_table(GRAPHRAG_TABLE2).splitlines()
+
+    assert lines[3] == (
+        "Units — Podcast Transcripts: C0 34, C1 367, C2 969, C3 1310, TS 1669; "
+        "News Articles: C0 55, C1 555, C2 1797, C3 2142, TS 3197"
+    )
+    assert ("2.6", ("% Max", "Podcast Transcripts", "C0")) in cells_of(lines[4])
+    assert sum(len(cells_of(line)) for line in lines) == 20
+
+
+GRAPHRAG_TABLE3 = (
+    "Table 3: Average number of extracted claims, reported by condition and dataset type.\n"
+    "Condition Average Number of Claims\n"
+    "News Articles Podcast Transcripts\n"
+    "C0 34.18 32.21\n"
+    "SS 25.23 26.50"
+)
+
+
+def test_a_heading_over_the_whole_table_is_not_a_column_group() -> None:
+    """The line "Condition | Average Number of Claims" spans the columns; the columns are
+    the two-word names on the line below it."""
+    lines = linearize_table(GRAPHRAG_TABLE3).splitlines()
+
+    assert lines[3] == "C0 — News Articles: 34.18; Podcast Transcripts: 32.21"
+    assert cells_of(lines[4]) == [
+        ("25.23", ("SS", "News Articles")),
+        ("26.50", ("SS", "Podcast Transcripts")),
+    ]
+
+
+GRAPHRAG_TABLE4 = (
+    "Table 4: Average number of clusters across different distance thresholds.\n"
+    "Dataset Distance Threshold Average Number of Clusters\n"
+    "C0 C1 C2 C3 TS SS\n"
+    "News Articles\n"
+    "0.5 23.42 21.85 21.90 22.13 21.80 17.92\n"
+    "0.6 21.65 20.38 20.30 20.52 20.13 16.78\n"
+    "Podcast Transcripts\n"
+    "0.5 23.16 22.62 22.52 21.93 21.14 18.55"
+)
+
+
+def test_a_line_of_words_between_rows_names_the_rows_under_it_and_a_numeric_label_is_kept() -> None:
+    lines = linearize_table(GRAPHRAG_TABLE4).splitlines()
+
+    assert lines[3] == "News Articles"  # the section line stays where it is
+    assert (
+        lines[4]
+        == "0.5 — News Articles: C0 23.42, C1 21.85, C2 21.90, C3 22.13, TS 21.80, SS 17.92"
+    )
+    assert lines[7].startswith("0.5 — Podcast Transcripts: C0 23.16")
+    assert ("17.92", ("0.5", "News Articles", "SS")) in cells_of(lines[4])
+
+
+GRAPHRAG_TABLE6 = (
+    "Table 6: Pairwise comparisons of six conditions on four metrics.\n"
+    "Podcast Transcripts News Articles\n"
+    "Condition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\n"
+    "Comprehensiveness\n"
+    "C0 TS 50.24 49.76 -0.06 1 55.52 44.48 -2.03 0.17\n"
+    "C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001\n"
+    "Diversity\n"
+    "C0 TS 50.24 49.76 -0.11 1 46.88 53.12 -1.38 0.676"
+)
+
+
+def test_header_names_over_the_row_labels_and_a_section_prefix_make_a_pairwise_table_readable() -> (
+    None
+):
+    """ "Condition 1 Condition 2" label the two words of each row; "Mean 1 … p-value" repeats
+    once per group; "<0.001" is a figure; the metric line names the rows under it."""
+    lines = linearize_table(GRAPHRAG_TABLE6).splitlines()
+
+    assert lines[4] == (
+        "Comprehensiveness / C0 TS — Podcast Transcripts: Mean 1 50.24, Mean 2 49.76, "
+        "Z-value -0.06, p-value 1; News Articles: Mean 1 55.52, Mean 2 44.48, Z-value -2.03, "
+        "p-value 0.17"
+    )
+    assert ("<0.001", ("Comprehensiveness / C2 SS", "News Articles", "p-value")) in cells_of(
+        lines[5]
+    )
+    assert lines[7].startswith("Diversity / C0 TS — Podcast Transcripts: Mean 1 50.24")

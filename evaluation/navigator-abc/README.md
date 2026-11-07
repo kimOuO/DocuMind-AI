@@ -832,3 +832,68 @@ tokens：Q1 4,250、Q2 3,680、Q3 4,040；15–25 秒。
 - Q3 這三篇是第一次出現「沒有事實錯誤」的消融回答——它用不列數字的方式避開了所有數字錯，代價是不完整。這和提示詞「不要列出來源的每個數字」有關。
 - Q1 的錯來自這批新建的摘要樹，和 C8／CS 那批（Legal 例外寫錯資料集）、D83（全面領先）是第三種錯法，同一來源：EVALUATION 章節摘要。摘要層每建一次樹就換一種錯。
 - 這批是 single 模式三題歷史上錯誤型態最少的一批，仍是 0/9；通過與否的差距在「有沒有把例外點名」與「有沒有給數字」這兩件可以用規則描述的事上。
+
+
+## 附錄：分析順序提示詞的歷史版本（2026-11-07 自 `app/chat/evidence.py` 搬出）
+
+現行版本是 `ANALYSIS_ORDER`（D84：B3 文字，第 (2) 步改為從來源讀定義）。以下三版只留紀錄，程式不再保留。
+
+### `_ANALYSIS_ORDER_D79`
+
+D79 的計數式結論寫法。B8（D83）顯示它對消融題有害：要求跨配對計數時，模型把「lower in」清單填成贏的條件，三次皆然；D84 退回。
+
+```
+Answer in this order: (1) say what the question asks for — which methods, datasets and \
+metrics; (2) read the evidence matrix and the passages of the sources that define each \
+method or variant; (3) compare only figures that share the same dataset, the same metric and \
+the same pairing — never a figure of one dataset, metric or pairing with one of another, and \
+never treat two methods' separate scores against a reference as a test between those two \
+methods; (4) for each comparison, state how many of the conditions (dataset and metric) go one \
+way and how many go the other, naming each condition that goes the other way with its two \
+figures — for example "higher in 13 of 16 conditions, lower in 3: ..."; (5) keep every \
+conclusion no stronger than those counts: use "all", "every", "consistently", "always" or "the \
+only exception" only when the count you wrote shows it (every condition, or exactly one \
+exception); otherwise write "in most conditions" and name the exceptions again; where two \
+methods were each measured against a third, call the comparison a trend, not a result; (6) \
+cite the table's source for a figure and the defining passage for a definition; (7) check that \
+nothing the question asks for is missing — when the question is about variants of a method, \
+that method's own figure must stand beside the variants' in every condition you give, and each \
+variant must be defined from the sources. You may begin with a compact comparison table of the \
+figures you use, then the analysis. Do not describe these steps; write the answer.
+```
+
+### `_ANALYSIS_ORDER_B3`
+
+B3 原文（B5 基線）。
+
+```
+Answer in this order: (1) say what the question asks for — which methods, datasets and \
+metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
+that share the same dataset, the same metric and the same pairing — never a figure of one \
+dataset, metric or pairing with one of another, and never treat two methods' separate scores \
+against a reference as a test between those two methods; (4) name the improvements, the \
+regressions and every exception; (5) check that each "higher", "lower", "outperforms" or \
+"drops" agrees with the figures it stands next to; (6) cite the table's source for a figure \
+and the defining passage for a definition; (7) check that nothing the question asks for is \
+missing. You may begin with a compact comparison table of the figures you use, then the \
+analysis. Do not describe these steps; write the answer.
+```
+
+### `_ANALYSIS_ORDER_D75`
+
+D75 加兩句：方向未知時只說高低、不編號段落。
+
+```
+Answer in this order: (1) say what the question asks for — which methods, datasets and \
+metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
+that share the same dataset, the same metric and the same pairing — never a figure of one \
+dataset, metric or pairing with one of another, and never treat two methods' separate scores \
+against a reference as a test between those two methods; (4) name the improvements, the \
+regressions and every exception; (5) check that each "higher", "lower", "outperforms" or \
+"drops" agrees with the figures it stands next to; (6) cite the table's source for a figure \
+and the defining passage for a definition; (7) check that nothing the question asks for is \
+missing. Where a table's direction is marked unknown, say only which figure is higher or lower; \
+do not call either better, worse, improved or degraded. You may begin with a compact comparison \
+table of the figures you use, then the analysis. Do not describe these steps, and do not number \
+your paragraphs after them; write the answer as prose.
+```

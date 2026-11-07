@@ -1,0 +1,184 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "G2",
+ "question_text": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets",
+ "document": "graphrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "依 graphrag-key-facts.md 的 G2 標準",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 11.1,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": ",564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2 and Table 6, global approaches signifi-\ncantly outperformed conventional vector RAG (SS) in both comprehensiveness and diversity criteria\nacross datasets. Specifically, global approaches achieved comprehensiveness win rates between 72-\n83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win\nrates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a\nvalidity test confirmed that vector RAG produces the most direct responses across all comparisons.\nEmpowerment. Empowerment comparisons showed mixed results for both global approaches ver-\nsus vector RAG (SS) and GraphRAG approaches versus source text summarization ( TS). Using an\nLLM to analyze LLM reasoning for this measure indicated that the ability to provide specific exam-\n9",
+   "score": 0.7028,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+   "score": 0.6918,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": 0.5987,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nC1 C3 45.44 54.56 -2.98 0.026 49.52 50.48 -0.01 1\nC2 C3 48.48 51.52 -0.96 1 50.96 49.04 -0.39 1\nEmpowerment\nC0 TS 40.96 59.04 -4.3 <0.001 42.24 57.76 -3.32 0.012\nC1 TS 45.2 54.8 -3.76 0.002 50 50 -0.12 1\nC2 TS 47.68 52.32 -2.2 0.281 49.52 50.48 -0.22 1\nC3 TS 48.72 51.28 -1.27 1 51.68 48.32 -1.2 1\nC0 SS 42.96 57.04 -3.71 0.003 42.72 57.28 -3.12 0.022\nC1 SS 47.68 52.32 -1.5 0.936 51.36 48.64 -0.84 1\nC2 SS 50.72 49.28 -0.55 1 49.84 50.16 -0.2 1\nC3 SS 48.96 51.04 -0.57 1 49.52 50.48 -0.08 1\nTS SS 57.52 42.48 -4.1 <0.001 52.88 47.12 -1.1 1\nC0 C1 48.72 51.28 -1.23 1 42.4 57.6 -3.9 0.001\nC0 C2 46.64 53.36 -2.54 0.12 44.8 55.2 -2.16 0.336\nC1 C2 49.28 50.72 -1.73 0.682 52 48 -1.45 1\nC0 C3 47.6 52.4 -1.78 0.682 44.32 55.68 -3.45 0.008\nC1 C3 50 50 0 1 51.44 48.56 -1.02 1\nC2 C3 50.72 49.28 -0.86 1 50.4 49.6 -0.22 1\nDirectness\nC0 TS 44.96 55.04 -4.09 <0.001 45.2 54.8 -3.68 0.003\nC1 TS 47.92 52.08 -2.41 0.126 46.64 53.36 -2.91 0.04\nC2 TS 48.8 51.2 -2.23 0.179 48.32 51.68 -2.12 0.179\nC3 TS 48.08 51.92 -2.23 0.179 48.32 51.68 -2.56 0.074\nC0 SS 35.12 64.88 -6.17 <0.001 41.44 58.56 -4.82 <0.001\nC1 SS 40.32 59.68 -4.83 <0.001 45.2 54.8 -3.19 0.017\nC2 SS 40.4 59.6 -4.67 <0.001 44.88 55.12 -3.65 0.003\nC3 SS 40.48 59.52 -4.69 <0.001 45.6 54.4 -2.86 0.043\nTS SS 43.6 56.4 -3.96 <0.001 46 54 -2.68 0.066\nC0 C1 46.96 53.04 -2.87 0.037 47.6 52.4 -2.17 0.179\nC0 C2 48.4 51.6 -2.06 0.197 48.48 51.52 -1.61 0.321\nC1 C2 49.84 50.16 -1 0.952 49.28 50.72 -1.6 0.321\nC0 C3 48.4 51.6 -1.8 0.29 47.2 52.8 -2.62 0.071\nC1 C3 49.76 50.24 0 1 48.8 51.2 -1.29 0.321\nC2 C3 50 50 0 1 48.8 51.2 -1.84 0.262",
+   "score": 0.5893,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\ndatasets. For each question and metric, the winning condition received a score of 100, the losing\ncondition received a score of 0, and in the event of a tie, each condition was scored 50. These scores\nwere then averaged over five evaluation runs for each condition. Results of Shapiro-Wilk tests in-\ndicated that the data did not follow a normal distribution. Thus, non-parametric tests (Wilcoxon\nsigned-rank tests) were employed to assess the performance differences between pairs of condi-\ntions, with Holm-Bonferroni correction applied to account for multiple pairwise comparisons. The\ncorrected p-values that indicated statistically significant differences are highlighted in bold.\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nC0 TS 50.24 49.76 -0.06 1 55.52 44.48 -2.03 0.17\nC1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002\nC2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001\nC3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001\nC0 SS 71.92 28.08 -6.2 <0.001 71.76 28.24 -6.3 <0.001\nC1 SS 75.44 24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001\nC2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001\nC3 SS 78.96 21.04 -8.12 <0.001 79.44 20.56 -8.44 <0.001\nTS SS 83.12 16.88 -8.85 <0.001 79.6 20.4 -8.27 <0.001\nC0 C1 53.2 46.8 -1.96 0.389 51.92 48.08 -0.45 0.777\nC0 C2 50.24 49.76 -0.23 1 53.68 46.32 -1.54 0.371\nC1 C2 51.52 48.48 -1.62 0.633 57.76 42.24 -4.01 <0.001\nC0 C3 49.12 50.88 -0.56 1 52.16 47.84 -0.86 0.777\nC1 C3 50.32 49.68 -0.66 1 55.12 44.88 -2.94 0.016\nC2 C3 52.24 47.76 -1.97 0.389 58.64 41.36 -3.68 0.002\nDiversity\nC0 TS 50.24 49.76 -0.11 1 46.88 53.12 -1.38 0.676\nC1 TS 50.48 49.52 -0.12 1 54.64 45.36 -1.88 0.298\nC2 TS 57.12 42.88 -2.84 0.036 55.76 44.24 -2.16 0.184\nC3 TS 54.32 45.68 -2.39 0.1 60.16 39.84 -4.07 <0.001\nC0 SS 76.56 23.44 -7.12 <0.001 62.08 37.92 -3.57 0.003\nC1 SS 75.44 24.56 -7.33 <0.001 64.96 35.04 -4.92 <0.001\nC2 SS 80.56 19.44 -8.21 <0.001 70.56 29.44 -6.29 <0.001\nC3 SS 80.8 19.2 -8.3 <0.001 69.12 30.88 -5.53 <0.001\nTS SS 82.08 17.92 -8.43 <0.001 67.2 32.8 -4.85 <0.001\nC0 C1 49.76 50.24 -0.13 1 39.68 60.32 -3.61 0.003\nC0 C2 46.32 53.68 -1.5 0.669 40.96 59.04 -3.14 0.012\nC1 C2 44.08 55.92 -3.27 0.011 50.24 49.76 -0.22 1\nC0 C3 44 56 -2.6 0.065 41.04 58.96 -3.47 0.004",
+   "score": 0.5857,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "26",
+   "score": null,
+   "origin": "table_context"
+  }
+ ],
+ "final_answer": "Condition C2 was compared with vector RAG (SS) on comprehensiveness in both the Podcast and News datasets. For the Podcast dataset, C2 achieved a mean score of 77.76, while SS had a mean score of 22.24, with a statistically significant difference (p < 0.001) [5]. Similarly, for the News dataset, C2 had a mean score of 79.2, and SS had a mean score of 20.8, also with a statistically significant difference (p < 0.001) [5]. These results indicate that C2 significantly outperformed vector RAG (SS) in comprehensiveness for both datasets.",
+ "usage": {
+  "prompt_tokens": 4538,
+  "completion_tokens": 152,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   5
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "77.76",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 26,
+    "snippet": "…28.24 -6.3 <0.001 C1 SS 75.44 24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001 C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001 C3 SS 78.96 21.04 -8.12 <0.001 79.44…"
+   },
+   {
+    "number": "22.24",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 26,
+    "snippet": "…-6.3 <0.001 C1 SS 75.44 24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001 C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001 C3 SS 78.96 21.04 -8.12 <0.001 79.44 20.56…"
+   },
+   {
+    "number": "0.001",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 26,
+    "snippet": "….17 C1 TS 51.92 48.08 -1.56 0.633 58.8 41.2 -3.62 0.002 C2 TS 57.28 42.72 -4.1 <0.001 62.08 37.92 -5.07 <0.001 C3 TS 56.48 43.52 -3.42 0.006 63.6 36.4 -5.63 <0.001 C…"
+   },
+   {
+    "number": "79.2",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 26,
+    "snippet": "…5.44 24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001 C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001 C3 SS 78.96 21.04 -8.12 <0.001 79.44 20.56 -8.44 <0.001 TS SS…"
+   },
+   {
+    "number": "20.8",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 26,
+    "snippet": "…24.56 -7.45 <0.001 74.72 25.28 -7.78 <0.001 C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001 C3 SS 78.96 21.04 -8.12 <0.001 79.44 20.56 -8.44 <0.001 TS SS 83.1…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 0,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 4538,
+   "completion_tokens": 152,
+   "estimated_prompt_tokens": 4554,
+   "finish_reason": "stop",
+   "duration_ms": 10663
+  }
+ ]
+}

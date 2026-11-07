@@ -17,10 +17,13 @@ the sub-columns. A row whose figures do not match that shape is kept as is.
 """
 
 import re
+from dataclasses import dataclass
 from typing import Protocol
 
 _CAPTION = re.compile(r"^Table \d+[.:]")
-_NUMBER_TOKEN = re.compile(r"^[-–]?\d+(?:[.,]\d+)*%?$|^[-–—]$|^[<>≤≥]$|^[×x]$")
+_NUMBER_TOKEN = re.compile(r"^[<>≤≥≈~]?[-–]?\d+(?:[.,]\d+)*%?$|^[-–—]$|^[<>≤≥]$|^[×x]$")
+_BARE_INTEGER = re.compile(r"^\d+$")
+SECTION_MAX_WORDS = 6  # a line of words between rows that names the rows under it
 _SENTENCE_END = (".", "!", "?", ":", ";", "。", "！", "？")
 _BULLETS = ("•", "-", "–", "*")
 NUMERIC_LINE_DENSITY = 0.4
@@ -199,42 +202,195 @@ def split_table(text: str, counter: _Counter, *, max_tokens: int) -> list[str]:
     return pieces
 
 
+def _header_words(line: str) -> list[str]:
+    """The column names of a header line. A bare integer continues the name before it
+    ("Condition 1", "Mean 2"), so that it is not read as a column of its own."""
+    words: list[str] = []
+    for word in line.split():
+        if words and _BARE_INTEGER.match(word):
+            words[-1] = f"{words[-1]} {word}"
+        else:
+            words.append(word)
+    return words
+
+
+@dataclass(frozen=True)
+class _Layout:
+    """How a table's columns are laid out: the groups (one level) or the groups and the
+    sub-columns repeated under each (two levels)."""
+
+    groups: list[str]
+    subs: list[str] | None
+    per_group: int
+
+    @property
+    def expected(self) -> int:
+        return len(self.groups) * self.per_group
+
+
+def _chunks(words: list[str], count: int) -> list[str]:
+    size = len(words) // count
+    return [" ".join(words[i * size : (i + 1) * size]) for i in range(count)]
+
+
+def _repeats(subs: list[str], count: int) -> bool:
+    size = len(subs) // count
+    return count >= 1 and all(subs[i * size : (i + 1) * size] == subs[:size] for i in range(count))
+
+
+def _two_level(
+    first: list[str], second: list[str], figures: int, label_words: int = 1
+) -> _Layout | None:
+    """Groups from the line above, sub-columns from the line below. The sub-column names
+    repeat once per group ("NaiveRAG LightRAG" × 4; "Mean 1 Mean 2 Z p" × 2), which is what
+    tells how many groups there are when a group's name has several words ("Podcast
+    Transcripts News Articles"). Names before the sub-columns that have no figures under
+    them ("Condition 1 Condition 2") label the row."""
+    for label_columns in (0, len(second) - figures):
+        subs = second[label_columns:]
+        if label_columns < 0 or len(subs) != figures or not subs:
+            continue
+        if label_columns and label_columns != label_words:
+            continue  # the names set aside must be the row's label words, as many as it has
+        candidates = [
+            k
+            for k in range(min(len(first), len(subs)), 1, -1)
+            if len(subs) % k == 0 and len(first) % k == 0
+        ]
+        repeating = [k for k in candidates if _repeats(subs, k)]
+        chosen = repeating or [k for k in candidates if k == len(first)] or candidates[:1]
+        # A single "group" is a heading over the whole table, not a column group: the
+        # columns are then the sub-column line alone (one level).
+        if chosen:
+            k = chosen[0]
+            return _Layout(_chunks(first, k), subs, len(subs) // k)
+    return None
+
+
+def _single_level(words: list[str], figures: int) -> _Layout | None:
+    """Columns from one header line: one name per figure; a first name over the row labels
+    ("Statistics Agriculture CS Legal Mix"); or several words per column ("News Articles
+    Podcast Transcripts")."""
+    if not figures:
+        return None
+    if len(words) == figures:
+        return _Layout(words, None, 1)
+    if len(words) == figures + 1:
+        return _Layout(words[1:], None, 1)
+    if len(words) % figures == 0:
+        return _Layout(_chunks(words, figures), None, 1)
+    return None
+
+
+def _layout(headers: list[str], figures: int, label_words: int = 1) -> _Layout | None:
+    first = _header_words(headers[0])
+    last = _header_words(headers[-1])
+    if len(headers) >= 2:
+        layout = _two_level(_header_words(headers[-2]), last, figures, label_words)
+        if layout is not None:
+            return layout
+        if len(headers) >= 3:
+            layout = _two_level(first, last, figures, label_words)
+            if layout is not None:
+                return layout
+    return _single_level(last, figures)
+
+
+def _typical(values: list[int]) -> list[int]:
+    """The values by how often they occur, the most common first; ties to the smaller."""
+    counts: dict[int, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return sorted(counts, key=lambda c: (-counts[c], c))
+
+
+def _row_parts(line: str) -> tuple[list[str], list[str]]:
+    """The label words and the figures of a row; empty figures when the row has words
+    after its figures (prose, not a table row)."""
+    words = line.split()
+    figures = [w for w in words if _NUMBER_TOKEN.match(w)]
+    label_words = words[: len(words) - len(figures)]
+    if not all(_NUMBER_TOKEN.match(w) for w in words[len(label_words) :]):
+        return label_words, []
+    return label_words, figures
+
+
+def _row_shapes(lines: list[str]) -> tuple[list[int], int]:
+    """The figure counts the rows have (most common first) and how many label words a row
+    typically has. A numeric row label ("0.5 23.42 …") is a figure too; it is told apart
+    later, so such rows count one figure less."""
+    figure_counts: list[int] = []
+    label_counts: list[int] = []
+    for line in lines:
+        label_words, figures = _row_parts(line)
+        if figures and _is_number_row(line):
+            figure_counts.append(len(figures) - (0 if label_words else 1))
+            label_counts.append(len(label_words) or 1)
+    typical_labels = _typical(label_counts)
+    return _typical(figure_counts), (typical_labels[0] if typical_labels else 1)
+
+
 def linearize_table(text: str) -> str:
     """The table with each row written cell by cell: "label — Group: sub value, ...; ...".
 
     The caption and header lines are kept in front, and block header lines stay
-    where they are, so the text still reads as the table it came from.
+    where they are, so the text still reads as the table it came from. A line of words
+    between rows ("News Articles", "Comprehensiveness") names the rows under it: it
+    becomes their group (one-level tables) or a prefix of their label (two-level tables).
     """
     lines = text.splitlines()
     first_row = next((i for i, line in enumerate(lines) if _is_number_row(line)), len(lines))
     headers = header_lines(lines, first_row)
     if not headers:
         return text
-    groups = headers[0].split()
-    second = headers[1].split() if len(headers) >= 2 else []
-    subs: list[str] | None = None
-    per_group = 1  # one header line: its words are the column names
-    if second and len(second) % len(groups) == 0:
-        subs, per_group = second, len(second) // len(groups)
+    figure_counts, typical_labels = _row_shapes(lines[first_row:])
+    # The header lines right before the rows may be a section name ("News Articles",
+    # "Comprehensiveness") rather than column names: try without them when the columns
+    # cannot be read with them.
+    layout: _Layout | None = None
+    section: str | None = None
+    for drop in range(len(headers)):
+        used = headers[: len(headers) - drop]
+        layout = next(
+            (
+                found
+                for count in figure_counts
+                if (found := _layout(used, count, typical_labels)) is not None
+            ),
+            None,
+        )
+        if layout is not None:
+            section = headers[-1].strip() if drop else None
+            break
+    if layout is None:
+        return text
+    groups, subs, per_group = layout.groups, layout.subs, layout.per_group
+    expected = layout.expected
 
     out = lines[:first_row]
     for line in lines[first_row:]:
+        label_words, figures = _row_parts(line)
+        if not label_words and len(figures) == expected + 1:
+            label_words, figures = figures[:1], figures[1:]  # a numeric row label
         words = line.split()
-        figures = [w for w in words if _NUMBER_TOKEN.match(w)]
-        label_words = words[: len(words) - len(figures)]
-        columns = groups
-        if subs is None and label_words and len(figures) == len(groups) - 1:
-            columns = groups[1:]  # the first header word names the row-label column
-        expected = len(columns) * per_group
-        if (
-            figures
-            and len(figures) == expected
-            and label_words
-            and all(_NUMBER_TOKEN.match(w) for w in words[len(label_words) :])
+        if figures and len(figures) == expected and label_words:
+            label = " ".join(label_words)
+            if subs is None and section is not None:
+                out.append(_linear_row(label, figures, [section], groups, len(groups)))
+            else:
+                if section is not None:
+                    label = f"{section} / {label}"
+                out.append(_linear_row(label, figures, groups, subs, per_group))
+        elif not figures and subs is not None and len(_header_words(line)) == expected:
+            subs = _header_words(line)  # a block header: the sub-column names for the rows below
+            out.append(line)
+        elif (
+            not figures
+            and _is_header_line(line)
+            and not _is_prose_line(line)
+            and len(words) <= SECTION_MAX_WORDS
         ):
-            out.append(_linear_row(" ".join(label_words), figures, columns, subs, per_group))
-        elif not figures and subs is not None and len(words) == expected:
-            subs = words  # a block header: the sub-column names for the rows below
+            section = line.strip()
             out.append(line)
         else:
             out.append(line)

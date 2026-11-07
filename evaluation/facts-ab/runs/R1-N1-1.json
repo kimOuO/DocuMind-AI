@@ -1,0 +1,58 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "N1",
+ "question_text": "LightRAG 在 MS MARCO 上的 BLEU 分數是多少？",
+ "document": "lightrag",
+ "expectation": {
+  "kind": "none",
+  "expected": "文件沒有 MS MARCO 或 BLEU；應回覆找不到，不給數字",
+  "expect_refusal": true
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 0.3,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "LightRAG 在 MS MARCO 上的 BLEU 分數是多少？"
+ },
+ "sources": [],
+ "final_answer": "文件中找不到與這個問題相關的內容。",
+ "usage": null,
+ "done": {
+  "status": "completed",
+  "answered": false,
+  "cited": [],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": null,
+  "finish_reason": null,
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": null
+ },
+ "error": null,
+ "llm_calls": []
+}

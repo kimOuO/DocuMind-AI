@@ -576,3 +576,56 @@ def test_a_table_is_reduced_to_the_rows_of_the_columns_the_question_names() -> N
         minimal_table_text(cells, PAIRED.splitlines()[0], named_columns(cells, "what is it"))
         is None
     )
+
+
+def test_a_question_naming_a_dataset_and_a_metric_gets_that_conditions_facts_only() -> None:
+    """D87 (the R1 regression on T3): "-High and NaiveRAG's Overall win rate on CS" is one
+    cell pair; the other fifteen conditions' facts only distract."""
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+
+    facts = comparison_facts(
+        cells, "On the Mix dataset, what is the Overall win rate of Full vs Other?"
+    )
+
+    # Every fact of that one condition that involves a named method — the direct pair asked
+    # for, Full's other pair, and the indirect one — and nothing from the other conditions.
+    assert {(f.group, f.row) for f in facts} == {("Mix", "Overall")}
+    assert len(facts) == 3
+    asked = next(f for f in facts if {f.method_a, f.method_b} == {"Full", "Other"})
+    assert (asked.value_a, asked.value_b) == ("49.6%", "50.4%")
+
+
+MANY_COLUMNS = (
+    "Table 2: Number of context units.\n"
+    "Podcast Transcripts News Articles\n"
+    "C0 C1 C2 TS C0 C1 C2 TS\n"
+    "Units — Podcast Transcripts: C0 34, C1 367, C2 969, TS 1669; "
+    "News Articles: C0 55, C1 555, C2 1797, TS 3197\n"
+    "Tokens — Podcast Transcripts: C0 26657, C1 225756, C2 565720, TS 1014611; "
+    "News Articles: C0 39770, C1 352641, C2 980898, TS 1707694"
+)
+
+
+def test_columns_of_a_wide_row_are_compared_only_against_a_named_column() -> None:
+    cells = build_matrix([(1, chunk(21, 10, MANY_COLUMNS))])
+    assert all(c.paired_with is None for c in cells)  # four columns per group: no pairs
+
+    assert comparison_facts(cells, "how many units does each condition use?") == []
+
+    # The group is narrowed only when named as the table names it ("Podcast Transcripts").
+    facts = comparison_facts(cells, "How many tokens do C0 and TS use on Podcast Transcripts?")
+
+    assert {(f.method_a, f.method_b, f.group, f.row) for f in facts} == {
+        ("C0", "C1", "Podcast Transcripts", "Tokens"),
+        ("C0", "C2", "Podcast Transcripts", "Tokens"),
+        ("C0", "TS", "Podcast Transcripts", "Tokens"),
+        ("TS", "C1", "Podcast Transcripts", "Tokens"),
+        ("TS", "C2", "Podcast Transcripts", "Tokens"),
+    }
+    c0_ts = next(f for f in facts if {f.method_a, f.method_b} == {"C0", "TS"})
+    assert (c0_ts.value_a, c0_ts.value_b, c0_ts.setting, c0_ts.confidence) == (
+        "26657",
+        "1014611",
+        "same row",
+        "direct",
+    )

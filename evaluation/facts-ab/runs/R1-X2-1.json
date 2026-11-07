@@ -1,0 +1,236 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "X2",
+ "question_text": "How large (in tokens) are the corpora each paper evaluates on?",
+ "document": "lightrag+graphrag",
+ "expectation": {
+  "kind": "cross",
+  "expected": "LightRAG：每個資料集 60 萬到 500 萬 tokens（Table 4 有各別數字）；GraphRAG：Podcast 約 100 萬、News 約 170 萬。兩份文件都要引用",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 5.3,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "How large (in tokens) are the corpora each paper evaluates on?"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Our evaluation to date has focused on sensemaking questions specific to two corpora each containing\napproximately 1 million tokens. More work is needed to understand how performance generalizes to\ndatasets from various domains with different use cases. Comparison of fabrication rates, e.g., using\napproaches like SelfCheckGPT (Manakul et al., 2023), would also strengthen the current analysis.\n11",
+   "score": 0.6413,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+   "score": 0.6278,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 19,
+   "page_end": 19,
+   "section_title": null,
+   "snippet": "sizes: 8k, 16k, 32k and 64k. Surprisingly, the smallest context window size tested (8k)\nwas universally better for all comparisons on comprehensiveness (average win rate of 58.1%), while\nperforming comparably with larger context sizes on diversity (average win rate = 52.4%), and em-\npowerment (average win rate = 51.3%). Given our preference for more comprehensive and diverse\nanswers, we therefore used a fixed context window size of 8k tokens for the final evaluation.\n19",
+   "score": 0.5418,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4 presents statistical information for four datasets: Agriculture, CS, Legal, and Mix. The\nAgriculture dataset consists of 12 documents totaling 2,017,886 tokens, while the CS dataset contains\n10 documents with 2,306,535 tokens. The Legal dataset is the largest, comprising 94 documents and\n5,081,069 tokens. Lastly, the Mix dataset includes 61 documents with a total of 619,009 tokens.\n7.2 C ASE EXAMPLE OF RETRIEVAL -AUGMENTED GENERATION IN LIGHT RAG.\nFigure 3: A retrieval and generation example.\nIn Figure 3, we illustrate the retrieve-and-generate process. When presented with the query, “What\nmetrics are most informative for evaluating movie recommendation systems?”, the LLM first extracts\nboth low-level and high-level keywords. These keywords guide the dual-level retrieval process on the\n13",
+   "score": 0.5318,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "Table 2: Number of context units (community summaries forC0-C3 and text chunks for TS), corre-\nsponding token counts, and percentage of the maximum token count. Map-reduce summarization of\nsource texts is the most resource-intensive approach requiring the highest number of context tokens.\nRoot-level community summaries (C0) require dramatically fewer tokens per query (9x-43x).\nPodcast Transcripts News Articles\nC0 C1 C2 C3 TS C0 C1 C2 C3 TS\nUnits 34 367 969 1310 1669 55 555 1797 2142 3197\nTokens 26657 225756 565720 746100 1014611 39770 352641 980898 1140266 1707694\n% Max 2.6 22.2 55.8 73.5 100 2.3 20.7 57.4 66.8 100",
+   "score": 0.522,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": null,
+   "origin": "table_context"
+  }
+ ],
+ "final_answer": "The first paper evaluates on two corpora, each containing approximately 1 million tokens [1]. The second paper evaluates on four datasets: Agriculture (2,017,886 tokens), CS (2,306,535 tokens), Legal (5,081,069 tokens), and Mix (619,009 tokens) [4].",
+ "usage": {
+  "prompt_tokens": 1871,
+  "completion_tokens": 82,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   4
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "2,017,886",
+    "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+    "page": 13,
+    "snippet": "…ments — Agriculture: 12; CS: 10; Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical inf…"
+   },
+   {
+    "number": "2,306,535",
+    "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+    "page": 13,
+    "snippet": "…ture: 12; CS: 10; Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for fo…"
+   },
+   {
+    "number": "5,081,069",
+    "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+    "page": 13,
+    "snippet": "…Legal: 94; Mix: 61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for four datasets: Agric…"
+   },
+   {
+    "number": "619,009",
+    "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+    "page": 13,
+    "snippet": "…61 Total Tokens — Agriculture: 2,017,886; CS: 2,306,535; Legal: 5,081,069; Mix: 619,009 Table 4 presents statistical information for four datasets: Agriculture, CS, Le…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "2,017,886",
+    "answer_labels": [
+     "Agriculture"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Agriculture"
+     ]
+    ],
+    "sentence": "The second paper evaluates on four datasets: Agriculture (2,017,886 tokens), CS (2,306,535 tokens), Legal (5,081,069 tokens), and Mix (619,009 tokens).",
+    "reason": "missing"
+   },
+   {
+    "number": "2,306,535",
+    "answer_labels": [
+     "CS"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "CS"
+     ]
+    ],
+    "sentence": "The second paper evaluates on four datasets: Agriculture (2,017,886 tokens), CS (2,306,535 tokens), Legal (5,081,069 tokens), and Mix (619,009 tokens).",
+    "reason": "missing"
+   },
+   {
+    "number": "5,081,069",
+    "answer_labels": [
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Legal"
+     ]
+    ],
+    "sentence": "The second paper evaluates on four datasets: Agriculture (2,017,886 tokens), CS (2,306,535 tokens), Legal (5,081,069 tokens), and Mix (619,009 tokens).",
+    "reason": "missing"
+   },
+   {
+    "number": "619,009",
+    "answer_labels": [
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Total Tokens",
+      "Mix"
+     ]
+    ],
+    "sentence": "The second paper evaluates on four datasets: Agriculture (2,017,886 tokens), CS (2,306,535 tokens), Legal (5,081,069 tokens), and Mix (619,009 tokens).",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 0,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 1871,
+   "completion_tokens": 82,
+   "estimated_prompt_tokens": 1887,
+   "finish_reason": "stop",
+   "duration_ms": 4976
+  }
+ ]
+}

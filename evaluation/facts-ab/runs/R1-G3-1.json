@@ -1,0 +1,166 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "G3",
+ "question_text": "GraphRAG 論文中，Podcast 與 News 資料集建出的圖各有多少節點與邊？",
+ "document": "graphrag",
+ "expectation": {
+  "kind": "table",
+  "expected": "Podcast 8,564 節點、20,691 邊；News 15,754 節點、19,520 邊",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 5.9,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "GraphRAG 論文中，Podcast 與 News 資料集建出的圖各有多少節點與邊？"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": ",564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2 and Table 6, global approaches signifi-\ncantly outperformed conventional vector RAG (SS) in both comprehensiveness and diversity criteria\nacross datasets. Specifically, global approaches achieved comprehensiveness win rates between 72-\n83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win\nrates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a\nvalidity test confirmed that vector RAG produces the most direct responses across all comparisons.\nEmpowerment. Empowerment comparisons showed mixed results for both global approaches ver-\nsus vector RAG (SS) and GraphRAG approaches versus source text summarization ( TS). Using an\nLLM to analyze LLM reasoning for this measure indicated that the ability to provide specific exam-\n9",
+   "score": 0.6098,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": null,
+   "snippet": "ples, quotes, and citations was judged to be key to helping users reach an informed understanding.\nTuning element extraction prompts may help to retain more of these details in the GraphRAG index.\nCommunity summaries vs. source texts. When comparing community summaries to source texts\nusing GraphRAG, community summaries generally provided a small but consistent improvement\nin answer comprehensiveness and diversity, except for root-level summaries. Intermediate-level\nsummaries in the Podcast dataset and low-level community summaries in the News dataset achieved\ncomprehensiveness win rates of 57% (p<.001) and 64% (p<.001), respectively. Diversity win rates\nwere 57% (p=.036) for Podcast intermediate-level summaries and 60% (p<.001) for News low-level\ncommunity summaries. Table 2 also illustrates the scalability advantages of GraphRAG compared\nto source text summarization: for low-level community summaries ( C3), GraphRAG required 26-\n33% fewer context tokens, while for root-level community summaries ( C0), it required over 97%\nfewer tokens. For a modest drop in performance compared with other global methods, root-level\nGraphRAG offers a highly efficient method for the iterative question answering that characterizes\nsensemaking activity, while retaining advantages in comprehensiveness (72% win rate) and diversity\n(62% win rate) over vector RAG.\n10",
+   "score": 0.6075,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+   "score": 0.5979,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "(2) New York implemented incentives\nfor renewable energy adoption.\nTo extract factual claims, we used Claimify (Metropolitansky and Larson, 2025), an LLM-based\nmethod that identifies sentences in an answer containing at least one factual claim, then decomposes\nthese sentences into simple, self-contained factual claims. We applied Claimify to the answers\ngenerated under the conditions from Experiment 1. After removing duplicate claims from each\nanswer, we extracted 47,075 unique claims, with an average of 31 claims per answer.\nWe defined two metrics, with higher values indicating better performance:\n1. Comprehensiveness: Measured as the average number of claims extracted from the an-\nswers generated under each condition.\n2. Diversity: Measured by clustering the claims for each answer and calculating the average\nnumber of clusters.\nFor clustering, we followed the approach described by Padmakumar and He (2024), which involved\nusing Scikit-learn’s implementation of agglomerative clustering (Pedregosa et al., 2011). Clusters\nwere merged through “complete” linkage, meaning they were combined only if the maximum dis-\ntance between their farthest points was less than or equal to a predefined distance threshold. The\ndistance metric used was 1 − ROUGE-L. Since the distance threshold influences the number of\nclusters, we report results across a range of thresholds.\n5 Results\n5.1 Experiment 1\nThe indexing process resulted in a graph consisting of 8,564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2",
+   "score": 0.536,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+   "score": 0.5214,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "在 GraphRAG 論文中，Podcast 資料集建出的圖有 **8,564 個節點** 和 **20,691 條邊**，而 News 資料集則有 **15,754 個節點** 和 **19,520 條邊** [4]。",
+ "usage": {
+  "prompt_tokens": 2260,
+  "completion_tokens": 87,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   4
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "8,564",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 9,
+    "snippet": "…Results 5.1 Experiment 1 The indexing process resulted in a graph consisting of 8,564 nodes and 20,691 edges for the Podcast dataset, and a larger graph of 15,754 no…"
+   },
+   {
+    "number": "20,691",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 9,
+    "snippet": "…riment 1 The indexing process resulted in a graph consisting of 8,564 nodes and 20,691 edges for the Podcast dataset, and a larger graph of 15,754 nodes and 19,520 ed…"
+   },
+   {
+    "number": "15,754",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 9,
+    "snippet": "…of 8,564 nodes and 20,691 edges for the Podcast dataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows the number of commun…"
+   },
+   {
+    "number": "19,520",
+    "document_id": "9a76acfb-5f01-4f55-89ad-520fd0eba038",
+    "page": 9,
+    "snippet": "…nd 20,691 edges for the Podcast dataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows the number of community summaries at…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 0,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2260,
+   "completion_tokens": 87,
+   "estimated_prompt_tokens": 2276,
+   "finish_reason": "stop",
+   "duration_ms": 5580
+  }
+ ]
+}

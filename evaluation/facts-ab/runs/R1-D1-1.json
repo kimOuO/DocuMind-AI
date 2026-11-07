@@ -1,0 +1,141 @@
+{
+ "arm": "R1",
+ "answer_mode": "single",
+ "question": "D1",
+ "question_text": "LightRAG 的實驗用了哪些資料集？它們來自哪個 benchmark？",
+ "document": "lightrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "UltraDomain benchmark（428 本大學教科書、18 個領域）；Agriculture、CS、Legal、Mix 四個資料集",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 3.7,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "LightRAG 的實驗用了哪些資料集？它們來自哪個 benchmark？"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 5,
+   "section_title": null,
+   "snippet": "RAG? • (RQ3):\nWhat specific advantages does LightRAG demonstrate through case examples in various scenarios? •\n(RQ4): What are the costs associated with LightRAG, as well as its adaptability to data changes?\n4.1 E XPERIMENTAL SETTINGS\nEvaluation Datasets. To conduct a comprehensive analysis of LightRAG, we selected four datasets\nfrom the UltraDomain benchmark (Qian et al., 2024). The UltraDomain data is sourced from 428\ncollege textbooks and encompasses 18 distinct domains, including agriculture, social sciences, and\nhumanities. From these, we chose the Agriculture, CS, Legal, and Mix datasets. Each dataset contains\nbetween 600,000 and 5,000,000 tokens, with detailed information provided in Table 4. Below is a\nspecific introduction to the four domains utilized in our experiments:\n• Agriculture: This domain focuses on agricultural practices, covering a range of topics including\nbeekeeping, hive management, crop production, and disease prevention.\n• CS: This domain focuses on computer science and encompasses key areas of data science and\nsoftware engineering. It particularly highlights machine learning and big data processing, featuring\ncontent on recommendation systems, classification algorithms, and real-time analytics using Spark.\n5",
+   "score": 0.6369,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "00\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these metrics in relation\nto handling data changes in dynamic environments.\nThe results of this evaluation on the legal dataset are\npresented in Table 2. In this context, Textract repre-\nsents the token overhead for entity and relationship extraction, Cmax denotes the maximum number\nof tokens allowed per API call, and Cextract indicates the number of API calls required for extraction.\nIn the retrieval phase, GraphRAG generates 1,399 communities, with 610 level-2 communities\nactively utilized for retrieval in this experiment. Each community report averages 1,000 tokens,\nresulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per\ncommunity). Additionally, GraphRAG’s requirement to traverse each community individually leads\nto hundreds of API calls, significantly increasing retrieval overhead. In contrast, LightRAG optimizes\nthis process by using fewer than 100 tokens for keyword generation and retrieval, requiring only a\nsingle API call for the entire process. This efficiency is achieved through our retrieval mechanism,\n9",
+   "score": 0.5787,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+   "score": 0.5644,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 13,
+   "section_title": null,
+   "snippet": "Table 4 presents statistical information for four datasets: Agriculture, CS, Legal, and Mix. The\nAgriculture dataset consists of 12 documents totaling 2,017,886 tokens, while the CS dataset contains\n10 documents with 2,306,535 tokens. The Legal dataset is the largest, comprising 94 documents and\n5,081,069 tokens. Lastly, the Mix dataset includes 61 documents with a total of 619,009 tokens.\n7.2 C ASE EXAMPLE OF RETRIEVAL -AUGMENTED GENERATION IN LIGHT RAG.\nFigure 3: A retrieval and generation example.\nIn Figure 3, we illustrate the retrieve-and-generate process. When presented with the query, “What\nmetrics are most informative for evaluating movie recommendation systems?”, the LLM first extracts\nboth low-level and high-level keywords. These keywords guide the dual-level retrieval process on the\n13",
+   "score": 0.555,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "87c0697b-de2b-4a9d-bb8c-362db312556b",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 3,
+   "page_end": 3,
+   "section_title": null,
+   "snippet": "beekeeper\nDeduplication\n…\nMatch\nIndex Graph \nused for Retrieval\nBeekeeper Honey Bee\n…Formers Hive\nLow-level Keys\nAgriculture Production\nEnvironmental Impact …\nHigh-level Keys\nEntities\nRelations\nRetrieved Content\nFigure 1: Overall architecture of the proposed LightRAG framework.\nincludes two key functionalities: i) Data Indexer φ(·): which involves building a specific data\nstructure ˆD based on the external database D. ii) Data Retriever ψ(·): The relevant documents are\nobtained by comparing the query against the indexed data, also denoted as “relevant documents”. By\nleveraging the information retrieved through ψ(·) along with the initial query q, the generative model\nG(·) efficiently produces high-quality, contextually relevant responses.\nIn this work, we target several key points essential for an efficient and effective Retrieval-Augmented\nGeneration (RAG) system which are elaborated below:\n• Comprehensive Information Retrieval: The indexing function φ(·) must be adept at extracting\nglobal information, as this is crucial for enhancing the model’s ability to answer queries effectively.\n• Efficient and Low-Cost Retrieval : The indexed data structure ˆD must enable rapid and cost-\nefficient retrieval to effectively handle a high volume of queries.\n• Fast Adaptation to Data Changes: The ability to swiftly and efficiently adjust the data structure\nto incorporate new information from the external knowledge base, is crucial for ensuring that the\nsystem remains current and relevant in an ever-changing information landscape.\n3 T HE LIGHT RAG A RCHITECTURE\n3.1 G RAPH -BASED TEXT INDEXING\nGraph-Enhanced Entity and Relationship Extraction . Our LightRAG enhances the retrieval\nsystem by segmenting documents into smaller, more manageable pieces. This strategy allows for\nquick identification and access to relevant information without analyzing entire documents. Next,",
+   "score": 0.5544,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "LightRAG 的實驗使用了 Agriculture、CS、Legal 和 Mix 四個資料集，它們來自 UltraDomain benchmark [1]。",
+ "usage": {
+  "prompt_tokens": 2041,
+  "completion_tokens": 32,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 0,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2041,
+   "completion_tokens": 32,
+   "estimated_prompt_tokens": 2057,
+   "finish_reason": "stop",
+   "duration_ms": 3351
+  }
+ ]
+}

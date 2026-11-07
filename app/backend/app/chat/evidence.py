@@ -387,13 +387,9 @@ def method_aliases(definitions: Sequence[MethodDefinition]) -> dict[str, list[re
 # --- the Analyst's preamble ------------------------------------------------------------
 
 
-# B5 baseline (2026-11-07, user's decision): the analysis order as B3 had it, kept below as
-# _ANALYSIS_ORDER_B3. D75 added two sentences (kept as _ANALYSIS_ORDER_D75): say only
-# higher/lower where a table's direction is unknown, and do not number the paragraphs.
-#
-# D79 (2026-11-07) rewrote steps (4) and (5) into counted conclusions (kept below as
-# _ANALYSIS_ORDER_D79); D84 reverted to the B3 wording after B8 — see the note there. Only
-# step (2) differs from B3: the definitions are read from the sources, not from a note.
+# The B3 wording with step (2) reading definitions from the sources (D84, after B8 showed
+# D79's counted-conclusion wording harmful). The earlier wordings (B3, D75, D79) are kept
+# for the record in evaluation/navigator-abc/README.md, not here.
 ANALYSIS_ORDER = """\
 Answer in this order: (1) say what the question asks for — which methods, datasets and \
 metrics; (2) read the evidence matrix and the passages of the sources that define each \
@@ -405,58 +401,6 @@ methods; (4) name the improvements, the regressions and every exception; (5) che
 cite the table's source for a figure and the defining passage for a definition; (7) check \
 that nothing the question asks for is missing. You may begin with a compact comparison table \
 of the figures you use, then the analysis. Do not describe these steps; write the answer.
-"""
-
-# D79's counted-conclusion wording, kept for the record. B8 (D83) showed it harmful for the
-# ablation question: asked to count conditions across separate pairings, the model filled the
-# "lower in" lists with the conditions it had won, three runs out of three; B6 with the text
-# above had none of that. Reverted on 2026-11-07 (D84).
-_ANALYSIS_ORDER_D79 = """\
-Answer in this order: (1) say what the question asks for — which methods, datasets and \
-metrics; (2) read the evidence matrix and the passages of the sources that define each \
-method or variant; (3) compare only figures that share the same dataset, the same metric and \
-the same pairing — never a figure of one dataset, metric or pairing with one of another, and \
-never treat two methods' separate scores against a reference as a test between those two \
-methods; (4) for each comparison, state how many of the conditions (dataset and metric) go one \
-way and how many go the other, naming each condition that goes the other way with its two \
-figures — for example "higher in 13 of 16 conditions, lower in 3: ..."; (5) keep every \
-conclusion no stronger than those counts: use "all", "every", "consistently", "always" or "the \
-only exception" only when the count you wrote shows it (every condition, or exactly one \
-exception); otherwise write "in most conditions" and name the exceptions again; where two \
-methods were each measured against a third, call the comparison a trend, not a result; (6) \
-cite the table's source for a figure and the defining passage for a definition; (7) check that \
-nothing the question asks for is missing — when the question is about variants of a method, \
-that method's own figure must stand beside the variants' in every condition you give, and each \
-variant must be defined from the sources. You may begin with a compact comparison table of the \
-figures you use, then the analysis. Do not describe these steps; write the answer.
-"""
-
-_ANALYSIS_ORDER_B3 = """\
-Answer in this order: (1) say what the question asks for — which methods, datasets and \
-metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
-that share the same dataset, the same metric and the same pairing — never a figure of one \
-dataset, metric or pairing with one of another, and never treat two methods' separate scores \
-against a reference as a test between those two methods; (4) name the improvements, the \
-regressions and every exception; (5) check that each "higher", "lower", "outperforms" or \
-"drops" agrees with the figures it stands next to; (6) cite the table's source for a figure \
-and the defining passage for a definition; (7) check that nothing the question asks for is \
-missing. You may begin with a compact comparison table of the figures you use, then the \
-analysis. Do not describe these steps; write the answer.
-"""
-
-_ANALYSIS_ORDER_D75 = """\
-Answer in this order: (1) say what the question asks for — which methods, datasets and \
-metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
-that share the same dataset, the same metric and the same pairing — never a figure of one \
-dataset, metric or pairing with one of another, and never treat two methods' separate scores \
-against a reference as a test between those two methods; (4) name the improvements, the \
-regressions and every exception; (5) check that each "higher", "lower", "outperforms" or \
-"drops" agrees with the figures it stands next to; (6) cite the table's source for a figure \
-and the defining passage for a definition; (7) check that nothing the question asks for is \
-missing. Where a table's direction is marked unknown, say only which figure is higher or lower; \
-do not call either better, worse, improved or degraded. You may begin with a compact comparison \
-table of the figures you use, then the analysis. Do not describe these steps, and do not number \
-your paragraphs after them; write the answer as prose.
 """
 
 
@@ -928,6 +872,10 @@ def comparison_facts(cells: Sequence[MatrixCell], question: str) -> list[Fact]:
         c: m.start() for c in columns if (m := _label_pattern(c).search(question)) is not None
     }
     named = sorted(positions, key=lambda c: positions[c])
+    # D87: a question that names a group (dataset) or a row (metric) is about that condition
+    # only — "the Overall win rate on CS" wants one fact, not every condition's (T3).
+    named_groups = _named_labels({c.group for c in cells}, question)
+    named_rows = _named_labels({c.row for c in cells}, question)
     by_condition: dict[tuple[str, int, str, str], list[MatrixCell]] = {}
     for c in cells:
         by_condition.setdefault((c.table, c.source_index, c.group, c.row), []).append(c)
@@ -983,9 +931,35 @@ def comparison_facts(cells: Sequence[MatrixCell], question: str) -> list[Fact]:
                 for b in against[i + 1 :]:
                     if a.block != b.block:
                         add(a, b, f"each against {ref}", "indirect")
+        # D87: a group of three or more columns in one row ("C0 C1 C2 C3 TS") pairs nothing;
+        # its columns are compared only when the question names one of them, each named
+        # column against the others of its row — the columns may be unlike measures
+        # ("Mean 1", "Z-value"), so nothing is compared unasked.
+        unpaired = [c for c in members if c.paired_with is None]
+        for a in unpaired:
+            if a.column in named:
+                for b in unpaired:
+                    if b.block == a.block and b.column != a.column:
+                        add(a, b, "same row", "direct")
     if named:
         facts = [f for f in facts if f.method_a in named or f.method_b in named]
+    if named_groups:
+        facts = [f for f in facts if f.group in named_groups]
+    if named_rows:
+        facts = [f for f in facts if f.row in named_rows]
     return facts
+
+
+def _named_labels(labels: Iterable[str], question: str) -> set[str]:
+    """The table labels the question mentions as whole words (a label of a letter or two,
+    or a bare number such as a threshold, is not looked for: too easy to hit by chance)."""
+    found = set()
+    for label in labels:
+        if len(label) < 3 or not any(ch.isalpha() for ch in label):
+            continue
+        if _label_pattern(label).search(question) is not None:
+            found.add(label)
+    return found
 
 
 def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> str:

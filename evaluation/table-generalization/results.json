@@ -1,0 +1,56 @@
+{
+ "LightRAG (2410.05779v3)": {
+  "tables": {
+   "Table 1": {
+    "truth": 125,
+    "parsed": 125,
+    "matching": 125,
+    "missing": [],
+    "extra": []
+   },
+   "Table 2": {
+    "truth": 125,
+    "parsed": 125,
+    "matching": 125,
+    "missing": [],
+    "extra": []
+   }
+  },
+  "without_truth": [
+   "Table 4"
+  ]
+ },
+ "GraphRAG (2404.16130v2)": {
+  "tables": {
+   "Table 2": {
+    "truth": 30,
+    "parsed": 30,
+    "matching": 30,
+    "missing": [],
+    "extra": []
+   },
+   "Table 3": {
+    "truth": 12,
+    "parsed": 12,
+    "matching": 12,
+    "missing": [],
+    "extra": []
+   },
+   "Table 4": {
+    "truth": 48,
+    "parsed": 48,
+    "matching": 48,
+    "missing": [],
+    "extra": []
+   },
+   "Table 6": {
+    "truth": 480,
+    "parsed": 480,
+    "matching": 480,
+    "missing": [],
+    "extra": []
+   }
+  },
+  "without_truth": []
+ }
+}
