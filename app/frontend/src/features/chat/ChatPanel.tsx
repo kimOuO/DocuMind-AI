@@ -300,46 +300,225 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
 }
 
 /** The model's answer as formatted text. Raw HTML in it is never rendered. */
-function AnswerText({ content }: { content: string }) {
+/** The notes the backend appends after an answer (figure, label and claim checks). */
+const NOTE_PREFIXES = [
+  'Numbers that could not be checked',
+  'Figures whose labels differ',
+  'A claim the source table does not bear out',
+  'The summary of "',
+  '以下數字未能',
+  '以下數字的標籤',
+  '以下結論與原文表格不符',
+]
+
+/** The answer proper and the program's notes, which are shown apart from it (D89). */
+function splitNotes(content: string): { answer: string; notes: string[] } {
+  const paragraphs = content.split(/\n\n+/)
+  const notes = paragraphs.filter((p) => NOTE_PREFIXES.some((prefix) => p.trim().startsWith(prefix)))
+  const answer = paragraphs.filter((p) => !notes.includes(p)).join('\n\n')
+  return { answer, notes: notes.map((n) => n.trim()) }
+}
+
+const CITATION = /\[(\d{1,3}(?:\s*,\s*\d{1,3})*)\]/g
+
+/** "[1][2,3]" becomes links the renderer turns into buttons; the sentence around a citation
+ * is what the viewer highlights in the source. */
+function linkCitations(markdown: string): string {
+  return markdown.replace(CITATION, (_, list: string) =>
+    list
+      .split(',')
+      .map((n) => n.trim())
+      .map((n) => `[${n}](#cite-${n})`)
+      .join(''),
+  )
+}
+
+function sentenceAround(text: string, citation: number): string {
+  const marker = new RegExp(`\\[(?:\\d{1,3}\\s*,\\s*)*${citation}(?:\\s*,\\s*\\d{1,3})*\\]`)
+  const at = text.search(marker)
+  if (at < 0) return ''
+  const before = text.slice(0, at)
+  const start = Math.max(before.lastIndexOf('. '), before.lastIndexOf('。'), before.lastIndexOf('\n')) + 1
+  return text.slice(start, at).replace(/\*\*/g, '').trim()
+}
+
+function AnswerText({ content, onCite }: { content: string; onCite?: (index: number) => void }) {
   return (
     <div className="answer break-words">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>
-        {content}
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        skipHtml
+        components={{
+          a: ({ href, children }) => {
+            const match = href?.match(/^#cite-(\d+)$/)
+            if (match && onCite) {
+              const index = Number(match[1])
+              return (
+                <button
+                  type="button"
+                  className="cite"
+                  aria-label={`來源 ${index}`}
+                  onClick={() => onCite(index)}
+                >
+                  {index}
+                </button>
+              )
+            }
+            return (
+              <a href={href} target="_blank" rel="noreferrer">
+                {children}
+              </a>
+            )
+          },
+        }}
+      >
+        {onCite ? linkCitations(content) : content}
       </ReactMarkdown>
     </div>
   )
 }
 
-function MessageView({ message }: { message: ChatMessage }) {
+/** Words and figures of the citing sentence that the source holds too: what to highlight. */
+function highlights(snippet: string, sentence: string): string[] {
+  const numbers = sentence.match(/\d[\d,.]*%?/g) ?? []
+  const words = (sentence.match(/[A-Za-z][A-Za-z-]{3,}/g) ?? []).filter(
+    (w) => !['that', 'this', 'with', 'from', 'than', 'which', 'their', 'while', 'these', 'those'].includes(w.toLowerCase()),
+  )
+  return [...new Set([...numbers, ...words])].filter((term) => snippet.includes(term))
+}
+
+function Highlighted({ text, terms }: { text: string; terms: string[] }) {
+  if (terms.length === 0) return <>{text}</>
+  const escaped = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).sort((a, b) => b.length - a.length)
+  const parts = text.split(new RegExp(`(${escaped.join('|')})`, 'g'))
+  return (
+    <>
+      {parts.map((part, i) =>
+        terms.includes(part) ? (
+          <mark key={i} className="rounded bg-warning-soft px-0.5 text-text">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </>
+  )
+}
+
+export function SourceViewer({
+  source,
+  sentence,
+  onClose,
+}: {
+  source: Source
+  sentence: string
+  onClose: () => void
+}) {
+  const isPdf = source.filename.toLowerCase().endsWith('.pdf')
+  const fileUrl = `/api/v1/documents/${source.document_id}/file#page=${source.page_start}`
+  const terms = highlights(source.snippet, sentence)
+  return (
+    <section aria-label="來源檢視" className="flex h-full flex-col rounded-xl border border-border bg-surface">
+      <header className="flex items-start gap-2 border-b border-border px-3 py-2">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold">
+            [{source.index}] {source.filename}
+          </p>
+          <p className="text-xs text-muted">
+            {pageRange(source.page_start, source.page_end)}
+            {source.section_title ? ` · ${source.section_title}` : ''}
+            {describeOrigin(source) ? ` · ${describeOrigin(source)}` : ''}
+          </p>
+        </div>
+        <a className="text-xs text-accent underline" href={fileUrl} target="_blank" rel="noreferrer">
+          開新分頁
+        </a>
+        <button
+          type="button"
+          className="rounded-full border border-border px-2 text-xs hover:bg-surface-2"
+          onClick={onClose}
+          aria-label="關閉來源檢視"
+        >
+          ✕
+        </button>
+      </header>
+      {sentence && <p className="border-b border-border px-3 py-2 text-xs text-muted">引用這段的句子：「{sentence}」</p>}
+      <p className="max-h-48 overflow-y-auto whitespace-pre-wrap break-words px-3 py-2 text-sm">
+        <Highlighted text={source.snippet} terms={terms} />
+      </p>
+      {isPdf && (
+        <iframe
+          title={`${source.filename} 第 ${source.page_start} 頁`}
+          src={fileUrl}
+          className="min-h-[55vh] flex-1 border-t border-border"
+        />
+      )}
+    </section>
+  )
+}
+
+function MessageView({
+  message,
+  onCite,
+}: {
+  message: ChatMessage
+  onCite: (source: Source, sentence: string) => void
+}) {
   if (message.role === 'user') {
     return (
       <li className="flex justify-end py-2">
-        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-accent-soft px-4 py-2">
-          <p className="text-xs text-muted">你</p>
+        <div className="max-w-[80%] rounded-2xl rounded-br-md bg-accent px-4 py-2 text-on-accent">
           <p className="whitespace-pre-wrap break-words">{message.content}</p>
         </div>
       </li>
     )
   }
   const unfinished = UNFINISHED_LABEL[message.status]
+  const { answer, notes } = splitNotes(message.content)
+  const cite = (index: number) => {
+    const source = message.sources.find((s) => s.index === index)
+    if (source) onCite(source, sentenceAround(answer, index))
+  }
   return (
     <li className="py-2">
-      <div className="rounded-2xl rounded-tl-md border border-border bg-surface px-4 py-3">
-      <p className="text-xs text-muted">
-        回答
-        {unfinished && (
-          <span
-            className={`ml-2 font-medium ${message.status === 'failed' ? 'text-danger' : 'text-accent'}`}
-          >
-            {unfinished}
-          </span>
-        )}
-        {message.status === 'completed' && message.answered === false && (
-          <span className="pill ml-2 bg-warning-soft font-medium text-warning">文件中找不到答案</span>
-        )}
-      </p>
-      <AnswerText content={message.content} />
-      <SourceList sources={message.sources} />
+      <div className="flex items-start gap-3">
+        <span
+          aria-hidden="true"
+          className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent text-xs font-bold text-on-accent"
+        >
+          D
+        </span>
+        <div className="min-w-0 flex-1">
+          {(unfinished || (message.status === 'completed' && message.answered === false)) && (
+            <p className="mb-1 text-xs text-muted">
+              {unfinished && (
+                <span className={`font-medium ${message.status === 'failed' ? 'text-danger' : 'text-accent'}`}>
+                  {unfinished}
+                </span>
+              )}
+              {message.status === 'completed' && message.answered === false && (
+                <span className="pill bg-warning-soft font-medium text-warning">文件中找不到答案</span>
+              )}
+            </p>
+          )}
+          <AnswerText content={answer} onCite={message.sources.length > 0 ? cite : undefined} />
+          {notes.length > 0 && (
+            <details className="mt-2 rounded-lg border border-warning-soft bg-warning-soft/40 px-3 py-1.5 text-xs">
+              <summary className="cursor-pointer font-medium text-warning">
+                核對結果（{notes.length} 則註記）
+              </summary>
+              <ul className="mt-1 list-disc space-y-1 pl-4 text-muted">
+                {notes.map((note, i) => (
+                  <li key={i} className="whitespace-pre-wrap break-words">
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+          <SourceList sources={message.sources} />
+        </div>
       </div>
     </li>
   )
@@ -363,6 +542,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const [navigation, setNavigation] = useState<Navigation | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
+  const [viewer, setViewer] = useState<{ source: Source; sentence: string } | null>(null)
 
   useEffect(() => {
     let active = true
@@ -384,6 +564,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
 
   async function open(id: string | null) {
     setActiveId(id)
+    setViewer(null)
     setScope(null)
     setRoute(null)
     setUsage(null)
@@ -537,11 +718,14 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const inspectorEmpty =
     scope === null && route === null && stage === null && usage === null && check === null
   const inspector = (
-    <aside
+    <details
       aria-label="本次回答的檢索與用量"
-      className="rounded-xl border border-border bg-surface-2 p-3 text-sm lg:sticky lg:top-4"
+      className="rounded-xl border border-border bg-surface-2 px-3 py-2 text-sm"
+      open={viewer === null && !inspectorEmpty}
     >
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">本次回答</h3>
+      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-muted">
+        本次回答的檢索與用量
+      </summary>
       {inspectorEmpty && (
         <p className="mt-2 text-muted">送出問題後，這裡會顯示搜尋範圍、處理步驟、token 用量與數字核對。</p>
       )}
@@ -559,13 +743,13 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
         <UsageMeter usage={usage} />
       )}
       {check !== null && <NumberCheckView check={check} />}
-    </aside>
+    </details>
   )
 
   return (
-    <section className="panel p-4">
+    <section className="panel flex h-full min-h-0 flex-col p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-semibold">提問</h2>
+        <h2 className="font-semibold">對話</h2>
         <div className="flex items-center gap-2">
           <label className="text-sm">
             <span className="sr-only">對話</span>
@@ -630,12 +814,20 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
         </fieldset>
       )}
 
-      <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)] lg:items-start">
-        <div className="flex min-w-0 flex-col">
+      <div
+        className={`mt-3 grid min-h-0 flex-1 gap-4 ${
+          viewer ? 'lg:grid-cols-[minmax(0,1fr)_minmax(340px,420px)]' : ''
+        }`}
+      >
+        <div className="flex min-h-0 min-w-0 flex-col">
           {messages.length > 0 ? (
-            <ul className="list-none space-y-1 p-0" aria-label="對話內容">
+            <ul className="min-h-0 flex-1 list-none space-y-1 overflow-y-auto p-0 pr-1" aria-label="對話內容">
               {messages.map((message) => (
-                <MessageView key={message.id} message={message} />
+                <MessageView
+                  key={message.id}
+                  message={message}
+                  onCite={(source, sentence) => setViewer({ source, sentence })}
+                />
               ))}
             </ul>
           ) : (
@@ -677,7 +869,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
               {asking ? '回答中…' : '送出'}
             </button>
           </form>
-          {ready.length > 0 && (
+          {ready.length > 0 && messages.length === 0 && (
             <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">
               {QUICK_QUESTIONS.map((text) => (
                 <button
@@ -692,8 +884,13 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
               ))}
             </div>
           )}
+          <div className="mt-2">{inspector}</div>
         </div>
-        {inspector}
+        {viewer && (
+          <div className="min-h-0 lg:sticky lg:top-4">
+            <SourceViewer source={viewer.source} sentence={viewer.sentence} onClose={() => setViewer(null)} />
+          </div>
+        )}
       </div>
 
       {pendingDelete && (

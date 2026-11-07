@@ -136,3 +136,27 @@ body {
   padding-left: var(--space-2);
   color: var(--color-text-muted);
 }
+
+/* An inline citation in an answer: a small clickable chip that opens the source. */
+.cite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.1rem;
+  margin: 0 1px;
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: baseline;
+  cursor: pointer;
+}
+.cite:hover {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}

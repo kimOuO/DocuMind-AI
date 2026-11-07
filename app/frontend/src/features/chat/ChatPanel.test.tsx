@@ -110,6 +110,14 @@ function answerStream(
   ])
 }
 
+
+/** An answer line as rendered: citations are chips showing the bare number, so "[1]" reads "1". */
+function answerLine(expected: string) {
+  const rendered = expected.replace(/\[(\d+)\]/g, '$1')
+  return (_: string, element: Element | null) =>
+    element?.tagName === 'P' && element.textContent === rendered
+}
+
 function stored(status = 'completed', answered: boolean | null = true, sources: object[] = [SOURCE]) {
   return {
     ...CONVERSATION,
@@ -159,7 +167,7 @@ test('asking creates a conversation and shows the answer with its sources, scope
 
   const conversation = await screen.findByRole('list', { name: '對話內容' })
   expect(within(conversation).getByText(QUESTION)).toBeInTheDocument()
-  expect(within(conversation).getByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(within(conversation).getByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
   expect(within(conversation).getByText(/\[1\] paper\.pdf · 第 8 頁/)).toBeInTheDocument()
   expect(within(conversation).getByText(SOURCE.snippet)).toBeInTheDocument()
   // No document was ticked: the whole library is searched, and the page says so.
@@ -320,7 +328,7 @@ test('the two-call mode reports which text was kept and the summed token usage',
 
   await ask()
 
-  expect(await screen.findByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(await screen.findByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
   expect(
     screen.getByText('兩次呼叫模式：顯示的是修正後的回答，已通過核對。初稿核對發現 1 項，修正稿 0 項。'),
   ).toBeInTheDocument()
@@ -368,7 +376,7 @@ test('the navigate mode shows the plan, what was located and the added sources',
 
   await ask()
 
-  expect(await screen.findByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(await screen.findByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
   expect(screen.getByText('Navigator 計畫：2 項，定位 1 項，補充 1 個片段（1 個因預算未納入）')).toBeInTheDocument()
   expect(screen.getByText('Table 2 (page 8)（第 8 頁）')).toBeInTheDocument()
   expect(screen.getByText('Table 9（文件中找不到）')).toBeInTheDocument()
@@ -397,7 +405,7 @@ test('a follow-up question that was rewritten shows the standalone question', as
   expect(screen.getByText('問題類型：檢索')).toBeInTheDocument()
 })
 
-test('the answer is rendered as formatted text, with citations kept literally', async () => {
+test('the answer is rendered as formatted text, with citations as clickable chips', async () => {
   mockApi({
     'GET /api/v1/conversations': { status: 200, body: [] },
     'POST /api/v1/conversations': { status: 201, body: CONVERSATION },
@@ -422,7 +430,8 @@ test('the answer is rendered as formatted text, with citations kept literally', 
   expect(bold.tagName).toBe('STRONG')
   expect(within(conversation).queryByText(/\*\*/)).not.toBeInTheDocument()
   expect(within(conversation).getByText('first').tagName).toBe('LI')
-  expect(within(conversation).getByText('second [2][3]')).toBeInTheDocument()
+  expect(within(conversation).getByText((_, el) => el?.tagName === 'LI' && el.textContent === 'second 23')).toBeInTheDocument()
+  expect(within(conversation).getAllByRole('button', { name: /^來源 \d$/ })).toHaveLength(3)
 })
 
 test('ticked documents limit the search and are named as the scope', async () => {
@@ -461,7 +470,7 @@ test('an answer that was cut short is labelled as unfinished', async () => {
 
   expect(await screen.findByText('回答未完成')).toBeInTheDocument()
   // What was produced is still shown.
-  expect(screen.getByText('The ablated versions perform worse [1].')).toBeInTheDocument()
+  expect(screen.getByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
 })
 
 test('an answer without any cited source is labelled as not found', async () => {
@@ -560,4 +569,38 @@ test('a source card links to the original file at the cited page', async () => {
   const link = await screen.findByRole('link', { name: /開啟原文第 8 頁/ })
   expect(link).toHaveAttribute('href', `/api/v1/documents/${SOURCE.document_id}/file#page=8`)
   expect(link).toHaveAttribute('target', '_blank')
+})
+
+
+test('clicking a citation opens the source beside the answer with the cited page', async () => {
+  mockApi(routesFor(answerStream(), stored()))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+  const conversation = await screen.findByRole('list', { name: '對話內容' })
+  await userEvent.click(within(conversation).getByRole('button', { name: '來源 1' }))
+
+  const viewer = screen.getByRole('region', { name: '來源檢視' })
+  expect(within(viewer).getByText(/\[1\] paper\.pdf/)).toBeInTheDocument()
+  expect(within(viewer).getByText(/第 8 頁/)).toBeInTheDocument()
+  expect(within(viewer).getByText(/引用這段的句子：「The ablated versions perform worse」/)).toBeInTheDocument()
+  expect(within(viewer).getByTitle('paper.pdf 第 8 頁')).toHaveAttribute(
+    'src',
+    `/api/v1/documents/${SOURCE.document_id}/file#page=8`,
+  )
+  await userEvent.click(within(viewer).getByRole('button', { name: '關閉來源檢視' }))
+  expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
+})
+
+test("the program's notes after an answer are folded away from the answer text", async () => {
+  const content = 'LightRAG wins [1].\n\nNumbers that could not be checked against the cited pages of the original text: 99%.'
+  mockApi(routesFor(answerStream({ pieces: [content] }), { ...stored(), messages: [stored().messages[0], { ...stored().messages[1], content }] }))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  const conversation = await screen.findByRole('list', { name: '對話內容' })
+  expect(within(conversation).getByText(answerLine('LightRAG wins [1].'))).toBeInTheDocument()
+  expect(within(conversation).getByText('核對結果（1 則註記）')).toBeInTheDocument()
+  expect(within(conversation).getByText(/Numbers that could not be checked/)).toBeInTheDocument()
 })

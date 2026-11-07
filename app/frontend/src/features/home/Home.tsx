@@ -39,12 +39,12 @@ export function Home() {
   }, [])
 
   return (
-    <div className="grid flex-1 gap-4 p-4 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:items-start">
-      <div className="min-w-0 space-y-4 lg:sticky lg:top-4">
+    <div className="grid min-h-0 flex-1 gap-4 p-4 lg:grid-cols-[minmax(280px,320px)_minmax(0,1fr)]">
+      <div className="min-h-0 min-w-0 space-y-4 overflow-y-auto">
         <DocumentPanel onChange={setDocuments} />
         <SystemStatus state={state} />
       </div>
-      <div className="min-w-0">
+      <div className="min-h-0 min-w-0">
         <ChatPanel documents={documents} />
       </div>
     </div>

@@ -51,7 +51,7 @@ export function AuthForm({ onLoggedIn }: { onLoggedIn: (user: User) => void }) {
 
   const isLogin = mode === 'login'
   return (
-    <section className="panel mx-auto mt-10 max-w-sm p-6">
+    <section className="panel p-6 backdrop-blur">
       <h2 className="text-lg font-semibold">{isLogin ? '登入' : '註冊'}</h2>
       {notice && (
         <p role="status" className="mt-2 text-sm text-success">
