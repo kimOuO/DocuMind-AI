@@ -53,9 +53,9 @@ def test_the_prompt_numbers_the_sources_and_ends_with_the_question(
     assert prompt.index("[1] paper.pdf") < prompt.index("[2] paper.pdf")
     assert prompt.rstrip().endswith("Question: compare lightRAG with GraphRAG\nAnswer:")
     # The rules the answer must follow are stated before the sources.
-    assert prompt.index("only the numbered sources") < prompt.index("[1] paper.pdf")
+    assert prompt.index("come from the numbered sources") < prompt.index("[1] paper.pdf")
     assert "square brackets" in prompt
-    assert "do not contain" in prompt
+    assert "documents do not mention it" in prompt
 
 
 def test_sources_that_do_not_fit_the_evidence_budget_are_left_out_whole(
@@ -135,7 +135,7 @@ def test_the_instructions_ask_for_the_source_that_states_each_statement() -> Non
     """D68: a citation points at the source whose text states the statement."""
     prompt, _ = build_answer_prompt("q", [], WordCounter(), 5_500)
 
-    assert "cite the source whose text states that statement" in prompt
+    assert "cite the source whose text states it" in prompt
     assert "A source about the same topic is not enough" in prompt
     assert "two neighbouring statements may need different sources" in prompt
 
@@ -300,3 +300,35 @@ def test_the_summary_instructions_keep_the_scope_of_comparison_outcomes() -> Non
 def test_the_summary_instructions_fit_their_budget(counter: Qwen3TokenCounter) -> None:
     prompt, _ = build_summary_prompt("summary this document.", [], counter, evidence_budget=0)
     assert counter.count(prompt) <= 500
+
+
+def test_the_documents_in_scope_are_listed_with_the_opening_of_their_summaries(
+    counter: Qwen3TokenCounter,
+) -> None:
+    """D88: even when no passage resembles the question, the model knows what the user has
+    and can say so, or answer a question about the platform itself."""
+    from app.summarization.repository import StoredSummary
+
+    cards = [
+        StoredSummary(
+            uuid.uuid4(),
+            "paper.pdf",
+            "document",
+            0,
+            None,
+            1,
+            16,
+            "LightRAG is a graph RAG " * 30,
+            90,
+        ),
+        StoredSummary(uuid.uuid4(), "notes.md", "document", 0, None, 1, 1, "Bread notes.", 3),
+    ]
+
+    prompt, used = build_answer_prompt("what can you do?", [], counter, 5_500, documents=cards)
+
+    assert used == []
+    assert "Documents in scope:" in prompt
+    assert "- paper.pdf: LightRAG is a graph RAG" in prompt and " …" in prompt
+    assert "- notes.md: Bread notes." in prompt
+    assert "About you: DocuMind-AI" in prompt
+    assert "(no passage of the documents resembles the question)" in prompt

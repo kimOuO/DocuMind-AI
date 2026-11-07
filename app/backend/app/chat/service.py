@@ -118,6 +118,8 @@ _TABLE_CAPTION_LINE = re.compile(r"^\s*(Table\s+\d+)\s*[.:]", re.IGNORECASE)
 NAVIGATION_CANDIDATES_PER_TARGET = 3 * CHUNKS_PER_TARGET
 DELIVERY_PIECE = 400  # characters per delta when a finished text is delivered (two-call mode)
 EVIDENCE_TOKEN_BUDGET = 5_500
+# D88: how many of the closest passages the model sees when none reaches MIN_SIMILARITY.
+BELOW_THRESHOLD_PASSAGES = 3
 # D87 experiment A: the room the comparison facts may take before the sources (single mode).
 FACTS_TOKEN_BUDGET = 500
 # The answer is saved to the database every this many pieces while it streams.
@@ -336,7 +338,14 @@ class ChatService:
                     prepared, question, preamble=preamble, added=added, navigation=navigation
                 )
                 if kind == "summary"
-                else self._evidence_from_chunks(prepared, question, chunks, preamble, added)
+                else self._evidence_from_chunks(
+                    prepared,
+                    question,
+                    chunks,
+                    preamble,
+                    added,
+                    await self._document_cards(prepared),
+                )
             )
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
@@ -1088,12 +1097,27 @@ class ChatService:
             best = chunks[0].score if chunks else None
             if best is not None and best >= self._settings.min_similarity:
                 return await retrieval.with_table_context(prepared.actor, chunks), embedding
-        logger.info(
-            "Question refused: best similarity %s below %s",
-            None if best is None else round(best, 3),
-            self._settings.min_similarity,
-        )
-        return None, embedding
+            # D88 (user's decision): nothing is similar enough, but the model is asked all
+            # the same, with the closest passages to judge for itself — a question put in
+            # other words than the document's, a question about the platform, small talk.
+            # It is told to say so when the documents do not cover the question.
+            logger.info(
+                "Best similarity %s below %s: the closest passages go to the model as such",
+                None if best is None else round(best, 3),
+                self._settings.min_similarity,
+            )
+            return await retrieval.with_table_context(
+                prepared.actor, chunks[:BELOW_THRESHOLD_PASSAGES]
+            ), embedding
+
+    async def _document_cards(self, prepared: PreparedQuestion) -> list[StoredSummary]:
+        """The whole-document summaries of the documents in scope, for the prompt's
+        "Documents in scope" lines (D88)."""
+        async with self._sessions() as session:
+            summaries = await SummaryRepository(session).ready_summaries(
+                prepared.actor.id, prepared.scope.document_ids
+            )
+        return [s for s in summaries if s.level == "document"]
 
     def _evidence_from_chunks(
         self,
@@ -1102,6 +1126,7 @@ class ChatService:
         chunks: list[RetrievedChunk] | None,
         preamble: str = "",
         added: Sequence[RetrievedChunk] = (),
+        cards: Sequence[StoredSummary] = (),
     ) -> Evidence:
         if chunks is None:
             return Evidence(None, [], _NOTHING_RELEVANT[question_language(prepared.question)])
@@ -1111,7 +1136,12 @@ class ChatService:
             candidates, block, facts_info = self._with_facts(question, candidates)
             preamble = block + preamble
         prompt, used = build_answer_prompt(
-            question, candidates, self._counter, EVIDENCE_TOKEN_BUDGET, preamble=preamble
+            question,
+            candidates,
+            self._counter,
+            EVIDENCE_TOKEN_BUDGET,
+            preamble=preamble,
+            documents=cards,
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "", facts_info)

@@ -16,15 +16,23 @@ from app.retrieval.repository import RetrievedChunk
 from app.summarization.repository import StoredSummary
 
 INSTRUCTIONS = """\
-You answer questions about the user's documents.
+You are the assistant of DocuMind-AI, a platform where the user uploads documents and talks \
+with you about them. Answer the way a helpful conversational assistant does.
 
 Rules:
-- Use only the numbered sources below. Do not use any other knowledge.
-- After each statement, cite the source whose text states that statement, by its number in \
-square brackets, for example [1] or [2][3]. A source about the same topic is not enough: a \
-figure is cited to the source where the figure appears, an explanation to the source where the \
-explanation appears, and two neighbouring statements may need different sources.
+- Statements about the documents come from the numbered sources below. After each such \
+statement, cite the source whose text states it, by its number in square brackets, for \
+example [1] or [2][3]. A source about the same topic is not enough: a figure is cited to the \
+source where the figure appears, an explanation to the source where the explanation appears, \
+and two neighbouring statements may need different sources.
 - Copy numbers and names exactly as they appear in the sources.
+- The sources are the passages most similar to the question; judge yourself whether they \
+answer it. When they do not, say plainly that the documents do not mention it (name the \
+documents), cite nothing, and never present as the documents' content anything the sources \
+do not state. You may then add a short answer from general knowledge, introduced by a \
+sentence saying it is not from the documents.
+- Questions about you, this platform or what you can do: answer from the description below. \
+Greetings and small talk: reply briefly and say what you can help with.
 - When the question asks to compare or analyse experimental results, write in this order: \
 the main findings; representative figures that support them; the results that go against the \
 trend, named explicitly; then a conclusion that is no stronger than the figures you gave. Do \
@@ -32,12 +40,33 @@ not list every number a source has unless the question asks for the full table. 
 keeps its labels: which method or variant, which dataset, which metric, its unit, and what it \
 is compared against. If you named an exception, the conclusion must carry it too; never write \
 "all", "every" or "consistently" about cases you have not checked one by one.
-- If the sources do not contain the answer, say that the documents do not contain it and \
-cite nothing.
 {language_rule}
 
+About you: DocuMind-AI answers questions from the user's uploaded documents (PDF, TXT, \
+Markdown), citing the file name and page; it can summarise a document, explain and compare \
+what the documents say, read their tables, and tell the user when the documents do not cover \
+something. It does not browse the web and sees only the documents the user uploaded.
+{documents}
 Sources:
 """
+
+
+def _documents_block(documents: Sequence[StoredSummary], counter: TokenCounter, budget: int) -> str:
+    """ "Documents in scope" — each file with the opening of its stored summary, so that the
+    model knows what the user has even when no passage matched the question (D88)."""
+    if not documents:
+        return ""
+    lines = []
+    for summary in documents:
+        words = summary.text.split()
+        excerpt = " ".join(words[:40]) + (" …" if len(words) > 40 else "")
+        lines.append(f"- {summary.filename}: {excerpt}")
+    block = "\nDocuments in scope:\n" + "\n".join(lines) + "\n"
+    while lines and counter.count(block) > budget:
+        lines.pop()
+        block = "\nDocuments in scope:\n" + "\n".join(lines) + "\n"
+    return block
+
 
 # Qwen answers Chinese questions in Simplified Chinese unless told otherwise;
 # this platform's users write Traditional Chinese.
@@ -67,6 +96,9 @@ def _source_block(index: int, chunk: RetrievedChunk) -> str:
     return f"[{index}] {where}\n{chunk.text}"
 
 
+DOCUMENTS_BLOCK_BUDGET = 400  # tokens for the "Documents in scope" lines
+
+
 def build_answer_prompt(
     question: str,
     chunks: list[RetrievedChunk],
@@ -74,11 +106,15 @@ def build_answer_prompt(
     evidence_budget: int,
     *,
     preamble: str = "",
+    documents: Sequence[StoredSummary] = (),
 ) -> tuple[str, list[RetrievedChunk]]:
     """The prompt, and the chunks that were included in it (numbered from 1 in that order).
 
     A preamble (D71: the two-role instructions, or the Navigator's plan) goes before
-    the instructions; the default prompt has none."""
+    the instructions; the default prompt has none. The documents in scope are listed with
+    the opening of their summaries (D88), paid for out of the evidence budget."""
+    documents_block = _documents_block(documents, counter, DOCUMENTS_BLOCK_BUDGET)
+    evidence_budget -= counter.count(documents_block)
     used: list[RetrievedChunk] = []
     blocks: list[str] = []
     spent = 0
@@ -91,8 +127,12 @@ def build_answer_prompt(
         used.append(chunk)
         blocks.append(block)
         spent += cost
-    sources = "\n\n".join(blocks) if blocks else "(no sources)"
-    instructions = INSTRUCTIONS.format(language_rule=LANGUAGE_RULES[question_language(question)])
+    sources = (
+        "\n\n".join(blocks) if blocks else "(no passage of the documents resembles the question)"
+    )
+    instructions = INSTRUCTIONS.format(
+        language_rule=LANGUAGE_RULES[question_language(question)], documents=documents_block
+    )
     return f"{preamble}{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
 
 

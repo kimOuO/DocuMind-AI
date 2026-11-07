@@ -9,6 +9,10 @@ import tempfile
 
 os.environ["DB_NAME"] = "documind_test"
 os.environ["DB_NULL_POOL"] = "true"
+# The tests describe the code's defaults, whatever the developer's .env turns on (D87/D88).
+os.environ["ANSWER_FACTS"] = "off"
+os.environ["SUMMARY_REPAIR"] = "false"
+os.environ["ANSWER_TEMPERATURE"] = ""
 # Uploaded files written by tests go to a throwaway directory.
 os.environ["DATA_DIR"] = tempfile.mkdtemp(prefix="documind-test-data-")
 
