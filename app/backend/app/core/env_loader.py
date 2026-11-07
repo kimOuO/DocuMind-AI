@@ -37,7 +37,11 @@ class Settings(BaseSettings):
     chunk_size: int = 400
     chunk_overlap: int = 80
     top_k: int = 5
-    min_similarity: float = 0.45
+    # P4 (ADR 0010, user's decision 2026-11-07): 0.50 refuses all three no-answer questions
+    # of the question set at every chunk size with no wrong refusal; 0.45 refused one or two.
+    # The margin to the answerable questions is 0.03–0.04. Also the navigate mode's
+    # relevance floor for a target's candidates.
+    min_similarity: float = 0.50
     token_safety_buffer: int = 16
     question_token_budget: int = 200
 

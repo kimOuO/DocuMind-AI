@@ -508,7 +508,7 @@ class Embedder(Protocol):
 | `CHUNK_SIZE` | `400` | tokens；D30，P4 實驗調整 |
 | `CHUNK_OVERLAP` | `80` | tokens；D30 |
 | `TOP_K` | `5` | D30，P4 實驗調整 |
-| `MIN_SIMILARITY` | `0.45` | 拒答門檻；D36，P4 校正 |
+| `MIN_SIMILARITY` | `0.50` | 拒答門檻；D36；P4 以題庫校正（ADR 0010：0.50 擋下全部無答案題且無誤拒，0.45 只擋 1–2 題；餘裕 0.03–0.04） |
 | `TOKEN_SAFETY_BUFFER` | `16` | token 計數的安全緩衝（AC-25）。不是絕對保證，見 `02-architecture.md` 第 4.1 節 |
 | `QUESTION_TOKEN_BUDGET` | `200` | 問題的 token 上限；超過時請使用者縮短（D45）。未來可改為動態分配 |
 | `MAX_UPLOAD_MB` | `50` | |
