@@ -670,6 +670,69 @@ Extensive experiments compare LightRAG to existing RAG methods (NaiveRAG, RQ-RAG
 The document also discusses related work in the field of RAG and graph-based knowledge representation, highlighting the limitations of existing approaches and how LightRAG addresses them. It concludes by summarizing the contributions of the work, including a general framework for graph-empowered RAG systems, the LightRAG methodology, and experimental findings showing significant improvements in retrieval accuracy, efficiency, and adaptability compared to existing models [6]. The appendix provides detailed information about the methodologies, experimental settings, and evaluation criteria used in the LightRAG framework, including statistical information for the datasets and a case study comparing LightRAG and a baseline model, NaiveRAG [7].
 ```
 
+## C9-Q1-1
+
+- 問題：`summary this document.`；模式 `single`；25.3 秒；1 次呼叫；tokens 4249
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 ['16.4%', '13.6%']；全稱宣稱 0；引用可疑 []；未解析 1；找不到的數字 []
+
+```text
+The document introduces LightRAG, a novel Retrieval-Augmented Generation (RAG) system that enhances large language models (LLMs) by integrating graph structures into the indexing and retrieval processes. Traditional RAG systems suffer from limitations such as flat data representations and insufficient contextual awareness, leading to fragmented and incomplete responses. LightRAG addresses these issues by constructing a knowledge graph from documents, enabling both low-level and high-level knowledge discovery through a dual-level retrieval paradigm. This approach improves retrieval efficiency and accuracy by combining vector representations with graph structures [1].
+
+The architecture of LightRAG involves segmenting documents into chunks, extracting entities and relationships using LLMs, and constructing an optimized knowledge graph. The system supports fast adaptation to incremental knowledge by processing new documents and integrating them with existing graphs. The retrieval mechanism gathers local and global keywords and matches them with entities and relationships, enhancing the retrieval of high-order related information [5].
+
+Evaluations across four datasets (Agriculture, CS, Legal, and Mix) demonstrate that LightRAG outperforms baseline methods in all four evaluation dimensions: Comprehensiveness, Diversity, Empowerment, and Overall. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG. Ablation studies show that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset [6].
+
+LightRAG is also cost-efficient, using fewer than 100 tokens and a single API call during retrieval, compared to GraphRAG's 610,000 tokens and hundreds of API calls. For incremental updates, LightRAG integrates new data seamlessly, while GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports [6].
+
+The framework is open-source and available at https://github.com/HKUDS/LightRAG [1]. The document concludes by highlighting LightRAG's advancements in RAG systems, emphasizing its efficiency, effectiveness, and ability to maintain relevance in dynamic environments [8].
+
+Figures whose labels differ from the source table: 16.4% (answer: Comprehensiveness, Legal, LightRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: Comprehensiveness, Legal, NaiveRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low).
+```
+
+## C9-Q1-2
+
+- 問題：`summary this document.`；模式 `single`；21.8 秒；1 次呼叫；tokens 4251
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 ['16.4%', '13.6%']；全稱宣稱 0；引用可疑 []；未解析 1；找不到的數字 []
+
+```text
+The document introduces LightRAG, a novel Retrieval-Augmented Generation (RAG) system that enhances large language models (LLMs) by integrating graph structures into the indexing and retrieval processes. Traditional RAG systems suffer from limitations such as flat data representations and insufficient contextual awareness, leading to fragmented and incomplete responses. LightRAG addresses these issues by employing a dual-level retrieval paradigm that enables both low-level and high-level knowledge discovery, combining vector representations with graph structures to improve retrieval efficiency and accuracy [1].
+
+The architecture of LightRAG involves segmenting documents into chunks and using LLMs to extract entities and relationships, constructing a knowledge graph optimized for efficient retrieval. The system supports fast adaptation to incremental knowledge by processing new documents and integrating them with existing graphs. The retrieval mechanism gathers local and global keywords and matches them with entities and relationships, enhancing the retrieval of high-order related information [5].
+
+Evaluations across four datasets (Agriculture, CS, Legal, and Mix) demonstrate that LightRAG outperforms baseline methods in all four evaluation dimensions: Comprehensiveness, Diversity, Empowerment, and Overall. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG. Ablation studies indicate that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset [6].
+
+LightRAG also demonstrates cost efficiency, using fewer than 100 tokens and a single API call during retrieval, compared to GraphRAG's 610,000 tokens and hundreds of API calls. For incremental updates, LightRAG integrates new data seamlessly, while GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports [1].
+
+The framework is open-source and available at https://github.com/HKUDS/LightRAG [1]. The document concludes by highlighting LightRAG's advancements in RAG through a graph-based indexing approach, which enhances both efficiency and comprehension in information retrieval, making it suitable for dynamic environments [8].
+
+Figures whose labels differ from the source table: 16.4% (answer: Comprehensiveness, Legal, LightRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: Comprehensiveness, Legal, NaiveRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low).
+```
+
+## C9-Q1-3
+
+- 問題：`summary this document.`；模式 `single`；21.7 秒；1 次呼叫；tokens 4251
+- 來源：[1] p1 summary, [2] p1 summary, [3] p1 summary, [4] p2 summary, [5] p3 summary, [6] p5 summary, [7] p10 summary, [8] p10 summary, [9] p13 summary
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 ['16.4%', '13.6%']；全稱宣稱 0；引用可疑 []；未解析 1；找不到的數字 []
+
+```text
+The document introduces LightRAG, a novel Retrieval-Augmented Generation (RAG) system that enhances large language models (LLMs) by integrating graph structures into the indexing and retrieval processes. Traditional RAG systems suffer from limitations such as flat data representations and insufficient contextual awareness, leading to fragmented and incomplete responses. LightRAG addresses these issues by employing a dual-level retrieval paradigm that enables both low-level and high-level knowledge discovery, combining vector representations with graph structures to improve retrieval efficiency and accuracy [1].
+
+The architecture of LightRAG involves segmenting documents into chunks and using LLMs to extract entities and relationships, constructing a knowledge graph optimized for efficient retrieval. The system supports fast adaptation to incremental knowledge by processing new documents and integrating them with existing graphs. The retrieval mechanism gathers local and global keywords and matches them with entities and relationships, enhancing the retrieval of high-order related information [5].
+
+Evaluations across four datasets (Agriculture, CS, Legal, and Mix) demonstrate that LightRAG outperforms baseline methods in all four evaluation dimensions: Comprehensiveness, Diversity, Empowerment, and Overall. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG. Ablation studies indicate that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset [6].
+
+LightRAG also demonstrates cost efficiency, using fewer than 100 tokens and a single API call during retrieval, compared to GraphRAG's 610,000 tokens and hundreds of API calls. For incremental updates, LightRAG integrates new data seamlessly, while GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports [1].
+
+The framework is open-source and available at https://github.com/HKUDS/LightRAG [1]. The document concludes by highlighting LightRAG's advancements in RAG through a graph-based indexing approach, which enhances both efficiency and comprehension in information retrieval, making it suitable for dynamic environments [8].
+
+Figures whose labels differ from the source table: 16.4% (answer: Comprehensiveness, Legal, LightRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: Comprehensiveness, Legal, NaiveRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low).
+```
+
 ## M5-Q1-1
 
 - 問題：`summary this document.`；模式 `navigate`；42.0 秒；2 次呼叫；tokens 7846
@@ -2400,6 +2463,57 @@ These results indicate that LightRAG generally performs better than GraphRAG, es
 This suggests that LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, contributes to its superior performance in most cases [2].
 
 Figures whose labels differ from the source table: 54.4% (answer: Comprehensiveness, LightRAG, vs LightRAG; source: Comprehensiveness, Agriculture, LightRAG, vs GraphRAG); 51.6% (answer: Comprehensiveness, LightRAG, vs LightRAG; source: Comprehensiveness, CS, LightRAG, vs GraphRAG / Comprehensiveness, Legal, LightRAG, vs GraphRAG); 49.6% (answer: Comprehensiveness, Mix, LightRAG, vs LightRAG; source: Comprehensiveness, Mix, LightRAG, vs GraphRAG / Overall, Mix, LightRAG, vs GraphRAG).
+```
+
+## C9-Q2-1
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `single`；23.5 秒；1 次呼叫；tokens 3685
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 1；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [3]. 
+
+For example, in the Comprehensiveness metric, LightRAG achieves a win rate of 54.4% over GraphRAG in the Agriculture dataset, 51.6% in the CS dataset, 51.6% in the Legal dataset, and 49.6% in the Mix dataset [1]. Similarly, in the Diversity metric, LightRAG achieves a win rate of 77.2% over GraphRAG in the Agriculture dataset, 59.2% in the CS dataset, 73.6% in the Legal dataset, and 64.0% in the Mix dataset [1]. In the Empowerment metric, LightRAG achieves a win rate of 58.8% over GraphRAG in the Agriculture dataset, 54.8% in the CS dataset, 56.4% in the Legal dataset, and 49.2% in the Mix dataset [1]. Finally, in the Overall metric, LightRAG achieves a win rate of 54.8% over GraphRAG in the Agriculture dataset, 52.0% in the CS dataset, 52.8% in the Legal dataset, and 49.6% in the Mix dataset [1].
+
+These results demonstrate that LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, enhances response diversity and comprehensiveness. This approach effectively addresses both detailed and abstract queries, ensuring a thorough grasp of information [3]. However, it is important to note that while LightRAG outperforms GraphRAG in most cases, the performance differences vary across datasets and metrics.
+
+A claim the source table does not bear out: "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
+```
+
+## C9-Q2-2
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `single`；17.3 秒；1 次呼叫；tokens 3674
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 1；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [3]. 
+
+For example, in the Comprehensiveness metric, LightRAG achieves a win rate of 54.4% over GraphRAG in the Agriculture dataset, 51.6% in the CS dataset, 51.6% in the Legal dataset, and 49.6% in the Mix dataset [1]. In the Diversity metric, LightRAG achieves a win rate of 77.2% over GraphRAG in the Agriculture dataset, 59.2% in the CS dataset, 73.6% in the Legal dataset, and 64.0% in the Mix dataset [1]. In the Empowerment metric, LightRAG achieves a win rate of 58.8% over GraphRAG in the Agriculture dataset, 54.8% in the CS dataset, 56.4% in the Legal dataset, and 49.2% in the Mix dataset [1]. In the Overall metric, LightRAG achieves a win rate of 54.8% over GraphRAG in the Agriculture dataset, 52.0% in the CS dataset, 52.8% in the Legal dataset, and 49.6% in the Mix dataset [1].
+
+These results demonstrate that LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, effectively addresses both detailed and abstract queries, ensuring a thorough grasp of information [3]. This approach is especially valuable in scenarios requiring diverse perspectives, as it allows LightRAG to access both specific details and overarching themes, providing contextually relevant answers [3].
+
+A claim the source table does not bear out: "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
+```
+
+## C9-Q2-3
+
+- 問題：`compare lightRAG with GraphRAG`；模式 `single`；17.3 秒；1 次呼叫；tokens 3674
+- 來源：[1] p7 retrieval, [2] p7 retrieval, [3] p7 retrieval, [4] p9 retrieval, [5] p8 retrieval
+- 分析狀態：FACTUALLY_INCORRECT；完整性 not_applicable（required []，缺 []，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 1；引用可疑 []；未解析 0；找不到的數字 []
+
+```text
+LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions. In the Agriculture, CS, and Legal datasets—each containing millions of tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting its strength in comprehensive information understanding within diverse environments [3]. 
+
+For example, in the Comprehensiveness metric, LightRAG achieves a win rate of 54.4% over GraphRAG in the Agriculture dataset, 51.6% in the CS dataset, 51.6% in the Legal dataset, and 49.6% in the Mix dataset [1]. In the Diversity metric, LightRAG achieves a win rate of 77.2% over GraphRAG in the Agriculture dataset, 59.2% in the CS dataset, 73.6% in the Legal dataset, and 64.0% in the Mix dataset [1]. In the Empowerment metric, LightRAG achieves a win rate of 58.8% over GraphRAG in the Agriculture dataset, 54.8% in the CS dataset, 56.4% in the Legal dataset, and 49.2% in the Mix dataset [1]. In the Overall metric, LightRAG achieves a win rate of 54.8% over GraphRAG in the Agriculture dataset, 52.0% in the CS dataset, 52.8% in the Legal dataset, and 49.6% in the Mix dataset [1].
+
+These results demonstrate that LightRAG's dual-level retrieval paradigm, which integrates low-level retrieval of specific entities with high-level retrieval of broader topics, effectively addresses both detailed and abstract queries, ensuring a thorough grasp of information [3]. This approach is especially valuable in scenarios requiring diverse perspectives, as it allows LightRAG to access both specific details and overarching themes, providing contextually relevant answers [3].
+
+A claim the source table does not bear out: "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions." — LightRAG is above the compared methods in 61 cells and below in 3, for example Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7).
 ```
 
 ## M5-Q2-1
@@ -4507,6 +4621,69 @@ The ablation studies on LightRAG, as presented in Table 2 of the document, compa
 4. **Semantic Graph Retrieval (-Origin variant)**: This variant eliminates the use of original text and relies solely on semantic graphs. Surprisingly, it does not exhibit significant performance declines and even shows improvements in some cases. For instance, in the Agriculture dataset, comprehensiveness improves from LightRAG's 67.6% to -Origin's 75.2%. In the Mix dataset, comprehensiveness improves from 61.2% to 55.6%. The variant's success is attributed to the effective extraction of key information during the graph-based indexing process, which provides sufficient context for answering queries [1].
 
 The ablation studies highlight that the full version of LightRAG, with its dual-level retrieval system, performs best across various metrics and datasets. Variants that omit either retrieval component or rely solely on semantic graphs show performance that is either lower or mixed compared to the full version [1].
+```
+
+## C9-Q3-1
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `single`；18.0 秒；1 次呼叫；tokens 4039
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 分析狀態：FACTUALLY_CORRECT_BUT_INCOMPLETE；完整性 incomplete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 ['-High', '-Low', '-Origin', 'LightRAG']，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 [([2], [6])]；未解析 0；找不到的數字 []
+
+```text
+The performance of ablated versions of LightRAG was evaluated using NaiveRAG as a reference, and the results are detailed in Table 2 [1]. The ablated versions include variants that omit either the low-level or high-level retrieval modules, as well as a variant that uses semantic graphs instead of the original text for retrieval.
+
+- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets and metrics. The focus on specific information and entities leads to a lack of comprehensive insights, especially for complex queries [6].
+
+- **High-level-only Retrieval (-Low variant)**: This variant prioritizes broader content by leveraging entity-wise relationships. While it excels in comprehensiveness, it struggles with tasks requiring detailed, precise answers due to reduced depth in examining specific entities [6].
+
+- **Hybrid Mode (Full LightRAG)**: The hybrid mode combines the strengths of both low-level and high-level retrieval methods. It achieves balanced performance across multiple dimensions by retrieving a broader set of relationships while conducting in-depth exploration of specific entities [6].
+
+- **Semantic Graph Retrieval (-Origin variant)**: This variant eliminates the use of original text in the retrieval process. Surprisingly, it does not exhibit significant performance declines and even shows improvements in some cases, such as in the Agriculture and Mix datasets. This is attributed to the effective extraction of key information during the graph-based indexing process, which provides sufficient context for answering queries [6].
+
+These findings highlight the importance of the dual-level retrieval paradigm in LightRAG, as it ensures both breadth and depth in information retrieval, leading to balanced and effective performance [2].
+```
+
+## C9-Q3-2
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `single`；14.8 秒；1 次呼叫；tokens 4039
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 分析狀態：FACTUALLY_CORRECT_BUT_INCOMPLETE；完整性 incomplete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 ['-High', '-Low', '-Origin', 'LightRAG']，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 [([2], [6])]；未解析 0；找不到的數字 []
+
+```text
+The performance of ablated versions of LightRAG was evaluated using NaiveRAG as a reference, and the results are detailed in Table 2 [1]. The ablated versions include variants that omit either the low-level or high-level retrieval modules, as well as a variant that uses semantic graphs instead of the original text for retrieval.
+
+- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets and metrics. The focus on specific information and entities leads to a lack of comprehensive insights, particularly for complex queries [6].
+
+- **High-level-only Retrieval (-Low variant)**: This variant prioritizes broader content by leveraging entity-wise relationships. While it excels in comprehensiveness, it struggles with tasks requiring detailed, precise answers due to reduced depth in examining specific entities [6].
+
+- **Hybrid Mode (Full LightRAG)**: The hybrid mode combines the strengths of both low-level and high-level retrieval methods. It achieves balanced performance across multiple dimensions by retrieving a broader set of relationships while conducting in-depth exploration of specific entities [6].
+
+- **Semantic Graph Retrieval (-Origin variant)**: This variant eliminates the use of original text in the retrieval process. Surprisingly, it does not exhibit significant performance declines and even shows improvements in some cases, such as in the Agriculture and Mix datasets. This is attributed to the effective extraction of key information during the graph-based indexing process, which provides sufficient context for answering queries [6].
+
+These findings highlight the importance of the dual-level retrieval paradigm in LightRAG, as it ensures both breadth and depth in information retrieval, leading to balanced and effective performance [2].
+```
+
+## C9-Q3-3
+
+- 問題：`Performance of ablated versions of LightRAG`；模式 `single`；14.7 秒；1 次呼叫；tokens 4039
+- 來源：[1] p8 retrieval, [2] p7 retrieval, [3] p1 retrieval, [4] p8 retrieval, [5] p1 retrieval, [6] p8 table_context
+- 分析狀態：FACTUALLY_CORRECT_BUT_INCOMPLETE；完整性 incomplete（required ['-High', '-Low', '-Origin', 'LightRAG']，缺 ['-High', '-Low', '-Origin', 'LightRAG']，條件 None）；方向核對 []
+- 檢查：標籤不符 []；全稱宣稱 0；引用可疑 [([2], [6])]；未解析 0；找不到的數字 []
+
+```text
+The performance of ablated versions of LightRAG was evaluated using NaiveRAG as a reference, and the results are detailed in Table 2 [1]. The ablated versions include variants that omit either the low-level or high-level retrieval modules, as well as a variant that uses semantic graphs instead of the original text for retrieval.
+
+- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets and metrics. The focus on specific information and entities leads to a lack of comprehensive insights, particularly for complex queries [6].
+
+- **High-level-only Retrieval (-Low variant)**: This variant prioritizes broader content by leveraging entity-wise relationships. While it excels in comprehensiveness, it struggles with tasks requiring detailed, precise answers due to reduced depth in examining specific entities [6].
+
+- **Hybrid Mode (Full LightRAG)**: The hybrid mode combines the strengths of both low-level and high-level retrieval methods. It achieves balanced performance across multiple dimensions by retrieving a broader set of relationships while conducting in-depth exploration of specific entities [6].
+
+- **Semantic Graph Retrieval (-Origin variant)**: This variant eliminates the use of original text in the retrieval process. Surprisingly, it does not exhibit significant performance declines and even shows improvements in some cases, such as in the Agriculture and Mix datasets. This is attributed to the effective extraction of key information during the graph-based indexing process, which provides sufficient context for answering queries [6].
+
+These findings highlight the importance of the dual-level retrieval paradigm in LightRAG, as it ensures both breadth and depth in information retrieval, leading to balanced and effective performance [2].
 ```
 
 ## M5-Q3-1

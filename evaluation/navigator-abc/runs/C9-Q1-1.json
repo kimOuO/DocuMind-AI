@@ -1,0 +1,397 @@
+{
+ "arm": "C9",
+ "answer_mode": "single",
+ "question": "Q1",
+ "question_text": "summary this document.",
+ "document": "lightrag",
+ "expectation": {},
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 25.3,
+ "stages": [],
+ "route": {
+  "type": "summary",
+  "standalone_question": "summary this document."
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 16,
+   "section_title": null,
+   "snippet": "LightRAG introduces a new Retrieval-Augmented Generation (RAG) system that enhances large language models by integrating graph structures into the indexing and retrieval processes. The system aims to address the limitations of existing RAG methods, such as flat data representations and insufficient contextual awareness, which often lead to fragmented and incomplete responses. LightRAG employs a dual-level retrieval paradigm that enables both low-level and high-level knowledge discovery and integrates vector representations with graph structures to improve retrieval efficiency and accuracy. An incremental update algorithm allows the system to adapt to new data without full reconstruction, making it suitable for dynamic environments.\n\nThe LightRAG architecture segments documents into chunks and uses LLMs to extract entities and relationships, constructing a knowledge graph that is optimized for efficient retrieval. The system supports fast adaptation to incremental knowledge by processing new documents and combining them with existing graphs. The retrieval mechanism gathers local and global keywords and matches them with entities and relationships, enhancing the retrieval of high-order related information.\n\nEvaluations across four datasets (Agriculture, CS, Legal, and Mix) show that LightRAG outperforms baseline methods in all four evaluation dimensions: Comprehensiveness, Diversity, Empowerment, and Overall. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG (p. 7). Ablation studies indicate that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset (p. 8).\n\nLightRAG also demonstrates cost efficiency, using fewer than 100 tokens and a single API call during retrieval, compared to GraphRAG's 610,000 tokens and hundreds of API calls (p. 9). For incremental updates, LightRAG integrates new data seamlessly, while GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports (p. 10). The framework is open-source and available at https://github.com/HKUDS/LightRAG (p. 1).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "CONTRADICTED",
+    "unresolved": [
+     "22.0%"
+    ],
+    "unverified": [],
+    "contradicted": [
+     "16.4%",
+     "13.6%"
+    ],
+    "checked_figures": 9
+   }
+  },
+  {
+   "index": 2,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 1,
+   "section_title": "Front matter",
+   "snippet": "LightRAG: Simple and Fast Retrieval-Augmented Generation introduces a new approach to Retrieval-Augmented Generation (RAG) systems, which enhance large language models (LLMs) by incorporating external knowledge sources to produce more accurate and contextually relevant responses (p. 1). Current RAG systems are limited by their use of flat data representations and insufficient contextual awareness, often resulting in fragmented answers that miss complex inter-dependencies (p. 1). LightRAG addresses these issues by integrating graph structures into text indexing and retrieval processes (p. 1). The framework features a dual-level retrieval system that improves information retrieval from both low-level and high-level knowledge discovery (p. 1). By combining graph structures with vector representations, LightRAG efficiently retrieves related entities and their relationships, improving response times while preserving contextual relevance (p. 1). An incremental update algorithm ensures new data is integrated promptly, maintaining system effectiveness in dynamic environments (p. 1). Experimental validation shows significant improvements in retrieval accuracy and efficiency compared to existing methods (p. 1). LightRAG is open-source and available at https://github.com/HKUDS/LightRAG (p. 1).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "reason": "no figures in the summary",
+    "status": "NOT_CHECKED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 0
+   }
+  },
+  {
+   "index": 3,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 1,
+   "page_end": 2,
+   "section_title": "INTRODUCTION",
+   "snippet": "Retrieval-Augmented Generation (RAG) systems are developed to enhance large language models (LLMs) by integrating external knowledge sources (Sudhi et al., 2024; Es et al., 2024; Salemi & Zamani, 2024). These systems improve the accuracy and contextual relevance of LLM responses, especially in real-world applications (p. 1). By adapting to domain-specific knowledge (Tu et al., 2024) and providing up-to-date information (Zhao et al., 2024), RAG systems tailor responses to user needs. Chunking is essential for breaking down external text into manageable segments, improving retrieval accuracy (Lyu et al., 2024). However, existing RAG systems have limitations, such as flat data representations that hinder understanding of entity relationships and a lack of contextual awareness for maintaining coherence across entities. For instance, a user asking about the influence of electric vehicles on urban air quality and public transportation infrastructure might receive fragmented responses due to the inability of existing systems to synthesize information (p. 1). To address these issues, the authors propose integrating graph structures into text indexing and retrieval. Graphs effectively represent interdependencies among entities (Rampášek et al., 2022), enabling nuanced understanding and coherent responses. The proposed LightRAG system addresses three key challenges: comprehensive information retrieval, enhanced retrieval efficiency, and rapid adaptation to new data (p. 2). LightRAG combines a graph-based indexing paradigm with a dual-level retrieval framework, enabling both precise and broader information retrieval. By integrating graph structures with vector representations, the system enhances retrieval efficiency and comprehensiveness (p. 2). Experiments showed significant improvements over baseline methods in terms of retrieval accuracy, model ablation, response efficiency, and adaptability to new information (p. 2).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "VERIFIED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 2
+   }
+  },
+  {
+   "index": 4,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 2,
+   "page_end": 3,
+   "section_title": "RETRIEVAL-AUGMENTED GENERATION",
+   "snippet": "Retrieval-Augmented Generation (RAG) combines user queries with relevant documents from an external knowledge database using two components: the Retrieval Component and the Generation Component. The retrieval component fetches relevant documents based on the query, while the generation component uses the retrieved information to produce coherent responses (p. 2). The RAG framework M is defined as M = (G, R = (φ, ψ)), where G is the generation module, R is the retrieval module, q is the input query, and D is the external database. The retrieval module includes two functions: i) Data Indexer φ(·), which builds a data structure ˆD from D, and ii) Data Retriever ψ(·), which retrieves relevant documents by comparing the query with indexed data. Using the retrieved content and the query, the generative model G(·) produces high-quality responses (p. 3). This work emphasizes three key aspects for an efficient RAG system: Comprehensive Information Retrieval, requiring φ(·) to extract global information effectively; Efficient and Low-Cost Retrieval, requiring ˆD to enable rapid and cost-efficient retrieval for high-volume queries; and Fast Adaptation to Data Changes, enabling swift updates to the data structure to incorporate new information and maintain relevance in a dynamic information landscape (p. 3).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "reason": "no figures in the summary",
+    "status": "NOT_CHECKED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 0
+   }
+  },
+  {
+   "index": 5,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 3,
+   "page_end": 5,
+   "section_title": "THE LIGHT RAG ARCHITECTURE",
+   "snippet": "LightRAG enhances retrieval by segmenting documents into manageable chunks and using LLMs to extract entities and relationships for constructing a knowledge graph. The graph generation module is represented as ˆD = (ˆV, ˆE) = Dedupe ◦ Prof(V, E), V, E = ∪Di∈DRecog(Di) (p. 3). Three main steps are used: extracting entities and relationships via function R(·), generating key-value pairs using LLM profiling P(·), and deduplication D(·) to merge identical entities and relations (p. 3). Key-value pairs are optimized for efficient retrieval, outperforming embedding matching methods (Gao et al., 2023) and chunk traversal techniques (Edge et al., 2024) (p. 4). LightRAG supports fast adaptation to incremental knowledge by processing new documents with the same indexing steps and combining them with existing graphs via union operations (p. 4). The dual-level retrieval paradigm handles specific and abstract queries using low-level and high-level retrieval strategies (p. 4). LightRAG integrates graph and vector representations for efficient retrieval, extracting local and global keywords and matching them with entities and relations. High-order relatedness is enhanced by gathering neighboring nodes in subgraphs {vi|vi ∈ V ∧(vi ∈ Nv ∨ vi ∈ Ne)} (p. 5). The retrieval-augmented answer generation phase uses a general-purpose LLM to generate answers from retrieved information, including entity and relation values from the profiling function (p. 5). Complexity analysis shows the Index phase involves calling the LLM per chunk size, with no additional overhead, while the retrieval phase reduces overhead by focusing on entity and relationship retrieval rather than chunk-based methods (p. 5).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "VERIFIED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 2
+   }
+  },
+  {
+   "index": 6,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 5,
+   "page_end": 10,
+   "section_title": "EVALUATION",
+   "snippet": "The evaluation section of the document assesses the effectiveness of the LightRAG framework using benchmark data, addressing four research questions. The study uses four datasets from the UltraDomain benchmark—Agriculture, CS, Legal, and Mix—each containing between 600,000 and 5,000,000 tokens (p. 5). Question generation involves an LLM creating 125 questions per dataset, with each user-task combination generating five questions (p. 6). LightRAG is compared against four baselines: NaiveRAG, RQ-RAG, HyDE, and GraphRAG. Evaluation uses an LLM-based multi-dimensional comparison method across four dimensions: Comprehensiveness, Diversity, Empowerment, and Overall (p. 6). \n\nResults show LightRAG outperforms all baselines in all four datasets and evaluation dimensions. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, significantly higher than the 16.4% and 13.6% of NaiveRAG (p. 7). Compared to GraphRAG, LightRAG shows consistent superiority, especially in larger datasets. In Agriculture, LightRAG achieved a 65.2% win rate in Comprehensiveness compared to GraphRAG’s 54.4% (p. 7). \n\nAblation studies reveal the dual-level retrieval mechanism enhances performance. Removing high-level retrieval led to a 22.0% drop in Overall win rate in the Legal dataset, while removing low-level retrieval caused a 15.2% drop (p. 8). The hybrid mode of LightRAG combines the strengths of both levels, achieving balanced performance. \n\nA case study on machine learning normalization methods shows LightRAG outperforms GraphRAG in all evaluation dimensions. LightRAG’s response included a broader range of metrics and more detailed explanations (p. 9). \n\nCost analysis indicates LightRAG is more efficient than GraphRAG. During retrieval, LightRAG used fewer than 100 tokens and a single API call, while GraphRAG used 610,000 tokens and hundreds of API calls (p. 9). For incremental updates, GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports, whereas LightRAG integrates new data seamlessly without full reconstruction (p. 10).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "CONTRADICTED",
+    "unresolved": [
+     "22.0%",
+     "15.2%"
+    ],
+    "unverified": [],
+    "contradicted": [
+     "16.4%",
+     "13.6%",
+     "65.2%",
+     "54.4%"
+    ],
+    "checked_figures": 15
+   }
+  },
+  {
+   "index": 7,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": "RELATED WORK",
+   "snippet": "Retrieval-Augmented Generation (RAG) systems improve LLM inputs by retrieving relevant information from external sources, grounding responses in factual knowledge (p. 10). Current methods, such as those by Gao et al. (2022; 2023), Chan et al. (2024), and Yu et al. (2024), typically embed queries in a vector space to find the nearest context vectors. However, these approaches often rely on fragmented text chunks and retrieve only the top-k contexts, limiting their ability to capture comprehensive global information (p. 10). Recent studies, like Edge et al. (2024), have explored graph structures for knowledge representation but face two key limitations: a lack of dynamic updates and expansions of the knowledge graph, and inefficiency due to brute-force searches for each generated community (p. 10). The proposed model, LightRAG, addresses these by enabling the RAG system to adapt quickly to new information and by facilitating rapid retrieval through a dual-level retrieval paradigm, improving efficiency and response speed (p. 10). In the field of Large Language Models for graphs, work is divided into three categories: GNNs as Prefix, where GNNs generate structure-aware tokens for LLMs, as in GraphGPT (Tang et al., 2024) and LLaGA (Chen et al., 2024); LLMs as Prefix, where LLMs process graph data to refine GNN training, as in GALM (Xie et al., 2023) and OFA (Liu et al., 2024); and LLMs-Graphs Integration, which focuses on seamless interaction between LLMs and graph data, as in works by Li et al. (2023) and Brannon et al. (2023) (p. 10).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "VERIFIED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 3
+   }
+  },
+  {
+   "index": 8,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 10,
+   "page_end": 10,
+   "section_title": "CONCLUSION",
+   "snippet": "This work introduces an advancement in Retrieval-Augmented Generation (RAG) through the integration of a graph-based indexing approach that enhances both efficiency and comprehension in information retrieval (p. 10). LightRAG utilizes a comprehensive knowledge graph to facilitate rapid and relevant document retrieval, enabling a deeper understanding of complex queries (p. 10). Its dual-level retrieval paradigm allows for the extraction of both specific and abstract information, catering to diverse user needs (p. 10). Furthermore, LightRAG’s seamless incremental update capability ensures that the system remains current and responsive to new information, thereby maintaining its effectiveness over time (p. 10). Overall, LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference (p. 10).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "reason": "no figures in the summary",
+    "status": "NOT_CHECKED",
+    "unresolved": [],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 0
+   }
+  },
+  {
+   "index": 9,
+   "kind": "summary",
+   "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 13,
+   "page_end": 16,
+   "section_title": "APPENDIX",
+   "snippet": "The appendix of the LightRAG framework elaborates on methodologies, experimental settings, and evaluation criteria. Four datasets are described in Table 4: Agriculture (12 documents, 2,017,886 tokens), CS (10 documents, 2,306,535 tokens), Legal (94 documents, 5,081,069 tokens), and Mix (61 documents, 619,009 tokens) (p. 13). The retrieval-augmented generation process in LightRAG involves extracting low- and high-level keywords from a query, then retrieving relevant entities, relationships, and text chunks from a knowledge graph to generate a comprehensive answer (p. 14). Prompt templates for graph generation, query generation, keyword extraction, and RAG evaluation are detailed across Figures 4–7. Graph generation prompts extract entity-relationship information, categorizing entities and identifying relationships with attributes and strength scores (p. 14). Query generation prompts define user roles and tasks for generating dataset-related queries (p. 14). Keyword extraction prompts distinguish between high- and low-level keywords and return them in JSON format (p. 15). The RAG evaluation prompt compares two answers using criteria: Comprehensiveness, Diversity, and Empowerment, selecting a winner for each and an overall winner in JSON format (p. 15–16). A case study in Table 5 compares LightRAG and NaiveRAG on a query about indigenous perspectives in corporate mergers. LightRAG's response is rated superior in comprehensiveness, diversity, and empowerment, offering a more in-depth exploration of cultural, collaborative, and legal aspects. NaiveRAG's answer is informative but lacks the depth and breadth of LightRAG's dual-level retrieval process (p. 16).",
+   "score": null,
+   "origin": "summary",
+   "verification": {
+    "status": "UNCERTAIN",
+    "unresolved": [
+     "12",
+     "10",
+     "94",
+     "61"
+    ],
+    "unverified": [],
+    "contradicted": [],
+    "checked_figures": 8
+   }
+  }
+ ],
+ "final_answer": "The document introduces LightRAG, a novel Retrieval-Augmented Generation (RAG) system that enhances large language models (LLMs) by integrating graph structures into the indexing and retrieval processes. Traditional RAG systems suffer from limitations such as flat data representations and insufficient contextual awareness, leading to fragmented and incomplete responses. LightRAG addresses these issues by constructing a knowledge graph from documents, enabling both low-level and high-level knowledge discovery through a dual-level retrieval paradigm. This approach improves retrieval efficiency and accuracy by combining vector representations with graph structures [1].\n\nThe architecture of LightRAG involves segmenting documents into chunks, extracting entities and relationships using LLMs, and constructing an optimized knowledge graph. The system supports fast adaptation to incremental knowledge by processing new documents and integrating them with existing graphs. The retrieval mechanism gathers local and global keywords and matches them with entities and relationships, enhancing the retrieval of high-order related information [5].\n\nEvaluations across four datasets (Agriculture, CS, Legal, and Mix) demonstrate that LightRAG outperforms baseline methods in all four evaluation dimensions: Comprehensiveness, Diversity, Empowerment, and Overall. For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG. Ablation studies show that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset [6].\n\nLightRAG is also cost-efficient, using fewer than 100 tokens and a single API call during retrieval, compared to GraphRAG's 610,000 tokens and hundreds of API calls. For incremental updates, LightRAG integrates new data seamlessly, while GraphRAG requires about 1,399 × 2 × 5,000 tokens to reconstruct community reports [6].\n\nThe framework is open-source and available at https://github.com/HKUDS/LightRAG [1]. The document concludes by highlighting LightRAG's advancements in RAG systems, emphasizing its efficiency, effectiveness, and ability to maintain relevance in dynamic environments [8].\n\nFigures whose labels differ from the source table: 16.4% (answer: Comprehensiveness, Legal, LightRAG; source: Comprehensiveness, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs LightRAG / Empowerment, Legal, NaiveRAG, vs -Low / Comprehensiveness, Legal, NaiveRAG, vs -Origin); 13.6% (answer: Comprehensiveness, Legal, NaiveRAG; source: Diversity, Legal, NaiveRAG, vs LightRAG / Diversity, Legal, NaiveRAG, vs -Low).",
+ "usage": {
+  "prompt_tokens": 3775,
+  "completion_tokens": 474,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   5,
+   6,
+   8
+  ],
+  "unverified_numbers": [],
+  "verified_numbers": [
+   {
+    "number": "83.6%",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 7,
+    "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+   },
+   {
+    "number": "86.4%",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 7,
+    "snippet": "…tRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture: NaiveRAG 32.4%,…"
+   },
+   {
+    "number": "16.4%",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 7,
+    "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+   },
+   {
+    "number": "13.6%",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 7,
+    "snippet": "…eRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Empowerment — Agriculture:…"
+   },
+   {
+    "number": "22.0%",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 8,
+    "snippet": "…: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6% NaiveRAG -Low NaiveRAG -Low Naiv…"
+   },
+   {
+    "number": "100",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 9,
+    "snippet": "…Incremental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract Ce…"
+   },
+   {
+    "number": "610,000",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 9,
+    "snippet": "…mmunity report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per community). Additionally, GraphRAG’s…"
+   },
+   {
+    "number": "1,399",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 9,
+    "snippet": "…remental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract Cextract…"
+   },
+   {
+    "number": "5,000",
+    "document_id": "5d12a4ce-60eb-4ec4-bf20-78ac9446f313",
+    "page": 9,
+    "snippet": "…t Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract CextractCalls We com…"
+   }
+  ],
+  "mislabelled_numbers": [
+   {
+    "number": "16.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "LightRAG"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Legal",
+      "NaiveRAG",
+      "vs LightRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "NaiveRAG",
+      "vs LightRAG"
+     ],
+     [
+      "Empowerment",
+      "Legal",
+      "NaiveRAG",
+      "vs -Low"
+     ],
+     [
+      "Comprehensiveness",
+      "Legal",
+      "NaiveRAG",
+      "vs -Origin"
+     ]
+    ],
+    "sentence": "For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG."
+   },
+   {
+    "number": "13.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Legal",
+     "NaiveRAG"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "NaiveRAG",
+      "vs LightRAG"
+     ],
+     [
+      "Diversity",
+      "Legal",
+      "NaiveRAG",
+      "vs -Low"
+     ]
+    ],
+    "sentence": "For example, in the Legal dataset, LightRAG achieved 83.6% win rate in Comprehensiveness and 86.4% in Diversity, compared to 16.4% and 13.6% for NaiveRAG."
+   }
+  ],
+  "unresolved_numbers": [
+   {
+    "number": "22.0%",
+    "answer_labels": [
+     "Overall",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Legal",
+      "NaiveRAG",
+      "vs -High"
+     ]
+    ],
+    "sentence": "Ablation studies show that the dual-level retrieval mechanism significantly contributes to performance, with a 22.0% drop in Overall win rate when high-level retrieval is removed in the Legal dataset.",
+    "reason": "missing"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 3775,
+   "completion_tokens": 474,
+   "estimated_prompt_tokens": 3791,
+   "finish_reason": "stop",
+   "duration_ms": 23434
+  }
+ ]
+}
