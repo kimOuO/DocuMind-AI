@@ -1,0 +1,337 @@
+{
+ "summary_repair": true,
+ "verification": [
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "INTRODUCTION",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "RETRIEVAL-AUGMENTED GENERATION",
+   "pages": [
+    2,
+    3
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "THE LIGHT RAG ARCHITECTURE",
+   "pages": [
+    3,
+    5
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "76.0%"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "51.6%"
+   ],
+   "checked_figures": 14
+  },
+  {
+   "summary": "RELATED WORK",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "CONCLUSION",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "APPENDIX",
+   "pages": [
+    13,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "12",
+    "10",
+    "94",
+    "61"
+   ],
+   "checked_figures": 8
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "51.6%"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "80.0%"
+   ],
+   "checked_figures": 9
+  },
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Introduction",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Background",
+   "pages": [
+    2,
+    4
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Methods",
+   "pages": [
+    4,
+    8
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 3
+  },
+  {
+   "summary": "Analysis",
+   "pages": [
+    8,
+    9
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [
+    "2.7"
+   ],
+   "unresolved": [],
+   "checked_figures": 8
+  },
+  {
+   "summary": "Results",
+   "pages": [
+    9,
+    11
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 17
+  },
+  {
+   "summary": "Discussion",
+   "pages": [
+    11,
+    12
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 7
+  },
+  {
+   "summary": "Conclusion (part 1/3)",
+   "pages": [
+    12,
+    18
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 2
+  },
+  {
+   "summary": "Conclusion (part 2/3)",
+   "pages": [
+    18,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 4
+  },
+  {
+   "summary": "Conclusion (part 3/3)",
+   "pages": [
+    26,
+    26
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [
+    "0.05"
+   ],
+   "unresolved": [],
+   "checked_figures": 26
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    26
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [
+    "2.7"
+   ],
+   "unresolved": [],
+   "checked_figures": 15
+  }
+ ],
+ "repairs": [
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "80.0%",
+    "51.6%"
+   ],
+   "checked_figures": 14,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"In Diversity, LightRAG outperforms HyDE by 76.0% in the Legal dataset.\": 76.0% is given as Diversity, Legal; in the table 76.0% is Diversity, Agriculture, LightRAG, vs HyDE. The table's figures for that condition (Table 1, p. 7): NaiveRAG 13.6% (paired with LightRAG); LightRAG 86.4% (paired with NaiveRAG); RQ-RAG 11.6% (paired with LightRAG); LightRAG 88.4% (paired with RQ-RAG); HyDE 20.0% (paired with LightRAG); LightRAG 80.0% (paired with HyDE); GraphRAG 26.4% (paired with LightRAG); LightRAG 73.6% (paired with GraphRAG)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [],
+    "after": "UNCERTAIN"
+   }
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "80.0%"
+   ],
+   "checked_figures": 7,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"It also outperforms GraphRAG in most cases, achieving 51.6% win rate in Comprehensiveness in the Legal dataset versus 48.4% for GraphRAG.\": 51.6% is given as Comprehensiveness, Legal, GraphRAG; in the table 51.6% is Comprehensiveness, CS, LightRAG, vs GraphRAG / Comprehensiveness, Legal, LightRAG, vs GraphRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 16.4% (paired with LightRAG); LightRAG 83.6% (paired with NaiveRAG); RQ-RAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with RQ-RAG); HyDE 26.8% (paired with LightRAG); LightRAG 73.2% (paired with HyDE); GraphRAG 48.4% (paired with LightRAG); LightRAG 51.6% (paired with GraphRAG). Differences: GraphRAG 48.4% vs NaiveRAG 16.4% (+32.0 pp, +195.1% relative); GraphRAG 48.4% vs LightRAG 83.6% (-35.2 pp, -42.1% relative); GraphRAG 48.4% vs RQ-RAG 15.2% (+33.2 pp, +218.4% relative); GraphRAG 48.4% vs LightRAG 84.8% (-36.4 pp, -42.9% relative); GraphRAG 48.4% vs HyDE 26.8% (+21.6 pp, +80.6% relative)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [
+     "It also outperforms GraphRAG in most cases, achieving 51.6% win rate in Comprehensiveness in the CS dataset versus 48.4% for GraphRAG (p. 7)."
+    ],
+    "after": "UNCERTAIN"
+   }
+  }
+ ]
+}

@@ -143,6 +143,28 @@ def judge(record: dict, pages: list[verification.PageText], values: set[str]) ->
         named = q2_exceptions(answer)
         out["mix_exceptions_named"] = named
         out["mix_exceptions_count"] = sum(named.values())
+    if question == "Q1":
+        out["figures_in_answer"] = [f for f, _, _ in figures]
+        summaries = RUNS / f"{record['arm']}-summaries.json"
+        if summaries.exists():
+            stored = json.loads(summaries.read_text())
+            reports = stored["verification"] if isinstance(stored, dict) else stored
+            out["summaries_contradicted"] = [
+                f"{r['summary']} p.{r['pages'][0]}-{r['pages'][1]}: {r.get('contradicted')}"
+                for r in reports
+                if r["status"] == "CONTRADICTED"
+            ]
+            if isinstance(stored, dict):
+                out["repairs"] = [
+                    {
+                        "summary": r["summary"],
+                        "before": r["repair"]["before"],
+                        "after": r["repair"]["after"],
+                        "rewritten": r["repair"]["rewritten"],
+                        "removed": r["repair"]["removed_sentences"],
+                    }
+                    for r in stored["repairs"]
+                ]
     if question == "Q3":
         out["definitions"] = {
             k: bool(p.search(answer)) for k, p in Q3_DEFINITIONS.items()
@@ -157,12 +179,12 @@ def judge(record: dict, pages: list[verification.PageText], values: set[str]) ->
 def main() -> None:
     pages = pages_as_ingested()
     values = table_values(pages)
-    records = [json.loads(p.read_text()) for p in sorted(RUNS.glob("A*-Q*-*.json"))]
+    records = [json.loads(p.read_text()) for p in sorted(RUNS.glob("*-Q*-*.json"))]
     results = [judge(r, pages, values) for r in records]
     (HERE / "analysis.json").write_text(
         json.dumps(results, indent=1, ensure_ascii=False) + "\n"
     )
-    lines = ["# Experiment A — the 36 answers\n"]
+    lines = ["# D87 experiments — every answer\n"]
     for r, j in zip(records, results, strict=True):
         lines.append(f"## {r['arm']}-{r['question']}-{r['run']}\n")
         lines.append(
@@ -185,6 +207,9 @@ def main() -> None:
         extra = (
             f"{j['mix_exceptions_count']}/3"
             if j["question"] == "Q2"
+            else f"contradicted summaries {len(j.get('summaries_contradicted', []))}, "
+            f"repairs {len(j.get('repairs', []))}"
+            if j["question"] == "Q1"
             else (
                 f"defs {sum(j['definitions'].values())}/3, own {j['lightrag_own_figures']}, "
                 f"variants {j['variant_figures']}"

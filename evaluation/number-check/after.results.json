@@ -1466,7 +1466,8 @@
    "reason": "ambiguous",
    "answer_labels": [
     "Diversity",
-    "Legal"
+    "Legal",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -1490,7 +1491,8 @@
    "answer_labels": [
     "Diversity",
     "Legal",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -7436,6 +7438,12 @@
      "Legal",
      "LightRAG",
      "vs GraphRAG"
+    ],
+    [
+     "Diversity",
+     "Agriculture",
+     "-Origin",
+     "vs NaiveRAG"
     ]
    ],
    "sentence": "Against GraphRAG, it achieves 51.6% win rate in Comprehensiveness and 73.6% in Diversity.",

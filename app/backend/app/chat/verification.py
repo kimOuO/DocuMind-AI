@@ -62,8 +62,10 @@ _AFTER_FIGURE = re.compile(r"[\s(]{0,4}|\s+(?:in|for|on|of)\s+(?:the\s+)?")
 _RANGE = re.compile(r"\s*[-–]\s*")
 # What stands right before the name of the method a figure is compared against.
 _COMPARISON_CUE = re.compile(
-    r"(?:\b(?:over|against|than|versus|vs\.?|compared\s+(?:to|with)|relative\s+to)\s+(?:the\s+)?"
-    r"|(?:優於|勝過|相較於|對比)\s*)$",
+    r"(?:\b(?:over|against|than|versus|vs\.?|compared\s+(?:to|with)|relative\s+to"
+    r"|outperform(?:s|ed|ing)?|surpass(?:es|ed|ing)?|exceed(?:s|ed|ing)?|beat(?:s|en|ing)?"
+    r"|ahead\s+of|behind|trail(?:s|ed|ing)?|lag(?:s|ged|ging)?(?:\s+behind)?)\s+(?:the\s+)?"
+    r"|(?:優於|勝過|相較於|對比|高於|低於|超過|領先|落後)\s*)$",
     re.IGNORECASE,
 )
 # A sentence that explicitly keeps the setting of the previous one ("in the same dataset").
@@ -436,11 +438,55 @@ def _unknown_comparator(sentence: str, clause: Span, mentions: Sequence[Mention]
     return False
 
 
-def _fits(claim: _Claim, cell: _Cell) -> bool:
-    return all(
+@dataclass(frozen=True)
+class _Pairing:
+    """How the tables pair their sub-columns, for reading a comparison in the answer.
+
+    present: every (row, group, sub-column) the tables hold. direct: every (row, group,
+    sub-column, the sub-column it is paired with). "LightRAG 62.0% is lower than -High
+    63.2%" is an indirect comparison when the tables pair both with a reference and never
+    with each other (D87): the figure is then LightRAG's own cell, whatever its pair. When
+    the tables do pair the two directly, the figure has to come from that pair. Only a
+    sentence that sets two table figures side by side is read this way; "67.6% against
+    -High" with one figure claims the pairing itself.
+    """
+
+    present: frozenset[tuple[str, ...]]
+    direct: frozenset[tuple[str, ...]]
+
+    @classmethod
+    def of(cls, cells: dict[str, list[_Cell]]) -> "_Pairing":
+        present: set[tuple[str, ...]] = set()
+        direct: set[tuple[str, ...]] = set()
+        for known in cells.values():
+            for cell in known:
+                present.add(cell.labels)
+                if cell.comparator is not None:
+                    direct.add((*cell.labels, cell.comparator))
+        return cls(frozenset(present), frozenset(direct))
+
+    def allows(self, claim: _Claim, cell: _Cell) -> bool:
+        if claim.comparator is None or cell.comparator in (None, claim.comparator):
+            return True
+        if len(cell.labels) < 3:
+            return False
+        condition = cell.labels[:-1]
+        return (*condition, claim.comparator) in self.present and (
+            *cell.labels,
+            claim.comparator,
+        ) not in self.direct
+
+
+def _fits(claim: _Claim, cell: _Cell, pairing: _Pairing | None = None) -> bool:
+    labels_fit = all(
         given is None or given == label
         for given, label in zip(claim.labels, cell.labels, strict=False)
-    ) and (claim.comparator is None or cell.comparator in (None, claim.comparator))
+    )
+    if pairing is None:
+        return labels_fit and (
+            claim.comparator is None or cell.comparator in (None, claim.comparator)
+        )
+    return labels_fit and pairing.allows(claim, cell)
 
 
 def _complete(claim: _Claim, cell: _Cell) -> bool:
@@ -471,6 +517,7 @@ def label_outcomes(
     cells = _table_cells(pages)
     if not cells:
         return []
+    pairing = _Pairing.of(cells)
     categories = max(len(cell.labels) for known in cells.values() for cell in known)
     vocabulary: list[set[str]] = [set() for _ in range(categories)]
     for known in cells.values():
@@ -498,13 +545,25 @@ def label_outcomes(
             continue
         if not _LIST_ITEM.match(sentence):
             heading = [None] * categories
+        # A sentence that sets two table figures side by side compares them; one with a
+        # single figure "against X" states a pairing, which has to be the table's.
+        compares = (
+            sum(
+                1
+                for m in _NUMBER.finditer(sentence)
+                if _is_worth_checking(m.group()) and _key(m.group()) in cells
+            )
+            >= 2
+        )
         for claim in _claims(sentence, vocabulary, inherited, heading, aliases):
             start, end = claim.figure
             number = sentence[start:end]
             candidates = cells.get(_key(number))
             if not candidates:
                 continue
-            fitting = [cell for cell in candidates if _fits(claim, cell)]
+            fitting = [
+                cell for cell in candidates if _fits(claim, cell, pairing if compares else None)
+            ]
             if claim.empty:
                 status, reason, shown = "unchecked", None, fitting
             elif not fitting:

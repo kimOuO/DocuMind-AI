@@ -369,6 +369,50 @@ def test_a_comparator_that_the_table_pairs_differently_is_contradicted() -> None
     assert wrong.answer_labels == ["Diversity", "Legal", "LightRAG", "vs GraphRAG"]
 
 
+def test_a_verb_of_comparison_marks_the_comparator_too() -> None:
+    """D87 (the B0/B1 false positive): "outperforms GraphRAG" makes GraphRAG the comparator;
+    the figure is the subject's, which the sentence leaves unnamed ("it"), so it is at most
+    unresolved, never contradicted."""
+    answer = (
+        "It also outperforms GraphRAG in most cases, particularly in the Legal dataset, where "
+        "it achieves a 51.6% win rate in Comprehensiveness (p. 7)."
+    )
+
+    mislabelled, unresolved = outcomes(answer)
+
+    assert mislabelled == [] and unresolved == [("51.6%", "missing")]
+
+
+def test_an_indirect_comparison_through_the_shared_reference_is_accepted() -> None:
+    """D87 (the A1 false positives): Table 2 pairs LightRAG and -High each with NaiveRAG,
+    never with each other, so "LightRAG 67.6% is higher than -High 65.2%" compares the two
+    through the reference; each figure is its own method's cell."""
+    answer = (
+        "In Agriculture Comprehensiveness, LightRAG (67.6%) is higher than -High (65.2%), "
+        "and -Origin (75.2%) outperforms LightRAG (67.6%) [1]."
+    )
+
+    assert outcomes(answer) == ([], [])
+
+
+def test_a_single_figure_against_an_unpaired_method_still_claims_the_pairing() -> None:
+    # One figure, "against -High": the table pairs 67.6% with NaiveRAG, so this is wrong.
+    [wrong] = verify_numbers(
+        "LightRAG reaches 67.6% in Agriculture Comprehensiveness against -High [1].", PAGES
+    ).mislabelled
+
+    assert wrong.answer_labels == ["Comprehensiveness", "Agriculture", "LightRAG", "vs -High"]
+
+
+def test_a_direct_pair_the_table_has_must_be_the_pair_the_figure_comes_from() -> None:
+    # Table 1 pairs LightRAG with GraphRAG directly: 67.6% is its figure against NaiveRAG.
+    [wrong] = verify_numbers(
+        "LightRAG achieved 67.6% over GraphRAG in Agriculture Comprehensiveness [1].", PAGES
+    ).mislabelled
+
+    assert wrong.answer_labels == ["Comprehensiveness", "Agriculture", "LightRAG", "vs GraphRAG"]
+
+
 def test_a_compared_method_with_its_own_figure_owns_that_figure() -> None:
     # "compared to NaiveRAG's 13.6%" compares two figures and claims nothing about the pairing.
     answer = "In Legal Diversity, LightRAG reaches 86.4%, compared to NaiveRAG's 13.6% [1]."

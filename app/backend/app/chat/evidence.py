@@ -1057,6 +1057,9 @@ FACTS_INTRODUCTION = (
     "agree with these counts and name every exception listed; an indirect comparison is a "
     "trend, not a result:"
 )
+# D87: a sentence sending the model to the text passages for what each method or variant is
+# was tried (C1, 2026-11-07) and reverted: Q3 lost its definitions altogether and Q2 gained a
+# wrong indirect comparison; A1's wording above is the one kept.
 
 
 def facts_block(facts: Sequence["Fact"], counter: TokenCounter, *, budget: int) -> str:
