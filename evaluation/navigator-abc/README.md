@@ -664,7 +664,7 @@ B5 的「拿錯區塊的 LightRAG 數字」六次都沒再出現。
 |---|---|---|
 | B6-Q2-1 | 通過 | 32 格全對；Mix 的三個例外（Comprehensiveness、Empowerment、Overall）全部點出；「Diversity 四個資料集全贏」正確。方向核對回報 3 條 **全是誤報**：「regresses slightly in Mix (49.6% vs. 50.4%)」是對的，核對把 regresses 的主詞方向讀反 |
 | B6-Q2-2 | 通過 | 32 格全對；三個例外全列；結論寫「多數指標」而非全部 |
-| B6-Q2-3 | 不通過 | 32 格全對、Mix Comprehensiveness 例外對；但「LightRAG consistently outperforms GraphRAG in Diversity, Empowerment, and Overall across all four datasets」錯（Mix Empowerment 49.2<50.8、Mix Overall 49.6<50.4），「only exception」錯（例外有三個）。**全稱檢查與 D76 的結論核對都抓到了**（contradicted，列出兩格反例；結論核對指出例外有 3 個不是 1 個），回答末尾也附了警語；標籤核對另報 2 條誤報（「GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)」是對的） |
+| B6-Q2-3 | 不通過 | 32 格全對、Mix Comprehensiveness 例外對；但「LightRAG consistently outperforms GraphRAG in Diversity, Empowerment, and Overall across all four datasets」錯（Mix Empowerment 49.2<50.8、Mix Overall 49.6<50.4），「The only regression is in the Comprehensiveness metric on the Mix dataset」錯（退步有三處）。**全稱檢查抓到了前一句**（contradicted，列出兩格反例），回答末尾也附了警語；D76 的結論核對報的是另一句「outperforms GraphRAG in Comprehensiveness in three out of four datasets, with the only exception being the Mix dataset」，那句限定在 Comprehensiveness、其實正確，核對沒讀出指標範圍——**是誤報**，而真正錯的「only regression」句它沒報；標籤核對另報 2 條誤報（「GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)」是對的） |
 | B6-Q3-1 | 不通過 | 128 格全對但表頭錯置一欄；沒有任何定義（A1 缺）；「-High／-Low／-Origin underperforms LightRAG in all metrics across all datasets」三句全錯（-High CS Diversity 63.2>62.0；-Low Mix Empowerment 64.8>57.2、Mix Overall 64.8>60.0；-Origin Agriculture Overall 74.4>67.6 等）；「-Origin shows improvements over NaiveRAG in Agriculture, Mix …」把全贏寫成部分。這些跨配對的全稱句，全稱檢查沒抓到（它只比同一配對的格子） |
 | B6-Q3-2 | 不通過 | 96 格全對但沒有 LightRAG 的列（完整性 incomplete，程式判定正確）；例外段兩句都錯：「-High … drop in Mix Empowerment (from 47.6% to 52.4%)」把 NaiveRAG 的 47.6 當起點、而 52.4 高於 47.6 不是 drop；「-Origin … drop in Mix Diversity (from 25.6% to 74.4%)」同型。標籤核對報 3 條，其中 44.0% 那條是模型打錯字「NaieveRAG」造成，另兩條指出的就是這兩句的張冠李戴 |
 | B6-Q3-3 | 通過 | 128 格全對、每個條件四版本同一行（A6）；三個變體的定義都有（移除高層檢索、移除低層檢索、不用原文）；主要觀察對（-High 多數下降、-Low 在部分指標持平或略升、-Origin 部分改善）。瑕疵：「-Low outperforms NaiveRAG in some cases」其實是全部，寫弱了但不是錯。程式判定 SUPPORTED_AND_COMPLETE，第一次與人工通過一致 |
@@ -673,7 +673,7 @@ B5 的「拿錯區塊的 LightRAG 數字」六次都沒再出現。
 
 - 六次 416 個表格數字全對、配對全對；B5 的區塊混淆沒再出現。這是矩陣的第一次真實測試，而它要解的正是配對問題。
 - 剩下的錯全部是全稱結論句（「all metrics across all datasets」「consistently」「only exception」），而且在 Q3 集中於跨配對的比較（變體對 LightRAG，各自以 NaiveRAG 為對照）。Q2 的同配對全稱句核對抓得到；Q3 的跨配對全稱句抓不到，是核對器的缺口。
-- 核對器誤報：方向核對把「regresses」讀反（3 條）；標籤核對把「A slightly outperforms B (a vs b)」的兩個數字互換（2 條，B5-Q2-3 也出現過）。這兩個誤報會讓 analysis_status 把正確回答標成 FACTUALLY_INCORRECT，要修。
+- 核對器誤報：方向核對把「regresses」讀反（3 條）；標籤核對把「A slightly outperforms B (a vs b)」的兩個數字互換（2 條，B5-Q2-3 也出現過）；結論核對沒讀出「only exception」句的指標範圍（1 條），而同篇真正錯的「only regression」句沒報。這兩個誤報會讓 analysis_status 把正確回答標成 FACTUALLY_INCORRECT，要修。
 - 代價：Q2 每次多約 200 tokens、Q3 多約 1,000（矩陣 1,348 減去少補的 chunk）；補充塊減半。
 - 3 次對 3 次，Q2 2/3 對 1/3、Q3 1/3 對 0/3 都在噪音範圍內；能說的是「配對錯誤消失、全稱句錯誤仍在」這個錯誤型態的改變，不是通過率的提升。
 - 本批沒有測 Q1、G1、G2。G2 的 Table 6 在入庫時沒有被逐格改寫（coverage gap），矩陣對它無效。
