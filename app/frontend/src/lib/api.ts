@@ -15,7 +15,7 @@ export interface Health {
 }
 
 export type DocumentStatus = 'uploaded' | 'processing' | 'ready' | 'failed'
-export type SummaryStatus = 'none' | 'processing' | 'ready' | 'failed'
+export type SummaryStatus = 'none' | 'processing' | 'ready' | 'failed' | 'skipped'
 
 export interface DocumentItem {
   id: string
@@ -24,6 +24,8 @@ export interface DocumentItem {
   file_size: number
   status: DocumentStatus
   summary_status: SummaryStatus
+  /** Whether a summary tree is built after indexing (chosen at upload, D91). */
+  build_summary: boolean
   error: string | null
   page_count: number | null
   chunk_count: number
@@ -90,9 +92,10 @@ export const listDocuments = () => request<DocumentItem[]>('GET', '/documents')
 export const deleteDocument = (id: string) => request<void>('DELETE', `/documents/${id}`)
 export const retryDocument = (id: string) =>
   request<DocumentItem>('POST', `/documents/${id}/retry`)
-export function uploadDocument(file: File) {
+export function uploadDocument(file: File, buildSummary = true) {
   const form = new FormData()
   form.append('file', file)
+  form.append('build_summary', buildSummary ? 'true' : 'false')
   return request<DocumentItem>('POST', '/documents', form)
 }
 

@@ -890,3 +890,37 @@ async def test_answer_facts_replace_shows_a_covered_table_as_the_compared_rows_o
     assert "Comprehensiveness — Agriculture: LightRAG 67.6%, -High 65.2%" in model.prompts[-1]
     assert stream["done"]["facts"]["replaced_sources"] == []
     kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+
+
+async def test_a_summary_question_about_documents_without_a_summary_tree_is_answered_from_retrieval(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D91: uploaded with build_summary=false, the document has no summaries; "summary this
+    document" goes to retrieval and the answer says what it was answered from."""
+    body = kim.post(
+        DOCUMENTS,
+        files={"file": ("graph.txt", GRAPH.encode())},
+        data={"build_summary": "false"},
+    ).json()
+    settings = get_settings()
+    runner = IndexJobRunner(
+        sessions=get_sessionmaker(),
+        storage=FileStorage(settings.data_dir),
+        tokenizer=tokenizer,
+        embedder=FakeEmbedder(),
+        settings=settings,
+    )
+    await runner.run(uuid.UUID(body["jobs"][0]["id"]))
+    model = StubOllama(["LightRAG builds a graph [1]."])
+    use_model(kim, tokenizer, model)
+
+    by_name = dict(events(ask(kim, new_conversation(kim), "summary this document.")))
+
+    assert by_name["route"]["type"] == "retrieval"
+    assert [s["kind"] for s in by_name["sources"]] == ["chunk"]
+    assert by_name["done"]["answered"] is True
+    content = one(
+        db, "SELECT content FROM messages WHERE id = %s", by_name["start"]["assistant_message_id"]
+    )[0]
+    assert content.startswith("LightRAG builds a graph [1].")
+    assert "uploaded without a summary tree" in content

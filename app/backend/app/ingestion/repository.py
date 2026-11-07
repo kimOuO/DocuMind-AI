@@ -69,6 +69,13 @@ class ChunkRecord:
     block_embeddings: list[list[float]] = field(default_factory=list)
 
 
+@dataclass(frozen=True)
+class IndexCompletion:
+    """What completing an index job queued: the summary job, or nothing (D91)."""
+
+    summary_job_id: uuid.UUID | None
+
+
 class IngestionRepository:
     def __init__(self, db: AsyncSession) -> None:
         self._db = db
@@ -125,12 +132,12 @@ class IngestionRepository:
 
     async def complete_index_job(
         self, job_id: uuid.UUID, *, page_count: int, chunks: list[ChunkRecord]
-    ) -> uuid.UUID | None:
-        """Store all chunks, mark the document ready and queue its summary job.
+    ) -> IndexCompletion | None:
+        """Store all chunks, mark the document ready and queue its summary job (unless the
+        document was uploaded without one, D91: then summary_status stays "skipped").
 
-        All in the caller's transaction. Returns the id of the queued summary
-        job, or None, having written nothing, if the document was deleted or
-        the job is no longer running.
+        All in the caller's transaction. Returns what was queued, or None, having written
+        nothing, if the document was deleted or the job is no longer running.
         """
         locked = await self._lock(job_id)
         if locked is None:
@@ -183,6 +190,10 @@ class IngestionRepository:
         job.progress_current = len(chunks)
         job.progress_total = len(chunks)
         job.completed_at = func.now()
+        if not document.build_summary:
+            document.summary_status = "skipped"
+            await self._db.flush()
+            return IndexCompletion(None)
         # The summary is built next, as a job of its own (see the architecture, section 7).
         previous = await self._db.scalar(
             select(func.max(IngestionJob.retry_count)).where(
@@ -197,7 +208,7 @@ class IngestionRepository:
         )
         self._db.add(summary_job)
         await self._db.flush()
-        return summary_job.id
+        return IndexCompletion(summary_job.id)
 
     async def claim_summary_job(self, job_id: uuid.UUID) -> ClaimedSummaryJob | None:
         """Move a queued summary job to running. None if it cannot be started."""

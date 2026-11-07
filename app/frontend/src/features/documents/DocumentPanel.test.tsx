@@ -11,6 +11,7 @@ const PAPER = {
   file_size: 1123301,
   status: 'uploaded',
   summary_status: 'none',
+  build_summary: true,
   error: null,
   page_count: null,
   chunk_count: 0,
@@ -349,4 +350,22 @@ test('a ready document without a summary offers to build one', async () => {
 
   expect(calls.some((c) => c.key === `POST /api/v1/documents/${PAPER.id}/retry`)).toBe(true)
   expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')).toBeInTheDocument()
+})
+
+
+test('the upload sends whether to build the summary tree, and a document without one says so', async () => {
+  const skipped = { ...PAPER, status: 'ready', summary_status: 'skipped', build_summary: false, page_count: 16, chunk_count: 48 }
+  const calls = mockApi({
+    'GET /api/v1/documents': [{ status: 200, body: [] }, { status: 200, body: [skipped] }],
+    'POST /api/v1/documents': { status: 202, body: skipped },
+  })
+  render(<DocumentPanel />)
+
+  await userEvent.click(await screen.findByRole('checkbox', { name: /建立摘要樹/ }))
+  await userEvent.upload(screen.getByLabelText(/上傳文件/), new File(['%PDF'], 'paper.pdf'))
+
+  const post = calls.find((c) => c.key === 'POST /api/v1/documents')!
+  expect((post.body as FormData).get('build_summary')).toBe('false')
+  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 未建摘要（摘要類問題以檢索回答）')).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: `建立摘要 ${PAPER.filename}` })).toBeInTheDocument()
 })

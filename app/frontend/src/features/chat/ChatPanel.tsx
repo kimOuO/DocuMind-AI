@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ConfirmDialog } from '../../components/ConfirmDialog'
@@ -49,7 +49,10 @@ function describe(error: unknown): string {
   return '無法連線到伺服器，請稍後再試。'
 }
 
-const ROUTE_LABEL: Record<string, string> = { retrieval: '檢索', summary: '摘要' }
+const ROUTE_LABEL: Record<string, string> = {
+  retrieval: '檢索',
+  summary: '摘要',
+}
 const STAGE_LABEL: Record<Stage, string> = {
   navigating: 'Navigator 規劃要看的章節與表格中',
   generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
@@ -119,9 +122,10 @@ function UsageMeter({ usage }: { usage: Usage }) {
   return (
     <div className="mt-2">
       <p className="text-muted">
-        {usage.calls !== undefined && usage.calls > 1 ? `這 ${usage.calls} 次呼叫合計的 token` : '這次呼叫的 token'}
-        ：輸入 {prompt.toLocaleString()} + 回答 {completion.toLocaleString()} ={' '}
-        {total.toLocaleString()}
+        {usage.calls !== undefined && usage.calls > 1
+          ? `這 ${usage.calls} 次呼叫合計的 token`
+          : '這次呼叫的 token'}
+        ：輸入 {prompt.toLocaleString()} + 回答 {completion.toLocaleString()} = {total.toLocaleString()}
         {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
       </p>
       {share !== null && (
@@ -148,15 +152,20 @@ function NavigationNote({ navigation }: { navigation: Navigation }) {
   return (
     <details className="mt-2 text-sm">
       <summary className="cursor-pointer text-muted">
-        Navigator 計畫：{navigation.items.length} 項，定位 {navigation.located} 項，補充 {navigation.kept} 個片段
+        Navigator 計畫：{navigation.items.length} 項，定位 {navigation.located} 項，補充 {navigation.kept}{' '}
+        個片段
         {navigation.excluded_budget > 0 && `（${navigation.excluded_budget} 個因預算未納入）`}
-        {navigation.unmet_required && navigation.unmet_required.length > 0 && `；必要證據未納入：${navigation.unmet_required.join('、')}`}
+        {navigation.unmet_required &&
+          navigation.unmet_required.length > 0 &&
+          `；必要證據未納入：${navigation.unmet_required.join('、')}`}
       </summary>
       <ul className="mt-1 list-none p-0">
         {navigation.items.map((item) => (
           <li key={item.text} className={item.located ? '' : 'text-muted'}>
             {item.location ? `${item.location}：${item.need ?? ''}` : item.text}
-            {item.located ? `（第 ${item.pages[0]}${item.pages.length > 1 ? `–${item.pages[item.pages.length - 1]}` : ''} 頁）` : '（文件中找不到）'}
+            {item.located
+              ? `（第 ${item.pages[0]}${item.pages.length > 1 ? `–${item.pages[item.pages.length - 1]}` : ''} 頁）`
+              : '（文件中找不到）'}
             {item.coverage && item.coverage !== 'not_located' && `，${COVERAGE_LABEL[item.coverage]}`}
             {item.selected && item.selected.length > 0 && `，補充 ${item.selected.length} 個片段`}
           </li>
@@ -174,7 +183,8 @@ function RevisionNote({ revision }: { revision: Revision }) {
   return (
     <p className="text-sm text-muted">
       兩次呼叫模式：{kept}，{REVISION_LABEL[revision.status]}
-      {skipped}。初稿核對發現 {revision.draft_triggers?.length ?? 0} 項，修正稿 {revision.revision_triggers?.length ?? 0} 項。
+      {skipped}。初稿核對發現 {revision.draft_triggers?.length ?? 0} 項，修正稿{' '}
+      {revision.revision_triggers?.length ?? 0} 項。
     </p>
   )
 }
@@ -238,7 +248,12 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
   } = check
   const contradicted = overstated.filter((claim) => claim.status === 'contradicted')
   const total =
-    verified.length + unverified.length + mislabelled.length + unresolved.length + overstated.length + doubtful.length
+    verified.length +
+    unverified.length +
+    mislabelled.length +
+    unresolved.length +
+    overstated.length +
+    doubtful.length
   if (total === 0) return null
   const parts = [`${verified.length} 個在引用的頁面找到`]
   if (unverified.length > 0) parts.push(`${unverified.length} 個找不到`)
@@ -271,7 +286,8 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
       {unresolved.map((item) => (
         // Not an error: the answer did not say enough for the check to decide (D67).
         <p key={`${item.number}-${item.answer_labels.join()}`} className="text-muted">
-          未能判定：{item.number}（答案：{item.answer_labels.join('、')}；原文可能是：
+          未能判定：{item.number}（答案：{item.answer_labels.join('、')}
+          ；原文可能是：
           {item.source_labels.map((labels) => labels.join('、')).join(' / ')}；
           {item.reason === 'missing' ? '答案沒寫出全部標籤' : '答案裡有兩個候選標籤'}）
         </p>
@@ -285,14 +301,16 @@ function NumberCheckView({ check }: { check: NumberCheck }) {
         ) : (
           <p key={claim.sentence} className="text-muted">
             結論未能核對：「{claim.sentence}」引用的表格裡沒有 {claim.method} 與
-            {claim.compared.length > 0 ? claim.compared.join('、') : '其他方法'}的共同格子
+            {claim.compared.length > 0 ? claim.compared.join('、') : '其他方法'}
+            的共同格子
           </p>
         ),
       )}
       {doubtful.map((item) => (
         // A doubt, not an error: the cited source hardly states the sentence, another source does.
         <p key={item.sentence} className="text-muted">
-          引用可疑：「{item.sentence}」引用 [{item.cited.join('][')}]，但較接近的來源是 [{item.closer.join('][')}]
+          引用可疑：「{item.sentence}」引用 [{item.cited.join('][')}
+          ]，但較接近的來源是 [{item.closer.join('][')}]
         </p>
       ))}
     </details>
@@ -382,14 +400,19 @@ function AnswerText({ content, onCite }: { content: string; onCite?: (index: num
 function highlights(snippet: string, sentence: string): string[] {
   const numbers = sentence.match(/\d[\d,.]*%?/g) ?? []
   const words = (sentence.match(/[A-Za-z][A-Za-z-]{3,}/g) ?? []).filter(
-    (w) => !['that', 'this', 'with', 'from', 'than', 'which', 'their', 'while', 'these', 'those'].includes(w.toLowerCase()),
+    (w) =>
+      !['that', 'this', 'with', 'from', 'than', 'which', 'their', 'while', 'these', 'those'].includes(
+        w.toLowerCase(),
+      ),
   )
   return [...new Set([...numbers, ...words])].filter((term) => snippet.includes(term))
 }
 
 function Highlighted({ text, terms }: { text: string; terms: string[] }) {
   if (terms.length === 0) return <>{text}</>
-  const escaped = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).sort((a, b) => b.length - a.length)
+  const escaped = terms
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .sort((a, b) => b.length - a.length)
   const parts = text.split(new RegExp(`(${escaped.join('|')})`, 'g'))
   return (
     <>
@@ -419,7 +442,10 @@ export function SourceViewer({
   const fileUrl = `/api/v1/documents/${source.document_id}/file#page=${source.page_start}`
   const terms = highlights(source.snippet, sentence)
   return (
-    <section aria-label="來源檢視" className="flex h-full flex-col rounded-xl border border-border bg-surface">
+    <section
+      aria-label="來源檢視"
+      className="flex h-full flex-col rounded-xl border border-border bg-surface"
+    >
       <header className="flex items-start gap-2 border-b border-border px-3 py-2">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">
@@ -443,7 +469,9 @@ export function SourceViewer({
           ✕
         </button>
       </header>
-      {sentence && <p className="border-b border-border px-3 py-2 text-xs text-muted">引用這段的句子：「{sentence}」</p>}
+      {sentence && (
+        <p className="border-b border-border px-3 py-2 text-xs text-muted">引用這段的句子：「{sentence}」</p>
+      )}
       <p className="max-h-48 overflow-y-auto whitespace-pre-wrap break-words px-3 py-2 text-sm">
         <Highlighted text={source.snippet} terms={terms} />
       </p>
@@ -493,7 +521,9 @@ function MessageView({
           {(unfinished || (message.status === 'completed' && message.answered === false)) && (
             <p className="mb-1 text-xs text-muted">
               {unfinished && (
-                <span className={`font-medium ${message.status === 'failed' ? 'text-danger' : 'text-accent'}`}>
+                <span
+                  className={`font-medium ${message.status === 'failed' ? 'text-danger' : 'text-accent'}`}
+                >
                   {unfinished}
                 </span>
               )}
@@ -525,7 +555,7 @@ function MessageView({
 }
 
 /** Ask questions about the user's ready documents, in a conversation. */
-export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
+export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; sidebar?: ReactNode }) {
   const ready = documents.filter((document) => document.status === 'ready')
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -535,14 +565,21 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const [asking, setAsking] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [scope, setScope] = useState<SearchScope | null>(null)
-  const [route, setRoute] = useState<{ type: string; standalone_question: string; asked: string } | null>(null)
+  const [route, setRoute] = useState<{
+    type: string
+    standalone_question: string
+    asked: string
+  } | null>(null)
   const [usage, setUsage] = useState<Usage | null>(null)
   const [stage, setStage] = useState<Stage | null>(null)
   const [revision, setRevision] = useState<Revision | null>(null)
   const [navigation, setNavigation] = useState<Navigation | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
-  const [viewer, setViewer] = useState<{ source: Source; sentence: string } | null>(null)
+  const [viewer, setViewer] = useState<{
+    source: Source
+    sentence: string
+  } | null>(null)
 
   useEffect(() => {
     let active = true
@@ -661,7 +698,10 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
             setStage(askEvent.data.stage)
             break
           case 'delta':
-            updateAnswer((answer) => ({ ...answer, content: answer.content + askEvent.data.text }))
+            updateAnswer((answer) => ({
+              ...answer,
+              content: answer.content + askEvent.data.text,
+            }))
             break
           case 'usage':
             setUsage(askEvent.data)
@@ -730,9 +770,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
         <p className="mt-2 text-muted">送出問題後，這裡會顯示搜尋範圍、處理步驟、token 用量與數字核對。</p>
       )}
       {scopeText !== null && <p className="mt-2 text-muted">這次搜尋的範圍：{scopeText}</p>}
-      {route !== null && (
-        <p className="text-muted">問題類型：{ROUTE_LABEL[route.type] ?? route.type}</p>
-      )}
+      {route !== null && <p className="text-muted">問題類型：{ROUTE_LABEL[route.type] ?? route.type}</p>}
       {route !== null && route.standalone_question !== route.asked && (
         <p className="text-muted">改寫後的問題：{route.standalone_question}</p>
       )}
@@ -746,163 +784,197 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
     </details>
   )
 
-  return (
-    <section className="panel flex h-full min-h-0 flex-col p-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-semibold">對話</h2>
-        <div className="flex items-center gap-2">
-          <label className="text-sm">
-            <span className="sr-only">對話</span>
-            <select
-              className="rounded-full border border-border bg-surface px-3 py-1 text-sm"
-              value={activeId ?? ''}
-              disabled={asking}
-              onChange={(event) => open(event.target.value || null)}
-            >
-              <option value="">新對話</option>
-              {conversations.map((conversation) => (
-                <option key={conversation.id} value={conversation.id}>
-                  {conversation.title || '（未命名的對話）'}
-                </option>
-              ))}
-            </select>
-          </label>
-          {active && (
-            <button
-              type="button"
-              className="rounded-full border border-border px-3 py-1 text-sm text-danger hover:bg-surface-2"
-              disabled={asking}
-              onClick={() => setPendingDelete(active)}
-            >
-              刪除對話
-            </button>
-          )}
-        </div>
-      </div>
-
-      {ready.length === 0 ? (
-        <p className="mt-2 text-muted">還沒有可以提問的文件。上傳文件並等待處理完成後就能提問。</p>
-      ) : (
-        <fieldset className="mt-3 rounded-lg bg-surface-2 px-3 py-2 text-sm">
-          <legend className="px-1 text-xs text-muted">
-            搜尋範圍：{scopeIds.length === 0 ? '所有可用文件' : `已選 ${scopeIds.length} 份`}
-          </legend>
-          <div className="flex flex-wrap gap-x-3 gap-y-1">
-            {ready.map((document) => (
-              <label
-                key={document.id}
-                className={`flex cursor-pointer items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${
-                  scopeIds.includes(document.id) ? 'border-accent bg-accent-soft text-accent' : 'border-border'
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={scopeIds.includes(document.id)}
-                  disabled={asking}
-                  onChange={(event) =>
-                    setSelected(
-                      event.target.checked
-                        ? [...scopeIds, document.id]
-                        : scopeIds.filter((id) => id !== document.id),
-                    )
-                  }
-                />
-                {document.filename}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      )}
-
-      <div
-        className={`mt-3 grid min-h-0 flex-1 gap-4 ${
-          viewer ? 'lg:grid-cols-[minmax(0,1fr)_minmax(340px,420px)]' : ''
-        }`}
-      >
-        <div className="flex min-h-0 min-w-0 flex-col">
-          {messages.length > 0 ? (
-            <ul className="min-h-0 flex-1 list-none space-y-1 overflow-y-auto p-0 pr-1" aria-label="對話內容">
-              {messages.map((message) => (
-                <MessageView
-                  key={message.id}
-                  message={message}
-                  onCite={(source, sentence) => setViewer({ source, sentence })}
-                />
-              ))}
-            </ul>
-          ) : (
-            ready.length > 0 && (
-              <div className="rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted">
-                還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
-              </div>
-            )
-          )}
-          {error && (
-            <p role="alert" className="mt-2 text-sm text-danger">
-              {error}
-            </p>
-          )}
-
-          <form
-            className="mt-3 flex items-end gap-2 rounded-2xl border border-border bg-surface-2 p-2 focus-within:border-accent"
-            onSubmit={handleAsk}
+  const rail = (
+    <aside className="flex min-h-0 flex-col gap-4 overflow-y-auto" aria-label="對話與來源">
+      <section className="panel p-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold">對話</h2>
+          <button
+            type="button"
+            className="rounded-full border border-border px-3 py-1 text-xs hover:bg-surface-2 disabled:opacity-50"
+            disabled={asking || activeId === null}
+            onClick={() => open(null)}
           >
-            <label className="flex-1">
-              <span className="sr-only">問題</span>
-              <textarea
-                className="w-full resize-none bg-transparent px-2 py-1 outline-none"
-                rows={2}
-                placeholder="針對文件提問，例如：summary this document."
-                value={question}
-                disabled={asking || ready.length === 0}
-                onChange={(event) => setQuestion(event.target.value)}
-              />
-            </label>
-            <span className="hidden pb-1 text-xs text-muted sm:block">
-              {ready.length > 0 && (scopeIds.length === 0 ? `${ready.length} 份來源` : `${scopeIds.length} 份來源`)}
-            </span>
-            <button
-              type="submit"
-              className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-on-accent disabled:opacity-50"
-              disabled={asking || ready.length === 0 || question.trim() === ''}
-            >
-              {asking ? '回答中…' : '送出'}
-            </button>
-          </form>
-          {ready.length > 0 && messages.length === 0 && (
-            <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">
-              {QUICK_QUESTIONS.map((text) => (
+            ＋ 新對話
+          </button>
+        </div>
+        <ul className="mt-2 list-none space-y-1 p-0 text-sm" aria-label="對話清單">
+          {conversations.length === 0 && <li className="px-2 py-1 text-xs text-muted">還沒有對話。</li>}
+          {conversations.map((conversation) => {
+            const isActive = conversation.id === activeId
+            return (
+              <li key={conversation.id} className="flex items-center gap-1">
                 <button
-                  key={text}
                   type="button"
-                  className="rounded-full border border-border bg-surface px-3 py-0.5 text-xs text-muted hover:border-accent hover:text-accent"
+                  className={`min-w-0 flex-1 truncate rounded-lg px-2 py-1.5 text-left hover:bg-surface-2 ${
+                    isActive ? 'bg-accent-soft font-medium text-accent' : ''
+                  }`}
                   disabled={asking}
-                  onClick={() => setQuestion(text)}
+                  aria-current={isActive ? 'true' : undefined}
+                  onClick={() => open(conversation.id)}
                 >
-                  {text}
+                  {conversation.title || '（未命名的對話）'}
                 </button>
+                {isActive && (
+                  <button
+                    type="button"
+                    className="rounded-full px-2 py-1 text-xs text-muted hover:bg-danger-soft hover:text-danger"
+                    disabled={asking}
+                    aria-label="刪除對話"
+                    title="刪除對話"
+                    onClick={() => setPendingDelete(conversation)}
+                  >
+                    ✕
+                  </button>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+      {sidebar}
+    </aside>
+  )
+
+  return (
+    <div
+      className={`grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)${
+        viewer ? '_minmax(340px,420px)' : ''
+      }]`}
+    >
+      {rail}
+      <section className="panel flex h-full min-h-0 flex-col p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="truncate font-semibold">{active ? active.title || '（未命名的對話）' : '新對話'}</h2>
+        </div>
+
+        {ready.length === 0 ? (
+          <p className="mt-2 text-muted">還沒有可以提問的文件。上傳文件並等待處理完成後就能提問。</p>
+        ) : (
+          <fieldset className="mt-3 rounded-lg bg-surface-2 px-3 py-2 text-sm">
+            <legend className="px-1 text-xs text-muted">
+              搜尋範圍：
+              {scopeIds.length === 0 ? '所有可用文件' : `已選 ${scopeIds.length} 份`}
+            </legend>
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+              {ready.map((document) => (
+                <label
+                  key={document.id}
+                  className={`flex cursor-pointer items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${
+                    scopeIds.includes(document.id)
+                      ? 'border-accent bg-accent-soft text-accent'
+                      : 'border-border'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={scopeIds.includes(document.id)}
+                    disabled={asking}
+                    onChange={(event) =>
+                      setSelected(
+                        event.target.checked
+                          ? [...scopeIds, document.id]
+                          : scopeIds.filter((id) => id !== document.id),
+                      )
+                    }
+                  />
+                  {document.filename}
+                </label>
               ))}
             </div>
-          )}
-          <div className="mt-2">{inspector}</div>
-        </div>
-        {viewer && (
-          <div className="min-h-0 lg:sticky lg:top-4">
-            <SourceViewer source={viewer.source} sentence={viewer.sentence} onClose={() => setViewer(null)} />
-          </div>
+          </fieldset>
         )}
-      </div>
 
-      {pendingDelete && (
-        <ConfirmDialog
-          title="刪除對話"
-          message={`確定要刪除「${pendingDelete.title || '未命名的對話'}」嗎？對話中的問題與回答會一併刪除，無法復原。`}
-          confirmLabel="確定刪除"
-          danger
-          onConfirm={() => handleDelete(pendingDelete)}
-          onCancel={() => setPendingDelete(null)}
-        />
+        <div className="mt-3 grid min-h-0 flex-1 gap-4">
+          <div className="flex min-h-0 min-w-0 flex-col">
+            {messages.length > 0 ? (
+              <ul
+                className="min-h-0 flex-1 list-none space-y-1 overflow-y-auto p-0 pr-1"
+                aria-label="對話內容"
+              >
+                {messages.map((message) => (
+                  <MessageView
+                    key={message.id}
+                    message={message}
+                    onCite={(source, sentence) => setViewer({ source, sentence })}
+                  />
+                ))}
+              </ul>
+            ) : (
+              ready.length > 0 && (
+                <div className="rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted">
+                  還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
+                </div>
+              )
+            )}
+            {error && (
+              <p role="alert" className="mt-2 text-sm text-danger">
+                {error}
+              </p>
+            )}
+
+            <form
+              className="mt-3 flex items-end gap-2 rounded-2xl border border-border bg-surface-2 p-2 focus-within:border-accent"
+              onSubmit={handleAsk}
+            >
+              <label className="flex-1">
+                <span className="sr-only">問題</span>
+                <textarea
+                  className="w-full resize-none bg-transparent px-2 py-1 outline-none"
+                  rows={2}
+                  placeholder="針對文件提問，例如：summary this document."
+                  value={question}
+                  disabled={asking || ready.length === 0}
+                  onChange={(event) => setQuestion(event.target.value)}
+                />
+              </label>
+              <span className="hidden pb-1 text-xs text-muted sm:block">
+                {ready.length > 0 &&
+                  (scopeIds.length === 0 ? `${ready.length} 份來源` : `${scopeIds.length} 份來源`)}
+              </span>
+              <button
+                type="submit"
+                className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-on-accent disabled:opacity-50"
+                disabled={asking || ready.length === 0 || question.trim() === ''}
+              >
+                {asking ? '回答中…' : '送出'}
+              </button>
+            </form>
+            {ready.length > 0 && messages.length === 0 && (
+              <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">
+                {QUICK_QUESTIONS.map((text) => (
+                  <button
+                    key={text}
+                    type="button"
+                    className="rounded-full border border-border bg-surface px-3 py-0.5 text-xs text-muted hover:border-accent hover:text-accent"
+                    disabled={asking}
+                    onClick={() => setQuestion(text)}
+                  >
+                    {text}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="mt-2">{inspector}</div>
+          </div>
+        </div>
+
+        {pendingDelete && (
+          <ConfirmDialog
+            title="刪除對話"
+            message={`確定要刪除「${pendingDelete.title || '未命名的對話'}」嗎？對話中的問題與回答會一併刪除，無法復原。`}
+            confirmLabel="確定刪除"
+            danger
+            onConfirm={() => handleDelete(pendingDelete)}
+            onCancel={() => setPendingDelete(null)}
+          />
+        )}
+      </section>
+      {viewer && (
+        <div className="min-h-0">
+          <SourceViewer source={viewer.source} sentence={viewer.sentence} onClose={() => setViewer(null)} />
+        </div>
       )}
-    </section>
+    </div>
   )
 }

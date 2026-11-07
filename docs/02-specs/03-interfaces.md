@@ -27,7 +27,7 @@
 | GET | `/users/me` | 目前使用者 | 200 | P2-A |
 | PATCH | `/users/me` | 修改顯示名稱與偏好 | 200 | P5 |
 | GET | `/health` | 健康檢查（不需登入） | 200 | P0，改前綴 |
-| POST | `/documents` | 上傳 | 202 | P2-B |
+| POST | `/documents` | 上傳（multipart：`file`；`build_summary` 預設 true，false 則不建摘要樹、`summary_status` 為 `skipped`，摘要類問題改走檢索並註明，D91） | 202 | P2-B |
 | GET | `/documents` | 自己的文件清單 | 200 | P2-B |
 | GET | `/documents/{id}` | 單一文件與它最近的處理工作 | 200 | P2-B |
 | GET | `/documents/{id}/file` | 原始檔案（inline；來源卡以 `#page=N` 開啟引用頁；僅擁有者，D89） | 200 | P7 |

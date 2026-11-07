@@ -15,7 +15,7 @@ import re
 import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import partial
 from typing import Any
 
@@ -257,6 +257,12 @@ class ChatService:
             # retrieval and the answer all work from that standalone question.
             question = await self._standalone_question(prepared)
             kind = question_type(question)
+            fallback_note = ""
+            if kind == "summary" and await self._summary_tree_skipped(prepared):
+                # D91: the documents were uploaded without a summary tree; the question is
+                # answered from retrieval, and the answer says so.
+                kind = "retrieval"
+                fallback_note = _NO_SUMMARY_TREE[question_language(prepared.question)]
             yield ChatEvent("route", {"type": kind, "standalone_question": question})
 
             # D71: experimental modes. "roles" only changes the prompt (same evidence);
@@ -351,6 +357,8 @@ class ChatService:
                     await self._document_cards(prepared),
                 )
             )
+            if fallback_note:
+                evidence = replace(evidence, note=fallback_note)
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
                     prepared.assistant_message_id, evidence.sources
@@ -1116,6 +1124,14 @@ class ChatService:
                 prepared.actor, chunks[:BELOW_THRESHOLD_PASSAGES]
             ), embedding
 
+    async def _summary_tree_skipped(self, prepared: PreparedQuestion) -> bool:
+        """Whether every document in scope was uploaded without a summary tree (D91)."""
+        async with self._sessions() as session:
+            states = await SummaryRepository(session).states(
+                prepared.actor.id, prepared.scope.document_ids
+            )
+        return bool(states) and all(state.summary_status == "skipped" for state in states)
+
     async def _document_cards(self, prepared: PreparedQuestion) -> list[StoredSummary]:
         """The whole-document summaries of the documents in scope, for the prompt's
         "Documents in scope" lines (D88)."""
@@ -1486,6 +1502,18 @@ def _without_program_figures(check: NumberCheck, facts_text: str) -> NumberCheck
         return check
     return NumberCheck(check.verified, kept, check.mislabelled, check.unresolved, check.overstated)
 
+
+# Said after an answer when a summary was asked of documents uploaded without a summary tree.
+_NO_SUMMARY_TREE = {
+    "other": (
+        "These documents were uploaded without a summary tree, so this answer comes from the "
+        "passages most similar to the question, not from a reading of the whole document."
+    ),
+    "zh": (
+        "這些文件上傳時選擇不建立摘要樹，所以這個回答只依據與問題最相近的片段，"
+        "不是讀完整份文件的摘要。"
+    ),
+}
 
 # Said instead of an answer when no retrieved chunk is similar enough to the question.
 _NOTHING_RELEVANT = {

@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Annotated
 from urllib.parse import quote
 
-from fastapi import APIRouter, Depends, File, Path, Request, Response, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Path, Request, Response, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -50,6 +50,7 @@ class DocumentResponse(BaseModel):
     file_size: int
     status: str
     summary_status: str
+    build_summary: bool
     error: str | None
     page_count: int | None
     chunk_count: int
@@ -70,6 +71,7 @@ def _summary(view: DocumentView) -> DocumentResponse:
         file_size=d.file_size,
         status=d.status,
         summary_status=d.summary_status,
+        build_summary=d.build_summary,
         error=d.error,
         page_count=d.page_count,
         chunk_count=view.chunk_count,
@@ -109,10 +111,11 @@ def get_document_service(
 async def upload_document(
     response: Response,
     file: UploadFile = File(...),
+    build_summary: bool = Form(True),
     user: User = Depends(current_user),
     service: DocumentService = Depends(get_document_service),
 ) -> DocumentDetailResponse:
-    view, created = await service.upload(user, file)
+    view, created = await service.upload(user, file, build_summary=build_summary)
     if not created:
         # Same content uploaded again by the same user: nothing new was queued.
         response.status_code = 200

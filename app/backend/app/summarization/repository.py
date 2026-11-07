@@ -14,7 +14,7 @@ from app.models import Document, Summary
 class DocumentSummaryState:
     document_id: uuid.UUID
     filename: str
-    summary_status: str  # none | processing | ready | failed
+    summary_status: str  # none | processing | ready | failed | skipped (D91)
 
 
 @dataclass(frozen=True)

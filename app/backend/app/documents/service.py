@@ -46,11 +46,15 @@ class DocumentService:
         self._storage = storage
         self._scheduler = scheduler
 
-    async def upload(self, actor: User, upload: UploadFile) -> tuple[DocumentView, bool]:
+    async def upload(
+        self, actor: User, upload: UploadFile, *, build_summary: bool = True
+    ) -> tuple[DocumentView, bool]:
         """Store an uploaded file and queue it for indexing.
 
         Returns the document and whether it was newly created. Uploading the
         same content again, as the same user, returns the existing document.
+        build_summary=False (D91) skips the summary tree: summary questions about the
+        document are answered from retrieval instead.
         """
         filename = clean_filename(upload.filename)
         extension = PurePosixPath(filename).suffix.lower()
@@ -87,6 +91,8 @@ class DocumentService:
             media_type=SUPPORTED_EXTENSIONS[extension],
             file_size=received.size,
             storage_path=relative_path,
+            build_summary=build_summary,
+            summary_status="none" if build_summary else "skipped",
         )
         try:
             # The document and its first indexing job are created together.
@@ -145,8 +151,13 @@ class DocumentService:
             raise ApiError(404, "DOCUMENT_NOT_FOUND", "Document not found.")
         if document.status == "failed":
             kind = "index"
-        elif document.status == "ready" and document.summary_status in ("failed", "none"):
+        elif document.status == "ready" and document.summary_status in (
+            "failed",
+            "none",
+            "skipped",
+        ):
             kind = "summary"
+            document.build_summary = True  # asked for now, whatever was chosen at upload
         else:
             await self._db.rollback()
             raise ApiError(

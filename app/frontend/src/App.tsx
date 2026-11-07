@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GraphBackdrop } from './components/GraphBackdrop'
+import { StatusPill } from './components/StatusPill'
 import { AuthForm } from './features/auth/AuthForm'
 import { Home } from './features/home/Home'
 import { ApiError, fetchMe, logout, type User } from './lib/api'
@@ -84,8 +85,10 @@ export default function App() {
           <p className="hidden text-sm text-muted sm:block">與你的文件對話</p>
         </div>
         <div className="ml-auto flex items-center gap-3 text-sm">
+          <StatusPill />
           <span className="text-muted">
-            已登入：<strong className="text-text">{session.user.display_name}</strong>
+            已登入：
+            <strong className="text-text">{session.user.display_name}</strong>
           </span>
           <button
             type="button"

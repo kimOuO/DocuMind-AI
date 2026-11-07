@@ -27,7 +27,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 EMBEDDING_DIMENSIONS = 1024
 
 DOCUMENT_STATUSES = ("uploaded", "processing", "ready", "failed")
-SUMMARY_STATUSES = ("none", "processing", "ready", "failed")
+SUMMARY_STATUSES = ("none", "processing", "ready", "failed", "skipped")
 JOB_KINDS = ("index", "summary")
 JOB_STATUSES = ("queued", "running", "completed", "failed")
 MESSAGE_ROLES = ("user", "assistant")
@@ -102,6 +102,9 @@ class Document(Base):
     storage_path: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(Text, server_default="uploaded")
     summary_status: Mapped[str] = mapped_column(Text, server_default="none")
+    # D91: whether a summary tree is built after indexing (the user chooses at upload).
+    # False leaves summary_status "skipped": summary questions answer from retrieval.
+    build_summary: Mapped[bool] = mapped_column(Boolean, server_default=text("true"))
     error: Mapped[str | None] = mapped_column(Text)
     page_count: Mapped[int | None] = mapped_column(Integer)
     created_at: Mapped[datetime] = _created()

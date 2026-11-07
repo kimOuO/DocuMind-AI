@@ -15,7 +15,8 @@ export function GraphBackdrop() {
     const context = canvas.getContext('2d')
     if (!context) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#1a5fd6'
+    const accent =
+      getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#1a5fd6'
     const nodes = Array.from({ length: 70 }, () => ({
       x: Math.random(),
       y: Math.random(),
@@ -88,10 +89,6 @@ export function GraphBackdrop() {
   }, [])
 
   return (
-    <canvas
-      ref={ref}
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full"
-    />
+    <canvas ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" />
   )
 }

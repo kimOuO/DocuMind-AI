@@ -11,6 +11,7 @@ const PAPER: DocumentItem = {
   file_size: 1123301,
   status: 'ready',
   summary_status: 'none',
+  build_summary: true,
   error: null,
   page_count: 16,
   chunk_count: 48,
@@ -178,7 +179,7 @@ test('asking creates a conversation and shows the answer with its sources, scope
   expect(screen.queryByText('回答未完成')).not.toBeInTheDocument()
   expect(screen.getByLabelText('問題')).toHaveValue('')
   // The new conversation is selected, under the title the server gave it.
-  expect(await screen.findByRole('option', { name: QUESTION.slice(0, 40) })).toBeInTheDocument()
+  expect(await screen.findByRole('button', { name: QUESTION.slice(0, 40) })).toHaveAttribute('aria-current', 'true')
 })
 
 test('summary sources show their section and page range, and added context is labelled', async () => {
@@ -543,7 +544,7 @@ test('an earlier conversation can be opened, with unfinished answers still label
   })
   render(<ChatPanel documents={[PAPER]} />)
 
-  await userEvent.selectOptions(await screen.findByLabelText('對話'), await screen.findByRole('option', { name: 'ablation' }))
+  await userEvent.click(await screen.findByRole('button', { name: 'ablation' }))
 
   expect(await screen.findByText(QUESTION)).toBeInTheDocument()
   expect(screen.getByText('回答未完成')).toBeInTheDocument()
@@ -553,8 +554,8 @@ test('an earlier conversation can be opened, with unfinished answers still label
   expect(dialog).toHaveTextContent('ablation')
   await userEvent.click(within(dialog).getByRole('button', { name: '確定刪除' }))
 
-  expect(await screen.findByRole('option', { name: '新對話' })).toBeInTheDocument()
-  expect(screen.queryByRole('option', { name: 'ablation' })).not.toBeInTheDocument()
+  expect(await screen.findByText('還沒有對話。')).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: 'ablation' })).not.toBeInTheDocument()
   expect(screen.queryByText(QUESTION)).not.toBeInTheDocument()
   expect(calls.map((c) => c.key)).toContain(`DELETE /api/v1/conversations/${CONVERSATION.id}`)
 })

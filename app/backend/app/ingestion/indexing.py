@@ -91,12 +91,13 @@ class IndexJobRunner:
                 block_vectors.extend(await self._embedder.embed(block_batch))
 
             async with self._sessions() as session, session.begin():
-                summary_job = await IngestionRepository(session).complete_index_job(
+                completion = await IngestionRepository(session).complete_index_job(
                     job_id, page_count=len(pages), chunks=_records(drafts, vectors, block_vectors)
                 )
-            if summary_job is None:
+            if completion is None:
                 return JobOutcome.ABANDONED
-            self.queued_summary_jobs[job_id] = summary_job
+            if completion.summary_job_id is not None:
+                self.queued_summary_jobs[job_id] = completion.summary_job_id
             return JobOutcome.COMPLETED
         except (DocumentParseError, EmbeddingError) as error:
             return await self._fail(job_id, str(error))

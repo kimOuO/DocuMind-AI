@@ -40,6 +40,7 @@ const SUMMARY_LABEL: Record<SummaryStatus, string> = {
   processing: '摘要產生中',
   ready: '摘要已完成',
   failed: '摘要失敗',
+  skipped: '未建摘要（摘要類問題以檢索回答）',
 }
 
 /** Still being worked on: indexing, or the summary that follows it (AC-11). */
@@ -184,6 +185,8 @@ export function DocumentPanel({
     }
   }, [])
 
+  const [buildSummary, setBuildSummary] = useState(true)
+
   async function handleFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (!file) return
@@ -192,7 +195,7 @@ export function DocumentPanel({
     setNotice(null)
     try {
       const known = new Set((documents ?? []).map((d) => d.id))
-      const uploaded = await uploadDocument(file)
+      const uploaded = await uploadDocument(file, buildSummary)
       setNotice(
         known.has(uploaded.id)
           ? `這份文件先前已經上傳過（${uploaded.filename}）。`
@@ -249,7 +252,19 @@ export function DocumentPanel({
           />
         </label>
       </div>
-      <p className="mt-1 text-xs text-muted">支援 PDF、TXT、Markdown。上傳後在背景解析、建立索引與摘要。</p>
+      <p className="mt-1 text-xs text-muted">支援 PDF、TXT、Markdown。上傳後在背景解析並建立索引。</p>
+      <label className="mt-2 flex cursor-pointer items-start gap-2 text-xs text-muted">
+        <input
+          type="checkbox"
+          className="mt-0.5"
+          checked={buildSummary}
+          disabled={busy}
+          onChange={(event) => setBuildSummary(event.target.checked)}
+        />
+        <span>
+          上傳後建立摘要樹（建議）。逐章讀完整份文件再濃縮，約 3 分鐘；關掉則 summary 類問題只依據檢索到的片段回答。
+        </span>
+      </label>
 
       {notice && (
         <p role="status" className="mt-2 text-sm text-success">
@@ -306,7 +321,9 @@ export function DocumentPanel({
                     </button>
                   )}
                   {document.status === 'ready' &&
-                    (document.summary_status === 'none' || document.summary_status === 'failed') && (
+                    (document.summary_status === 'none' ||
+                      document.summary_status === 'failed' ||
+                      document.summary_status === 'skipped') && (
                       <button
                         type="button"
                         className="rounded-full border border-border px-2 py-0.5 text-xs hover:bg-surface"

@@ -540,3 +540,35 @@ async def test_a_figure_the_pages_do_not_hold_triggers_the_repair_and_is_removed
         "LightRAG reaches a Diversity win rate of 71.2% on average (p. 1)."
     ]
     assert stored["unverified"] == []
+
+
+async def test_indexing_a_document_uploaded_without_a_summary_queues_no_summary_job(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D91: the index job completes, the document is ready for questions, and no summary job
+    exists; a retry then queues one and the tree is built."""
+    model = StubSummariser()
+    index, _, dispatcher = runners(tokenizer, model)
+    body = user.post(
+        DOCUMENTS,
+        files={"file": ("ablation.txt", ABLATION_TABLE.encode())},
+        data={"build_summary": "false"},
+    ).json()
+    document_id, job_id = body["id"], body["jobs"][0]["id"]
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    assert uuid.UUID(job_id) not in index.queued_summary_jobs
+    assert [j[:2] for j in jobs(db, document_id)] == [("index", "completed")]
+    status, summary_status = db.execute(
+        "SELECT status, summary_status FROM documents WHERE id = %s", (document_id,)
+    ).fetchone()
+    assert (status, summary_status) == ("ready", "skipped")
+    assert summaries(db, document_id) == []
+    assert model.prompts == []
+
+    retried = user.post(f"{DOCUMENTS}/{document_id}/retry")
+    assert retried.status_code == 202
+    summary_job = next(j for j in retried.json()["jobs"] if j["kind"] == "summary")
+    await dispatcher.run(uuid.UUID(summary_job["id"]))
+    assert [row[0] for row in summaries(db, document_id)].count("document") == 1

@@ -304,3 +304,19 @@ def test_a_ready_document_without_a_summary_can_have_one_queued(
     assert response.status_code == 202
     kinds = [(j["kind"], j["status"]) for j in response.json()["jobs"]]
     assert ("summary", "queued") in kinds
+
+
+def test_a_document_can_be_uploaded_without_a_summary_tree_and_asked_for_one_later(
+    user: TestClient,
+) -> None:
+    """D91: the user chooses at upload; "skipped" is shown as such, and the retry builds it."""
+    body = user.post(
+        DOCUMENTS,
+        files={"file": ("notes.md", b"# Notes\n\nLightRAG builds a graph.\n")},
+        data={"build_summary": "false"},
+    ).json()
+
+    assert (body["summary_status"], body["build_summary"]) == ("skipped", False)
+    assert [j["kind"] for j in body["jobs"]] == ["index"]
+    default = upload(user, "other.md", b"# Other\n\nText.\n").json()
+    assert (default["summary_status"], default["build_summary"]) == ("none", True)
