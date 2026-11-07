@@ -180,3 +180,63 @@ def test_lines_that_are_not_linearised_rows_have_no_cells() -> None:
     assert cells_of("NaiveRAG -High NaiveRAG -High") == []
     assert cells_of("Overall 35.2% 64.8% 44.0% 56.0%") == []
     assert cells_of("A sentence — with a dash: but no figures at all") == []
+
+
+# --- A caption that runs over several lines (D81) --------------------------------------
+
+
+LONG_CAPTION_TABLE = (
+    "G Statistical Analysis\n"
+    "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\n"
+    "datasets. For each question and metric, the winning condition received a score of 100, "
+    "the losing\n"
+    "condition received a score of 0, and in the event of a tie, each condition was scored 50.\n"
+    "Podcast Transcripts News Articles\n"
+    "Condition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\n"
+    "Comprehensiveness\n"
+    "C0 TS 50.24 49.76 -0.06 1 55.52 44.48 -2.03 0.17\n"
+    "C2 SS 77.76 22.24 -8.17 <0.001 79.2 20.8 -8.34 <0.001\n"
+    "Diversity\n"
+    "C0 TS 50.24 49.76 -0.11 1 46.88 53.12 -1.38 0.676\n"
+    "26\n"
+)
+
+
+def test_a_caption_that_runs_over_several_prose_lines_still_opens_a_region() -> None:
+    """The GraphRAG paper's Table 6 (page 26): nine lines of caption prose before the
+    header lines. The detector used to require the header right after the caption line,
+    so the table fell to fixed-size chunking and lost its headers (D78 coverage gap)."""
+    [(start, end)] = find_table_regions(LONG_CAPTION_TABLE)
+
+    region = LONG_CAPTION_TABLE[start:end]
+    assert region.startswith("Table 6: Pairwise comparisons")
+    assert "Condition 1 Condition 2" in region and "C2 SS 77.76 22.24" in region
+    assert region.endswith("C0 TS 50.24 49.76 -0.11 1 46.88 53.12 -1.38 0.676")
+    assert "\n26" not in region  # the page number is not a block header
+
+
+def test_caption_prose_without_rows_afterwards_is_still_not_a_region() -> None:
+    text = (
+        "Table 3: Case Study: Comparison Between LightRAG and the Baseline Method GraphRAG.\n"
+        "Query Which methods can normalize the feature values for effective machine learning?\n"
+        "GraphRAG Key Metrics for Evaluating Movie Recommendation Systems: Evaluating the "
+        "effectiveness\n"
+        "of movie recommendation systems is crucial for ensuring user satisfaction.\n"
+    )
+    assert find_table_regions(text) == []
+
+
+def test_split_pieces_repeat_only_the_caption_line_and_the_header_lines() -> None:
+    [(start, end)] = find_table_regions(LONG_CAPTION_TABLE)
+    table = LONG_CAPTION_TABLE[start:end]
+
+    pieces = split_table(table, WordTokenizer(), max_tokens=60)
+
+    assert len(pieces) >= 2
+    assert (
+        pieces[0].startswith("Table 6: Pairwise comparisons") and "datasets. For each" in pieces[0]
+    )
+    for piece in pieces[1:]:
+        assert piece.startswith("Table 6: Pairwise comparisons of six conditions")
+        assert "datasets. For each" not in piece  # the caption's prose is not repeated
+        assert "Condition 1 Condition 2" in piece  # the header lines are

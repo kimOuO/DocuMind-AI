@@ -25,6 +25,7 @@ _SENTENCE_END = (".", "!", "?", ":", ";", "。", "！", "？")
 _BULLETS = ("•", "-", "–", "*")
 NUMERIC_LINE_DENSITY = 0.4
 HEADER_MAX_WORDS = 16
+CAPTION_MAX_LINES = 12  # lines of caption prose and headers allowed before the first row
 
 
 class _Counter(Protocol):
@@ -40,6 +41,19 @@ def _numeric_density(line: str) -> float:
 
 def _is_number_row(line: str) -> bool:
     return _numeric_density(line) >= NUMERIC_LINE_DENSITY and len(line.split()) >= 2
+
+
+_PROSE_MARKS = (". ", ", ", "; ", ": ")
+
+
+def _is_prose_line(line: str) -> bool:
+    """A sentence or a fragment of one: punctuation inside it, or too many words."""
+    stripped = line.strip()
+    return (
+        any(mark in stripped for mark in _PROSE_MARKS)
+        or stripped.endswith(_SENTENCE_END)
+        or len(stripped.split()) > HEADER_MAX_WORDS
+    )
 
 
 def _is_header_line(line: str) -> bool:
@@ -70,15 +84,22 @@ def find_table_regions(text: str) -> list[tuple[int, int]]:
             continue
         last = index  # the last line that belongs to the table
         has_rows = False
+        before_rows = 0
         cursor = index + 1
         while cursor < len(lines):
             line = lines[cursor].rstrip("\r\n")
             if _is_number_row(line):
                 has_rows = True
                 last = cursor
-            elif not has_rows and _is_header_line(line):
-                last = cursor  # header lines before the first row
-            elif has_rows and _is_header_line(line) and _looks_like_block_header(line):
+            elif not has_rows:
+                # Caption prose and header lines before the first row; which is which
+                # is decided only where it matters (`header_lines`). A caption may run
+                # over several lines (D81: nine in the GraphRAG paper's Table 6).
+                if not line.strip() or before_rows >= CAPTION_MAX_LINES:
+                    break
+                before_rows += 1
+                last = cursor
+            elif _is_header_line(line) and _looks_like_block_header(line):
                 last = cursor  # a block header between groups of rows
             else:
                 break
@@ -96,7 +117,21 @@ def _looks_like_block_header(line: str) -> bool:
     """Between row groups, a header repeats labels (e.g. "NaiveRAG -High" four times)
     or is short; prose that merely lacks a full stop is longer than that."""
     words = line.split()
+    if not any(any(ch.isalpha() for ch in word) for word in words):
+        return False  # a bare number (a page number) is not a block header
     return len(words) <= 8 or len(set(words)) <= len(words) // 2
+
+
+def header_lines(lines: list[str], first_row: int) -> list[str]:
+    """The header lines of a table: the run of label lines (no sentence punctuation, few
+    words) immediately before the first row. Caption prose before them is not a header."""
+    run: list[str] = []
+    for line in reversed(lines[1:first_row]):
+        if line.strip() and _is_header_line(line) and not _is_prose_line(line):
+            run.append(line)
+        else:
+            break
+    return list(reversed(run))
 
 
 def _is_row(line: str) -> bool:
@@ -111,14 +146,19 @@ def split_table(text: str, counter: _Counter, *, max_tokens: int) -> list[str]:
         return [text]
     lines = text.splitlines()
     first_row = next((i for i, line in enumerate(lines) if _is_row(line)), len(lines))
-    header = "\n".join(lines[:first_row])
+    # The first piece carries the whole caption; the later pieces repeat only the caption
+    # line and the header lines (D81), not the caption's prose.
+    full_header = "\n".join(lines[:first_row])
+    short_header = "\n".join([lines[0], *header_lines(lines, first_row)])
     pieces: list[str] = []
     current: list[str] = []
+    header = full_header
     for row in lines[first_row:]:
         candidate = "\n".join([header, *current, row])
         if current and counter.count(candidate) > max_tokens:
             pieces.append("\n".join([header, *current]))
             current = []
+            header = short_header
         current.append(row)
     if current:
         pieces.append("\n".join([header, *current]))
@@ -133,7 +173,7 @@ def linearize_table(text: str) -> str:
     """
     lines = text.splitlines()
     first_row = next((i for i, line in enumerate(lines) if _is_number_row(line)), len(lines))
-    headers = [line for line in lines[1:first_row] if line.strip()]
+    headers = header_lines(lines, first_row)
     if not headers:
         return text
     groups = headers[0].split()

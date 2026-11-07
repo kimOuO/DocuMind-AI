@@ -8,8 +8,8 @@
   "fulltext_config": "simple; OR of the question's Latin/numeric tokens",
   "coverage_rule": "same document and page; evidence text contained, or longest common block >= 50% of its characters"
  },
- "ingest_seconds": 6.7,
- "chunk_count": 200,
+ "ingest_seconds": 7.3,
+ "chunk_count": 191,
  "questions": [
   {
    "id": "Q2",
@@ -183,7 +183,7 @@
       "4.2 superiority paragraph",
       "4.5 incremental update cost"
      ],
-     "evidence_tokens": 2307,
+     "evidence_tokens": 3011,
      "pages": [
       [
        "lightrag",
@@ -215,7 +215,7 @@
       ],
       [
        "lightrag",
-       2
+       8
       ]
      ]
     }
@@ -324,8 +324,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -333,8 +333,8 @@
      "score": 0.6466030447219283
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -342,8 +342,8 @@
      "score": 0.6431714464391853
     },
     {
-     "chunk_id": "956ea85f-7eae-48c7-b0ba-3d65698da7bc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "664fd913-404b-4322-b58c-5c50c04788b0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 33,
@@ -351,8 +351,8 @@
      "score": 0.6378957845036098
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -360,8 +360,8 @@
      "score": 0.6230078349076281
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -369,8 +369,8 @@
      "score": 0.6211758111506837
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -378,8 +378,8 @@
      "score": 0.6171082612693826
     },
     {
-     "chunk_id": "d3cb96f6-9d3a-4823-a559-47185ecda889",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "d6e7938b-73f1-4aba-82f2-186b513fe446",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 50,
@@ -387,8 +387,8 @@
      "score": 0.6150322696355016
     },
     {
-     "chunk_id": "a285a3d6-1781-402e-9105-687cc60dc7ae",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "8c23baea-2840-4684-b75f-df2a4438a2c9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 2,
      "ordinal": 5,
@@ -398,17 +398,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 7,
-     "ordinal": 32,
-     "token_count": 254,
-     "score": 0.6466030447219283
-    },
-    {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -416,8 +407,17 @@
      "score": 0.6230078349076281
     },
     {
-     "chunk_id": "956ea85f-7eae-48c7-b0ba-3d65698da7bc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 32,
+     "token_count": 254,
+     "score": 0.6466030447219283
+    },
+    {
+     "chunk_id": "664fd913-404b-4322-b58c-5c50c04788b0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 33,
@@ -425,8 +425,8 @@
      "score": 0.6378957845036098
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -434,8 +434,8 @@
      "score": 0.6431714464391853
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -443,8 +443,8 @@
      "score": 0.6211758111506837
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -452,8 +452,8 @@
      "score": 0.6071305828508284
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -461,13 +461,13 @@
      "score": 0.6171082612693826
     },
     {
-     "chunk_id": "a285a3d6-1781-402e-9105-687cc60dc7ae",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
-     "page": 2,
-     "ordinal": 5,
-     "token_count": 256,
-     "score": 0.6094021741138894
+     "page": 8,
+     "ordinal": 35,
+     "token_count": 960,
+     "score": 0.5678786392646297
     }
    ]
   },
@@ -652,11 +652,11 @@
       ],
       [
        "lightrag",
-       16
+       5
       ],
       [
        "lightrag",
-       2
+       16
       ]
      ]
     }
@@ -782,8 +782,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -791,8 +791,8 @@
      "score": 0.6585963717678595
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -800,8 +800,8 @@
      "score": 0.6569249186159473
     },
     {
-     "chunk_id": "2118d8e1-d15d-47be-bcdf-42a42b815b60",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "962459cf-6bce-4da3-be15-4b9f481d2aac",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 34,
@@ -809,8 +809,8 @@
      "score": 0.6092197950005391
     },
     {
-     "chunk_id": "ecb20b38-2f9f-4189-8f44-fb05dc56cb93",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "260fa78a-c9ad-447b-8fd3-bf6c2455c440",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 1,
      "ordinal": 0,
@@ -818,8 +818,8 @@
      "score": 0.5904876669297602
     },
     {
-     "chunk_id": "d3cb96f6-9d3a-4823-a559-47185ecda889",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "d6e7938b-73f1-4aba-82f2-186b513fe446",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 50,
@@ -827,8 +827,8 @@
      "score": 0.5698649197416555
     },
     {
-     "chunk_id": "85f217f1-1dd5-44a5-8a49-7c3908762b6e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "9565d534-a41b-4167-903f-4f0e863333be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 43,
@@ -836,8 +836,8 @@
      "score": 0.564257325417845
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
@@ -845,8 +845,8 @@
      "score": 0.5634665086904428
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -856,8 +856,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -865,8 +865,8 @@
      "score": 0.6585963717678595
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -874,8 +874,8 @@
      "score": 0.6569249186159473
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -883,8 +883,8 @@
      "score": 0.5573210188536297
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -892,8 +892,8 @@
      "score": 0.561418271910214
     },
     {
-     "chunk_id": "2118d8e1-d15d-47be-bcdf-42a42b815b60",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "962459cf-6bce-4da3-be15-4b9f481d2aac",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 34,
@@ -901,8 +901,8 @@
      "score": 0.6092197950005391
     },
     {
-     "chunk_id": "85f217f1-1dd5-44a5-8a49-7c3908762b6e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "9565d534-a41b-4167-903f-4f0e863333be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 43,
@@ -910,22 +910,22 @@
      "score": 0.564257325417845
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "518d8760-1c4c-4f0f-9b2e-84cc60fcb0ac",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 5,
+     "ordinal": 22,
+     "token_count": 256,
+     "score": 0.5366367596228583
+    },
+    {
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
      "token_count": 256,
      "score": 0.5422779846491704
-    },
-    {
-     "chunk_id": "46ecae8f-c9b0-4ba1-9b64-32a6de7a6ecc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 2,
-     "ordinal": 6,
-     "token_count": 256,
-     "score": 0.5588867208690135
     }
    ]
   },
@@ -1232,8 +1232,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -1241,8 +1241,8 @@
      "score": 0.6413937132865366
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -1250,8 +1250,8 @@
      "score": 0.5708719491959268
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -1259,8 +1259,8 @@
      "score": 0.5593706227849589
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -1268,8 +1268,8 @@
      "score": 0.5570004242656126
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
@@ -1277,8 +1277,8 @@
      "score": 0.5552884009309059
     },
     {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -1286,8 +1286,8 @@
      "score": 0.554993702473142
     },
     {
-     "chunk_id": "ecb20b38-2f9f-4189-8f44-fb05dc56cb93",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "260fa78a-c9ad-447b-8fd3-bf6c2455c440",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 1,
      "ordinal": 0,
@@ -1295,8 +1295,8 @@
      "score": 0.551500388353902
     },
     {
-     "chunk_id": "a285a3d6-1781-402e-9105-687cc60dc7ae",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "8c23baea-2840-4684-b75f-df2a4438a2c9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 2,
      "ordinal": 5,
@@ -1306,8 +1306,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -1315,8 +1315,8 @@
      "score": 0.6413937132865366
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -1324,8 +1324,8 @@
      "score": 0.5708719491959268
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -1333,8 +1333,8 @@
      "score": 0.5394543127148452
     },
     {
-     "chunk_id": "839e16a7-cfb2-4b00-ad0f-7a299f29d974",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "518d8760-1c4c-4f0f-9b2e-84cc60fcb0ac",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 22,
@@ -1342,17 +1342,8 @@
      "score": 0.5397724092685043
     },
     {
-     "chunk_id": "46ecae8f-c9b0-4ba1-9b64-32a6de7a6ecc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 2,
-     "ordinal": 6,
-     "token_count": 256,
-     "score": 0.5472331361573162
-    },
-    {
-     "chunk_id": "a285a3d6-1781-402e-9105-687cc60dc7ae",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "8c23baea-2840-4684-b75f-df2a4438a2c9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 2,
      "ordinal": 5,
@@ -1360,8 +1351,17 @@
      "score": 0.5507135149414468
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "d9714e45-2b2e-4922-9e34-61f57a774846",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 2,
+     "ordinal": 6,
+     "token_count": 256,
+     "score": 0.5472331361573162
+    },
+    {
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -1369,8 +1369,8 @@
      "score": 0.5299963879594028
     },
     {
-     "chunk_id": "d3cb96f6-9d3a-4823-a559-47185ecda889",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "d6e7938b-73f1-4aba-82f2-186b513fe446",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 50,
@@ -1514,7 +1514,7 @@
      "covered": [
       "4.1 implementation details"
      ],
-     "evidence_tokens": 1218,
+     "evidence_tokens": 1220,
      "pages": [
       [
        "lightrag",
@@ -1534,7 +1534,7 @@
       ],
       [
        "lightrag",
-       7
+       5
       ]
      ]
     },
@@ -1564,11 +1564,11 @@
       ],
       [
        "lightrag",
-       7
+       5
       ],
       [
        "lightrag",
-       5
+       7
       ],
       [
        "lightrag",
@@ -1682,8 +1682,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "bb7d354b-f8df-46b6-8c2c-0ff0e5323465",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e686097-3909-4744-8545-f7a503452ec3",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 27,
@@ -1691,8 +1691,8 @@
      "score": 0.5801307117705358
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
@@ -1700,8 +1700,8 @@
      "score": 0.5750323370156982
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -1709,8 +1709,8 @@
      "score": 0.5600668454130394
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -1718,8 +1718,8 @@
      "score": 0.5452566038950589
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -1727,8 +1727,8 @@
      "score": 0.5404991604087889
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -1736,8 +1736,8 @@
      "score": 0.5403880750901664
     },
     {
-     "chunk_id": "bccf410d-61ad-453a-bef0-db79045c86db",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5a1fa4c2-2200-4066-ab07-79f010c505d2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 29,
@@ -1745,8 +1745,8 @@
      "score": 0.533602472114272
     },
     {
-     "chunk_id": "46e836c0-ae4d-45de-9dd5-c987c3ebb957",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "705565f8-dd54-4b0a-8868-fe4a8063ef86",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 59,
@@ -1756,8 +1756,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -1765,8 +1765,8 @@
      "score": 0.5403880750901664
     },
     {
-     "chunk_id": "bb7d354b-f8df-46b6-8c2c-0ff0e5323465",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e686097-3909-4744-8545-f7a503452ec3",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 27,
@@ -1774,8 +1774,8 @@
      "score": 0.5801307117705358
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -1783,8 +1783,8 @@
      "score": 0.5404991604087889
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -1792,17 +1792,8 @@
      "score": 0.5600668454130394
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 7,
-     "ordinal": 32,
-     "token_count": 254,
-     "score": 0.5251045107343743
-    },
-    {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -1810,8 +1801,17 @@
      "score": 0.5452566038950589
     },
     {
-     "chunk_id": "21aa2d36-1eb6-4161-ade2-c138a6c0ddc6",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 32,
+     "token_count": 254,
+     "score": 0.5251045107343743
+    },
+    {
+     "chunk_id": "f02ae9fa-3277-4e64-848b-8baf19043dd1",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 21,
@@ -1819,8 +1819,8 @@
      "score": 0.5259201274967505
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -1948,11 +1948,11 @@
       ],
       [
        "lightrag",
-       16
+       8
       ],
       [
        "lightrag",
-       8
+       16
       ]
      ]
     },
@@ -1968,11 +1968,11 @@
       ],
       [
        "lightrag",
-       16
+       8
       ],
       [
        "lightrag",
-       8
+       16
       ],
       [
        "lightrag",
@@ -1996,11 +1996,11 @@
       ],
       [
        "lightrag",
-       16
+       8
       ],
       [
        "lightrag",
-       8
+       16
       ],
       [
        "lightrag",
@@ -2126,8 +2126,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -2135,8 +2135,8 @@
      "score": 0.6593002513407462
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -2144,8 +2144,8 @@
      "score": 0.6312005426882181
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -2153,8 +2153,8 @@
      "score": 0.5954911126222966
     },
     {
-     "chunk_id": "bccf410d-61ad-453a-bef0-db79045c86db",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5a1fa4c2-2200-4066-ab07-79f010c505d2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 29,
@@ -2162,8 +2162,8 @@
      "score": 0.5947737950895607
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -2171,8 +2171,8 @@
      "score": 0.5929264426232058
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -2180,8 +2180,8 @@
      "score": 0.590339996733683
     },
     {
-     "chunk_id": "1846981a-ec94-4880-a968-a693a8771eab",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "6dfc2d38-ce1d-4f64-9e95-3310208231be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 25,
@@ -2189,8 +2189,8 @@
      "score": 0.5828387539771356
     },
     {
-     "chunk_id": "85f217f1-1dd5-44a5-8a49-7c3908762b6e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "9565d534-a41b-4167-903f-4f0e863333be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 43,
@@ -2200,8 +2200,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -2209,17 +2209,8 @@
      "score": 0.6593002513407462
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 16,
-     "ordinal": 68,
-     "token_count": 256,
-     "score": 0.5954911126222966
-    },
-    {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -2227,8 +2218,17 @@
      "score": 0.5929264426232058
     },
     {
-     "chunk_id": "bb2f1b7b-a4df-48fc-947d-b3f0305003f8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 68,
+     "token_count": 256,
+     "score": 0.5954911126222966
+    },
+    {
+     "chunk_id": "5e1eb27f-25ba-4405-aafe-77729086d647",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 38,
@@ -2236,8 +2236,8 @@
      "score": 0.590339996733683
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -2245,8 +2245,8 @@
      "score": 0.5505468396702975
     },
     {
-     "chunk_id": "956ea85f-7eae-48c7-b0ba-3d65698da7bc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "664fd913-404b-4322-b58c-5c50c04788b0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 33,
@@ -2254,8 +2254,8 @@
      "score": 0.5523040623846885
     },
     {
-     "chunk_id": "6fe176a4-70f7-48bb-9478-74378194714f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "762dd8d6-ea41-4fd4-b4b6-1de586c1742c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 42,
@@ -2263,8 +2263,8 @@
      "score": 0.5687693193508979
     },
     {
-     "chunk_id": "39b07aa3-45ef-47df-9796-73b8034a311e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7d37a098-520c-49d5-8e25-a3181f991552",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 4,
      "ordinal": 17,
@@ -2398,7 +2398,7 @@
       ],
       [
        "lightrag",
-       4
+       7
       ]
      ]
     },
@@ -2420,15 +2420,15 @@
       ],
       [
        "lightrag",
-       4
-      ],
-      [
-       "lightrag",
        7
       ],
       [
        "lightrag",
-       5
+       4
+      ],
+      [
+       "lightrag",
+       6
       ]
      ]
     },
@@ -2450,19 +2450,19 @@
       ],
       [
        "lightrag",
-       4
-      ],
-      [
-       "lightrag",
        7
       ],
       [
        "lightrag",
-       5
+       4
       ],
       [
        "lightrag",
        6
+      ],
+      [
+       "lightrag",
+       5
       ],
       [
        "lightrag",
@@ -2576,8 +2576,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "4afe8a9b-41ea-4d58-b4a8-4043e94d66c6",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b01a03b2-61be-46d9-9f6d-f51c07802b85",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 4,
      "ordinal": 16,
@@ -2585,8 +2585,8 @@
      "score": 0.7223590843801627
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -2594,8 +2594,8 @@
      "score": 0.7164195331160542
     },
     {
-     "chunk_id": "0fad0608-db44-4b4c-a4be-dbde30f42923",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "af98bc9f-b7a7-4129-b01f-e65e240ccc4c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 4,
      "ordinal": 15,
@@ -2603,8 +2603,8 @@
      "score": 0.6666392485384414
     },
     {
-     "chunk_id": "d3cb96f6-9d3a-4823-a559-47185ecda889",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "d6e7938b-73f1-4aba-82f2-186b513fe446",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 50,
@@ -2612,8 +2612,8 @@
      "score": 0.6480917290875973
     },
     {
-     "chunk_id": "a285a3d6-1781-402e-9105-687cc60dc7ae",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "8c23baea-2840-4684-b75f-df2a4438a2c9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 2,
      "ordinal": 5,
@@ -2621,8 +2621,8 @@
      "score": 0.6461893081390545
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -2630,8 +2630,8 @@
      "score": 0.6365224392511596
     },
     {
-     "chunk_id": "ecb20b38-2f9f-4189-8f44-fb05dc56cb93",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "260fa78a-c9ad-447b-8fd3-bf6c2455c440",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 1,
      "ordinal": 0,
@@ -2639,8 +2639,8 @@
      "score": 0.6213654603728737
     },
     {
-     "chunk_id": "60bc8fd8-0b67-4be5-8645-c79a9f5bc042",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a188a508-31ec-4d3e-ae22-c0e8c7671ffb",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 48,
@@ -2650,8 +2650,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -2659,8 +2659,8 @@
      "score": 0.7164195331160542
     },
     {
-     "chunk_id": "4afe8a9b-41ea-4d58-b4a8-4043e94d66c6",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b01a03b2-61be-46d9-9f6d-f51c07802b85",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 4,
      "ordinal": 16,
@@ -2668,17 +2668,8 @@
      "score": 0.7223590843801627
     },
     {
-     "chunk_id": "0fad0608-db44-4b4c-a4be-dbde30f42923",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 4,
-     "ordinal": 15,
-     "token_count": 256,
-     "score": 0.6666392485384414
-    },
-    {
-     "chunk_id": "956ea85f-7eae-48c7-b0ba-3d65698da7bc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "664fd913-404b-4322-b58c-5c50c04788b0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 33,
@@ -2686,17 +2677,17 @@
      "score": 0.6028093450526083
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "af98bc9f-b7a7-4129-b01f-e65e240ccc4c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
-     "page": 5,
-     "ordinal": 23,
+     "page": 4,
+     "ordinal": 15,
      "token_count": 256,
-     "score": 0.5855289928986745
+     "score": 0.6666392485384414
     },
     {
-     "chunk_id": "bb7d354b-f8df-46b6-8c2c-0ff0e5323465",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e686097-3909-4744-8545-f7a503452ec3",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 27,
@@ -2704,21 +2695,30 @@
      "score": 0.5761800459528009
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
-     "page": 7,
-     "ordinal": 30,
-     "token_count": 970,
-     "score": null
+     "page": 5,
+     "ordinal": 23,
+     "token_count": 256,
+     "score": 0.5855289928986745
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
      "token_count": 577,
+     "score": null
+    },
+    {
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 30,
+     "token_count": 970,
      "score": null
     }
    ]
@@ -2912,15 +2912,15 @@
       ],
       [
        "lightrag",
-       7
-      ],
-      [
-       "lightrag",
        10
       ],
       [
        "lightrag",
        8
+      ],
+      [
+       "lightrag",
+       7
       ]
      ]
     }
@@ -3026,8 +3026,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -3035,8 +3035,8 @@
      "score": 0.6726891192568398
     },
     {
-     "chunk_id": "2c4cce82-5ed0-4b82-8659-944d3d9a1cac",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7d72a32a-e348-48ce-a754-b81faf061801",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 60,
@@ -3044,8 +3044,8 @@
      "score": 0.6505678863349047
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -3053,8 +3053,8 @@
      "score": 0.5475604207777736
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -3062,8 +3062,8 @@
      "score": 0.5301714115619965
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -3071,8 +3071,8 @@
      "score": 0.4995921553883126
     },
     {
-     "chunk_id": "1846981a-ec94-4880-a968-a693a8771eab",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "6dfc2d38-ce1d-4f64-9e95-3310208231be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 25,
@@ -3080,8 +3080,8 @@
      "score": 0.4844686994273255
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -3089,8 +3089,8 @@
      "score": 0.46017406577645503
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
@@ -3100,8 +3100,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -3109,8 +3109,8 @@
      "score": 0.6726891192568398
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -3118,8 +3118,8 @@
      "score": 0.5475604207777736
     },
     {
-     "chunk_id": "2c4cce82-5ed0-4b82-8659-944d3d9a1cac",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7d72a32a-e348-48ce-a754-b81faf061801",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 60,
@@ -3127,8 +3127,8 @@
      "score": 0.6505678863349047
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -3136,8 +3136,8 @@
      "score": 0.5301714115619965
     },
     {
-     "chunk_id": "1846981a-ec94-4880-a968-a693a8771eab",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "6dfc2d38-ce1d-4f64-9e95-3310208231be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 25,
@@ -3145,17 +3145,8 @@
      "score": 0.4844686994273255
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 7,
-     "ordinal": 31,
-     "token_count": 577,
-     "score": 0.4073851572182501
-    },
-    {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -3163,13 +3154,22 @@
      "score": 0.4995921553883126
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
      "token_count": 960,
      "score": 0.39415679012794624
+    },
+    {
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 31,
+     "token_count": 577,
+     "score": 0.4073851572182501
     }
    ]
   },
@@ -3294,11 +3294,11 @@
       ],
       [
        "lightrag",
-       7
+       8
       ],
       [
        "lightrag",
-       8
+       7
       ]
      ]
     },
@@ -3316,11 +3316,11 @@
       ],
       [
        "lightrag",
-       7
+       8
       ],
       [
        "lightrag",
-       8
+       7
       ],
       [
        "lightrag",
@@ -3346,11 +3346,11 @@
       ],
       [
        "lightrag",
-       7
+       8
       ],
       [
        "lightrag",
-       8
+       7
       ],
       [
        "lightrag",
@@ -3500,8 +3500,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -3509,8 +3509,8 @@
      "score": 0.7022084885214416
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -3518,8 +3518,8 @@
      "score": 0.6722411493392696
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -3527,8 +3527,8 @@
      "score": 0.663884660271506
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -3536,8 +3536,8 @@
      "score": 0.6548332614302939
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -3545,8 +3545,8 @@
      "score": 0.629405644365106
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -3554,8 +3554,8 @@
      "score": 0.6152970149228031
     },
     {
-     "chunk_id": "1777ee2c-b0ac-4e69-9893-b429ed8cc417",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "bdf8a9e9-b961-4147-8763-94dfafff4476",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 69,
@@ -3563,8 +3563,8 @@
      "score": 0.582261629498499
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -3574,8 +3574,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -3583,17 +3583,8 @@
      "score": 0.7022084885214416
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 7,
-     "ordinal": 31,
-     "token_count": 577,
-     "score": 0.6722411493392696
-    },
-    {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -3601,8 +3592,17 @@
      "score": 0.663884660271506
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 31,
+     "token_count": 577,
+     "score": 0.6722411493392696
+    },
+    {
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -3610,8 +3610,8 @@
      "score": 0.6548332614302939
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -3619,8 +3619,8 @@
      "score": 0.629405644365106
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -3628,8 +3628,8 @@
      "score": 0.6152970149228031
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -3637,8 +3637,8 @@
      "score": 0.5518673945263696
     },
     {
-     "chunk_id": "956ea85f-7eae-48c7-b0ba-3d65698da7bc",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "664fd913-404b-4322-b58c-5c50c04788b0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 33,
@@ -3760,12 +3760,8 @@
      "covered": [
       "Table 2, -High block, Overall row"
      ],
-     "evidence_tokens": 2507,
+     "evidence_tokens": 2513,
      "pages": [
-      [
-       "lightrag",
-       7
-      ],
       [
        "lightrag",
        8
@@ -3773,6 +3769,10 @@
       [
        "lightrag",
        7
+      ],
+      [
+       "lightrag",
+       8
       ]
      ]
     },
@@ -3786,10 +3786,6 @@
      "pages": [
       [
        "lightrag",
-       7
-      ],
-      [
-       "lightrag",
        8
       ],
       [
@@ -3799,6 +3795,10 @@
       [
        "lightrag",
        8
+      ],
+      [
+       "lightrag",
+       7
       ],
       [
        "lightrag",
@@ -3812,14 +3812,10 @@
      "covered": [
       "Table 2, -High block, Overall row"
      ],
-     "evidence_tokens": 4113,
+     "evidence_tokens": 4066,
      "pages": [
       [
        "lightrag",
-       7
-      ],
-      [
-       "lightrag",
        8
       ],
       [
@@ -3829,6 +3825,10 @@
       [
        "lightrag",
        8
+      ],
+      [
+       "lightrag",
+       7
       ],
       [
        "lightrag",
@@ -3837,14 +3837,14 @@
       [
        "lightrag",
        16
+      ],
+      [
+       "lightrag",
+       13
       ],
       [
        "lightrag",
        9
-      ],
-      [
-       "lightrag",
-       16
       ]
      ]
     }
@@ -3966,8 +3966,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -3975,8 +3975,8 @@
      "score": 0.6380197025525759
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -3984,8 +3984,8 @@
      "score": 0.6143923265466344
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -3993,8 +3993,8 @@
      "score": 0.6015408039093018
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -4002,8 +4002,8 @@
      "score": 0.5989311219535963
     },
     {
-     "chunk_id": "3bec3db3-3f0b-4797-9a4d-531f087fe4a8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e207c616-19b2-41f7-ac9d-1ec140cc55bf",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 37,
@@ -4011,8 +4011,8 @@
      "score": 0.504638866281346
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -4020,8 +4020,8 @@
      "score": 0.4969878794558129
     },
     {
-     "chunk_id": "70f1b477-520f-466a-902c-ea461add01a5",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "a16c98b1-9fe2-43ab-9b52-7daa62fac1f2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 32,
@@ -4029,8 +4029,8 @@
      "score": 0.47283531530609
     },
     {
-     "chunk_id": "6fe176a4-70f7-48bb-9478-74378194714f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "762dd8d6-ea41-4fd4-b4b6-1de586c1742c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 42,
@@ -4040,17 +4040,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 7,
-     "ordinal": 30,
-     "token_count": 970,
-     "score": 0.6380197025525759
-    },
-    {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -4058,17 +4049,17 @@
      "score": 0.6015408039093018
     },
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
-     "ordinal": 31,
-     "token_count": 577,
-     "score": 0.6143923265466344
+     "ordinal": 30,
+     "token_count": 970,
+     "score": 0.6380197025525759
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -4076,8 +4067,17 @@
      "score": 0.5989311219535963
     },
     {
-     "chunk_id": "3bec3db3-3f0b-4797-9a4d-531f087fe4a8",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 7,
+     "ordinal": 31,
+     "token_count": 577,
+     "score": 0.6143923265466344
+    },
+    {
+     "chunk_id": "e207c616-19b2-41f7-ac9d-1ec140cc55bf",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 37,
@@ -4085,8 +4085,8 @@
      "score": 0.504638866281346
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 16,
      "ordinal": 68,
@@ -4094,22 +4094,22 @@
      "score": 0.4969878794558129
     },
     {
-     "chunk_id": "85f217f1-1dd5-44a5-8a49-7c3908762b6e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 13,
+     "ordinal": 61,
+     "token_count": 209,
+     "score": 0.44079736228004995
+    },
+    {
+     "chunk_id": "9565d534-a41b-4167-903f-4f0e863333be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 43,
      "token_count": 256,
      "score": 0.46023096212066816
-    },
-    {
-     "chunk_id": "71558131-3997-42bc-a9ae-b5565c9f27f1",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 16,
-     "ordinal": 67,
-     "token_count": 256,
-     "score": 0.4365607798099518
     }
    ]
   },
@@ -4121,7 +4121,7 @@
    "documents": [
     "graphrag"
    ],
-   "top1_similarity": 0.7662829985106888,
+   "top1_similarity": 0.7575887649321424,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -4130,7 +4130,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 705,
+     "evidence_tokens": 786,
      "pages": [
       [
        "graphrag",
@@ -4152,7 +4152,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 1216,
+     "evidence_tokens": 1297,
      "pages": [
       [
        "graphrag",
@@ -4172,7 +4172,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ]
      ]
     },
@@ -4182,7 +4182,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 1916,
+     "evidence_tokens": 1850,
      "pages": [
       [
        "graphrag",
@@ -4202,7 +4202,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ],
       [
        "graphrag",
@@ -4210,7 +4210,7 @@
       ],
       [
        "graphrag",
-       11
+       10
       ],
       [
        "graphrag",
@@ -4221,24 +4221,22 @@
    },
    "hybrid": {
     "3": {
-     "recall": 1.0,
-     "hit": true,
-     "covered": [
-      "Table 2 (context units and tokens)"
-     ],
-     "evidence_tokens": 700,
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 767,
      "pages": [
-      [
-       "graphrag",
-       6
-      ],
       [
        "graphrag",
        10
       ],
       [
        "graphrag",
-       8
+       6
+      ],
+      [
+       "graphrag",
+       11
       ]
      ]
     },
@@ -4248,57 +4246,11 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 1193,
+     "evidence_tokens": 1230,
      "pages": [
       [
        "graphrag",
-       6
-      ],
-      [
-       "graphrag",
        10
-      ],
-      [
-       "graphrag",
-       8
-      ],
-      [
-       "graphrag",
-       7
-      ],
-      [
-       "graphrag",
-       6
-      ]
-     ]
-    },
-    "8": {
-     "recall": 1.0,
-     "hit": true,
-     "covered": [
-      "Table 2 (context units and tokens)"
-     ],
-     "evidence_tokens": 1898,
-     "pages": [
-      [
-       "graphrag",
-       6
-      ],
-      [
-       "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       8
-      ],
-      [
-       "graphrag",
-       7
-      ],
-      [
-       "graphrag",
-       6
       ],
       [
        "graphrag",
@@ -4311,6 +4263,52 @@
       [
        "graphrag",
        10
+      ],
+      [
+       "graphrag",
+       8
+      ]
+     ]
+    },
+    "8": {
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "Table 2 (context units and tokens)"
+     ],
+     "evidence_tokens": 1978,
+     "pages": [
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       8
+      ],
+      [
+       "graphrag",
+       7
+      ],
+      [
+       "graphrag",
+       6
+      ],
+      [
+       "graphrag",
+       11
       ]
      ]
     }
@@ -4322,7 +4320,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 705,
+     "evidence_tokens": 786,
      "pages": [
       [
        "graphrag",
@@ -4345,7 +4343,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 1216,
+     "evidence_tokens": 1297,
      "pages": [
       [
        "graphrag",
@@ -4365,7 +4363,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ]
      ],
      "added": 0
@@ -4376,7 +4374,7 @@
      "covered": [
       "Table 2 (context units and tokens)"
      ],
-     "evidence_tokens": 2428,
+     "evidence_tokens": 1850,
      "pages": [
       [
        "graphrag",
@@ -4396,7 +4394,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ],
       [
        "graphrag",
@@ -4404,46 +4402,38 @@
       ],
       [
        "graphrag",
-       11
+       10
       ],
       [
        "graphrag",
        6
-      ],
-      [
-       "graphrag",
-       11
-      ],
-      [
-       "graphrag",
-       11
       ]
      ],
-     "added": 2
+     "added": 0
     }
    },
    "vector_top8": [
     {
-     "chunk_id": "37b828c8-823f-43f4-ba74-2367a81c7b8d",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "b7c736e4-68cd-4f0e-820a-4c9f1983554d",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
      "ordinal": 45,
-     "token_count": 256,
-     "score": 0.7662829985106888
+     "token_count": 275,
+     "score": 0.7575887649321424
     },
     {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "fccd0566-c7ec-4396-bbd6-160b5c211a0b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.6404728558075635
+     "ordinal": 46,
+     "token_count": 255,
+     "score": 0.6619503489644006
     },
     {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 32,
@@ -4451,8 +4441,8 @@
      "score": 0.6384728562291124
     },
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 31,
@@ -4460,17 +4450,17 @@
      "score": 0.6175680668773814
     },
     {
-     "chunk_id": "ea1c78f0-c0e3-4108-8007-56044f5aa7dd",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 10,
-     "ordinal": 46,
+     "page": 11,
+     "ordinal": 49,
      "token_count": 255,
-     "score": 0.6086768896745368
+     "score": 0.5978393616223973
     },
     {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 33,
@@ -4478,17 +4468,17 @@
      "score": 0.5963569346347278
     },
     {
-     "chunk_id": "4047be79-a5b1-4ca6-93c9-91817bc1363a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "98d0431b-d70c-41ab-b5f4-449537d5a1ae",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 11,
-     "ordinal": 48,
-     "token_count": 256,
-     "score": 0.5794566852987976
+     "page": 10,
+     "ordinal": 47,
+     "token_count": 109,
+     "score": 0.5817279013290441
     },
     {
-     "chunk_id": "7a0d0b8d-e000-42c0-b065-65218bccbf1f",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "faf07697-40b4-4e83-a5a8-bf979d01db68",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 6,
      "ordinal": 24,
@@ -4498,8 +4488,17 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "7a0d0b8d-e000-42c0-b065-65218bccbf1f",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "fccd0566-c7ec-4396-bbd6-160b5c211a0b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 46,
+     "token_count": 255,
+     "score": 0.6619503489644006
+    },
+    {
+     "chunk_id": "faf07697-40b4-4e83-a5a8-bf979d01db68",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 6,
      "ordinal": 24,
@@ -4507,17 +4506,26 @@
      "score": 0.5752130649285834
     },
     {
-     "chunk_id": "37b828c8-823f-43f4-ba74-2367a81c7b8d",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "5facf1dd-e33d-4e5b-8db4-ce2d6326f25b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 50,
+     "token_count": 256,
+     "score": 0.5651808627219316
+    },
+    {
+     "chunk_id": "b7c736e4-68cd-4f0e-820a-4c9f1983554d",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
      "ordinal": 45,
-     "token_count": 256,
-     "score": 0.7662829985106888
+     "token_count": 275,
+     "score": 0.7575887649321424
     },
     {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 33,
@@ -4525,8 +4533,8 @@
      "score": 0.5963569346347278
     },
     {
-     "chunk_id": "13a27970-7ba5-4af4-9c26-e2292d99000b",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "edf0df32-78ce-40a2-a85a-573d6902f856",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 7,
      "ordinal": 29,
@@ -4534,8 +4542,8 @@
      "score": 0.5313398195725278
     },
     {
-     "chunk_id": "52617b0b-fe36-44ec-943a-7ed8527fafc3",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "d957f059-4d88-494a-b230-53214117c587",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 6,
      "ordinal": 25,
@@ -4543,31 +4551,13 @@
      "score": 0.516369415846227
     },
     {
-     "chunk_id": "4732da6f-3c46-4242-b4b1-939223e98771",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 6,
-     "ordinal": 23,
-     "token_count": 256,
-     "score": 0.5066446503036356
-    },
-    {
-     "chunk_id": "1619a036-79bf-4492-992c-fb9b88106020",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 11,
      "ordinal": 49,
-     "token_count": 256,
-     "score": 0.5653265196474228
-    },
-    {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.6404728558075635
+     "token_count": 255,
+     "score": 0.5978393616223973
     }
    ]
   },
@@ -4579,7 +4569,7 @@
    "documents": [
     "graphrag"
    ],
-   "top1_similarity": 0.6841436938554316,
+   "top1_similarity": 0.7297236693893713,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -4588,7 +4578,7 @@
      "covered": [
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 768,
+     "evidence_tokens": 1532,
      "pages": [
       [
        "graphrag",
@@ -4600,17 +4590,18 @@
       ],
       [
        "graphrag",
-       11
+       26
       ]
      ]
     },
     "5": {
-     "recall": 0.5,
+     "recall": 1.0,
      "hit": true,
      "covered": [
+      "Table 6 (pairwise comparisons) — the C2 vs SS cell",
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1216,
+     "evidence_tokens": 2786,
      "pages": [
       [
        "graphrag",
@@ -4622,25 +4613,26 @@
       ],
       [
        "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        11
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       10
+       26
       ]
      ]
     },
     "8": {
-     "recall": 0.5,
+     "recall": 1.0,
      "hit": true,
      "covered": [
+      "Table 6 (pairwise comparisons) — the C2 vs SS cell",
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1768,
+     "evidence_tokens": 3449,
      "pages": [
       [
        "graphrag",
@@ -4652,11 +4644,15 @@
       ],
       [
        "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        11
       ],
       [
        "graphrag",
-       10
+       26
       ],
       [
        "graphrag",
@@ -4669,10 +4665,6 @@
       [
        "graphrag",
        8
-      ],
-      [
-       "graphrag",
-       9
       ]
      ]
     }
@@ -4684,7 +4676,7 @@
      "covered": [
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 768,
+     "evidence_tokens": 767,
      "pages": [
       [
        "graphrag",
@@ -4706,7 +4698,7 @@
      "covered": [
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1212,
+     "evidence_tokens": 1210,
      "pages": [
       [
        "graphrag",
@@ -4722,21 +4714,22 @@
       ],
       [
        "graphrag",
-       11
+       8
       ],
       [
        "graphrag",
-       8
+       20
       ]
      ]
     },
     "8": {
-     "recall": 0.5,
+     "recall": 1.0,
      "hit": true,
      "covered": [
+      "Table 6 (pairwise comparisons) — the C2 vs SS cell",
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1978,
+     "evidence_tokens": 3466,
      "pages": [
       [
        "graphrag",
@@ -4752,10 +4745,6 @@
       ],
       [
        "graphrag",
-       11
-      ],
-      [
-       "graphrag",
        8
       ],
       [
@@ -4764,11 +4753,15 @@
       ],
       [
        "graphrag",
-       20
+       26
       ],
       [
        "graphrag",
-       2
+       26
+      ],
+      [
+       "graphrag",
+       23
       ]
      ]
     }
@@ -4780,7 +4773,7 @@
      "covered": [
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 768,
+     "evidence_tokens": 1532,
      "pages": [
       [
        "graphrag",
@@ -4792,18 +4785,19 @@
       ],
       [
        "graphrag",
-       11
+       26
       ]
      ],
      "added": 0
     },
     "5": {
-     "recall": 0.5,
+     "recall": 1.0,
      "hit": true,
      "covered": [
+      "Table 6 (pairwise comparisons) — the C2 vs SS cell",
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1216,
+     "evidence_tokens": 2786,
      "pages": [
       [
        "graphrag",
@@ -4815,26 +4809,27 @@
       ],
       [
        "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        11
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       10
+       26
       ]
      ],
      "added": 0
     },
     "8": {
-     "recall": 0.5,
+     "recall": 1.0,
      "hit": true,
      "covered": [
+      "Table 6 (pairwise comparisons) — the C2 vs SS cell",
       "5.1 win-rate ranges"
      ],
-     "evidence_tokens": 1768,
+     "evidence_tokens": 3449,
      "pages": [
       [
        "graphrag",
@@ -4846,11 +4841,15 @@
       ],
       [
        "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        11
       ],
       [
        "graphrag",
-       10
+       26
       ],
       [
        "graphrag",
@@ -4863,10 +4862,6 @@
       [
        "graphrag",
        8
-      ],
-      [
-       "graphrag",
-       9
       ]
      ],
      "added": 0
@@ -4874,100 +4869,17 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "4047be79-a5b1-4ca6-93c9-91817bc1363a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 48,
-     "token_count": 256,
-     "score": 0.6841436938554316
-    },
-    {
-     "chunk_id": "b084d4cd-878c-406f-a2c9-039ee5c6bdde",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 9,
-     "ordinal": 37,
-     "token_count": 256,
-     "score": 0.666497111381138
-    },
-    {
-     "chunk_id": "1619a036-79bf-4492-992c-fb9b88106020",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 11,
      "ordinal": 49,
-     "token_count": 256,
-     "score": 0.6036355788058995
-    },
-    {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.5869906156042207
-    },
-    {
-     "chunk_id": "ea1c78f0-c0e3-4108-8007-56044f5aa7dd",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 46,
      "token_count": 255,
-     "score": 0.5806968327183569
+     "score": 0.7297236693893713
     },
     {
-     "chunk_id": "2e2eec6e-63ac-4e9a-847e-00a83f15c70c",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 44,
-     "token_count": 256,
-     "score": 0.5722194572281889
-    },
-    {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 8,
-     "ordinal": 33,
-     "token_count": 188,
-     "score": 0.5567341243979526
-    },
-    {
-     "chunk_id": "26d6c81e-fe95-49f6-8f98-fc76c6448ca8",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 9,
-     "ordinal": 38,
-     "token_count": 108,
-     "score": 0.5536888655822173
-    }
-   ],
-   "hybrid_top8": [
-    {
-     "chunk_id": "1619a036-79bf-4492-992c-fb9b88106020",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 49,
-     "token_count": 256,
-     "score": 0.6036355788058995
-    },
-    {
-     "chunk_id": "4047be79-a5b1-4ca6-93c9-91817bc1363a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 48,
-     "token_count": 256,
-     "score": 0.6841436938554316
-    },
-    {
-     "chunk_id": "b084d4cd-878c-406f-a2c9-039ee5c6bdde",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "e67b605a-7ff7-4b69-9f21-eca0d16cc1e1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 37,
@@ -4975,17 +4887,91 @@
      "score": 0.666497111381138
     },
     {
-     "chunk_id": "05e1bed1-85ca-404d-bf76-e7ccf45378ae",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "02d50d76-89a9-47f6-babe-844169c94d69",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 118,
+     "token_count": 1021,
+     "score": 0.5990031122567986
+    },
+    {
+     "chunk_id": "5facf1dd-e33d-4e5b-8db4-ce2d6326f25b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 11,
      "ordinal": 50,
      "token_count": 256,
-     "score": 0.4931231157486302
+     "score": 0.5910187255122175
     },
     {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "60f15f5e-5abc-47f2-b545-cd3bec557c1e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 117,
+     "token_count": 998,
+     "score": 0.58510124112912
+    },
+    {
+     "chunk_id": "fccd0566-c7ec-4396-bbd6-160b5c211a0b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 46,
+     "token_count": 255,
+     "score": 0.5826935247159271
+    },
+    {
+     "chunk_id": "78e4f325-9387-4c90-a287-c96a52e37f7e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 44,
+     "token_count": 220,
+     "score": 0.5680570941006222
+    },
+    {
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 33,
+     "token_count": 188,
+     "score": 0.5567341243979526
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 49,
+     "token_count": 255,
+     "score": 0.7297236693893713
+    },
+    {
+     "chunk_id": "5facf1dd-e33d-4e5b-8db4-ce2d6326f25b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 50,
+     "token_count": 256,
+     "score": 0.5910187255122175
+    },
+    {
+     "chunk_id": "e67b605a-7ff7-4b69-9f21-eca0d16cc1e1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 9,
+     "ordinal": 37,
+     "token_count": 256,
+     "score": 0.666497111381138
+    },
+    {
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 33,
@@ -4993,8 +4979,8 @@
      "score": 0.5567341243979526
     },
     {
-     "chunk_id": "9f900ae1-8dcd-4df4-8755-e9e5cd19d650",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "0d3d2094-6d1f-466d-92a0-0d10995f1125",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 20,
      "ordinal": 94,
@@ -5002,20 +4988,29 @@
      "score": 0.5091739556659655
     },
     {
-     "chunk_id": "2115cc5c-b6c2-46ad-afac-a593d93c951b",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "02d50d76-89a9-47f6-babe-844169c94d69",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 20,
-     "ordinal": 93,
-     "token_count": 255,
-     "score": 0.5061117259827248
+     "page": 26,
+     "ordinal": 118,
+     "token_count": 1021,
+     "score": 0.5990031122567986
     },
     {
-     "chunk_id": "9d66643f-788e-406a-b615-b1e24069f98e",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "8bd38bdd-493d-4e44-9fc6-cc64b6d6af1f",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 2,
-     "ordinal": 7,
+     "page": 26,
+     "ordinal": 116,
+     "token_count": 979,
+     "score": null
+    },
+    {
+     "chunk_id": "05295d87-da8b-48c0-acd1-cda368d9eba6",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 23,
+     "ordinal": 104,
      "token_count": 256,
      "score": null
     }
@@ -5029,7 +5024,7 @@
    "documents": [
     "graphrag"
    ],
-   "top1_similarity": 0.6275559429591219,
+   "top1_similarity": 0.6218238432846065,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -5038,7 +5033,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 704,
+     "evidence_tokens": 766,
      "pages": [
       [
        "graphrag",
@@ -5050,7 +5045,7 @@
       ],
       [
        "graphrag",
-       10
+       9
       ]
      ]
     },
@@ -5060,7 +5055,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 1215,
+     "evidence_tokens": 1277,
      "pages": [
       [
        "graphrag",
@@ -5072,15 +5067,15 @@
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
        9
       ],
       [
        "graphrag",
        8
+      ],
+      [
+       "graphrag",
+       11
       ]
      ]
     },
@@ -5090,7 +5085,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 1983,
+     "evidence_tokens": 2174,
      "pages": [
       [
        "graphrag",
@@ -5099,10 +5094,6 @@
       [
        "graphrag",
        9
-      ],
-      [
-       "graphrag",
-       10
       ],
       [
        "graphrag",
@@ -5119,6 +5110,10 @@
       [
        "graphrag",
        8
+      ],
+      [
+       "graphrag",
+       12
       ],
       [
        "graphrag",
@@ -5132,7 +5127,7 @@
      "recall": 0.0,
      "hit": false,
      "covered": [],
-     "evidence_tokens": 704,
+     "evidence_tokens": 766,
      "pages": [
       [
        "graphrag",
@@ -5140,7 +5135,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ],
       [
        "graphrag",
@@ -5154,7 +5149,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 1216,
+     "evidence_tokens": 1278,
      "pages": [
       [
        "graphrag",
@@ -5162,7 +5157,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ],
       [
        "graphrag",
@@ -5174,7 +5169,7 @@
       ],
       [
        "graphrag",
-       11
+       3
       ]
      ]
     },
@@ -5184,7 +5179,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 1984,
+     "evidence_tokens": 2054,
      "pages": [
       [
        "graphrag",
@@ -5192,7 +5187,7 @@
       ],
       [
        "graphrag",
-       10
+       11
       ],
       [
        "graphrag",
@@ -5204,11 +5199,11 @@
       ],
       [
        "graphrag",
-       11
+       3
       ],
       [
        "graphrag",
-       11
+       4
       ],
       [
        "graphrag",
@@ -5216,7 +5211,7 @@
       ],
       [
        "graphrag",
-       4
+       11
       ]
      ]
     }
@@ -5228,7 +5223,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 704,
+     "evidence_tokens": 766,
      "pages": [
       [
        "graphrag",
@@ -5240,7 +5235,7 @@
       ],
       [
        "graphrag",
-       10
+       9
       ]
      ],
      "added": 0
@@ -5251,7 +5246,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 1215,
+     "evidence_tokens": 1277,
      "pages": [
       [
        "graphrag",
@@ -5263,15 +5258,15 @@
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
        9
       ],
       [
        "graphrag",
        8
+      ],
+      [
+       "graphrag",
+       11
       ]
      ],
      "added": 0
@@ -5282,7 +5277,7 @@
      "covered": [
       "5.1 Experiment 1"
      ],
-     "evidence_tokens": 2495,
+     "evidence_tokens": 2429,
      "pages": [
       [
        "graphrag",
@@ -5294,10 +5289,6 @@
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
        9
       ],
       [
@@ -5314,33 +5305,33 @@
       ],
       [
        "graphrag",
+       12
+      ],
+      [
+       "graphrag",
        4
       ],
       [
        "graphrag",
-       11
-      ],
-      [
-       "graphrag",
-       11
+       12
       ]
      ],
-     "added": 2
+     "added": 1
     }
    },
    "vector_top8": [
     {
-     "chunk_id": "ea1c78f0-c0e3-4108-8007-56044f5aa7dd",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "fccd0566-c7ec-4396-bbd6-160b5c211a0b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
      "ordinal": 46,
      "token_count": 255,
-     "score": 0.6275559429591219
+     "score": 0.6218238432846065
     },
     {
-     "chunk_id": "b084d4cd-878c-406f-a2c9-039ee5c6bdde",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "e67b605a-7ff7-4b69-9f21-eca0d16cc1e1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 37,
@@ -5348,17 +5339,8 @@
      "score": 0.619442590574756
     },
     {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.5784460931494265
-    },
-    {
-     "chunk_id": "0fff38ff-af9f-4bca-b1e3-29b711cf4f0b",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "1fae5290-c69e-474b-9e72-c004c1cc8cbf",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 36,
@@ -5366,8 +5348,8 @@
      "score": 0.5686509778693672
     },
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 31,
@@ -5375,17 +5357,17 @@
      "score": 0.5579908989063831
     },
     {
-     "chunk_id": "4047be79-a5b1-4ca6-93c9-91817bc1363a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 11,
-     "ordinal": 48,
-     "token_count": 256,
-     "score": 0.555774940319386
+     "ordinal": 49,
+     "token_count": 255,
+     "score": 0.5485440703849677
     },
     {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 32,
@@ -5393,8 +5375,17 @@
      "score": 0.5407689469597974
     },
     {
-     "chunk_id": "61c6819b-e557-4b43-85ec-f92a99cfcd65",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "76401149-2f34-4d0a-b2cd-6b4619370101",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 53,
+     "token_count": 385,
+     "score": 0.5173154740365501
+    },
+    {
+     "chunk_id": "16284557-a47e-4a58-81c4-3a6bfaeb28d7",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 4,
      "ordinal": 17,
@@ -5404,26 +5395,26 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "ea1c78f0-c0e3-4108-8007-56044f5aa7dd",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "fccd0566-c7ec-4396-bbd6-160b5c211a0b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
      "ordinal": 46,
      "token_count": 255,
-     "score": 0.6275559429591219
+     "score": 0.6218238432846065
     },
     {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "497fe496-72ab-4560-9057-99a0ba109d11",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.5784460931494265
+     "page": 11,
+     "ordinal": 49,
+     "token_count": 255,
+     "score": 0.5485440703849677
     },
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 31,
@@ -5431,8 +5422,8 @@
      "score": 0.5579908989063831
     },
     {
-     "chunk_id": "b084d4cd-878c-406f-a2c9-039ee5c6bdde",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "e67b605a-7ff7-4b69-9f21-eca0d16cc1e1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 37,
@@ -5440,40 +5431,40 @@
      "score": 0.619442590574756
     },
     {
-     "chunk_id": "4047be79-a5b1-4ca6-93c9-91817bc1363a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "ab608736-fd42-431b-8b78-65571ab8fae8",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 11,
-     "ordinal": 48,
+     "page": 3,
+     "ordinal": 9,
      "token_count": 256,
-     "score": 0.555774940319386
+     "score": 0.48864932053819643
     },
     {
-     "chunk_id": "1619a036-79bf-4492-992c-fb9b88106020",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 49,
-     "token_count": 256,
-     "score": 0.4994472414090463
-    },
-    {
-     "chunk_id": "12c3a207-db65-432b-ae94-c464eeb5a634",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 12,
-     "ordinal": 52,
-     "token_count": 256,
-     "score": 0.5151072433526976
-    },
-    {
-     "chunk_id": "61c6819b-e557-4b43-85ec-f92a99cfcd65",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "16284557-a47e-4a58-81c4-3a6bfaeb28d7",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 4,
      "ordinal": 17,
      "token_count": 256,
      "score": 0.5165381143413933
+    },
+    {
+     "chunk_id": "76401149-2f34-4d0a-b2cd-6b4619370101",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 12,
+     "ordinal": 53,
+     "token_count": 385,
+     "score": 0.5173154740365501
+    },
+    {
+     "chunk_id": "6cd3034b-1454-4ff3-9665-d7920473c736",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 48,
+     "token_count": 135,
+     "score": 0.4921475979666221
     }
    ]
   },
@@ -5485,7 +5476,7 @@
    "documents": [
     "graphrag"
    ],
-   "top1_similarity": 0.6118110116542191,
+   "top1_similarity": 0.5824065418165796,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -5498,15 +5489,15 @@
      "pages": [
       [
        "graphrag",
-       26
-      ],
-      [
-       "graphrag",
        8
       ],
       [
        "graphrag",
        12
+      ],
+      [
+       "graphrag",
+       3
       ]
      ]
     },
@@ -5516,12 +5507,8 @@
      "covered": [
       "4.1.2 Conditions"
      ],
-     "evidence_tokens": 1280,
+     "evidence_tokens": 1133,
      "pages": [
-      [
-       "graphrag",
-       26
-      ],
       [
        "graphrag",
        8
@@ -5537,6 +5524,10 @@
       [
        "graphrag",
        1
+      ],
+      [
+       "graphrag",
+       10
       ]
      ]
     },
@@ -5546,12 +5537,8 @@
      "covered": [
       "4.1.2 Conditions"
      ],
-     "evidence_tokens": 1980,
+     "evidence_tokens": 2556,
      "pages": [
-      [
-       "graphrag",
-       26
-      ],
       [
        "graphrag",
        8
@@ -5570,15 +5557,19 @@
       ],
       [
        "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        8
       ],
       [
        "graphrag",
        2
-      ],
-      [
-       "graphrag",
-       4
       ]
      ]
     }
@@ -5605,9 +5596,11 @@
      ]
     },
     "5": {
-     "recall": 0.0,
-     "hit": false,
-     "covered": [],
+     "recall": 1.0,
+     "hit": true,
+     "covered": [
+      "4.1.2 Conditions"
+     ],
      "evidence_tokens": 1212,
      "pages": [
       [
@@ -5624,7 +5617,7 @@
       ],
       [
        "graphrag",
-       26
+       8
       ],
       [
        "graphrag",
@@ -5654,14 +5647,6 @@
       ],
       [
        "graphrag",
-       26
-      ],
-      [
-       "graphrag",
-       25
-      ],
-      [
-       "graphrag",
        8
       ],
       [
@@ -5670,7 +5655,15 @@
       ],
       [
        "graphrag",
-       8
+       25
+      ],
+      [
+       "graphrag",
+       12
+      ],
+      [
+       "graphrag",
+       3
       ]
      ]
     }
@@ -5686,15 +5679,15 @@
      "pages": [
       [
        "graphrag",
-       26
-      ],
-      [
-       "graphrag",
        8
       ],
       [
        "graphrag",
        12
+      ],
+      [
+       "graphrag",
+       3
       ]
      ],
      "added": 0
@@ -5705,12 +5698,8 @@
      "covered": [
       "4.1.2 Conditions"
      ],
-     "evidence_tokens": 1280,
+     "evidence_tokens": 1133,
      "pages": [
-      [
-       "graphrag",
-       26
-      ],
       [
        "graphrag",
        8
@@ -5726,6 +5715,10 @@
       [
        "graphrag",
        1
+      ],
+      [
+       "graphrag",
+       10
       ]
      ],
      "added": 0
@@ -5736,12 +5729,8 @@
      "covered": [
       "4.1.2 Conditions"
      ],
-     "evidence_tokens": 1980,
+     "evidence_tokens": 2556,
      "pages": [
-      [
-       "graphrag",
-       26
-      ],
       [
        "graphrag",
        8
@@ -5760,15 +5749,19 @@
       ],
       [
        "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
        8
       ],
       [
        "graphrag",
        2
-      ],
-      [
-       "graphrag",
-       4
       ]
      ],
      "added": 0
@@ -5776,17 +5769,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "285807ce-0847-44dc-97c0-d18fb7b77825",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 26,
-     "ordinal": 115,
-     "token_count": 256,
-     "score": 0.6118110116542191
-    },
-    {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 32,
@@ -5794,17 +5778,17 @@
      "score": 0.5824065418165796
     },
     {
-     "chunk_id": "f62c54d8-7b01-4f6f-8bc0-a28f11fbd738",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "b57bc690-4433-4833-abb7-33616a2b325a",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 12,
      "ordinal": 55,
      "token_count": 256,
-     "score": 0.5731738969308514
+     "score": 0.5761835908617552
     },
     {
-     "chunk_id": "7235e08e-72b8-40e5-9dbf-e8013fca31d8",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "3d01f4b3-107e-49c6-a1e2-7529528a644f",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 3,
      "ordinal": 12,
@@ -5812,8 +5796,8 @@
      "score": 0.5637332081159867
     },
     {
-     "chunk_id": "919b3879-da10-4587-a10f-9d2ef2b379da",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "c3f070fc-34c4-4f58-ba82-65d7a36914ad",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 1,
      "ordinal": 1,
@@ -5821,8 +5805,26 @@
      "score": 0.5616415779894456
     },
     {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "98d0431b-d70c-41ab-b5f4-449537d5a1ae",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 10,
+     "ordinal": 47,
+     "token_count": 109,
+     "score": 0.5604775118972223
+    },
+    {
+     "chunk_id": "8bd38bdd-493d-4e44-9fc6-cc64b6d6af1f",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 116,
+     "token_count": 979,
+     "score": 0.5602634333622735
+    },
+    {
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 33,
@@ -5830,28 +5832,19 @@
      "score": 0.5593023280071893
     },
     {
-     "chunk_id": "4773aa23-51d5-41f7-a2c2-8cc05d7a0e0e",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "c1be55ca-a82b-4c97-9f6b-1a4fd18b4c26",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 2,
      "ordinal": 6,
      "token_count": 256,
      "score": 0.5585531506488021
-    },
-    {
-     "chunk_id": "406285d4-bf5c-464c-a8c6-cb4c4c862e19",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 4,
-     "ordinal": 16,
-     "token_count": 256,
-     "score": 0.545266915496228
     }
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "26e5417a-3457-4c46-9d47-e15da4bbd9c9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 33,
@@ -5859,8 +5852,8 @@
      "score": 0.5593023280071893
     },
     {
-     "chunk_id": "90629cd1-3cf7-433a-a502-e03734e55b62",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "c2d32bac-d3dc-4989-9439-a5ba85af6b8c",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 2,
      "ordinal": 5,
@@ -5868,8 +5861,8 @@
      "score": 0.5303843472555752
     },
     {
-     "chunk_id": "61c6819b-e557-4b43-85ec-f92a99cfcd65",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "16284557-a47e-4a58-81c4-3a6bfaeb28d7",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 4,
      "ordinal": 17,
@@ -5877,26 +5870,8 @@
      "score": 0.5241136777062939
     },
     {
-     "chunk_id": "285807ce-0847-44dc-97c0-d18fb7b77825",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 26,
-     "ordinal": 115,
-     "token_count": 256,
-     "score": 0.6118110116542191
-    },
-    {
-     "chunk_id": "a461edd9-6466-43ae-b60f-97f9db4ec937",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 25,
-     "ordinal": 113,
-     "token_count": 256,
-     "score": null
-    },
-    {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 32,
@@ -5904,8 +5879,17 @@
      "score": 0.5824065418165796
     },
     {
-     "chunk_id": "c84fa694-5b60-4853-897a-80557d52b6cb",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "c80a2045-520f-4aed-8c1e-193f5e3c6145",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 25,
+     "ordinal": 113,
+     "token_count": 256,
+     "score": null
+    },
+    {
+     "chunk_id": "24d2de6b-1992-4f63-98a9-4dc7f606de7f",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 25,
      "ordinal": 112,
@@ -5913,13 +5897,22 @@
      "score": null
     },
     {
-     "chunk_id": "a79593a6-b112-48a7-bd54-d137590861a3",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "b57bc690-4433-4833-abb7-33616a2b325a",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 8,
-     "ordinal": 30,
+     "page": 12,
+     "ordinal": 55,
      "token_count": 256,
-     "score": null
+     "score": 0.5761835908617552
+    },
+    {
+     "chunk_id": "3d01f4b3-107e-49c6-a1e2-7529528a644f",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 12,
+     "token_count": 256,
+     "score": 0.5637332081159867
     }
    ]
   },
@@ -5932,7 +5925,7 @@
     "lightrag",
     "graphrag"
    ],
-   "top1_similarity": 0.5453886335624932,
+   "top1_similarity": 0.5651848316192788,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -5987,7 +5980,7 @@
      "recall": 0.0,
      "hit": false,
      "covered": [],
-     "evidence_tokens": 1896,
+     "evidence_tokens": 1907,
      "pages": [
       [
        "graphrag",
@@ -6011,15 +6004,15 @@
       ],
       [
        "graphrag",
-       11
-      ],
-      [
-       "graphrag",
        14
       ],
       [
        "graphrag",
-       11
+       2
+      ],
+      [
+       "lightrag",
+       16
       ]
      ]
     }
@@ -6032,12 +6025,12 @@
      "evidence_tokens": 742,
      "pages": [
       [
-       "graphrag",
-       3
-      ],
-      [
        "lightrag",
        6
+      ],
+      [
+       "graphrag",
+       3
       ],
       [
        "graphrag",
@@ -6052,12 +6045,12 @@
      "evidence_tokens": 1253,
      "pages": [
       [
-       "graphrag",
-       3
-      ],
-      [
        "lightrag",
        6
+      ],
+      [
+       "graphrag",
+       3
       ],
       [
        "graphrag",
@@ -6082,12 +6075,12 @@
      "evidence_tokens": 2021,
      "pages": [
       [
-       "graphrag",
-       3
-      ],
-      [
        "lightrag",
        6
+      ],
+      [
+       "graphrag",
+       3
       ],
       [
        "graphrag",
@@ -6171,7 +6164,7 @@
      "recall": 0.0,
      "hit": false,
      "covered": [],
-     "evidence_tokens": 1896,
+     "evidence_tokens": 1907,
      "pages": [
       [
        "graphrag",
@@ -6195,15 +6188,15 @@
       ],
       [
        "graphrag",
-       11
-      ],
-      [
-       "graphrag",
        14
       ],
       [
        "graphrag",
-       11
+       2
+      ],
+      [
+       "lightrag",
+       16
       ]
      ],
      "added": 0
@@ -6211,17 +6204,17 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "05e1bed1-85ca-404d-bf76-e7ccf45378ae",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "5facf1dd-e33d-4e5b-8db4-ce2d6326f25b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 11,
      "ordinal": 50,
      "token_count": 256,
-     "score": 0.5453886335624932
+     "score": 0.5651848316192788
     },
     {
-     "chunk_id": "4773aa23-51d5-41f7-a2c2-8cc05d7a0e0e",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "c1be55ca-a82b-4c97-9f6b-1a4fd18b4c26",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 2,
      "ordinal": 6,
@@ -6229,8 +6222,8 @@
      "score": 0.5383448463637225
     },
     {
-     "chunk_id": "46e836c0-ae4d-45de-9dd5-c987c3ebb957",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "705565f8-dd54-4b0a-8868-fe4a8063ef86",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 59,
@@ -6238,8 +6231,8 @@
      "score": 0.5323528849026913
     },
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 31,
@@ -6247,8 +6240,8 @@
      "score": 0.5243992961764314
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -6256,17 +6249,8 @@
      "score": 0.5235299127942489
     },
     {
-     "chunk_id": "5b082ef6-4cdc-49f2-9329-d9ac6ba04074",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 51,
-     "token_count": 244,
-     "score": 0.5198007084365184
-    },
-    {
-     "chunk_id": "69c08902-e3e8-4691-b008-d740702e815f",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "968689bd-2801-4523-ab57-1ddffb788be6",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 14,
      "ordinal": 68,
@@ -6274,55 +6258,8 @@
      "score": 0.51582765201863
     },
     {
-     "chunk_id": "1619a036-79bf-4492-992c-fb9b88106020",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 49,
-     "token_count": 256,
-     "score": 0.5127553787006437
-    }
-   ],
-   "hybrid_top8": [
-    {
-     "chunk_id": "89ed0939-8e42-4a34-82b7-06c425edec3f",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 3,
-     "ordinal": 14,
-     "token_count": 230,
-     "score": 0.5105292188490405
-    },
-    {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 6,
-     "ordinal": 28,
-     "token_count": 256,
-     "score": 0.5235299127942489
-    },
-    {
-     "chunk_id": "4773aa23-51d5-41f7-a2c2-8cc05d7a0e0e",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 2,
-     "ordinal": 6,
-     "token_count": 256,
-     "score": 0.5383448463637225
-    },
-    {
-     "chunk_id": "61c6819b-e557-4b43-85ec-f92a99cfcd65",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 4,
-     "ordinal": 17,
-     "token_count": 256,
-     "score": 0.5008316040039205
-    },
-    {
-     "chunk_id": "0c2472b1-450f-427b-ac13-9d9c6b3eebfa",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "3697ddf3-18bd-41c4-a24e-a04dcf89ea18",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 2,
      "ordinal": 4,
@@ -6330,8 +6267,64 @@
      "score": 0.5126755971304595
     },
     {
-     "chunk_id": "60cb53df-e24a-4d32-8b3b-06e28e083711",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 16,
+     "ordinal": 68,
+     "token_count": 256,
+     "score": 0.5123999990701686
+    }
+   ],
+   "hybrid_top8": [
+    {
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 28,
+     "token_count": 256,
+     "score": 0.5235299127942489
+    },
+    {
+     "chunk_id": "83003577-02a0-4864-a718-a134b03d4ba6",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 3,
+     "ordinal": 14,
+     "token_count": 230,
+     "score": 0.5105292188490405
+    },
+    {
+     "chunk_id": "c1be55ca-a82b-4c97-9f6b-1a4fd18b4c26",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 6,
+     "token_count": 256,
+     "score": 0.5383448463637225
+    },
+    {
+     "chunk_id": "16284557-a47e-4a58-81c4-3a6bfaeb28d7",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 4,
+     "ordinal": 17,
+     "token_count": 256,
+     "score": 0.5008316040039205
+    },
+    {
+     "chunk_id": "3697ddf3-18bd-41c4-a24e-a04dcf89ea18",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 2,
+     "ordinal": 4,
+     "token_count": 255,
+     "score": 0.5126755971304595
+    },
+    {
+     "chunk_id": "9a9d2103-4d3a-400c-ad36-830fead816f1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 3,
      "ordinal": 13,
@@ -6339,8 +6332,8 @@
      "score": 0.5043793766385612
     },
     {
-     "chunk_id": "bb7d354b-f8df-46b6-8c2c-0ff0e5323465",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e686097-3909-4744-8545-f7a503452ec3",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 27,
@@ -6348,8 +6341,8 @@
      "score": 0.5116921330415816
     },
     {
-     "chunk_id": "2e2234c1-0035-4602-a6bc-fcc2a2803207",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "2e535aa2-34ab-497a-9674-02b168bd45f9",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 7,
      "ordinal": 28,
@@ -6367,7 +6360,7 @@
     "lightrag",
     "graphrag"
    ],
-   "top1_similarity": 0.6297659929680226,
+   "top1_similarity": 0.6347317392244747,
    "fulltext_candidates": 20,
    "vector": {
     "3": {
@@ -6377,11 +6370,11 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 768,
+     "evidence_tokens": 621,
      "pages": [
       [
        "graphrag",
-       8
+       11
       ],
       [
        "graphrag",
@@ -6389,7 +6382,7 @@
       ],
       [
        "graphrag",
-       9
+       8
       ]
      ]
     },
@@ -6400,8 +6393,12 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 1221,
+     "evidence_tokens": 1086,
      "pages": [
+      [
+       "graphrag",
+       11
+      ],
       [
        "graphrag",
        8
@@ -6417,10 +6414,6 @@
       [
        "lightrag",
        13
-      ],
-      [
-       "graphrag",
-       11
       ]
      ]
     },
@@ -6431,8 +6424,12 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 1980,
+     "evidence_tokens": 1864,
      "pages": [
+      [
+       "graphrag",
+       11
+      ],
       [
        "graphrag",
        8
@@ -6448,10 +6445,6 @@
       [
        "lightrag",
        13
-      ],
-      [
-       "graphrag",
-       11
       ],
       [
        "graphrag",
@@ -6470,12 +6463,9 @@
    },
    "hybrid": {
     "3": {
-     "recall": 0.6666666666666666,
-     "hit": true,
-     "covered": [
-      "GraphRAG: Podcast ~1M",
-      "GraphRAG: News ~1.7M"
-     ],
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
      "evidence_tokens": 759,
      "pages": [
       [
@@ -6488,18 +6478,15 @@
       ],
       [
        "graphrag",
-       8
+       23
       ]
      ]
     },
     "5": {
-     "recall": 0.6666666666666666,
-     "hit": true,
-     "covered": [
-      "GraphRAG: Podcast ~1M",
-      "GraphRAG: News ~1.7M"
-     ],
-     "evidence_tokens": 1271,
+     "recall": 0.0,
+     "hit": false,
+     "covered": [],
+     "evidence_tokens": 1124,
      "pages": [
       [
        "lightrag",
@@ -6511,15 +6498,15 @@
       ],
       [
        "graphrag",
-       8
-      ],
-      [
-       "graphrag",
        23
       ],
       [
        "graphrag",
-       8
+       11
+      ],
+      [
+       "graphrag",
+       23
       ]
      ]
     },
@@ -6530,7 +6517,7 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 2039,
+     "evidence_tokens": 1806,
      "pages": [
       [
        "lightrag",
@@ -6542,7 +6529,11 @@
       ],
       [
        "graphrag",
-       8
+       23
+      ],
+      [
+       "graphrag",
+       11
       ],
       [
        "graphrag",
@@ -6554,11 +6545,7 @@
       ],
       [
        "graphrag",
-       23
-      ],
-      [
-       "graphrag",
-       9
+       8
       ],
       [
        "lightrag",
@@ -6575,11 +6562,11 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 768,
+     "evidence_tokens": 621,
      "pages": [
       [
        "graphrag",
-       8
+       11
       ],
       [
        "graphrag",
@@ -6587,7 +6574,7 @@
       ],
       [
        "graphrag",
-       9
+       8
       ]
      ],
      "added": 0
@@ -6599,8 +6586,12 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 1221,
+     "evidence_tokens": 1086,
      "pages": [
+      [
+       "graphrag",
+       11
+      ],
       [
        "graphrag",
        8
@@ -6616,10 +6607,6 @@
       [
        "lightrag",
        13
-      ],
-      [
-       "graphrag",
-       11
       ]
      ],
      "added": 0
@@ -6631,8 +6618,12 @@
       "GraphRAG: Podcast ~1M",
       "GraphRAG: News ~1.7M"
      ],
-     "evidence_tokens": 1980,
+     "evidence_tokens": 2228,
      "pages": [
+      [
+       "graphrag",
+       11
+      ],
       [
        "graphrag",
        8
@@ -6648,10 +6639,6 @@
       [
        "lightrag",
        13
-      ],
-      [
-       "graphrag",
-       11
       ],
       [
        "graphrag",
@@ -6664,15 +6651,32 @@
       [
        "lightrag",
        9
+      ],
+      [
+       "graphrag",
+       10
+      ],
+      [
+       "graphrag",
+       10
       ]
      ],
-     "added": 0
+     "added": 2
     }
    },
    "vector_top8": [
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "17f9a6de-5c5a-4346-b32a-fea4eab2beae",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 11,
+     "ordinal": 52,
+     "token_count": 109,
+     "score": 0.6347317392244747
+    },
+    {
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 31,
@@ -6680,8 +6684,8 @@
      "score": 0.6297659929680226
     },
     {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 8,
      "ordinal": 32,
@@ -6689,8 +6693,8 @@
      "score": 0.5999970793742808
     },
     {
-     "chunk_id": "38b98878-9d7d-4698-84f1-424f2e7e540a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "137bca9a-a08d-45d0-b263-58f4bd4dcf91",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 34,
@@ -6698,8 +6702,8 @@
      "score": 0.5472632106856709
     },
     {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -6707,26 +6711,17 @@
      "score": 0.5317868945217776
     },
     {
-     "chunk_id": "5b082ef6-4cdc-49f2-9329-d9ac6ba04074",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 11,
-     "ordinal": 51,
-     "token_count": 244,
-     "score": 0.5254677443025472
-    },
-    {
-     "chunk_id": "37b828c8-823f-43f4-ba74-2367a81c7b8d",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "b7c736e4-68cd-4f0e-820a-4c9f1983554d",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 10,
      "ordinal": 45,
-     "token_count": 256,
-     "score": 0.5133924516183168
+     "token_count": 275,
+     "score": 0.5220341682434676
     },
     {
-     "chunk_id": "b084d4cd-878c-406f-a2c9-039ee5c6bdde",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "e67b605a-7ff7-4b69-9f21-eca0d16cc1e1",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 37,
@@ -6734,8 +6729,8 @@
      "score": 0.5098513972582425
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -6745,8 +6740,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -6754,8 +6749,8 @@
      "score": 0.5098173641723216
     },
     {
-     "chunk_id": "61c6819b-e557-4b43-85ec-f92a99cfcd65",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "16284557-a47e-4a58-81c4-3a6bfaeb28d7",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 4,
      "ordinal": 17,
@@ -6763,35 +6758,8 @@
      "score": 0.46725137850691834
     },
     {
-     "chunk_id": "1fdcc19d-e714-4943-9fd6-67dc2d84cda0",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 8,
-     "ordinal": 31,
-     "token_count": 256,
-     "score": 0.6297659929680226
-    },
-    {
-     "chunk_id": "386f5a52-d63c-4e64-b38e-db3d8bd4c17a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 23,
-     "ordinal": 106,
-     "token_count": 256,
-     "score": null
-    },
-    {
-     "chunk_id": "16db7e06-c990-47d8-a8a3-ae1c1e2a0ad7",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 8,
-     "ordinal": 32,
-     "token_count": 256,
-     "score": 0.5999970793742808
-    },
-    {
-     "chunk_id": "b3637003-1ec2-42b1-8c3c-9d66322aeca6",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "05295d87-da8b-48c0-acd1-cda368d9eba6",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 23,
      "ordinal": 104,
@@ -6799,21 +6767,48 @@
      "score": null
     },
     {
-     "chunk_id": "38b98878-9d7d-4698-84f1-424f2e7e540a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "17f9a6de-5c5a-4346-b32a-fea4eab2beae",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
-     "page": 9,
-     "ordinal": 34,
-     "token_count": 256,
-     "score": 0.5472632106856709
+     "page": 11,
+     "ordinal": 52,
+     "token_count": 109,
+     "score": 0.6347317392244747
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "1e7cea5e-0e6e-4b88-802c-347a79504c42",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 23,
+     "ordinal": 106,
+     "token_count": 256,
+     "score": null
+    },
+    {
+     "chunk_id": "78ce0868-d3bc-4cea-99f4-c8e66fc93273",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 31,
+     "token_count": 256,
+     "score": 0.6297659929680226
+    },
+    {
+     "chunk_id": "41f90521-cb98-4513-bd45-b85f918e7c4e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 8,
+     "ordinal": 32,
+     "token_count": 256,
+     "score": 0.5999970793742808
+    },
+    {
+     "chunk_id": "5a1fa4c2-2200-4066-ab07-79f010c505d2",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
-     "ordinal": 28,
-     "token_count": 256,
+     "ordinal": 29,
+     "token_count": 170,
      "score": null
     }
    ]
@@ -6995,7 +6990,7 @@
       ],
       [
        "lightrag",
-       16
+       9
       ],
       [
        "lightrag",
@@ -7003,7 +6998,7 @@
       ],
       [
        "lightrag",
-       9
+       16
       ]
      ]
     }
@@ -7127,8 +7122,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -7136,8 +7131,8 @@
      "score": 0.47035161532351033
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -7145,8 +7140,8 @@
      "score": 0.4695579178936018
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -7154,8 +7149,8 @@
      "score": 0.4585468806899512
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -7163,8 +7158,8 @@
      "score": 0.4530948097718872
     },
     {
-     "chunk_id": "85f217f1-1dd5-44a5-8a49-7c3908762b6e",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "9565d534-a41b-4167-903f-4f0e863333be",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 43,
@@ -7172,8 +7167,8 @@
      "score": 0.452784669817907
     },
     {
-     "chunk_id": "c80ef2d0-eca8-4a81-85fa-0d44c1324255",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "17566b78-3e79-4df4-ad23-02587605cdd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 40,
@@ -7181,8 +7176,8 @@
      "score": 0.45248542166160344
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -7190,8 +7185,8 @@
      "score": 0.4521293816107008
     },
     {
-     "chunk_id": "6fe176a4-70f7-48bb-9478-74378194714f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "762dd8d6-ea41-4fd4-b4b6-1de586c1742c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 42,
@@ -7201,8 +7196,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "82110a8a-1730-4f06-a0fd-0c5f3d2a823b",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "e0230dd1-ca06-473a-9aea-4f389a0fee8d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 31,
@@ -7210,8 +7205,8 @@
      "score": 0.47035161532351033
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -7219,8 +7214,8 @@
      "score": 0.4585468806899512
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -7228,8 +7223,8 @@
      "score": 0.4530948097718872
     },
     {
-     "chunk_id": "dfa9f20d-a2b1-410c-932f-f66bcf75303a",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "918228d2-6171-40cd-a334-fc416b5bf444",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 39,
@@ -7237,8 +7232,8 @@
      "score": 0.4521293816107008
     },
     {
-     "chunk_id": "88356747-5c77-4c6d-8297-37f7c48d9486",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "097d9698-50ee-4a2b-acd3-dc334fcc97cc",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 36,
@@ -7246,17 +7241,17 @@
      "score": 0.43572041541470197
     },
     {
-     "chunk_id": "0e252a89-3278-46e2-bb7c-9ffd1c0168ce",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "762dd8d6-ea41-4fd4-b4b6-1de586c1742c",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
-     "page": 16,
-     "ordinal": 68,
+     "page": 9,
+     "ordinal": 42,
      "token_count": 256,
-     "score": 0.4361374951970147
+     "score": 0.45116236695012
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -7264,13 +7259,13 @@
      "score": 0.44356177242659633
     },
     {
-     "chunk_id": "6fe176a4-70f7-48bb-9478-74378194714f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ba97cdec-742a-43b2-906a-b9c1e53dcfc5",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
-     "page": 9,
-     "ordinal": 42,
+     "page": 16,
+     "ordinal": 68,
      "token_count": 256,
-     "score": 0.45116236695012
+     "score": 0.4361374951970147
     }
    ]
   },
@@ -7451,11 +7446,11 @@
       ],
       [
        "lightrag",
-       6
+       13
       ],
       [
        "lightrag",
-       13
+       6
       ],
       [
        "lightrag",
@@ -7559,8 +7554,8 @@
    },
    "vector_top8": [
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -7568,8 +7563,8 @@
      "score": 0.46608462375310156
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -7577,8 +7572,8 @@
      "score": 0.4189668587565003
     },
     {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -7586,8 +7581,8 @@
      "score": 0.41636288675428057
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -7595,8 +7590,8 @@
      "score": 0.41028386810979733
     },
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -7604,8 +7599,8 @@
      "score": 0.39258416008419816
     },
     {
-     "chunk_id": "38090fb4-abef-4dba-b70d-e63df33913f2",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "96faf5fb-ca19-4ef4-ab50-3c1557d249c4",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 23,
@@ -7613,8 +7608,8 @@
      "score": 0.3634880700778569
     },
     {
-     "chunk_id": "2c4cce82-5ed0-4b82-8659-944d3d9a1cac",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7d72a32a-e348-48ce-a754-b81faf061801",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 60,
@@ -7622,8 +7617,8 @@
      "score": 0.3619805738949735
     },
     {
-     "chunk_id": "898c2538-8848-4ab8-9d15-2d0b25203f26",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "c8590b93-76b1-4e56-a737-c4ebb037bd3e",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 11,
      "ordinal": 53,
@@ -7633,8 +7628,8 @@
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "ba7b5731-11ed-4ddb-ba3d-ff51b9353b1f",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7fc42ec7-0305-4558-995f-1dc7dd67815f",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 28,
@@ -7642,8 +7637,8 @@
      "score": 0.39258416008419816
     },
     {
-     "chunk_id": "d889b0e4-4f8e-42ea-9ae1-62db14a8138c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7981e763-b18e-4579-8850-23ebd13bf226",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 45,
@@ -7651,8 +7646,8 @@
      "score": 0.4189668587565003
     },
     {
-     "chunk_id": "47f3f5f5-4a2a-4011-bdeb-e417c833ef8c",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "b7b3a1c3-1ba3-4d01-b87b-b331e2ca939d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 9,
      "ordinal": 44,
@@ -7660,8 +7655,8 @@
      "score": 0.46608462375310156
     },
     {
-     "chunk_id": "b36053eb-8c69-49cd-b48e-9e427c25d251",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "72565432-06dc-4bec-9019-3dd88f1dafd9",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 10,
      "ordinal": 46,
@@ -7669,8 +7664,8 @@
      "score": 0.41028386810979733
     },
     {
-     "chunk_id": "839e16a7-cfb2-4b00-ad0f-7a299f29d974",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "518d8760-1c4c-4f0f-9b2e-84cc60fcb0ac",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 5,
      "ordinal": 22,
@@ -7678,17 +7673,8 @@
      "score": 0.32508520629428617
     },
     {
-     "chunk_id": "bb7d354b-f8df-46b6-8c2c-0ff0e5323465",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
-     "document": "lightrag",
-     "page": 6,
-     "ordinal": 27,
-     "token_count": 256,
-     "score": 0.3439032378715844
-    },
-    {
-     "chunk_id": "ab80a9ec-6600-424b-a366-a43b536454a3",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "30ee269f-9c59-421b-ab74-4ca8cb304b3d",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 13,
      "ordinal": 61,
@@ -7696,8 +7682,17 @@
      "score": 0.41636288675428057
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "5e686097-3909-4744-8545-f7a503452ec3",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
+     "document": "lightrag",
+     "page": 6,
+     "ordinal": 27,
+     "token_count": 256,
+     "score": 0.3439032378715844
+    },
+    {
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
@@ -7722,19 +7717,19 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 1471,
+     "evidence_tokens": 1398,
      "pages": [
       [
        "graphrag",
        9
       ],
       [
-       "lightrag",
-       8
+       "graphrag",
+       26
       ],
       [
-       "graphrag",
-       9
+       "lightrag",
+       8
       ]
      ]
     },
@@ -7742,11 +7737,15 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 2697,
+     "evidence_tokens": 3417,
      "pages": [
       [
        "graphrag",
        9
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "lightrag",
@@ -7754,15 +7753,11 @@
       ],
       [
        "graphrag",
-       9
+       26
       ],
       [
-       "lightrag",
-       7
-      ],
-      [
-       "lightrag",
-       6
+       "graphrag",
+       26
       ]
      ]
     },
@@ -7770,15 +7765,27 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 3334,
+     "evidence_tokens": 4899,
      "pages": [
       [
        "graphrag",
        9
       ],
       [
+       "graphrag",
+       26
+      ],
+      [
        "lightrag",
        8
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "graphrag",
@@ -7791,18 +7798,6 @@
       [
        "lightrag",
        6
-      ],
-      [
-       "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       8
-      ],
-      [
-       "graphrag",
-       7
       ]
      ]
     }
@@ -7812,19 +7807,19 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 1471,
+     "evidence_tokens": 1398,
      "pages": [
       [
        "graphrag",
        9
       ],
       [
-       "lightrag",
-       8
+       "graphrag",
+       26
       ],
       [
-       "graphrag",
-       9
+       "lightrag",
+       8
       ]
      ]
     },
@@ -7832,11 +7827,15 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 2697,
+     "evidence_tokens": 3417,
      "pages": [
       [
        "graphrag",
        9
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "lightrag",
@@ -7844,15 +7843,11 @@
       ],
       [
        "graphrag",
-       9
+       26
       ],
       [
-       "lightrag",
-       7
-      ],
-      [
-       "lightrag",
-       6
+       "graphrag",
+       26
       ]
      ]
     },
@@ -7860,15 +7855,27 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 3334,
+     "evidence_tokens": 4899,
      "pages": [
       [
        "graphrag",
        9
       ],
       [
+       "graphrag",
+       26
+      ],
+      [
        "lightrag",
        8
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "graphrag",
@@ -7881,18 +7888,6 @@
       [
        "lightrag",
        6
-      ],
-      [
-       "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       8
-      ],
-      [
-       "graphrag",
-       7
       ]
      ]
     }
@@ -7902,11 +7897,15 @@
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 1471,
+     "evidence_tokens": 1400,
      "pages": [
       [
        "graphrag",
        9
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "lightrag",
@@ -7914,20 +7913,24 @@
       ],
       [
        "graphrag",
-       9
+       26
       ]
      ],
-     "added": 0
+     "added": 1
     },
     "5": {
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 2697,
+     "evidence_tokens": 3419,
      "pages": [
       [
        "graphrag",
        9
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "lightrag",
@@ -7935,32 +7938,44 @@
       ],
       [
        "graphrag",
-       9
+       26
       ],
       [
-       "lightrag",
-       7
+       "graphrag",
+       26
       ],
       [
-       "lightrag",
-       6
+       "graphrag",
+       26
       ]
      ],
-     "added": 0
+     "added": 1
     },
     "8": {
      "recall": null,
      "hit": null,
      "covered": [],
-     "evidence_tokens": 3334,
+     "evidence_tokens": 4901,
      "pages": [
       [
        "graphrag",
        9
       ],
       [
+       "graphrag",
+       26
+      ],
+      [
        "lightrag",
        8
+      ],
+      [
+       "graphrag",
+       26
+      ],
+      [
+       "graphrag",
+       26
       ],
       [
        "graphrag",
@@ -7976,24 +7991,16 @@
       ],
       [
        "graphrag",
-       10
-      ],
-      [
-       "graphrag",
-       8
-      ],
-      [
-       "graphrag",
-       7
+       26
       ]
      ],
-     "added": 0
+     "added": 1
     }
    },
    "vector_top8": [
     {
-     "chunk_id": "0fff38ff-af9f-4bca-b1e3-29b711cf4f0b",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "1fae5290-c69e-474b-9e72-c004c1cc8cbf",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 36,
@@ -8001,8 +8008,17 @@
      "score": 0.354668709595374
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7328b1f9-d8d5-4be6-9383-68de7ca45c7b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 119,
+     "token_count": 183,
+     "score": 0.35148514040044154
+    },
+    {
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -8010,8 +8026,26 @@
      "score": 0.34097704965836706
     },
     {
-     "chunk_id": "38b98878-9d7d-4698-84f1-424f2e7e540a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "02d50d76-89a9-47f6-babe-844169c94d69",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 118,
+     "token_count": 1021,
+     "score": 0.3389092875828075
+    },
+    {
+     "chunk_id": "60f15f5e-5abc-47f2-b545-cd3bec557c1e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 117,
+     "token_count": 998,
+     "score": 0.3379809332007664
+    },
+    {
+     "chunk_id": "137bca9a-a08d-45d0-b263-58f4bd4dcf91",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 34,
@@ -8019,8 +8053,8 @@
      "score": 0.3338400122785651
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -8028,46 +8062,19 @@
      "score": 0.33278026209820866
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
      "token_count": 256,
      "score": 0.3319170279701279
-    },
-    {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.33135994263661894
-    },
-    {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 8,
-     "ordinal": 33,
-     "token_count": 188,
-     "score": 0.33032703560930043
-    },
-    {
-     "chunk_id": "c1a5340b-5046-4e00-a094-db719752447d",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 7,
-     "ordinal": 27,
-     "token_count": 256,
-     "score": 0.3272893081873468
     }
    ],
    "hybrid_top8": [
     {
-     "chunk_id": "0fff38ff-af9f-4bca-b1e3-29b711cf4f0b",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "1fae5290-c69e-474b-9e72-c004c1cc8cbf",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 36,
@@ -8075,8 +8082,17 @@
      "score": 0.354668709595374
     },
     {
-     "chunk_id": "a765e908-5ce2-40a5-bbb2-5845737d7d40",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "7328b1f9-d8d5-4be6-9383-68de7ca45c7b",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 119,
+     "token_count": 183,
+     "score": 0.35148514040044154
+    },
+    {
+     "chunk_id": "0cf9d52d-dd0f-4919-bb50-4691318445d0",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 8,
      "ordinal": 35,
@@ -8084,8 +8100,26 @@
      "score": 0.34097704965836706
     },
     {
-     "chunk_id": "38b98878-9d7d-4698-84f1-424f2e7e540a",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
+     "chunk_id": "02d50d76-89a9-47f6-babe-844169c94d69",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 118,
+     "token_count": 1021,
+     "score": 0.3389092875828075
+    },
+    {
+     "chunk_id": "60f15f5e-5abc-47f2-b545-cd3bec557c1e",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
+     "document": "graphrag",
+     "page": 26,
+     "ordinal": 117,
+     "token_count": 998,
+     "score": 0.3379809332007664
+    },
+    {
+     "chunk_id": "137bca9a-a08d-45d0-b263-58f4bd4dcf91",
+     "document_id": "a1eee838-3ae9-47e5-b0fb-3da5604ea3d0",
      "document": "graphrag",
      "page": 9,
      "ordinal": 34,
@@ -8093,8 +8127,8 @@
      "score": 0.3338400122785651
     },
     {
-     "chunk_id": "32d0b305-f4cc-4a25-9c62-878f7799aa30",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "f6c5c219-42e8-4dcd-aa13-17e73814b874",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 7,
      "ordinal": 30,
@@ -8102,40 +8136,13 @@
      "score": 0.33278026209820866
     },
     {
-     "chunk_id": "18e05f01-b919-4081-a66a-609cf9334f50",
-     "document_id": "eb7a3057-9fe3-4f04-9ae8-cce49f20dddd",
+     "chunk_id": "ed89dd41-2aa5-4ffc-8191-1528290a1644",
+     "document_id": "7f268f4a-0fb4-413e-9d99-efeebfac55bb",
      "document": "lightrag",
      "page": 6,
      "ordinal": 26,
      "token_count": 256,
      "score": 0.3319170279701279
-    },
-    {
-     "chunk_id": "199781a7-6b51-41e0-b01d-7cccb402cb94",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 10,
-     "ordinal": 47,
-     "token_count": 193,
-     "score": 0.33135994263661894
-    },
-    {
-     "chunk_id": "2a38f93d-9449-4138-a006-46c287b1bc23",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 8,
-     "ordinal": 33,
-     "token_count": 188,
-     "score": 0.33032703560930043
-    },
-    {
-     "chunk_id": "c1a5340b-5046-4e00-a094-db719752447d",
-     "document_id": "6a8cb210-e2fe-4cdb-867f-4ffe8fc4c1ca",
-     "document": "graphrag",
-     "page": 7,
-     "ordinal": 27,
-     "token_count": 256,
-     "score": 0.3272893081873468
     }
    ]
   }
