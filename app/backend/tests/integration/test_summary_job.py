@@ -497,3 +497,46 @@ async def test_without_repair_a_contradicted_summary_is_stored_as_written(
         (document_id,),
     ).fetchone()[0]
     assert stored["status"] == "CONTRADICTED" and "repair" not in stored
+
+
+class InventingSummariser(MisattributingSummariser):
+    """A model whose section summary states a figure the pages do not hold, and that
+    repeats it when asked to correct."""
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        response = StubSummariser.__call__(self, request)
+        body = response.json()
+        if "Summary of" in body.get("response", ""):
+            body["response"] = (
+                "The variants are compared on two datasets (p. 1). "
+                "LightRAG reaches a Diversity win rate of 71.2% on average (p. 1)."
+            )
+            return httpx.Response(200, json=body)
+        return response
+
+
+async def test_a_figure_the_pages_do_not_hold_triggers_the_repair_and_is_removed_if_kept(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D88 (the demo's Q1: "Diversity (71.2%), Overall (71.5%)", figures of no table): a
+    figure found nowhere on the summary's pages is not the document's. The repair is asked
+    for; the model repeating it, the sentence is removed."""
+    model = InventingSummariser()
+    _, _summary, dispatcher = runners(tokenizer, model, repair=True)
+    document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    repair_prompt = next(p for p in model.prompts if p.rstrip().endswith("Corrected summary:"))
+    assert "71.2% appears nowhere on the pages this summary covers" in repair_prompt
+    section = next(row for row in summaries(db, document_id) if row[0] == "section")
+    assert "71.2%" not in section[5]
+    assert "The variants are compared on two datasets (p. 1)." in section[5]
+    stored = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'section'",
+        (document_id,),
+    ).fetchone()[0]
+    assert stored["repair"]["removed_sentences"] == [
+        "LightRAG reaches a Diversity win rate of 71.2% on average (p. 1)."
+    ]
+    assert stored["unverified"] == []

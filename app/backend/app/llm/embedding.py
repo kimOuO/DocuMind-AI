@@ -13,6 +13,13 @@ from app.llm.ollama_api import embed_request
 from app.models import EMBEDDING_DIMENSIONS
 
 
+def _spellings(text: str) -> list[str]:
+    """Equivalent spellings of a text, for a model that cannot embed the original."""
+    stripped = text.rstrip(" .!?。！？")
+    normalised = " ".join(text.split()) + "\n"
+    return [stripped, normalised, stripped.lower(), text.lower()]
+
+
 class EmbeddingError(RuntimeError):
     """The embeddings could not be produced. The message says why."""
 
@@ -42,11 +49,12 @@ class OllamaEmbedder:
     async def embed(self, texts: list[str]) -> list[list[float]]:
         """One vector per text, in the same order.
 
-        bge-m3 on the GPU answers NaN for a few texts (D88: a question of the question set,
-        word for word). The same text with its whitespace normalised and a newline appended
-        tokenizes differently and has always embedded so far; it is tried once before the
-        error is raised. In a batch, the texts are then embedded one by one so that the
-        retry applies to the one that fails."""
+        bge-m3 on the GPU answers NaN for a few texts (D88: "Compare condition C2 with vector
+        RAG (SS) … datasets." — with the final full stop; without it, or in lower case, it
+        embeds). Equivalent spellings are tried in turn before the error is raised: without
+        trailing punctuation, with normalised whitespace and a newline, in lower case. In a
+        batch, the texts are embedded one by one so that the retries apply to the one that
+        fails."""
         if not texts:
             return []
         try:
@@ -57,10 +65,16 @@ class OllamaEmbedder:
                 for text in texts:
                     vectors.extend(await self.embed([text]))
                 return vectors
-            variant = " ".join(texts[0].split()) + "\n"
-            if variant == texts[0]:
-                raise
-            return await self._embed([variant])
+            tried = {texts[0]}
+            for variant in _spellings(texts[0]):
+                if variant in tried:
+                    continue
+                tried.add(variant)
+                try:
+                    return await self._embed([variant])
+                except EmbeddingInputError:
+                    continue
+            raise
 
     async def _embed(self, texts: list[str]) -> list[list[float]]:
         request = embed_request(self._settings, texts)

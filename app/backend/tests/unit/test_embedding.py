@@ -99,19 +99,26 @@ async def test_a_nan_reply_is_retried_once_with_the_text_normalised() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         texts = json.loads(request.content)["input"]
         seen.append(texts)
-        if texts[0].endswith("\n"):
-            return httpx.Response(200, json={"embeddings": [_vector(0.1) for _ in texts]})
-        return httpx.Response(
-            500, json={"error": "failed to encode response: json: unsupported value: NaN"}
-        )
+        if texts[0].endswith("."):  # the real case: the final full stop makes NaN
+            return httpx.Response(
+                500, json={"error": "failed to encode response: json: unsupported value: NaN"}
+            )
+        return httpx.Response(200, json={"embeddings": [_vector(0.1) for _ in texts]})
 
-    vectors = await _embedder(handler).embed(["Compare condition C2  with vector RAG (SS)"])
+    vectors = await _embedder(handler).embed(["Compare condition C2 with vector RAG (SS)."])
 
     assert len(vectors) == 1 and len(vectors[0]) == EMBEDDING_DIMENSIONS
     assert seen == [
-        ["Compare condition C2  with vector RAG (SS)"],
-        ["Compare condition C2 with vector RAG (SS)\n"],
+        ["Compare condition C2 with vector RAG (SS)."],
+        ["Compare condition C2 with vector RAG (SS)"],
     ]
+
+
+async def test_when_no_spelling_embeds_the_input_error_is_raised() -> None:
+    nan = httpx.Response(500, json={"error": "unsupported value: NaN"})
+
+    with pytest.raises(EmbeddingInputError):
+        await _embedder(lambda request: nan).embed(["Still NaN."])
 
 
 async def test_in_a_batch_the_failing_text_is_found_and_retried_alone() -> None:

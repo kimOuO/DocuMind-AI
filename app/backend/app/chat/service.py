@@ -94,6 +94,7 @@ from app.chat.verification import (
     check_note,
     claim_note,
     label_note,
+    numbers_in,
     verify_numbers,
 )
 from app.conversations.repository import ConversationRepository
@@ -177,6 +178,9 @@ class Evidence:
     note: str
     # D87 experiment A: what the program's comparison facts did to this prompt.
     facts_info: dict[str, Any] | None = None
+    # The facts block itself: figures the program computed (counts, differences) are the
+    # answer's to repeat, and are not "unverified" when the pages do not hold them (D88).
+    facts_text: str = ""
 
 
 class ChatService:
@@ -470,6 +474,7 @@ class ChatService:
                         if s["kind"] == "chunk"  # a summary paraphrases: word overlap says little
                     ],
                 )
+                check = _without_program_figures(check, evidence.facts_text)
                 language = question_language(prepared.question)
                 notes = [evidence.note] if evidence.note else []
                 if check.unverified:
@@ -666,7 +671,7 @@ class ChatService:
         Method aliases (D75) let the checks recognise a method by its stated operation."""
         cited = cited_indexes(text, len(evidence.sources))
         pages = await self._pages(prepared, evidence, cited)
-        check = verify_numbers(text, pages, aliases)
+        check = _without_program_figures(verify_numbers(text, pages, aliases), evidence.facts_text)
         doubts = check_citations(
             text,
             [
@@ -705,6 +710,7 @@ class ChatService:
         )
 
     def _notes(self, check: NumberCheck, evidence: Evidence, language: str) -> list[str]:
+        check = _without_program_figures(check, evidence.facts_text)
         notes = [evidence.note] if evidence.note else []
         if check.unverified:
             notes.append(check_note(check.unverified, language))
@@ -1144,7 +1150,7 @@ class ChatService:
             documents=cards,
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
-        return Evidence(prompt, sources, "", facts_info)
+        return Evidence(prompt, sources, "", facts_info, preamble if facts_info else "")
 
     def _with_facts(
         self, question: str, candidates: list[RetrievedChunk]
@@ -1467,6 +1473,18 @@ class ChatService:
             await ChatRepository(session).finish(
                 prepared.assistant_message_id, status=status, content=content, answered=answered
             )
+
+
+def _without_program_figures(check: NumberCheck, facts_text: str) -> NumberCheck:
+    """The check without the "unverified" figures that the injected facts block states
+    (D88): "13 of 16", "-1.2 pp" are the program's arithmetic, repeated by the answer."""
+    if not facts_text or not check.unverified:
+        return check
+    stated = {n.replace(",", "").rstrip("%") for n in numbers_in(facts_text)}
+    kept = [n for n in check.unverified if n.replace(",", "").rstrip("%") not in stated]
+    if len(kept) == len(check.unverified):
+        return check
+    return NumberCheck(check.verified, kept, check.mislabelled, check.unresolved, check.overstated)
 
 
 # Said instead of an answer when no retrieved chunk is similar enough to the question.

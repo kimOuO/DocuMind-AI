@@ -111,6 +111,13 @@ def _repair_evidence(
             if deltas:
                 line += " Differences: " + "; ".join(deltas[:5]) + "."
         evidence.append(line)
+    for number in check.unverified:
+        # D88: a figure that appears nowhere on the summary's pages ("Diversity (71.2%)")
+        # is not the paper's. The model is told which figures the pages do hold.
+        evidence.append(
+            f"{number} appears nowhere on the pages this summary covers; it is not a figure "
+            f"of the document. Keep only figures that the table excerpts below show."
+        )
     for o in _contradicted_claims(check):
         line = (
             f'"{o.sentence}": in the table {o.method} is above the compared methods in '
@@ -145,6 +152,11 @@ def _same_sentence(written: str, reported: str) -> bool:
 
     a, b = normalise(written), normalise(reported)
     return bool(a) and bool(b) and (a == b or a in b or b in a)
+
+
+def _needs_repair(verification: dict[str, Any]) -> bool:
+    """D87 B1 triggers on a contradiction; D88 also on a figure the pages do not hold."""
+    return verification["status"] == "CONTRADICTED" or bool(verification.get("unverified"))
 
 
 def _contradicted_claims(check: NumberCheck) -> list[OverstatedClaim]:
@@ -226,7 +238,7 @@ class SummaryJobRunner:
                 verification = await self._verification(
                     claimed, unit.title, text, unit.page_start, unit.page_end
                 )
-                if self._repair and verification["status"] == "CONTRADICTED":
+                if self._repair and _needs_repair(verification):
                     text, verification = await self._repair_summary(
                         claimed, unit.title, text, unit.page_start, unit.page_end, context
                     )
@@ -254,7 +266,7 @@ class SummaryJobRunner:
                 min(s.page_start for s in sections),
                 max(s.page_end for s in sections),
             )
-            if self._repair and document_verification["status"] == "CONTRADICTED":
+            if self._repair and _needs_repair(document_verification):
                 document_text, document_verification = await self._repair_summary(
                     claimed,
                     "document",
@@ -430,12 +442,18 @@ class SummaryJobRunner:
         model_changed = rewritten.strip() != text.strip()
         removed: list[str] = []
         after = await self._check(claimed, rewritten, page_start, page_end)
-        if after is not None and (after[0].mislabelled or _contradicted_claims(after[0])):
-            # The rewrite did not settle it: the sentences still contradicted go, so that no
-            # unverified comparison is stored as trusted.
+        if after is not None and (
+            after[0].mislabelled or _contradicted_claims(after[0]) or after[0].unverified
+        ):
+            # The rewrite did not settle it: the sentences still contradicted, and those
+            # with a figure the pages do not hold, go, so that no unverified figure is
+            # stored as trusted.
             offending = {m.sentence for m in after[0].mislabelled} | {
                 o.sentence for o in _contradicted_claims(after[0])
             }
+            for sentence in _SENTENCES.split(rewritten):
+                if any(number in sentence for number in after[0].unverified):
+                    offending.add(sentence.strip())
             kept, removed = [], []
             for sentence in _SENTENCES.split(rewritten):
                 if not sentence.strip():
