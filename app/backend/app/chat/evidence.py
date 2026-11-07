@@ -941,7 +941,11 @@ def comparison_facts(cells: Sequence[MatrixCell], question: str) -> list[Fact]:
                 for b in unpaired:
                     if b.block == a.block and b.column != a.column:
                         add(a, b, "same row", "direct")
-    if named:
+    if len(named) >= 2:
+        # Two or more methods named: the comparison is between them (D92: Q2 was given
+        # LightRAG's pairs with every baseline and mixed a HyDE figure into GraphRAG's).
+        facts = [f for f in facts if f.method_a in named and f.method_b in named]
+    elif named:
         facts = [f for f in facts if f.method_a in named or f.method_b in named]
     if named_groups:
         facts = [f for f in facts if f.group in named_groups]
@@ -974,6 +978,7 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
         groups.setdefault((f.method_a, f.method_b, f.setting), []).append(f)
     lines: list[str] = []
     spent = 0
+    left_out = 0
     for (a, b, setting), members in groups.items():
         higher = [f for f in members if f.relation == "GREATER"]
         lower = [f for f in members if f.relation == "LESS"]
@@ -1019,10 +1024,17 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
             head += f" {a} {word} in: {shown}" + ("; …" if len(minority) > 6 else "") + "."
         cost = counter.count(head)
         if spent + cost > budget:
-            lines.append(f"- {a} vs {b}: left out for room.")
+            left_out += 1
             continue
         lines.append(head)
         spent += cost
+    if left_out:
+        # D92: said as a count, not as a line per pair — "left out for room" per pair was
+        # repeated by the model as "this comparison was omitted due to space constraints".
+        lines.append(
+            f"- ({left_out} more pair{'s' if left_out > 1 else ''} of the same table not listed "
+            "here; the table itself is among the sources.)"
+        )
     return "\n".join(lines)
 
 

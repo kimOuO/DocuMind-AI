@@ -395,9 +395,15 @@ def test_facts_are_built_only_between_cells_of_one_condition_and_carry_their_set
     )
     assert mix_overall.setting == "direct pair" and mix_overall.direction == "higher"
     assert mix_overall.better == "Other"
-    # Naive and Other were each measured against Full, never against each other: the fact
-    # between them is indirect and carries no verdict on which is better.
-    indirect = [f for f in facts if {f.method_a, f.method_b} == {"Naive", "Other"}]
+    # Two methods named: only their own pairs (D92). Naive and Other were each measured
+    # against Full, never against each other; that indirect fact comes when only one of
+    # them is named.
+    assert all({f.method_a, f.method_b} == {"Full", "Other"} for f in facts)
+    indirect = [
+        f
+        for f in comparison_facts(cells, "how does Other do?")
+        if {f.method_a, f.method_b} == {"Naive", "Other"}
+    ]
     assert indirect and all(f.confidence == "indirect" for f in indirect)
     assert all(f.setting == "each against Full" and f.better is None for f in indirect)
 
@@ -590,11 +596,11 @@ def test_a_question_naming_a_dataset_and_a_metric_gets_that_conditions_facts_onl
         cells, "On the Mix dataset, what is the Overall win rate of Full vs Other?"
     )
 
-    # Every fact of that one condition that involves a named method — the direct pair asked
-    # for, Full's other pair, and the indirect one — and nothing from the other conditions.
-    assert {(f.group, f.row) for f in facts} == {("Mix", "Overall")}
-    assert len(facts) == 3
-    asked = next(f for f in facts if {f.method_a, f.method_b} == {"Full", "Other"})
+    # The one pair asked for, in the one condition asked for (D92).
+    assert len(facts) == 1
+    asked = facts[0]
+    assert (asked.group, asked.row) == ("Mix", "Overall")
+    assert {asked.method_a, asked.method_b} == {"Full", "Other"}
     assert (asked.value_a, asked.value_b) == ("49.6%", "50.4%")
 
 
@@ -618,13 +624,12 @@ def test_columns_of_a_wide_row_are_compared_only_against_a_named_column() -> Non
     # The group is narrowed only when named as the table names it ("Podcast Transcripts").
     facts = comparison_facts(cells, "How many tokens do C0 and TS use on Podcast Transcripts?")
 
+    # Two columns named: their pair only (D92); one named would give it against each other.
     assert {(f.method_a, f.method_b, f.group, f.row) for f in facts} == {
-        ("C0", "C1", "Podcast Transcripts", "Tokens"),
-        ("C0", "C2", "Podcast Transcripts", "Tokens"),
         ("C0", "TS", "Podcast Transcripts", "Tokens"),
-        ("TS", "C1", "Podcast Transcripts", "Tokens"),
-        ("TS", "C2", "Podcast Transcripts", "Tokens"),
     }
+    one_named = comparison_facts(cells, "How many tokens does C0 use on Podcast Transcripts?")
+    assert {f.method_b for f in one_named} == {"C1", "C2", "TS"}
     c0_ts = next(f for f in facts if {f.method_a, f.method_b} == {"C0", "TS"})
     assert (c0_ts.value_a, c0_ts.value_b, c0_ts.setting, c0_ts.confidence) == (
         "26657",

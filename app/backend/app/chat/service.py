@@ -122,7 +122,7 @@ EVIDENCE_TOKEN_BUDGET = 5_500
 # D88: how many of the closest passages the model sees when none reaches MIN_SIMILARITY.
 BELOW_THRESHOLD_PASSAGES = 3
 # D87 experiment A: the room the comparison facts may take before the sources (single mode).
-FACTS_TOKEN_BUDGET = 500
+FACTS_TOKEN_BUDGET = 800  # D92: the unambiguous exception wording needs the room
 # The answer is saved to the database every this many pieces while it streams.
 SAVE_EVERY = 20
 
