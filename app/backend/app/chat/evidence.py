@@ -398,7 +398,8 @@ def method_aliases(definitions: Sequence[MethodDefinition]) -> dict[str, list[re
 # each exception named, and an absolute word is allowed only when that count shows it.
 ANALYSIS_ORDER = """\
 Answer in this order: (1) say what the question asks for — which methods, datasets and \
-metrics; (2) read the evidence matrix and the method definitions; (3) compare only figures \
+metrics; (2) read the evidence matrix and the passages of the sources that define each \
+method or variant; (3) compare only figures \
 that share the same dataset, the same metric and the same pairing — never a figure of one \
 dataset, metric or pairing with one of another, and never treat two methods' separate scores \
 against a reference as a test between those two methods; (4) for each comparison, state how \
@@ -453,8 +454,9 @@ def analysis_preamble(
     budget: int,
     facts: Sequence["Fact"] = (),
 ) -> str:
-    """What goes before the answering instructions in the navigate mode (D74): the matrix,
-    the definitions found (and the methods with none), and the order of analysis."""
+    """What goes before the answering instructions in the navigate mode (D74): the matrix and
+    the order of analysis. `definitions` is accepted for the callers' convenience and no
+    longer rendered (D79)."""
     parts = [
         "Structured evidence, read from the numbered sources below (read it before answering).\n"
     ]
@@ -481,26 +483,12 @@ def analysis_preamble(
             "No structured table data could be read from the sources: take every figure "
             "from the source text with the labels written there."
         )
-    methods = sorted({c.column for c in cells})
-    if methods or definitions:
-        # D79: a method the extraction did not find a sentence for is not "undefined" — in
-        # B6-Q3-1 the sources held the definitions of two variants the program had missed,
-        # and the model repeated "no definition found" instead of reading them.
-        lines = [
-            "Method definitions located in the sources (a method with none located may only "
-            "be described by quoting a source that defines it, never from its name):"
-        ]
-        defined = {d.method: d for d in definitions}
-        for method in methods or sorted(defined):
-            d = defined.get(method)
-            if d is None:
-                lines.append(
-                    f"- {method}: not located by the program — look for its definition in "
-                    "the sources and quote it; if none defines it, say so"
-                )
-            else:
-                lines.append(f"- {method} [{d.source_index}]: {d.sentence}")
-        parts.append("\n".join(lines))
+    # D79 (user's decision, 2026-11-07): the method definitions are no longer shown to the
+    # model. The sentences the program finds depend on the wording of one paper (its verb
+    # list was written from a single sentence), and a method it misses used to be announced
+    # as "no definition found" although the sources defined it. The model reads the sources'
+    # own defining passages instead (rule 7); the definitions still feed the checks' aliases.
+    del definitions
     if facts:
         parts.append(
             "Verified comparison facts, computed from the matrix (a conclusion must agree "

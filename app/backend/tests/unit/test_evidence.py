@@ -161,14 +161,14 @@ def test_the_preamble_shows_the_matrix_the_definitions_and_the_order_of_analysis
     preamble = analysis_preamble(cells, definitions, WordCounter(), budget=600)
 
     assert "Evidence matrix" in preamble and "Agri / Overall:" in preamble
-    assert "-High [2]: Low-level-only retrieval: the -High variant removes" in preamble
-    assert "Full: not located by the program" in preamble and "quote it" in preamble
+    # D79: the definitions the program extracted are not shown — they depend on one paper's
+    # wording, and a miss used to be announced as "no definition found". The model is sent
+    # to the sources' own defining passages instead.
+    assert "Method definitions" not in preamble and "no definition found" not in preamble
+    assert "-High variant removes" not in preamble
+    assert "passages of the sources that define each" in preamble
     assert "same dataset, the same metric and the same pairing" in preamble
-    assert (
-        preamble.index("matrix")
-        < preamble.index("Method definitions")
-        < preamble.index("Answer in this order")
-    )
+    assert preamble.index("matrix") < preamble.index("Answer in this order")
     # Without any table there is no matrix and the Analyst is told so.
     plain = analysis_preamble([], [], WordCounter(), budget=600)
     assert "No structured table data" in plain

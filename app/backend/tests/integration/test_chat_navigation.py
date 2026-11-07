@@ -431,7 +431,7 @@ async def test_a_required_table_already_retrieved_stops_every_addition(
     assert navigation["unmet_required"] == []
     # The matrix of the retrieved table still goes to the Analyst.
     assert navigation["matrix"]["cells"] > 0 and "Evidence matrix" in model.prompts[1]
-    assert "Method definitions located in the sources" in model.prompts[1]
+    assert "Method definitions" not in model.prompts[1]  # D79: not shown to the model
     assert one(db, "SELECT count(*) FROM llm_calls") == (2,)
 
 
