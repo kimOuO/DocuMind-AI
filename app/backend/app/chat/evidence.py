@@ -391,30 +391,44 @@ def method_aliases(definitions: Sequence[MethodDefinition]) -> dict[str, list[re
 # _ANALYSIS_ORDER_B3. D75 added two sentences (kept as _ANALYSIS_ORDER_D75): say only
 # higher/lower where a table's direction is unknown, and do not number the paragraphs.
 #
-# D79 (2026-11-07, user's decision after B6): steps (4) and (5) rewritten. In B6 every table
-# figure was right and the remaining errors were conclusions stronger than the figures —
-# "across all four datasets", "consistently", "the only regression" — with the exceptions
-# sitting in the answer's own table. A comparison is now stated as a count of conditions with
-# each exception named, and an absolute word is allowed only when that count shows it.
+# D79 (2026-11-07) rewrote steps (4) and (5) into counted conclusions (kept below as
+# _ANALYSIS_ORDER_D79); D84 reverted to the B3 wording after B8 — see the note there. Only
+# step (2) differs from B3: the definitions are read from the sources, not from a note.
 ANALYSIS_ORDER = """\
 Answer in this order: (1) say what the question asks for — which methods, datasets and \
 metrics; (2) read the evidence matrix and the passages of the sources that define each \
-method or variant; (3) compare only figures \
-that share the same dataset, the same metric and the same pairing — never a figure of one \
-dataset, metric or pairing with one of another, and never treat two methods' separate scores \
-against a reference as a test between those two methods; (4) for each comparison, state how \
-many of the conditions (dataset and metric) go one way and how many go the other, naming each \
-condition that goes the other way with its two figures — for example "higher in 13 of 16 \
-conditions, lower in 3: ..."; (5) keep every conclusion no stronger than those counts: use \
-"all", "every", "consistently", "always" or "the only exception" only when the count you wrote \
-shows it (every condition, or exactly one exception); otherwise write "in most conditions" and \
-name the exceptions again; where two methods were each measured against a third, call the \
-comparison a trend, not a result; (6) cite the table's source for a figure and the defining \
-passage for a definition; (7) check that nothing the question asks for is missing — when the \
-question is about variants of a method, that method's own figure must stand beside the \
-variants' in every condition you give, and each variant must be defined from the sources. You \
-may begin with a compact comparison table of the figures you use, then the analysis. Do not \
-describe these steps; write the answer.
+method or variant; (3) compare only figures that share the same dataset, the same metric \
+and the same pairing — never a figure of one dataset, metric or pairing with one of another, \
+and never treat two methods' separate scores against a reference as a test between those two \
+methods; (4) name the improvements, the regressions and every exception; (5) check that each \
+"higher", "lower", "outperforms" or "drops" agrees with the figures it stands next to; (6) \
+cite the table's source for a figure and the defining passage for a definition; (7) check \
+that nothing the question asks for is missing. You may begin with a compact comparison table \
+of the figures you use, then the analysis. Do not describe these steps; write the answer.
+"""
+
+# D79's counted-conclusion wording, kept for the record. B8 (D83) showed it harmful for the
+# ablation question: asked to count conditions across separate pairings, the model filled the
+# "lower in" lists with the conditions it had won, three runs out of three; B6 with the text
+# above had none of that. Reverted on 2026-11-07 (D84).
+_ANALYSIS_ORDER_D79 = """\
+Answer in this order: (1) say what the question asks for — which methods, datasets and \
+metrics; (2) read the evidence matrix and the passages of the sources that define each \
+method or variant; (3) compare only figures that share the same dataset, the same metric and \
+the same pairing — never a figure of one dataset, metric or pairing with one of another, and \
+never treat two methods' separate scores against a reference as a test between those two \
+methods; (4) for each comparison, state how many of the conditions (dataset and metric) go one \
+way and how many go the other, naming each condition that goes the other way with its two \
+figures — for example "higher in 13 of 16 conditions, lower in 3: ..."; (5) keep every \
+conclusion no stronger than those counts: use "all", "every", "consistently", "always" or "the \
+only exception" only when the count you wrote shows it (every condition, or exactly one \
+exception); otherwise write "in most conditions" and name the exceptions again; where two \
+methods were each measured against a third, call the comparison a trend, not a result; (6) \
+cite the table's source for a figure and the defining passage for a definition; (7) check that \
+nothing the question asks for is missing — when the question is about variants of a method, \
+that method's own figure must stand beside the variants' in every condition you give, and each \
+variant must be defined from the sources. You may begin with a compact comparison table of the \
+figures you use, then the analysis. Do not describe these steps; write the answer.
 """
 
 _ANALYSIS_ORDER_B3 = """\

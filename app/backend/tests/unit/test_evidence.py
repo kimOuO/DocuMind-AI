@@ -174,27 +174,19 @@ def test_the_preamble_shows_the_matrix_the_definitions_and_the_order_of_analysis
     assert "No structured table data" in plain
 
 
-def test_the_order_of_analysis_asks_for_counted_conclusions_not_absolutes() -> None:
-    """D79 (user's decision after B6): the remaining errors were conclusions stronger than the
-    figures — "all four datasets", "consistently", "the only regression" — with the
-    exceptions sitting in the answer's own table. The Analyst is told to state every
-    comparison as a count of conditions with the exceptions named, and to use an absolute
-    word only when its own count shows it."""
+def test_the_order_of_analysis_is_the_b3_wording_with_definitions_read_from_the_sources() -> None:
+    """D84: the counted-conclusion wording of D79 was reverted after B8 — asked to count
+    conditions across separate pairings, the model filled the "lower in" lists with the
+    conditions it had won, three runs out of three. B3's steps stay; only step (2) sends the
+    model to the sources' defining passages (the extracted definitions are no longer shown)."""
     sources = [(1, chunk(23, 8, TABLE))]
     cells = build_matrix(sources)
 
     preamble = analysis_preamble(cells, [], WordCounter(), budget=600)
 
-    assert "how many of the conditions" in preamble and "naming each condition" in preamble
-    assert '"all", "every", "consistently"' in preamble and "only when" in preamble
-    assert "in most conditions" in preamble
-    assert "each measured against a third" in preamble and "a trend, not a result" in preamble
-    # The rule is part of the ordered steps, not an afterthought.
-    assert preamble.index("how many of the conditions") < preamble.index("(6)")
-    # B6-Q3-2 gave the three variants' figures without the full method's: the completeness
-    # step now names that requirement, and the definitions, in words that fit any method.
-    assert "that method's own figure must stand beside the variants'" in preamble
-    assert "each variant must be defined from the sources" in preamble
+    assert "name the improvements, the regressions and every exception" in preamble
+    assert "passages of the sources that define each" in preamble
+    assert "how many of the conditions" not in preamble and "in most conditions" not in preamble
 
 
 def test_tables_too_large_for_the_matrix_are_named_not_called_unreadable() -> None:
