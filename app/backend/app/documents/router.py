@@ -4,9 +4,10 @@ import uuid
 from collections.abc import AsyncIterator
 from datetime import datetime
 from typing import Annotated
+from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, File, Path, Request, Response, UploadFile
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -132,6 +133,23 @@ async def read_document(
     service: DocumentService = Depends(get_document_service),
 ) -> DocumentDetailResponse:
     return _detail(await service.get(user, document_id))
+
+
+@router.get("/documents/{id}/file")
+async def document_file(
+    document_id: DocumentId,
+    user: User = Depends(current_user),
+    service: DocumentService = Depends(get_document_service),
+) -> FileResponse:
+    """The original file, shown inline so that a browser opens a PDF at `#page=N` (D89)."""
+    path, media_type, filename = await service.file(user, document_id)
+    ascii_name = filename.encode("ascii", "ignore").decode() or "document"
+    disposition = f"inline; filename=\"{ascii_name}\"; filename*=UTF-8''{quote(filename)}"
+    return FileResponse(
+        path,
+        media_type=media_type,
+        headers={"Content-Disposition": disposition, "Cache-Control": "private, no-store"},
+    )
 
 
 @router.delete("/documents/{id}", status_code=204)

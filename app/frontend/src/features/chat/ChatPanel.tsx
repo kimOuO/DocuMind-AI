@@ -209,6 +209,14 @@ function SourceList({ sources }: { sources: Source[] }) {
                   {origin && <span className="text-muted"> · {origin}</span>}
                 </summary>
                 <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
+                <a
+                  className="mt-1 inline-block text-xs text-accent underline"
+                  href={`/api/v1/documents/${source.document_id}/file#page=${source.page_start}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  開啟原文第 {source.page_start} 頁
+                </a>
               </details>
             </li>
           )

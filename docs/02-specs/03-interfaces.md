@@ -30,6 +30,7 @@
 | POST | `/documents` | 上傳 | 202 | P2-B |
 | GET | `/documents` | 自己的文件清單 | 200 | P2-B |
 | GET | `/documents/{id}` | 單一文件與它最近的處理工作 | 200 | P2-B |
+| GET | `/documents/{id}/file` | 原始檔案（inline；來源卡以 `#page=N` 開啟引用頁；僅擁有者，D89） | 200 | P7 |
 | DELETE | `/documents/{id}` | 刪除 | 204 | P2-B |
 | POST | `/documents/{id}/retry` | 重試失敗的處理 | 202 | P2-C |
 | GET | `/documents/{id}/events` | 處理進度（SSE） | 200 | P2-C |

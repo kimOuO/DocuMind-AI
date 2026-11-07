@@ -549,3 +549,15 @@ test('an earlier conversation can be opened, with unfinished answers still label
   expect(screen.queryByText(QUESTION)).not.toBeInTheDocument()
   expect(calls.map((c) => c.key)).toContain(`DELETE /api/v1/conversations/${CONVERSATION.id}`)
 })
+
+
+test('a source card links to the original file at the cited page', async () => {
+  mockApi(routesFor(answerStream(), stored()))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+
+  const link = await screen.findByRole('link', { name: /開啟原文第 8 頁/ })
+  expect(link).toHaveAttribute('href', `/api/v1/documents/${SOURCE.document_id}/file#page=8`)
+  expect(link).toHaveAttribute('target', '_blank')
+})

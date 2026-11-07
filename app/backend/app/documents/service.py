@@ -6,7 +6,7 @@ the repository, never in the router.
 
 import uuid
 from dataclasses import dataclass, field
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 
 from fastapi import UploadFile
 from sqlalchemy.exc import IntegrityError
@@ -115,6 +115,16 @@ class DocumentService:
 
     async def get(self, actor: User, document_id: uuid.UUID) -> DocumentView:
         return await self._view(await self._owned(actor, document_id))
+
+    async def file(self, actor: User, document_id: uuid.UUID) -> tuple[Path, str, str]:
+        """The stored original of the owner's document: path, media type, file name (D89:
+        a source card opens the paper at the cited page)."""
+        document = await self._owned(actor, document_id)
+        path = self._storage.absolute(document.storage_path)
+        if not path.is_file():
+            raise ApiError(404, "DOCUMENT_FILE_MISSING", "The document's file is not available.")
+        media = {"pdf": "application/pdf", "txt": "text/plain", "md": "text/markdown"}
+        return path, media.get(document.media_type, "application/octet-stream"), document.filename
 
     async def delete(self, actor: User, document_id: uuid.UUID) -> None:
         document = await self._owned(actor, document_id)

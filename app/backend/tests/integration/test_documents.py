@@ -268,3 +268,20 @@ def test_deleting_twice_is_not_found(user: TestClient) -> None:
     user.delete(f"{DOCUMENTS}/{document_id}")
 
     assert user.delete(f"{DOCUMENTS}/{document_id}").status_code == 404
+
+
+def test_the_owner_can_open_the_original_file_and_nobody_else_can(
+    user: TestClient, other: TestClient
+) -> None:
+    """D89: a source card links to the paper at the cited page; the file is served inline to
+    its owner only, and a stranger gets the same 404 as for a missing document."""
+    body = upload(user, "notes.md", b"# Notes\n\nLightRAG builds a graph.\n").json()
+
+    response = user.get(f"{DOCUMENTS}/{body['id']}/file")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/markdown")
+    assert response.headers["content-disposition"].startswith('inline; filename="notes.md"')
+    assert response.content == b"# Notes\n\nLightRAG builds a graph.\n"
+    assert other.get(f"{DOCUMENTS}/{body['id']}/file").status_code == 404
+    assert user.get(f"{DOCUMENTS}/{uuid.uuid4()}/file").status_code == 404
