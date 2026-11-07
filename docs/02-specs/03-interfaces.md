@@ -385,7 +385,19 @@ none → processing → ready
 | `created_at` | timestamptz | |
 
 切塊沒有 `owner_id`。檢索時一律 join `documents` 並以 `documents.owner_id` 過濾。
-P4 的 Hybrid 實驗需要全文檢索的欄位與索引時，屆時以新的 migration 加入。
+P4 的 Hybrid 實驗在實驗工具內計算、未達採用條件（ADR 0010），沒有加入全文檢索欄位。
+
+### `chunk_vectors`（P4，D82）
+
+| 欄位 | 型別 | 說明 |
+|---|---|---|
+| `id` | uuid | 主鍵 |
+| `chunk_id` | uuid | 外鍵，切塊刪除時一併刪除 |
+| `ordinal` | int | 區塊在表格內的順序 |
+| `embedding` | vector(1024) | 該區塊（標題行＋群組表頭＋區塊表頭＋該區塊的列）的 `bge-m3` 向量；HNSW cosine 索引 |
+| `created_at` | timestamptz | |
+
+只有多區塊的表格切塊有列；一個切塊的檢索分數是自身向量與這些向量中最好的一個（架構 §6）。
 
 ### `summaries`（P3）
 
