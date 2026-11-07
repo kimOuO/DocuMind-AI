@@ -839,9 +839,12 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
 
   return (
     <div
-      className={`grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)${
-        panelOpen ? '_minmax(360px,440px)' : ''
-      }]`}
+      // Two complete class strings: Tailwind only generates classes it finds verbatim.
+      className={
+        panelOpen
+          ? 'grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)_minmax(360px,440px)]'
+          : 'grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]'
+      }
     >
       {rail}
       <section className="panel flex h-full min-h-0 flex-col p-4">
