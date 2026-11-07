@@ -677,3 +677,30 @@ B5 的「拿錯區塊的 LightRAG 數字」六次都沒再出現。
 - 代價：Q2 每次多約 200 tokens、Q3 多約 1,000（矩陣 1,348 減去少補的 chunk）；補充塊減半。
 - 3 次對 3 次，Q2 2/3 對 1/3、Q3 1/3 對 0/3 都在噪音範圍內；能說的是「配對錯誤消失、全稱句錯誤仍在」這個錯誤型態的改變，不是通過率的提升。
 - 本批沒有測 Q1、G1、G2。G2 的 Table 6 在入庫時沒有被逐格改寫（coverage gap），矩陣對它無效。
+
+## D79／B7：計數式結論的提示詞（2026-11-07，只有 Q2 × 3 有效；Q3 因 AI 的操作失誤遺失）
+
+### 設定
+
+同 B6，只改 navigate 模式的分析順序（7c32edf）：第 (4) 步每個比較要寫「幾個條件偏向哪邊、幾個相反」並點名每個相反條件與兩個數字；第 (5) 步 all、every、consistently、always、only exception 只能在自己寫的計數顯示時用，否則寫 in most conditions 並再列例外，兩方法各對第三者量測的比較稱為趨勢；第 (7) 步加入「問某方法的變體時，該方法自己的數字要與變體同一條件並列，每個變體要從來源定義」；方法定義附註由「no definition found」改為「程式未定位到，請在來源找並引用」。分析順序 192 → 330 tokens。（B7 之後使用者決定把定義附註整段拿掉，55573b8；B7 用的是改措辭的版本。）
+
+### AI 的操作失誤（記錄）
+
+B7 跑到第四次（Q3-1）時，AI 在同一個測試資料庫上啟動了 `make check`；整合測試會 TRUNCATE 資料表，B7 的文件與切塊被清掉，Q3 三次全部失敗（實驗工具 KeyError，exit 1）。B7-Q2-3 的回答本身在清表前已產生（來源、矩陣、答案都完整），但答後核對讀切塊原文時表已空，52 個數字全被標為「找不到」並附在回答末尾，帳本的呼叫數也少記——離線重放 `verify_numbers` 對同一批來源：52 個全部核對得到。所以 **B7-Q2-3 的回答可判、它的核對欄位與 tokens 不可用**；B7-Q3 沒有紀錄。使用者已決定不再重跑，轉向 P4。
+
+### 人工判定（Q2，同 key-facts 標準；表格數字由腳本逐格對 `paper-structure.json`）
+
+| 次 | 表格數字 | 判定 | 原因 |
+|---|---|---|---|
+| B7-Q2-1 | 32/32 | 不通過 | 分析段完全照新規則寫：「Comprehensiveness 3 of 4，例外 Mix (50.4 \| 49.6)」「Diversity all 4」「Empowerment 3 of 4」「Overall 3 of 4」，全對。但結論段寫「outperforms in Comprehensiveness, Diversity, and Empowerment in most conditions, with one exception in each metric (Mix)」——Diversity 沒有例外（Mix 64.0 > 36.0），結論和自己上一段矛盾 |
+| B7-Q2-2 | 32/32 | 不通過 | 「In Comprehensiveness and Overall, LightRAG outperforms in Legal and Mix but performs slightly worse in Agriculture and CS」方向全反（實際贏 Agriculture、CS、Legal，輸 Mix）；「Diversity and Empowerment in all four datasets」錯（Mix Empowerment 49.2<50.8）。全稱檢查抓到後一句並附警語；標籤核對另報 4 條誤報（「77.2% vs. 22.8%」的第二個數字被歸給 LightRAG） |
+| B7-Q2-3 | 32/32 | 通過 | 四個指標各寫「3 out of 4」或「all 4」並逐條列數字與例外；結論把 Mix 的三個例外都點出。瑕疵：「consistently outperforms … in 3 out of 4」用詞矛盾但有計數。附在末尾的 52 個「找不到的數字」是上述清表造成，不是回答的錯 |
+
+Q2：B7 1/3，B6 2/3，B5 1/3。
+
+### 要誠實說的
+
+- 計數式的寫法模型照做了：三次的分析段都出現「x out of 4」與逐條例外。但結論段仍可以和分析段矛盾（Q2-1）或直接寫反（Q2-2）。規則讓「數」的那一步變對，沒有讓「總結」那一步跟著數字走。
+- 3 次對 3 次，1/3 對 2/3 在噪音範圍內；不能說新提示詞更差，也沒有證據說它更好。
+- 這批沒有 Q3，提示詞第 (7) 步（變體要與母方法並列、要從來源定義）沒有被測到。
+- 核對器的「A vs. B (a% vs. b%)」第二個數字歸屬誤報再次出現（B5-Q2-3、B6-Q2-3、B7-Q2-2），要修。
