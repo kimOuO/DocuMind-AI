@@ -51,7 +51,7 @@ export function AuthForm({ onLoggedIn }: { onLoggedIn: (user: User) => void }) {
 
   const isLogin = mode === 'login'
   return (
-    <section className="mx-auto mt-10 max-w-sm rounded-lg border border-border bg-surface p-6">
+    <section className="panel mx-auto mt-10 max-w-sm p-6">
       <h2 className="text-lg font-semibold">{isLogin ? '登入' : '註冊'}</h2>
       {notice && (
         <p role="status" className="mt-2 text-sm text-success">
@@ -62,7 +62,7 @@ export function AuthForm({ onLoggedIn }: { onLoggedIn: (user: User) => void }) {
         <label className="flex flex-col gap-1 text-sm">
           使用者名稱
           <input
-            className="rounded-md border border-border bg-bg px-3 py-2 text-base"
+            className="rounded-lg border border-border bg-surface-2 px-3 py-2 text-base focus:border-accent focus:outline-none"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete="username"
@@ -72,7 +72,7 @@ export function AuthForm({ onLoggedIn }: { onLoggedIn: (user: User) => void }) {
         <label className="flex flex-col gap-1 text-sm">
           密碼
           <input
-            className="rounded-md border border-border bg-bg px-3 py-2 text-base"
+            className="rounded-lg border border-border bg-surface-2 px-3 py-2 text-base focus:border-accent focus:outline-none"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -88,7 +88,7 @@ export function AuthForm({ onLoggedIn }: { onLoggedIn: (user: User) => void }) {
         <button
           type="submit"
           disabled={busy}
-          className="rounded-md bg-accent px-3 py-2 font-medium text-surface disabled:opacity-60"
+          className="rounded-full bg-accent px-3 py-2 font-medium text-on-accent disabled:opacity-60"
         >
           {busy ? '處理中…' : isLogin ? '登入' : '建立帳號'}
         </button>

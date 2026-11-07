@@ -39,10 +39,38 @@ export default function App() {
 
   const signedIn = session.kind === 'authenticated'
   return (
-    <main className={signedIn ? 'mx-auto max-w-[1600px] px-4 py-4' : 'mx-auto max-w-xl px-4 py-12'}>
-      <header className={signedIn ? 'flex flex-wrap items-baseline gap-x-3' : ''}>
-        <h1 className="text-2xl font-semibold">DocuMind-AI</h1>
-        <p className={signedIn ? 'text-muted' : 'mt-1 text-muted'}>AI 文件管理與問答平台</p>
+    <main className={signedIn ? 'flex min-h-full flex-col' : 'mx-auto max-w-xl px-4 py-12'}>
+      <header
+        className={
+          signedIn
+            ? 'flex items-center gap-3 border-b border-border bg-surface px-5 py-3'
+            : 'flex items-center gap-3'
+        }
+      >
+        <span
+          aria-hidden="true"
+          className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-bold text-on-accent"
+        >
+          D
+        </span>
+        <div className="flex flex-wrap items-baseline gap-x-3">
+          <h1 className="text-lg font-semibold">DocuMind-AI</h1>
+          <p className="text-sm text-muted">AI 文件管理與問答平台</p>
+        </div>
+        {signedIn && (
+          <div className="ml-auto flex items-center gap-3 text-sm">
+            <span className="text-muted">
+              已登入：<strong className="text-text">{session.user.display_name}</strong>
+            </span>
+            <button
+              type="button"
+              className="rounded-full border border-border px-3 py-1 text-sm hover:bg-surface-2"
+              onClick={handleLogout}
+            >
+              登出
+            </button>
+          </div>
+        )}
       </header>
 
       {session.kind === 'checking' && <p className="mt-6">載入中…</p>}
@@ -54,7 +82,7 @@ export default function App() {
       {session.kind === 'anonymous' && (
         <AuthForm onLoggedIn={(user) => setSession({ kind: 'authenticated', user })} />
       )}
-      {session.kind === 'authenticated' && <Home user={session.user} onLogout={handleLogout} />}
+      {session.kind === 'authenticated' && <Home />}
     </main>
   )
 }

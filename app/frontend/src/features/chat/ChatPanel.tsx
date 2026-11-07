@@ -196,22 +196,25 @@ function describeOrigin(source: Source): string {
 function SourceList({ sources }: { sources: Source[] }) {
   if (sources.length === 0) return null
   return (
-    <ul className="mt-2 list-none p-0 text-sm">
-      {sources.map((source) => {
-        const origin = describeOrigin(source)
-        return (
-          <li key={source.index} className="border-t border-border py-1">
-            <details>
-              <summary className="cursor-pointer">
-                [{source.index}] {source.filename} · {pageRange(source.page_start, source.page_end)}
-                {origin && <span className="text-muted"> · {origin}</span>}
-              </summary>
-              <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
-            </details>
-          </li>
-        )
-      })}
-    </ul>
+    <div className="mt-3">
+      <p className="text-xs font-semibold text-muted">來源</p>
+      <ul className="mt-1 list-none space-y-1 p-0 text-sm">
+        {sources.map((source) => {
+          const origin = describeOrigin(source)
+          return (
+            <li key={source.index} className="rounded-lg border border-border bg-surface-2 px-3 py-1.5">
+              <details>
+                <summary className="cursor-pointer font-medium text-accent">
+                  [{source.index}] {source.filename} · {pageRange(source.page_start, source.page_end)}
+                  {origin && <span className="text-muted"> · {origin}</span>}
+                </summary>
+                <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
+              </details>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }
 
@@ -302,16 +305,19 @@ function AnswerText({ content }: { content: string }) {
 function MessageView({ message }: { message: ChatMessage }) {
   if (message.role === 'user') {
     return (
-      <li className="border-t border-border py-2">
-        <p className="text-sm text-muted">你</p>
-        <p className="whitespace-pre-wrap break-words">{message.content}</p>
+      <li className="flex justify-end py-2">
+        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-accent-soft px-4 py-2">
+          <p className="text-xs text-muted">你</p>
+          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+        </div>
       </li>
     )
   }
   const unfinished = UNFINISHED_LABEL[message.status]
   return (
-    <li className="border-t border-border py-2">
-      <p className="text-sm text-muted">
+    <li className="py-2">
+      <div className="rounded-2xl rounded-tl-md border border-border bg-surface px-4 py-3">
+      <p className="text-xs text-muted">
         回答
         {unfinished && (
           <span
@@ -321,11 +327,12 @@ function MessageView({ message }: { message: ChatMessage }) {
           </span>
         )}
         {message.status === 'completed' && message.answered === false && (
-          <span className="ml-2 font-medium text-accent">文件中找不到答案</span>
+          <span className="pill ml-2 bg-warning-soft font-medium text-warning">文件中找不到答案</span>
         )}
       </p>
       <AnswerText content={message.content} />
       <SourceList sources={message.sources} />
+      </div>
     </li>
   )
 }
@@ -524,9 +531,9 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   const inspector = (
     <aside
       aria-label="本次回答的檢索與用量"
-      className="rounded-lg border border-border bg-bg p-3 text-sm lg:sticky lg:top-4"
+      className="rounded-xl border border-border bg-surface-2 p-3 text-sm lg:sticky lg:top-4"
     >
-      <h3 className="font-semibold">本次回答</h3>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">本次回答</h3>
       {inspectorEmpty && (
         <p className="mt-2 text-muted">送出問題後，這裡會顯示搜尋範圍、處理步驟、token 用量與數字核對。</p>
       )}
@@ -548,14 +555,14 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
   )
 
   return (
-    <section className="mt-4 rounded-lg border border-border bg-surface p-4">
+    <section className="panel p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="font-semibold">提問</h2>
         <div className="flex items-center gap-2">
           <label className="text-sm">
             <span className="sr-only">對話</span>
             <select
-              className="rounded-md border border-border bg-surface px-2 py-1 text-sm"
+              className="rounded-full border border-border bg-surface px-3 py-1 text-sm"
               value={activeId ?? ''}
               disabled={asking}
               onChange={(event) => open(event.target.value || null)}
@@ -571,7 +578,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
           {active && (
             <button
               type="button"
-              className="rounded-md border border-border px-2 py-1 text-sm text-danger"
+              className="rounded-full border border-border px-3 py-1 text-sm text-danger hover:bg-surface-2"
               disabled={asking}
               onClick={() => setPendingDelete(active)}
             >
@@ -584,13 +591,18 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
       {ready.length === 0 ? (
         <p className="mt-2 text-muted">還沒有可以提問的文件。上傳文件並等待處理完成後就能提問。</p>
       ) : (
-        <fieldset className="mt-2 text-sm">
-          <legend className="text-muted">
+        <fieldset className="mt-3 rounded-lg bg-surface-2 px-3 py-2 text-sm">
+          <legend className="px-1 text-xs text-muted">
             搜尋範圍：{scopeIds.length === 0 ? '所有可用文件' : `已選 ${scopeIds.length} 份`}
           </legend>
-          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
             {ready.map((document) => (
-              <label key={document.id} className="flex items-center gap-1">
+              <label
+                key={document.id}
+                className={`flex cursor-pointer items-center gap-1 rounded-full border px-2 py-0.5 text-xs ${
+                  scopeIds.includes(document.id) ? 'border-accent bg-accent-soft text-accent' : 'border-border'
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={scopeIds.includes(document.id)}
@@ -611,18 +623,18 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
       )}
 
       <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)] lg:items-start">
-        <div className="min-w-0">
+        <div className="flex min-w-0 flex-col">
           {messages.length > 0 ? (
-            <ul className="list-none p-0" aria-label="對話內容">
+            <ul className="list-none space-y-1 p-0" aria-label="對話內容">
               {messages.map((message) => (
                 <MessageView key={message.id} message={message} />
               ))}
             </ul>
           ) : (
             ready.length > 0 && (
-              <p className="text-sm text-muted">
+              <div className="rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted">
                 還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
-              </p>
+              </div>
             )
           )}
           {error && (
@@ -631,11 +643,14 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
             </p>
           )}
 
-          <form className="mt-3 flex gap-2" onSubmit={handleAsk}>
+          <form
+            className="mt-3 flex items-end gap-2 rounded-2xl border border-border bg-surface-2 p-2 focus-within:border-accent"
+            onSubmit={handleAsk}
+          >
             <label className="flex-1">
               <span className="sr-only">問題</span>
               <textarea
-                className="w-full rounded-md border border-border bg-surface px-2 py-1"
+                className="w-full resize-none bg-transparent px-2 py-1 outline-none"
                 rows={2}
                 placeholder="針對文件提問，例如：summary this document."
                 value={question}
@@ -643,9 +658,12 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
                 onChange={(event) => setQuestion(event.target.value)}
               />
             </label>
+            <span className="hidden pb-1 text-xs text-muted sm:block">
+              {ready.length > 0 && (scopeIds.length === 0 ? `${ready.length} 份來源` : `${scopeIds.length} 份來源`)}
+            </span>
             <button
               type="submit"
-              className="self-end rounded-md bg-accent px-3 py-1 text-sm font-medium text-surface disabled:opacity-50"
+              className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-on-accent disabled:opacity-50"
               disabled={asking || ready.length === 0 || question.trim() === ''}
             >
               {asking ? '回答中…' : '送出'}
@@ -657,7 +675,7 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
                 <button
                   key={text}
                   type="button"
-                  className="rounded-full border border-border px-3 py-0.5 text-xs text-muted hover:text-text"
+                  className="rounded-full border border-border bg-surface px-3 py-0.5 text-xs text-muted hover:border-accent hover:text-accent"
                   disabled={asking}
                   onClick={() => setQuestion(text)}
                 >

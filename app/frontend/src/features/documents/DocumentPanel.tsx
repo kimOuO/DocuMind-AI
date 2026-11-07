@@ -22,10 +22,10 @@ const STATUS_LABEL: Record<DocumentStatus, string> = {
 }
 
 const STATUS_CLASS: Record<DocumentStatus, string> = {
-  uploaded: 'text-muted',
-  processing: 'text-accent',
-  ready: 'text-success',
-  failed: 'text-danger',
+  uploaded: 'bg-surface-2 text-muted',
+  processing: 'bg-accent-soft text-accent',
+  ready: 'bg-success-soft text-success',
+  failed: 'bg-danger-soft text-danger',
 }
 
 const STAGE_LABEL: Record<string, string> = {
@@ -234,10 +234,10 @@ export function DocumentPanel({
   }
 
   return (
-    <section className="mt-4 rounded-lg border border-border bg-surface p-4">
+    <section className="panel p-4">
       <div className="flex items-center justify-between gap-4">
         <h2 className="font-semibold">我的文件</h2>
-        <label className="cursor-pointer rounded-md bg-accent px-3 py-1 text-sm font-medium text-surface">
+        <label className="cursor-pointer rounded-full bg-accent px-3 py-1 text-sm font-medium text-on-accent hover:opacity-90">
           {busy ? '上傳中…' : '上傳文件'}
           <input
             ref={fileInput}
@@ -249,7 +249,7 @@ export function DocumentPanel({
           />
         </label>
       </div>
-      <p className="mt-1 text-sm text-muted">支援 PDF、TXT、Markdown。</p>
+      <p className="mt-1 text-xs text-muted">支援 PDF、TXT、Markdown。上傳後在背景解析、建立索引與摘要。</p>
 
       {notice && (
         <p role="status" className="mt-2 text-sm text-success">
@@ -264,45 +264,57 @@ export function DocumentPanel({
 
       {documents === null && <p className="mt-3">載入中…</p>}
       {documents !== null && documents.length === 0 && (
-        <p className="mt-3 text-muted">還沒有文件。上傳第一份文件開始使用。</p>
+        <div className="mt-3 rounded-lg border border-dashed border-border bg-surface-2 p-4 text-center text-sm text-muted">
+          還沒有文件。上傳第一份文件開始使用。
+        </div>
       )}
       {documents !== null && documents.length > 0 && (
-        <ul className="mt-3 list-none p-0">
+        <ul className="mt-3 list-none space-y-2 p-0">
           {documents.map((document) => (
             <li
               key={document.id}
-              className="flex items-center justify-between gap-4 border-t border-border py-2"
+              className="flex items-start gap-3 rounded-lg border border-border bg-surface-2 p-3"
             >
-              <div className="min-w-0">
-                <p className="truncate font-medium">{document.filename}</p>
-                <p className="text-sm">
+              <span
+                aria-hidden="true"
+                className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface text-[10px] font-semibold uppercase text-muted"
+              >
+                {document.media_type}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium" title={document.filename}>
+                  {document.filename}
+                </p>
+                <p className="mt-1 text-xs">
                   <span className="text-muted">{formatSize(document.file_size)} · </span>
-                  <span className={STATUS_CLASS[document.status]}>
+                  <span className={`pill ${STATUS_CLASS[document.status]}`}>
                     {describeState(document, progress[document.id])}
                   </span>
                 </p>
                 {document.status === 'failed' && document.error && (
-                  <p className="break-words text-sm text-muted">原因：{document.error}</p>
+                  <p className="mt-1 break-words text-xs text-muted">原因：{document.error}</p>
                 )}
+                <div className="mt-1 flex gap-2">
+                  {document.status === 'failed' && (
+                    <button
+                      type="button"
+                      className="rounded-full border border-border px-2 py-0.5 text-xs hover:bg-surface"
+                      onClick={() => handleRetry(document)}
+                      aria-label={`重試 ${document.filename}`}
+                    >
+                      重試
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="rounded-full border border-border px-2 py-0.5 text-xs text-danger hover:bg-surface"
+                    onClick={() => setPendingDelete(document)}
+                    aria-label={`刪除 ${document.filename}`}
+                  >
+                    刪除
+                  </button>
+                </div>
               </div>
-              {document.status === 'failed' && (
-                <button
-                  type="button"
-                  className="shrink-0 rounded-md border border-border px-2 py-1 text-sm"
-                  onClick={() => handleRetry(document)}
-                  aria-label={`重試 ${document.filename}`}
-                >
-                  重試
-                </button>
-              )}
-              <button
-                type="button"
-                className="shrink-0 rounded-md border border-border px-2 py-1 text-sm text-danger"
-                onClick={() => setPendingDelete(document)}
-                aria-label={`刪除 ${document.filename}`}
-              >
-                刪除
-              </button>
             </li>
           ))}
         </ul>

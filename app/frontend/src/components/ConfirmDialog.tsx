@@ -48,7 +48,7 @@ export function ConfirmDialog({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={messageId}
-        className="w-full max-w-sm rounded-lg border border-border bg-surface p-5 shadow-lg"
+        className="panel w-full max-w-sm p-5 shadow-md"
         onClick={(event) => event.stopPropagation()}
       >
         <h3 id={titleId} className="text-lg font-semibold">
@@ -68,7 +68,7 @@ export function ConfirmDialog({
           </button>
           <button
             type="button"
-            className={`rounded-md px-3 py-1 text-sm font-medium text-surface ${danger ? 'bg-danger' : 'bg-accent'}`}
+            className={`rounded-full px-3 py-1 text-sm font-medium text-on-accent ${danger ? 'bg-danger' : 'bg-accent'}`}
             onClick={onConfirm}
           >
             {confirmLabel}

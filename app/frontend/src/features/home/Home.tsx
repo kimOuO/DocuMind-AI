@@ -4,7 +4,6 @@ import {
   type DependencyStatus,
   type DocumentItem,
   type Health,
-  type User,
 } from '../../lib/api'
 import { ChatPanel } from '../chat/ChatPanel'
 import { DocumentPanel } from '../documents/DocumentPanel'
@@ -16,18 +15,18 @@ type HealthState =
 
 function StatusRow({ label, status }: { label: string; status: DependencyStatus }) {
   return (
-    <li className="flex items-baseline justify-between gap-4 border-t border-border py-2">
+    <li className="flex items-baseline justify-between gap-4 border-t border-border py-2 text-sm">
       <span>{label}</span>
-      <span className={status.ok ? 'text-success' : 'text-danger'}>
+      <span className={`pill ${status.ok ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'}`}>
         {status.ok ? '正常' : '異常'}
-        <span className="ml-2 font-mono text-sm text-muted">{status.detail}</span>
+        <span className="ml-1 font-mono text-xs opacity-80">{status.detail}</span>
       </span>
     </li>
   )
 }
 
-/** The signed-in area: who is logged in, their documents, questions, and whether the system is up. */
-export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
+/** The signed-in workspace: sources on the left, the conversation and its inspector on the right. */
+export function Home() {
   const [state, setState] = useState<HealthState>({ kind: 'loading' })
   const [documents, setDocuments] = useState<DocumentItem[]>([])
 
@@ -40,40 +39,23 @@ export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
   }, [])
 
   return (
-    <>
-      <div className="mt-2 flex items-center justify-between">
-        <p className="text-sm">
-          已登入：<strong>{user.display_name}</strong>
-        </p>
-        <button
-          type="button"
-          className="rounded-md border border-border px-3 py-1 text-sm"
-          onClick={onLogout}
-        >
-          登出
-        </button>
+    <div className="grid flex-1 gap-4 p-4 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:items-start">
+      <div className="min-w-0 space-y-4 lg:sticky lg:top-4">
+        <DocumentPanel onChange={setDocuments} />
+        <SystemStatus state={state} />
       </div>
-
-      {/* Three columns on a wide screen (documents · conversation · inspector); stacked on a
-          narrow one. The chat panel renders the conversation and the inspector itself. */}
-      <div className="mt-2 grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:items-start">
-        <div className="min-w-0 lg:sticky lg:top-4">
-          <DocumentPanel onChange={setDocuments} />
-          <SystemStatus state={state} />
-        </div>
-        <div className="min-w-0">
-          <ChatPanel documents={documents} />
-        </div>
+      <div className="min-w-0">
+        <ChatPanel documents={documents} />
       </div>
-    </>
+    </div>
   )
 }
 
 function SystemStatus({ state }: { state: HealthState }) {
   return (
     <>
-      <section className="mt-4 rounded-lg border border-border bg-surface p-4">
-        <h2 className="font-semibold">系統狀態</h2>
+      <section className="panel p-4">
+        <h2 className="text-sm font-semibold text-muted">系統狀態</h2>
         {state.kind === 'loading' && <p className="mt-2">檢查中…</p>}
         {state.kind === 'error' && (
           <p role="alert" className="mt-2 text-danger">
@@ -82,7 +64,7 @@ function SystemStatus({ state }: { state: HealthState }) {
         )}
         {state.kind === 'ready' && (
           <>
-            <p className="mt-2">
+            <p className="mt-2 text-sm">
               整體狀態：
               <strong className={state.health.status === 'ok' ? 'text-success' : 'text-danger'}>
                 {state.health.status === 'ok' ? '全部正常' : '部分異常'}
@@ -92,7 +74,7 @@ function SystemStatus({ state }: { state: HealthState }) {
               <StatusRow label="資料庫（PostgreSQL + pgvector）" status={state.health.database} />
               <StatusRow label="LLM 服務（Ollama）" status={state.health.ollama} />
             </ul>
-            <p className="mt-3 text-sm text-muted">
+            <p className="mt-3 text-xs text-muted">
               模型 {state.health.llm_model} · Embedding {state.health.embed_model} · Context 上限{' '}
               {state.health.llm_context_limit.toLocaleString()} tokens
             </p>
