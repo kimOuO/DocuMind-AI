@@ -333,7 +333,6 @@ test('formats file sizes', () => {
   expect(formatSize(1123301)).toBe('1.1 MB')
 })
 
-
 test('a ready document without a summary offers to build one', async () => {
   const bare = { ...PAPER, status: 'ready', summary_status: 'none', page_count: 16, chunk_count: 48 }
   const calls = mockApi({
@@ -341,7 +340,10 @@ test('a ready document without a summary offers to build one', async () => {
       { status: 200, body: [bare] },
       { status: 200, body: [{ ...bare, summary_status: 'processing' }] },
     ],
-    [`POST /api/v1/documents/${PAPER.id}/retry`]: { status: 202, body: { ...bare, summary_status: 'processing' } },
+    [`POST /api/v1/documents/${PAPER.id}/retry`]: {
+      status: 202,
+      body: { ...bare, summary_status: 'processing' },
+    },
   })
   render(<DocumentPanel />)
 
@@ -352,11 +354,20 @@ test('a ready document without a summary offers to build one', async () => {
   expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')).toBeInTheDocument()
 })
 
-
 test('the upload sends whether to build the summary tree, and a document without one says so', async () => {
-  const skipped = { ...PAPER, status: 'ready', summary_status: 'skipped', build_summary: false, page_count: 16, chunk_count: 48 }
+  const skipped = {
+    ...PAPER,
+    status: 'ready',
+    summary_status: 'skipped',
+    build_summary: false,
+    page_count: 16,
+    chunk_count: 48,
+  }
   const calls = mockApi({
-    'GET /api/v1/documents': [{ status: 200, body: [] }, { status: 200, body: [skipped] }],
+    'GET /api/v1/documents': [
+      { status: 200, body: [] },
+      { status: 200, body: [skipped] },
+    ],
     'POST /api/v1/documents': { status: 202, body: skipped },
   })
   render(<DocumentPanel />)
@@ -366,6 +377,23 @@ test('the upload sends whether to build the summary tree, and a document without
 
   const post = calls.find((c) => c.key === 'POST /api/v1/documents')!
   expect((post.body as FormData).get('build_summary')).toBe('false')
-  expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 未建摘要（摘要類問題以檢索回答）')).toBeInTheDocument()
+  expect(
+    await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 未建摘要（摘要類問題以檢索回答）'),
+  ).toBeInTheDocument()
   expect(screen.getByRole('button', { name: `建立摘要 ${PAPER.filename}` })).toBeInTheDocument()
+})
+
+test('a summary in progress shows a bar with the section count', async () => {
+  const ready = { ...PAPER, status: 'ready', summary_status: 'processing', page_count: 16, chunk_count: 48 }
+  mockApi({ 'GET /api/v1/documents': { status: 200, body: [ready] } })
+  render(<DocumentPanel />)
+  await screen.findByText(/摘要產生中/)
+  const stream = streamFor(PAPER.id)!
+
+  act(() => stream.emit('progress', { kind: 'summary', stage: 'summarizing', current: 3, total: 9 }))
+
+  const bar = screen.getByRole('progressbar', { name: '摘要：第 3／9 章' })
+  expect(bar).toHaveAttribute('value', '3')
+  expect(bar).toHaveAttribute('max', '9')
+  expect(screen.getByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中 3/9')).toBeInTheDocument()
 })

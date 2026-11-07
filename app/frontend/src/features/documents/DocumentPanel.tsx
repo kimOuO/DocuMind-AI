@@ -262,7 +262,8 @@ export function DocumentPanel({
           onChange={(event) => setBuildSummary(event.target.checked)}
         />
         <span>
-          上傳後建立摘要樹（建議）。逐章讀完整份文件再濃縮，約 3 分鐘；關掉則 summary 類問題只依據檢索到的片段回答。
+          上傳後建立摘要樹（建議）。逐章讀完整份文件再濃縮，約 3 分鐘；關掉則 summary
+          類問題只依據檢索到的片段回答。
         </span>
       </label>
 
@@ -288,11 +289,11 @@ export function DocumentPanel({
           {documents.map((document) => (
             <li
               key={document.id}
-              className="flex items-start gap-3 rounded-lg border border-border bg-surface-2 p-3"
+              className="flex items-start gap-3 rounded-xl border border-border bg-surface-2 p-3 shadow-sm"
             >
               <span
                 aria-hidden="true"
-                className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface text-[10px] font-semibold uppercase text-muted"
+                className="mt-0.5 flex h-10 w-8 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-[10px] font-semibold uppercase text-accent"
               >
                 {document.media_type}
               </span>
@@ -309,6 +310,29 @@ export function DocumentPanel({
                 {document.status === 'failed' && document.error && (
                   <p className="mt-1 break-words text-xs text-muted">原因：{document.error}</p>
                 )}
+                {(() => {
+                  const p = progress[document.id]
+                  const active =
+                    p?.total &&
+                    ((document.status === 'processing' && p.kind === 'index') ||
+                      (document.summary_status === 'processing' && p.kind === 'summary'))
+                  if (!active) return null
+                  const label =
+                    p.kind === 'summary'
+                      ? `摘要：第 ${p.current ?? 0}／${p.total} 章`
+                      : `索引：${p.current ?? 0}／${p.total}`
+                  return (
+                    <div className="mt-1 flex items-center gap-2 text-xs text-muted">
+                      <progress
+                        className="h-1.5 w-full accent-accent"
+                        value={p.current ?? 0}
+                        max={p.total}
+                        aria-label={label}
+                      />
+                      <span className="shrink-0">{label}</span>
+                    </div>
+                  )
+                })()}
                 <div className="mt-1 flex gap-2">
                   {document.status === 'failed' && (
                     <button

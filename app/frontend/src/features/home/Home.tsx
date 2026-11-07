@@ -8,7 +8,7 @@ import { DocumentPanel } from '../documents/DocumentPanel'
 export function Home() {
   const [documents, setDocuments] = useState<DocumentItem[]>([])
   return (
-    <div className="min-h-0 flex-1 p-4">
+    <div className="h-[calc(100dvh-3.5rem)] min-h-0 p-4">
       <ChatPanel documents={documents} sidebar={<DocumentPanel onChange={setDocuments} />} />
     </div>
   )

@@ -203,7 +203,7 @@ function describeOrigin(source: Source): string {
   return source.score === null ? '' : `相似度 ${source.score.toFixed(2)}`
 }
 
-function SourceList({ sources }: { sources: Source[] }) {
+function SourceList({ sources, onView }: { sources: Source[]; onView: (source: Source) => void }) {
   if (sources.length === 0) return null
   return (
     <div className="mt-3">
@@ -219,14 +219,14 @@ function SourceList({ sources }: { sources: Source[] }) {
                   {origin && <span className="text-muted"> · {origin}</span>}
                 </summary>
                 <p className="mt-1 whitespace-pre-wrap break-words text-muted">{source.snippet}</p>
-                <a
-                  className="mt-1 inline-block text-xs text-accent underline"
-                  href={`/api/v1/documents/${source.document_id}/file#page=${source.page_start}`}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  className="mt-1 text-xs text-accent underline"
+                  onClick={() => onView(source)}
+                  aria-label={`在右側檢視來源 ${source.index}`}
                 >
-                  開啟原文第 {source.page_start} 頁
-                </a>
+                  在右側檢視原文第 {source.page_start} 頁
+                </button>
               </details>
             </li>
           )
@@ -547,7 +547,7 @@ function MessageView({
               </ul>
             </details>
           )}
-          <SourceList sources={message.sources} />
+          <SourceList sources={message.sources} onView={(source) => onCite(source, '')} />
         </div>
       </div>
     </li>
@@ -576,6 +576,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [navigation, setNavigation] = useState<Navigation | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
+  const [panelOpen, setPanelOpen] = useState(false)
   const [viewer, setViewer] = useState<{
     source: Source
     sentence: string
@@ -785,7 +786,8 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   )
 
   const rail = (
-    <aside className="flex min-h-0 flex-col gap-4 overflow-y-auto" aria-label="對話與來源">
+    <aside className="flex min-h-0 flex-col gap-4 overflow-y-auto" aria-label="文件與對話">
+      {sidebar}
       <section className="panel p-3">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold">對話</h2>
@@ -832,20 +834,29 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
           })}
         </ul>
       </section>
-      {sidebar}
     </aside>
   )
 
   return (
     <div
       className={`grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)${
-        viewer ? '_minmax(340px,420px)' : ''
+        panelOpen ? '_minmax(360px,440px)' : ''
       }]`}
     >
       {rail}
       <section className="panel flex h-full min-h-0 flex-col p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="truncate font-semibold">{active ? active.title || '（未命名的對話）' : '新對話'}</h2>
+          <button
+            type="button"
+            className={`rounded-full border px-3 py-1 text-xs ${
+              panelOpen ? 'border-accent bg-accent-soft text-accent' : 'border-border hover:bg-surface-2'
+            }`}
+            aria-pressed={panelOpen}
+            onClick={() => setPanelOpen((open) => !open)}
+          >
+            {panelOpen ? '收起來源檢視 ▸' : '◂ 來源檢視'}
+          </button>
         </div>
 
         {ready.length === 0 ? (
@@ -896,7 +907,10 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
                   <MessageView
                     key={message.id}
                     message={message}
-                    onCite={(source, sentence) => setViewer({ source, sentence })}
+                    onCite={(source, sentence) => {
+                      setViewer({ source, sentence })
+                      setPanelOpen(true)
+                    }}
                   />
                 ))}
               </ul>
@@ -970,9 +984,23 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
           />
         )}
       </section>
-      {viewer && (
+      {panelOpen && (
         <div className="min-h-0">
-          <SourceViewer source={viewer.source} sentence={viewer.sentence} onClose={() => setViewer(null)} />
+          {viewer ? (
+            <SourceViewer
+              source={viewer.source}
+              sentence={viewer.sentence}
+              onClose={() => setPanelOpen(false)}
+            />
+          ) : (
+            <section
+              aria-label="來源檢視"
+              className="flex h-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-surface-2 p-6 text-center text-sm text-muted"
+            >
+              點回答裡的數字標籤，或來源卡上的「在右側檢視」，這裡會顯示該段原文、引用它的句子，以及 PDF
+              的那一頁。
+            </section>
+          )}
         </div>
       )}
     </div>

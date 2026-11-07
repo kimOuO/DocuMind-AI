@@ -19,7 +19,12 @@ const PAPER: DocumentItem = {
   updated_at: '2026-11-05T08:00:00Z',
 }
 const NOTES: DocumentItem = { ...PAPER, id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', filename: 'notes.txt' }
-const WAITING: DocumentItem = { ...PAPER, id: 'cccccccc-cccc-cccc-cccc-cccccccccccc', filename: 'waiting.md', status: 'processing' }
+const WAITING: DocumentItem = {
+  ...PAPER,
+  id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+  filename: 'waiting.md',
+  status: 'processing',
+}
 
 const CONVERSATION = {
   id: '11111111-1111-1111-1111-111111111111',
@@ -111,12 +116,10 @@ function answerStream(
   ])
 }
 
-
 /** An answer line as rendered: citations are chips showing the bare number, so "[1]" reads "1". */
 function answerLine(expected: string) {
   const rendered = expected.replace(/\[(\d+)\]/g, '$1')
-  return (_: string, element: Element | null) =>
-    element?.tagName === 'P' && element.textContent === rendered
+  return (_: string, element: Element | null) => element?.tagName === 'P' && element.textContent === rendered
 }
 
 function stored(status = 'completed', answered: boolean | null = true, sources: object[] = [SOURCE]) {
@@ -124,8 +127,24 @@ function stored(status = 'completed', answered: boolean | null = true, sources: 
     ...CONVERSATION,
     title: QUESTION.slice(0, 40),
     messages: [
-      { id: 'u1', role: 'user', content: QUESTION, status: 'completed', answered: null, sources: [], created_at: '2026-11-05T09:00:01Z' },
-      { id: 'a1', role: 'assistant', content: 'The ablated versions perform worse [1].', status, answered, sources, created_at: '2026-11-05T09:00:02Z' },
+      {
+        id: 'u1',
+        role: 'user',
+        content: QUESTION,
+        status: 'completed',
+        answered: null,
+        sources: [],
+        created_at: '2026-11-05T09:00:01Z',
+      },
+      {
+        id: 'a1',
+        role: 'assistant',
+        content: 'The ablated versions perform worse [1].',
+        status,
+        answered,
+        sources,
+        created_at: '2026-11-05T09:00:02Z',
+      },
     ],
   }
 }
@@ -168,7 +187,9 @@ test('asking creates a conversation and shows the answer with its sources, scope
 
   const conversation = await screen.findByRole('list', { name: '對話內容' })
   expect(within(conversation).getByText(QUESTION)).toBeInTheDocument()
-  expect(within(conversation).getByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
+  expect(
+    within(conversation).getByText(answerLine('The ablated versions perform worse [1].')),
+  ).toBeInTheDocument()
   expect(within(conversation).getByText(/\[1\] paper\.pdf · 第 8 頁/)).toBeInTheDocument()
   expect(within(conversation).getByText(SOURCE.snippet)).toBeInTheDocument()
   // No document was ticked: the whole library is searched, and the page says so.
@@ -179,13 +200,37 @@ test('asking creates a conversation and shows the answer with its sources, scope
   expect(screen.queryByText('回答未完成')).not.toBeInTheDocument()
   expect(screen.getByLabelText('問題')).toHaveValue('')
   // The new conversation is selected, under the title the server gave it.
-  expect(await screen.findByRole('button', { name: QUESTION.slice(0, 40) })).toHaveAttribute('aria-current', 'true')
+  expect(await screen.findByRole('button', { name: QUESTION.slice(0, 40) })).toHaveAttribute(
+    'aria-current',
+    'true',
+  )
 })
 
 test('summary sources show their section and page range, and added context is labelled', async () => {
-  const whole = { ...SOURCE, kind: 'summary', page_start: 1, page_end: 16, snippet: 'LightRAG combines…', score: null, origin: 'summary' }
-  const section = { ...whole, index: 2, page_start: 7, page_end: 9, section_title: '4 Evaluation', snippet: 'LightRAG wins 83.6%…' }
-  const context = { ...SOURCE, index: 3, origin: 'table_context', score: null, snippet: 'The -High variant removes…' }
+  const whole = {
+    ...SOURCE,
+    kind: 'summary',
+    page_start: 1,
+    page_end: 16,
+    snippet: 'LightRAG combines…',
+    score: null,
+    origin: 'summary',
+  }
+  const section = {
+    ...whole,
+    index: 2,
+    page_start: 7,
+    page_end: 9,
+    section_title: '4 Evaluation',
+    snippet: 'LightRAG wins 83.6%…',
+  }
+  const context = {
+    ...SOURCE,
+    index: 3,
+    origin: 'table_context',
+    score: null,
+    snippet: 'The -High variant removes…',
+  }
   const sources = [whole, section, context]
   mockApi(
     routesFor(
@@ -215,7 +260,9 @@ test('the number check lists the figures found on the cited pages and flags the 
       answerStream({
         done: {
           unverified_numbers: ['12,345'],
-          verified_numbers: [{ number: '83.6%', document_id: PAPER.id, page: 7, snippet: '…LightRAG 83.6%…' }],
+          verified_numbers: [
+            { number: '83.6%', document_id: PAPER.id, page: 7, snippet: '…LightRAG 83.6%…' },
+          ],
           mislabelled_numbers: [
             {
               number: '59.6%',
@@ -271,7 +318,9 @@ test('the number check lists the figures found on the cited pages and flags the 
   expect(screen.getByText('…LightRAG 83.6%…')).toBeInTheDocument()
   expect(screen.getByText('找不到：12,345')).toBeInTheDocument()
   expect(
-    screen.getByText('標籤不符：59.6%（答案：Overall、Mix；原文：Comprehensiveness、Mix、-High、vs NaiveRAG）'),
+    screen.getByText(
+      '標籤不符：59.6%（答案：Overall、Mix；原文：Comprehensiveness、Mix、-High、vs NaiveRAG）',
+    ),
   ).toBeInTheDocument()
   // An unresolved figure is explained, not shown as an error.
   const unresolved = screen.getByText(
@@ -292,7 +341,14 @@ test('the two-call mode reports which text was kept and the summed token usage',
   mockApi(
     routesFor(
       sse([
-        ['start', { user_message_id: 'u1', assistant_message_id: 'a1', scope: { mode: 'all', document_ids: [PAPER.id] } }],
+        [
+          'start',
+          {
+            user_message_id: 'u1',
+            assistant_message_id: 'a1',
+            scope: { mode: 'all', document_ids: [PAPER.id] },
+          },
+        ],
         ['route', { type: 'retrieval', standalone_question: QUESTION }],
         ['sources', [SOURCE]],
         ['stage', { stage: 'generating' }],
@@ -340,7 +396,14 @@ test('the navigate mode shows the plan, what was located and the added sources',
   mockApi(
     routesFor(
       sse([
-        ['start', { user_message_id: 'u1', assistant_message_id: 'a1', scope: { mode: 'all', document_ids: [PAPER.id] } }],
+        [
+          'start',
+          {
+            user_message_id: 'u1',
+            assistant_message_id: 'a1',
+            scope: { mode: 'all', document_ids: [PAPER.id] },
+          },
+        ],
         ['route', { type: 'retrieval', standalone_question: QUESTION }],
         ['stage', { stage: 'navigating' }],
         ['sources', [SOURCE, { ...SOURCE, index: 2, page_start: 8, page_end: 8, origin: 'navigation' }]],
@@ -378,7 +441,9 @@ test('the navigate mode shows the plan, what was located and the added sources',
   await ask()
 
   expect(await screen.findByText(answerLine('The ablated versions perform worse [1].'))).toBeInTheDocument()
-  expect(screen.getByText('Navigator 計畫：2 項，定位 1 項，補充 1 個片段（1 個因預算未納入）')).toBeInTheDocument()
+  expect(
+    screen.getByText('Navigator 計畫：2 項，定位 1 項，補充 1 個片段（1 個因預算未納入）'),
+  ).toBeInTheDocument()
   expect(screen.getByText('Table 2 (page 8)（第 8 頁）')).toBeInTheDocument()
   expect(screen.getByText('Table 9（文件中找不到）')).toBeInTheDocument()
   // The stored conversation (reloaded after the stream) decides which sources show; the
@@ -431,7 +496,9 @@ test('the answer is rendered as formatted text, with citations as clickable chip
   expect(bold.tagName).toBe('STRONG')
   expect(within(conversation).queryByText(/\*\*/)).not.toBeInTheDocument()
   expect(within(conversation).getByText('first').tagName).toBe('LI')
-  expect(within(conversation).getByText((_, el) => el?.tagName === 'LI' && el.textContent === 'second 23')).toBeInTheDocument()
+  expect(
+    within(conversation).getByText((_, el) => el?.tagName === 'LI' && el.textContent === 'second 23'),
+  ).toBeInTheDocument()
   expect(within(conversation).getAllByRole('button', { name: /^來源 \d$/ })).toHaveLength(3)
 })
 
@@ -493,7 +560,14 @@ test('a failure reported during the answer marks it failed and explains', async 
     'GET /api/v1/conversations': { status: 200, body: [] },
     'POST /api/v1/conversations': { status: 201, body: CONVERSATION },
     [ASK]: sse([
-      ['start', { user_message_id: 'u1', assistant_message_id: 'a1', scope: { mode: 'all', document_ids: [PAPER.id] } }],
+      [
+        'start',
+        {
+          user_message_id: 'u1',
+          assistant_message_id: 'a1',
+          scope: { mode: 'all', document_ids: [PAPER.id] },
+        },
+      ],
       ['route', { type: 'retrieval', standalone_question: QUESTION }],
       ['sources', [SOURCE]],
       ['error', { code: 'LLM_UNAVAILABLE', detail: 'Ollama answered 500' }],
@@ -560,18 +634,28 @@ test('an earlier conversation can be opened, with unfinished answers still label
   expect(calls.map((c) => c.key)).toContain(`DELETE /api/v1/conversations/${CONVERSATION.id}`)
 })
 
-
-test('a source card links to the original file at the cited page', async () => {
+test('a source card opens the source in the right-hand panel, which the user can close and reopen', async () => {
   mockApi(routesFor(answerStream(), stored()))
   render(<ChatPanel documents={[PAPER]} />)
 
   await ask()
+  expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
+  await userEvent.click(await screen.findByRole('button', { name: '在右側檢視來源 1' }))
 
-  const link = await screen.findByRole('link', { name: /開啟原文第 8 頁/ })
-  expect(link).toHaveAttribute('href', `/api/v1/documents/${SOURCE.document_id}/file#page=8`)
-  expect(link).toHaveAttribute('target', '_blank')
+  const viewer = screen.getByRole('region', { name: '來源檢視' })
+  expect(within(viewer).getByText(/\[1\] paper\.pdf/)).toBeInTheDocument()
+  expect(within(viewer).getByRole('link', { name: '開新分頁' })).toHaveAttribute(
+    'href',
+    `/api/v1/documents/${SOURCE.document_id}/file#page=8`,
+  )
+  // The panel is the user's to open and close; closed, it keeps nothing on screen.
+  await userEvent.click(screen.getByRole('button', { name: /收起來源檢視/ }))
+  expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
+  await userEvent.click(screen.getByRole('button', { name: /來源檢視/ }))
+  expect(
+    within(screen.getByRole('region', { name: '來源檢視' })).getByText(/\[1\] paper\.pdf/),
+  ).toBeInTheDocument()
 })
-
 
 test('clicking a citation opens the source beside the answer with the cited page', async () => {
   mockApi(routesFor(answerStream(), stored()))
@@ -584,7 +668,9 @@ test('clicking a citation opens the source beside the answer with the cited page
   const viewer = screen.getByRole('region', { name: '來源檢視' })
   expect(within(viewer).getByText(/\[1\] paper\.pdf/)).toBeInTheDocument()
   expect(within(viewer).getByText(/第 8 頁/)).toBeInTheDocument()
-  expect(within(viewer).getByText(/引用這段的句子：「The ablated versions perform worse」/)).toBeInTheDocument()
+  expect(
+    within(viewer).getByText(/引用這段的句子：「The ablated versions perform worse」/),
+  ).toBeInTheDocument()
   expect(within(viewer).getByTitle('paper.pdf 第 8 頁')).toHaveAttribute(
     'src',
     `/api/v1/documents/${SOURCE.document_id}/file#page=8`,
@@ -594,8 +680,14 @@ test('clicking a citation opens the source beside the answer with the cited page
 })
 
 test("the program's notes after an answer are folded away from the answer text", async () => {
-  const content = 'LightRAG wins [1].\n\nNumbers that could not be checked against the cited pages of the original text: 99%.'
-  mockApi(routesFor(answerStream({ pieces: [content] }), { ...stored(), messages: [stored().messages[0], { ...stored().messages[1], content }] }))
+  const content =
+    'LightRAG wins [1].\n\nNumbers that could not be checked against the cited pages of the original text: 99%.'
+  mockApi(
+    routesFor(answerStream({ pieces: [content] }), {
+      ...stored(),
+      messages: [stored().messages[0], { ...stored().messages[1], content }],
+    }),
+  )
   render(<ChatPanel documents={[PAPER]} />)
 
   await ask()
