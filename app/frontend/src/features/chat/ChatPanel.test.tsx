@@ -646,7 +646,7 @@ test('a source card opens the source in the right-hand panel, which the user can
   expect(within(viewer).getByText(/\[1\] paper\.pdf/)).toBeInTheDocument()
   expect(within(viewer).getByRole('link', { name: '開新分頁' })).toHaveAttribute(
     'href',
-    `/api/v1/documents/${SOURCE.document_id}/file#page=8`,
+    `/api/v1/documents/${SOURCE.document_id}/file?p=8#page=8`,
   )
   // The panel is the user's to open and close; closed, it keeps nothing on screen.
   await userEvent.click(screen.getByRole('button', { name: /收起來源檢視/ }))
@@ -673,7 +673,7 @@ test('clicking a citation opens the source beside the answer with the cited page
   ).toBeInTheDocument()
   expect(within(viewer).getByTitle('paper.pdf 第 8 頁')).toHaveAttribute(
     'src',
-    `/api/v1/documents/${SOURCE.document_id}/file#page=8`,
+    `/api/v1/documents/${SOURCE.document_id}/file?p=8#page=8`,
   )
   await userEvent.click(within(viewer).getByRole('button', { name: '關閉來源檢視' }))
   expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
@@ -710,4 +710,33 @@ test('Enter sends the question and Shift+Enter only adds a line', async () => {
   await userEvent.type(box, '{Enter}')
 
   expect(calls.find((c) => c.key === ASK)!.body).toEqual({ question: 'first line\nsecond', document_ids: [] })
+})
+
+test('opening another citation moves the embedded page, and Esc closes the panel', async () => {
+  const second = { ...SOURCE, index: 2, page_start: 3, page_end: 3, snippet: 'Dual-level retrieval…' }
+  const content = 'One [1]. Two [2].'
+  const detail = {
+    ...stored(),
+    messages: [stored().messages[0], { ...stored().messages[1], content, sources: [SOURCE, second] }],
+  }
+  mockApi(routesFor(answerStream({ pieces: [content], sources: [SOURCE, second] }), detail))
+  render(<ChatPanel documents={[PAPER]} />)
+
+  await ask()
+  const conversation = await screen.findByRole('list', { name: '對話內容' })
+  await userEvent.click(within(conversation).getByRole('button', { name: '來源 1' }))
+  expect(screen.getByTitle('paper.pdf 第 8 頁')).toHaveAttribute(
+    'src',
+    expect.stringContaining('?p=8#page=8'),
+  )
+
+  await userEvent.click(within(conversation).getByRole('button', { name: '來源 2' }))
+  expect(screen.queryByTitle('paper.pdf 第 8 頁')).not.toBeInTheDocument()
+  expect(screen.getByTitle('paper.pdf 第 3 頁')).toHaveAttribute(
+    'src',
+    expect.stringContaining('?p=3#page=3'),
+  )
+
+  await userEvent.keyboard('{Escape}')
+  expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
 })

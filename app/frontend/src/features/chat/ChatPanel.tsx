@@ -439,7 +439,9 @@ export function SourceViewer({
   onClose: () => void
 }) {
   const isPdf = source.filename.toLowerCase().endsWith('.pdf')
-  const fileUrl = `/api/v1/documents/${source.document_id}/file#page=${source.page_start}`
+  // The page goes in the query too: a changed fragment alone does not make the browser
+  // reload an embedded PDF, so the frame is keyed on the whole URL and recreated per page.
+  const fileUrl = `/api/v1/documents/${source.document_id}/file?p=${source.page_start}#page=${source.page_start}`
   const terms = highlights(source.snippet, sentence)
   return (
     <section
@@ -462,9 +464,10 @@ export function SourceViewer({
         </a>
         <button
           type="button"
-          className="rounded-full border border-border px-2 text-xs hover:bg-surface-2"
+          className="rounded-full border border-border px-2.5 py-1 text-sm hover:bg-surface-2"
           onClick={onClose}
           aria-label="關閉來源檢視"
+          title="關閉（Esc）"
         >
           ✕
         </button>
@@ -477,6 +480,7 @@ export function SourceViewer({
       </p>
       {isPdf && (
         <iframe
+          key={fileUrl}
           title={`${source.filename} 第 ${source.page_start} 頁`}
           src={fileUrl}
           className="min-h-[55vh] flex-1 border-t border-border"
@@ -578,6 +582,15 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
   const [panelOpen, setPanelOpen] = useState(false)
   const transcriptRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!panelOpen) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPanelOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [panelOpen])
 
   // Keep the newest message in view while answers stream in.
   useEffect(() => {
@@ -849,7 +862,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
       // Two complete class strings: Tailwind only generates classes it finds verbatim.
       className={
         panelOpen
-          ? 'grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)_minmax(360px,440px)]'
+          ? 'grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)_auto]'
           : 'grid h-full min-h-0 gap-4 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]'
       }
     >
@@ -1007,7 +1020,10 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
         )}
       </section>
       {panelOpen && (
-        <div className="min-h-0">
+        <div
+          className="min-h-0 w-[440px] min-w-[320px] max-w-[70vw] resize-x overflow-hidden"
+          title="拖拉右下角可改變寬度"
+        >
           {viewer ? (
             <SourceViewer
               source={viewer.source}
