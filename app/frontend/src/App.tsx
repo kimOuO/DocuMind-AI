@@ -37,10 +37,13 @@ export default function App() {
     }
   }
 
+  const signedIn = session.kind === 'authenticated'
   return (
-    <main className="mx-auto max-w-xl px-4 py-12">
-      <h1 className="text-2xl font-semibold">DocuMind-AI</h1>
-      <p className="mt-1 text-muted">AI 文件管理與問答平台</p>
+    <main className={signedIn ? 'mx-auto max-w-[1600px] px-4 py-4' : 'mx-auto max-w-xl px-4 py-12'}>
+      <header className={signedIn ? 'flex flex-wrap items-baseline gap-x-3' : ''}>
+        <h1 className="text-2xl font-semibold">DocuMind-AI</h1>
+        <p className={signedIn ? 'text-muted' : 'mt-1 text-muted'}>AI 文件管理與問答平台</p>
+      </header>
 
       {session.kind === 'checking' && <p className="mt-6">載入中…</p>}
       {session.kind === 'unreachable' && (

@@ -41,8 +41,8 @@ export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
 
   return (
     <>
-      <div className="mt-6 flex items-center justify-between">
-        <p>
+      <div className="mt-2 flex items-center justify-between">
+        <p className="text-sm">
           已登入：<strong>{user.display_name}</strong>
         </p>
         <button
@@ -54,9 +54,24 @@ export function Home({ user, onLogout }: { user: User; onLogout: () => void }) {
         </button>
       </div>
 
-      <DocumentPanel onChange={setDocuments} />
-      <ChatPanel documents={documents} />
+      {/* Three columns on a wide screen (documents · conversation · inspector); stacked on a
+          narrow one. The chat panel renders the conversation and the inspector itself. */}
+      <div className="mt-2 grid gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:items-start">
+        <div className="min-w-0 lg:sticky lg:top-4">
+          <DocumentPanel onChange={setDocuments} />
+          <SystemStatus state={state} />
+        </div>
+        <div className="min-w-0">
+          <ChatPanel documents={documents} />
+        </div>
+      </div>
+    </>
+  )
+}
 
+function SystemStatus({ state }: { state: HealthState }) {
+  return (
+    <>
       <section className="mt-4 rounded-lg border border-border bg-surface p-4">
         <h2 className="font-semibold">系統狀態</h2>
         {state.kind === 'loading' && <p className="mt-2">檢查中…</p>}

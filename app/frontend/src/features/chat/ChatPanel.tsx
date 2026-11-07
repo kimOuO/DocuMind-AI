@@ -71,6 +71,75 @@ const COVERAGE_LABEL: Record<string, string> = {
   not_located: '',
 }
 
+/** Generic prompts for a first question — not tied to any particular document. */
+const QUICK_QUESTIONS = ['summary this document.', '這份文件的主要結論是什麼？', '文件裡有哪些表格與數據？']
+
+const STAGE_ORDER: Stage[] = ['navigating', 'generating', 'verifying', 'correcting', 'revising', 'finalizing']
+const STAGE_SHORT: Record<Stage, string> = {
+  navigating: '規劃閱讀',
+  generating: '產生初稿',
+  verifying: '核對',
+  correcting: '修正',
+  revising: '修正',
+  finalizing: '整理',
+}
+
+/** The pipeline's steps so far; the current one carries its full description. */
+function StageSteps({ stage }: { stage: Stage | null }) {
+  // The single-call default reports no stages: only the waiting line shows.
+  if (stage === null) return <p className="mt-2 text-muted">檢索並產生回答中…</p>
+  const reached = STAGE_ORDER.indexOf(stage)
+  const shown = STAGE_ORDER.filter((_, index) => index <= reached)
+  return (
+    <div className="mt-2">
+      <ol className="flex flex-wrap items-center gap-1 text-xs" aria-label="處理步驟">
+        {shown.map((step, index) => (
+          <li
+            key={step}
+            className={`rounded-full border px-2 py-0.5 ${
+              index === shown.length - 1 ? 'border-accent text-accent' : 'border-border text-muted'
+            }`}
+            aria-current={index === shown.length - 1 ? 'step' : undefined}
+          >
+            {STAGE_SHORT[step]}
+          </li>
+        ))}
+      </ol>
+      <p className="mt-1 text-muted">{STAGE_LABEL[stage]}</p>
+    </div>
+  )
+}
+
+/** Tokens of this answer's calls against the 10K limit (AC-21). */
+function UsageMeter({ usage }: { usage: Usage }) {
+  const prompt = usage.prompt_tokens ?? 0
+  const completion = usage.completion_tokens ?? 0
+  const total = prompt + completion
+  const share = usage.limit ? Math.min(100, Math.round((total / usage.limit) * 100)) : null
+  return (
+    <div className="mt-2">
+      <p className="text-muted">
+        {usage.calls !== undefined && usage.calls > 1 ? `這 ${usage.calls} 次呼叫合計的 token` : '這次呼叫的 token'}
+        ：輸入 {prompt.toLocaleString()} + 回答 {completion.toLocaleString()} ={' '}
+        {total.toLocaleString()}
+        {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
+      </p>
+      {share !== null && (
+        <div
+          role="progressbar"
+          aria-label="token 用量"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={share}
+          className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-border"
+        >
+          <div className="h-full rounded-full bg-accent" style={{ width: `${share}%` }} />
+        </div>
+      )}
+    </div>
+  )
+}
+
 /** The Navigator's reading plan (D71 navigate mode): candidates checked against the document map. */
 function NavigationNote({ navigation }: { navigation: Navigation }) {
   if (navigation.skipped) {
@@ -450,6 +519,34 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
             .map((id) => documents.find((document) => document.id === id)?.filename ?? id)
             .join('、')
 
+  const inspectorEmpty =
+    scope === null && route === null && stage === null && usage === null && check === null
+  const inspector = (
+    <aside
+      aria-label="本次回答的檢索與用量"
+      className="rounded-lg border border-border bg-bg p-3 text-sm lg:sticky lg:top-4"
+    >
+      <h3 className="font-semibold">本次回答</h3>
+      {inspectorEmpty && (
+        <p className="mt-2 text-muted">送出問題後，這裡會顯示搜尋範圍、處理步驟、token 用量與數字核對。</p>
+      )}
+      {scopeText !== null && <p className="mt-2 text-muted">這次搜尋的範圍：{scopeText}</p>}
+      {route !== null && (
+        <p className="text-muted">問題類型：{ROUTE_LABEL[route.type] ?? route.type}</p>
+      )}
+      {route !== null && route.standalone_question !== route.asked && (
+        <p className="text-muted">改寫後的問題：{route.standalone_question}</p>
+      )}
+      {(stage !== null || asking) && <StageSteps stage={stage} />}
+      {navigation !== null && <NavigationNote navigation={navigation} />}
+      {revision !== null && <RevisionNote revision={revision} />}
+      {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
+        <UsageMeter usage={usage} />
+      )}
+      {check !== null && <NumberCheckView check={check} />}
+    </aside>
+  )
+
   return (
     <section className="mt-4 rounded-lg border border-border bg-surface p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -513,59 +610,65 @@ export function ChatPanel({ documents }: { documents: DocumentItem[] }) {
         </fieldset>
       )}
 
-      {messages.length > 0 && (
-        <ul className="mt-3 list-none p-0" aria-label="對話內容">
-          {messages.map((message) => (
-            <MessageView key={message.id} message={message} />
-          ))}
-        </ul>
-      )}
+      <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,340px)] lg:items-start">
+        <div className="min-w-0">
+          {messages.length > 0 ? (
+            <ul className="list-none p-0" aria-label="對話內容">
+              {messages.map((message) => (
+                <MessageView key={message.id} message={message} />
+              ))}
+            </ul>
+          ) : (
+            ready.length > 0 && (
+              <p className="text-sm text-muted">
+                還沒有對話。輸入問題，或用下面的快捷鈕。回答會附來源，文件裡沒有的內容會明說找不到。
+              </p>
+            )
+          )}
+          {error && (
+            <p role="alert" className="mt-2 text-sm text-danger">
+              {error}
+            </p>
+          )}
 
-      {scopeText !== null && <p className="mt-2 text-sm text-muted">這次搜尋的範圍：{scopeText}</p>}
-      {route !== null && (
-        <p className="text-sm text-muted">問題類型：{ROUTE_LABEL[route.type] ?? route.type}</p>
-      )}
-      {route !== null && route.standalone_question !== route.asked && (
-        <p className="text-sm text-muted">改寫後的問題：{route.standalone_question}</p>
-      )}
-      {stage !== null && <p className="text-sm text-muted">{STAGE_LABEL[stage]}</p>}
-      {navigation !== null && <NavigationNote navigation={navigation} />}
-      {revision !== null && <RevisionNote revision={revision} />}
-      {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
-        <p className="text-sm text-muted">
-          {usage.calls !== undefined && usage.calls > 1 ? `這 ${usage.calls} 次呼叫合計的 token` : '這次呼叫的 token'}
-          ：輸入 {usage.prompt_tokens.toLocaleString()} + 回答 {usage.completion_tokens.toLocaleString()} ={' '}
-          {(usage.prompt_tokens + usage.completion_tokens).toLocaleString()}
-          {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
-        </p>
-      )}
-      {check !== null && <NumberCheckView check={check} />}
-      {error && (
-        <p role="alert" className="mt-2 text-sm text-danger">
-          {error}
-        </p>
-      )}
-
-      <form className="mt-3 flex gap-2" onSubmit={handleAsk}>
-        <label className="flex-1">
-          <span className="sr-only">問題</span>
-          <textarea
-            className="w-full rounded-md border border-border bg-surface px-2 py-1"
-            rows={2}
-            placeholder="針對文件提問，例如：summary this document."
-            value={question}
-            disabled={asking || ready.length === 0}
-            onChange={(event) => setQuestion(event.target.value)}
-          />
-        </label>
-        <button
-          type="submit"
-          className="self-end rounded-md bg-accent px-3 py-1 text-sm font-medium text-surface disabled:opacity-50"
-          disabled={asking || ready.length === 0 || question.trim() === ''}
-        >
-          {asking ? '回答中…' : '送出'}
-        </button>
-      </form>
+          <form className="mt-3 flex gap-2" onSubmit={handleAsk}>
+            <label className="flex-1">
+              <span className="sr-only">問題</span>
+              <textarea
+                className="w-full rounded-md border border-border bg-surface px-2 py-1"
+                rows={2}
+                placeholder="針對文件提問，例如：summary this document."
+                value={question}
+                disabled={asking || ready.length === 0}
+                onChange={(event) => setQuestion(event.target.value)}
+              />
+            </label>
+            <button
+              type="submit"
+              className="self-end rounded-md bg-accent px-3 py-1 text-sm font-medium text-surface disabled:opacity-50"
+              disabled={asking || ready.length === 0 || question.trim() === ''}
+            >
+              {asking ? '回答中…' : '送出'}
+            </button>
+          </form>
+          {ready.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">
+              {QUICK_QUESTIONS.map((text) => (
+                <button
+                  key={text}
+                  type="button"
+                  className="rounded-full border border-border px-3 py-0.5 text-xs text-muted hover:text-text"
+                  disabled={asking}
+                  onClick={() => setQuestion(text)}
+                >
+                  {text}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        {inspector}
+      </div>
 
       {pendingDelete && (
         <ConfirmDialog
