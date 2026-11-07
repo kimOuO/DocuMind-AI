@@ -88,3 +88,39 @@ async def test_a_nan_reply_is_an_input_error_not_a_service_error() -> None:
 
     with pytest.raises(EmbeddingInputError, match="could not compute a vector for this text"):
         await _embedder(lambda request: nan).embed(["the sections, tables and figures"])
+
+
+async def test_a_nan_reply_is_retried_once_with_the_text_normalised() -> None:
+    """D88: the question "Compare condition C2 with vector RAG (SS) …" embedded as NaN in the
+    demo deployment; the same words with a newline appended embed fine. One retry, then
+    the error."""
+    seen: list[list[str]] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        texts = json.loads(request.content)["input"]
+        seen.append(texts)
+        if texts[0].endswith("\n"):
+            return httpx.Response(200, json={"embeddings": [_vector(0.1) for _ in texts]})
+        return httpx.Response(
+            500, json={"error": "failed to encode response: json: unsupported value: NaN"}
+        )
+
+    vectors = await _embedder(handler).embed(["Compare condition C2  with vector RAG (SS)"])
+
+    assert len(vectors) == 1 and len(vectors[0]) == EMBEDDING_DIMENSIONS
+    assert seen == [
+        ["Compare condition C2  with vector RAG (SS)"],
+        ["Compare condition C2 with vector RAG (SS)\n"],
+    ]
+
+
+async def test_in_a_batch_the_failing_text_is_found_and_retried_alone() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        texts = json.loads(request.content)["input"]
+        if any(t == "bad" for t in texts):
+            return httpx.Response(500, json={"error": "unsupported value: NaN"})
+        return httpx.Response(200, json={"embeddings": [_vector(0.2) for _ in texts]})
+
+    vectors = await _embedder(handler).embed(["good", "bad", "also good"])
+
+    assert len(vectors) == 3

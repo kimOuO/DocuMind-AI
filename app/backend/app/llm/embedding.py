@@ -40,9 +40,29 @@ class OllamaEmbedder:
         self._transport = transport
 
     async def embed(self, texts: list[str]) -> list[list[float]]:
-        """One vector per text, in the same order."""
+        """One vector per text, in the same order.
+
+        bge-m3 on the GPU answers NaN for a few texts (D88: a question of the question set,
+        word for word). The same text with its whitespace normalised and a newline appended
+        tokenizes differently and has always embedded so far; it is tried once before the
+        error is raised. In a batch, the texts are then embedded one by one so that the
+        retry applies to the one that fails."""
         if not texts:
             return []
+        try:
+            return await self._embed(texts)
+        except EmbeddingInputError:
+            if len(texts) > 1:
+                vectors = []
+                for text in texts:
+                    vectors.extend(await self.embed([text]))
+                return vectors
+            variant = " ".join(texts[0].split()) + "\n"
+            if variant == texts[0]:
+                raise
+            return await self._embed([variant])
+
+    async def _embed(self, texts: list[str]) -> list[list[float]]:
         request = embed_request(self._settings, texts)
         try:
             async with httpx.AsyncClient(
