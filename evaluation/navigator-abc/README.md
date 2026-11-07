@@ -615,3 +615,65 @@ Navigator 這批 Q2 三次都列 Table 1、G2 三次都列 Table 6，三次都�
 
 - 換模型沒有讓整體通過率變好，但改變了錯誤的型態：方向句錯誤大幅減少、定義齊了，新增的是冗長與截斷。若採用這個模型，要先處理輸出長度（prompt 要求不要把檢查過程寫進答案、縮短表格）並重新調 Navigator（TABLES_RULE 對它不夠，或 temperature 0 不適用）。
 - 兩批都指向同兩件事：Q1 要把 CONTRADICTED 註記交給模型（D76 P0，已做好、未啟用）；比較結論由程式從矩陣算、模型只解釋（D77 的建議 1）。
+
+## D78／B6：Evidence Matrix 第一次真的進到 Analyst（2026-11-07，Q2、Q3 各 3 次，838 秒含入庫）
+
+### 起因：追蹤一次中文 Q2 的兩級 prompt
+
+使用者要求以 B5 設定用中文問一次「比較 LightRAG 與 GraphRAG」，並看第一級輸入、Top-5 chunk、第一級輸出、第二級輸入、第二級 chunk、第二級輸出（追蹤器包住 gateway，放 scratchpad，不進專案）。Analyst 的 prompt 寫著「No structured table data could be read from the sources」，但程式建出了 256 格矩陣。原因：`MATRIX_TOKEN_BUDGET = 900`，一張 128 格的 Table 1 或 Table 2 排成矩陣是 1,348／1,350 tokens，超過就整張略過；略過分支又把表名丟掉。查 git：預算與格式自 D74（2056563）未變，B3–B5 的 Q2、Q3 每次矩陣都是 128 或 256 格的完整表，**所以 D74 以來模型在 Q2、Q3 從沒看過矩陣**，只看過逐列改寫的原始 chunk。單元測試用字數計數器與小表格，未暴露。這次中文回答也正好示範了原始 chunk 的弱點：16 格 LightRAG 數值全取自 NaiveRAG 區塊配 GraphRAG 區塊的值（如 67.6 對 45.6，正確是 54.4 對 45.6）。
+
+### 修正（8c82629）
+
+- 預算 900 → 1,500（放得進一張完整表；兩張時第二張略過並點名）。
+- 略過時 prompt 列出太大而略過的表、指示回原文讀並保留配對，不再說「讀不到」。
+- 守門是 prompt＋2,500 輸出 ≤ 10,000，prompt 上限 7,500，直接加 1,350 會被擋；因此矩陣的空間從 navigate 模式的補取預算扣除（`EVIDENCE_TOKEN_BUDGET − Top-K tokens − MATRIX_TOKEN_BUDGET`），代價是補取的 chunk 變少。
+- navigation 紀錄新增 `matrix.shown_tokens`、`matrix.left_out`、`retrieved_tokens`：以後能直接看出矩陣有沒有進 prompt。
+
+### 機制指標（B5 對 B6，`analyse.py`；其餘設定與 B5 完全相同）
+
+| 題 | 臂 | Recall 計畫 | Coverage 最終 | 補充塊 | 多餘 | 超預算 | 矩陣進 prompt | tokens | 秒 |
+|---|---|---|---|---|---|---|---|---|---|
+| Q2 | B5 | 0.75 | 0.75 | 18 | 12 | 3 | 0/3（900 預算全略過） | 8,891 | 55.5 |
+| Q2 | **B6** | 0.75 | 0.75 | 9 | 3 | 24 | **3/3**（1,348 tokens） | 9,095 | 60.1 |
+| Q3 | B5 | 1.00 | 1.00 | 0 | 0 | 0 | 0/3 | 7,987 | 97.3 |
+| Q3 | **B6** | 1.00 | 1.00 | 0 | 0 | 0 | **3/3**（1,348 tokens） | 9,025 | 85.8 |
+
+Table 1、Table 2 六次都進到 Analyst 且矩陣六次都送出（`left_out` 全空）。Q2 的補取預算少了 1,500，補充塊由 18 降到 9、超預算由 3 升到 24，但 Table 1 六次都仍補得進來（Navigator 把表列為 required，表先於章節取用）。Analyst 單次輸入 Q2 6,388、Q3 5,582 tokens；每次呼叫輸入＋輸出都在 10K 內（實驗工具斷言）。
+
+### 表格數字逐格核對（腳本對 `ground-truth/paper-structure.json`，含配對）
+
+| 次 | 答案中的表格數字 | 正確 | 備註 |
+|---|---|---|---|
+| B6-Q2-1 | 32 | 32 | 列式「Dataset / Metric: GraphRAG x \| LightRAG y」，配對全對 |
+| B6-Q2-2 | 32 | 32 | Markdown 表，配對全對 |
+| B6-Q2-3 | 32 | 32 | Markdown 表，配對全對 |
+| B6-Q3-1 | 128 | 128 | Markdown 表；表頭多一欄「Method Pairing」而資料列沒有，欄位錯置一格（讀者要自己對齊） |
+| B6-Q3-2 | 96 | 96 | 三個變體各 32 格，**沒有 LightRAG 自己的列** |
+| B6-Q3-3 | 128 | 128 | 列式，每個條件四個版本＋NaiveRAG 同一行 |
+
+B5 的「拿錯區塊的 LightRAG 數字」六次都沒再出現。
+
+### 人工判定（同 key-facts 標準）
+
+| 題 | B3 | B5 | **B6** | 事實正確 | 完整 |
+|---|---|---|---|---|---|
+| Q2 比較 | 2/3 | 1/3 | **2/3** | 2/3 | 3/3 |
+| Q3 消融 | 0/3 | 0/3 | **1/3** | 1/3 | 2/3 |
+
+| 次 | 判定 | 原因 |
+|---|---|---|
+| B6-Q2-1 | 通過 | 32 格全對；Mix 的三個例外（Comprehensiveness、Empowerment、Overall）全部點出；「Diversity 四個資料集全贏」正確。方向核對回報 3 條 **全是誤報**：「regresses slightly in Mix (49.6% vs. 50.4%)」是對的，核對把 regresses 的主詞方向讀反 |
+| B6-Q2-2 | 通過 | 32 格全對；三個例外全列；結論寫「多數指標」而非全部 |
+| B6-Q2-3 | 不通過 | 32 格全對、Mix Comprehensiveness 例外對；但「LightRAG consistently outperforms GraphRAG in Diversity, Empowerment, and Overall across all four datasets」錯（Mix Empowerment 49.2<50.8、Mix Overall 49.6<50.4），「only exception」錯（例外有三個）。**全稱檢查與 D76 的結論核對都抓到了**（contradicted，列出兩格反例；結論核對指出例外有 3 個不是 1 個），回答末尾也附了警語；標籤核對另報 2 條誤報（「GraphRAG slightly outperforms LightRAG (50.4% vs. 49.6%)」是對的） |
+| B6-Q3-1 | 不通過 | 128 格全對但表頭錯置一欄；沒有任何定義（A1 缺）；「-High／-Low／-Origin underperforms LightRAG in all metrics across all datasets」三句全錯（-High CS Diversity 63.2>62.0；-Low Mix Empowerment 64.8>57.2、Mix Overall 64.8>60.0；-Origin Agriculture Overall 74.4>67.6 等）；「-Origin shows improvements over NaiveRAG in Agriculture, Mix …」把全贏寫成部分。這些跨配對的全稱句，全稱檢查沒抓到（它只比同一配對的格子） |
+| B6-Q3-2 | 不通過 | 96 格全對但沒有 LightRAG 的列（完整性 incomplete，程式判定正確）；例外段兩句都錯：「-High … drop in Mix Empowerment (from 47.6% to 52.4%)」把 NaiveRAG 的 47.6 當起點、而 52.4 高於 47.6 不是 drop；「-Origin … drop in Mix Diversity (from 25.6% to 74.4%)」同型。標籤核對報 3 條，其中 44.0% 那條是模型打錯字「NaieveRAG」造成，另兩條指出的就是這兩句的張冠李戴 |
+| B6-Q3-3 | 通過 | 128 格全對、每個條件四版本同一行（A6）；三個變體的定義都有（移除高層檢索、移除低層檢索、不用原文）；主要觀察對（-High 多數下降、-Low 在部分指標持平或略升、-Origin 部分改善）。瑕疵：「-Low outperforms NaiveRAG in some cases」其實是全部，寫弱了但不是錯。程式判定 SUPPORTED_AND_COMPLETE，第一次與人工通過一致 |
+
+### 要誠實說的
+
+- 六次 416 個表格數字全對、配對全對；B5 的區塊混淆沒再出現。這是矩陣的第一次真實測試，而它要解的正是配對問題。
+- 剩下的錯全部是全稱結論句（「all metrics across all datasets」「consistently」「only exception」），而且在 Q3 集中於跨配對的比較（變體對 LightRAG，各自以 NaiveRAG 為對照）。Q2 的同配對全稱句核對抓得到；Q3 的跨配對全稱句抓不到，是核對器的缺口。
+- 核對器誤報：方向核對把「regresses」讀反（3 條）；標籤核對把「A slightly outperforms B (a vs b)」的兩個數字互換（2 條，B5-Q2-3 也出現過）。這兩個誤報會讓 analysis_status 把正確回答標成 FACTUALLY_INCORRECT，要修。
+- 代價：Q2 每次多約 200 tokens、Q3 多約 1,000（矩陣 1,348 減去少補的 chunk）；補充塊減半。
+- 3 次對 3 次，Q2 2/3 對 1/3、Q3 1/3 對 0/3 都在噪音範圍內；能說的是「配對錯誤消失、全稱句錯誤仍在」這個錯誤型態的改變，不是通過率的提升。
+- 本批沒有測 Q1、G1、G2。G2 的 Table 6 在入庫時沒有被逐格改寫（coverage gap），矩陣對它無效。
