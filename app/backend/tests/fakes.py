@@ -58,6 +58,15 @@ class RecordingScheduler:
         self.cancelled.append(str(document_id))
 
 
+def written_summary(repair_prompt: str) -> str:
+    """The summary a repair prompt asks to correct."""
+    match = re.search(
+        r"^Summary as written:\n(.*?)\n\nContradictions found", repair_prompt, flags=re.S | re.M
+    )
+    assert match, repair_prompt
+    return match.group(1)
+
+
 class StubSummariser:
     """Plays the model for summary calls: answers from what the prompt asked for."""
 
@@ -74,6 +83,11 @@ class StubSummariser:
         self.cut_short_calls = cut_short_calls  # only these calls (by index) are cut short
         self.pause: asyncio.Event | None = None
 
+    def corrected(self, prompt: str) -> str:
+        """The answer to a repair prompt (D87 B): by default the summary as written, i.e. a
+        model that does not budge; tests override this to play a model that corrects."""
+        return written_summary(prompt)
+
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
@@ -83,7 +97,9 @@ class StubSummariser:
         if self.fail_on_call == len(self.prompts) - 1:
             return httpx.Response(500, json={"error": "model failed to load"})
         section = re.search(r"^Section: (.*)$", prompt, flags=re.M)
-        if section:
+        if prompt.rstrip().endswith("Corrected summary:"):
+            text = self.corrected(prompt)
+        elif section:
             pages = re.search(r"^Pages: (.*)$", prompt, flags=re.M)
             first_page = pages.group(1).split("-")[0]  # type: ignore[union-attr]
             text = f"Summary of {section.group(1)}: key figure 67.6% (p. {first_page})."

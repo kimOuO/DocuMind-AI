@@ -1,0 +1,355 @@
+{
+ "arm": "A2",
+ "answer_mode": "single",
+ "question": "Q2",
+ "question_text": "compare lightRAG with GraphRAG",
+ "document": "lightrag",
+ "expectation": {},
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 26.9,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "compare lightRAG with GraphRAG"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "Table 1: Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.\n(Rows reduced by the program to the columns the question names: LightRAG, GraphRAG; each pair is as the table pairs it. The full table is on the same page.)\nGraphRAG LightRAG GraphRAG LightRAG\nComprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6%\nDiversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0%\nEmpowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2%\nOverall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6%",
+   "score": 0.6504,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handling large\ntoken counts and complex queries that require a thorough understanding of the dataset’s context,\ngraph-based RAG systems like LightRAG and GraphRAG consistently outperform purely chunk-\nbased retrieval methods such as NaiveRAG, HyDE, and RQRAG. This performance gap becomes\nparticularly pronounced as the dataset size increases. For instance, in the largest dataset (Legal), the\ndisparity widens significantly, with baseline methods achieving only about 20% win rates compared\nto the dominance of LightRAG. This trend underscores the advantages of graph-enhanced RAG\nsystems in capturing complex semantic dependencies within large-scale corpora, facilitating a more\ncomprehensive understanding of knowledge and leading to improved generalization performance.\nEnhancing Response Diversity with LightRAG: Compared to various baselines, LightRAG demon-\nstrates a significant advantage in the Diversity metric, particularly within the larger Legal dataset.\nIts consistent lead in this area underscores LightRAG’s effectiveness in generating a wider range\nof responses, especially in scenarios where diverse content is essential. We attribute this advantage\nto LightRAG’s dual-level retrieval paradigm, which facilitates comprehensive information retrieval\nfrom both low-level and high-level dimensions. This approach effectively leverages graph-based text\nindexing to consistently capture the full context in response to queries.\nLightRAG’s Superiority over GraphRAG: While both LightRAG and GraphRAG use graph-based\nretrieval mechanisms, LightRAG consistently outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of",
+   "score": 0.6455,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 7,
+   "page_end": 7,
+   "section_title": null,
+   "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+   "score": 0.6299,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+   "score": 0.6265,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+   "filename": "2410.05779v3.pdf",
+   "page_start": 8,
+   "page_end": 8,
+   "section_title": null,
+   "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+   "score": 0.6123,
+   "origin": "retrieval"
+  }
+ ],
+ "final_answer": "LightRAG and GraphRAG are both graph-based retrieval-augmented generation (RAG) systems, but their performance varies across different metrics and datasets. LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts [2].\n\n### Main Findings:\n- **Comprehensiveness**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%) [1].\n- **Diversity**: LightRAG significantly outperforms GraphRAG in all datasets, with the largest disparity observed in the Legal dataset (73.6% vs 26.4%) [1].\n- **Empowerment**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.8% vs 49.2%) [1].\n- **Overall**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%) [1].\n\n### Representative Figures:\n- **Comprehensiveness — Agriculture**: LightRAG 54.4% vs GraphRAG 45.6% [1].\n- **Diversity — Legal**: LightRAG 73.6% vs GraphRAG 26.4% [1].\n- **Empowerment — CS**: LightRAG 54.8% vs GraphRAG 45.2% [1].\n- **Overall — Legal**: LightRAG 52.8% vs GraphRAG 47.2% [1].\n\n### Exceptions:\n- **Mix / Comprehensiveness**: GraphRAG 50.4% vs LightRAG 49.6% (-0.8 pp, -1.6% relative) [1].\n- **Mix / Empowerment**: GraphRAG 50.8% vs LightRAG 49.2% (-1.6 pp, -3.1% relative) [1].\n- **Mix / Overall**: GraphRAG 50.4% vs LightRAG 49.6% (-0.8 pp, -1.6% relative) [1].\n\n### Conclusion:\nLightRAG generally outperforms GraphRAG in most metrics and datasets, especially in larger and more complex datasets. However, in the Mix dataset, GraphRAG shows a slight advantage in comprehensiveness, empowerment, and overall performance. These exceptions must be considered when evaluating the overall effectiveness of the two systems.\n\nNumbers that could not be checked against the cited pages of the original text: 0.8, 1.6%, 1.6, 3.1%.",
+ "usage": {
+  "prompt_tokens": 2698,
+  "completion_tokens": 579,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   2,
+   1
+  ],
+  "unverified_numbers": [
+   "0.8",
+   "1.6%",
+   "1.6",
+   "3.1%"
+  ],
+  "verified_numbers": [
+   {
+    "number": "50.4%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+   },
+   {
+    "number": "49.6%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+   },
+   {
+    "number": "73.6%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG LightRAG GraphRAG L…"
+   },
+   {
+    "number": "26.4%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…ulture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6% GraphRAG LightRAG GraphRAG Lig…"
+   },
+   {
+    "number": "50.8%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+   },
+   {
+    "number": "49.2%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+   },
+   {
+    "number": "54.4%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…RAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix…"
+   },
+   {
+    "number": "45.6%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…G GraphRAG LightRAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, Lig…"
+   },
+   {
+    "number": "54.8%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…ent — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Ove…"
+   },
+   {
+    "number": "45.2%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…G 64.0% Empowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, Li…"
+   },
+   {
+    "number": "52.8%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…tRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-enhanced RAG Syst…"
+   },
+   {
+    "number": "47.2%",
+    "document_id": "e1d2c352-15ca-40a6-90db-fdd8a9efab41",
+    "page": 7,
+    "snippet": "…hRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6% The Superiority of Graph-e…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [
+   {
+    "number": "50.4%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- **Comprehensiveness**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Comprehensiveness",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Comprehensiveness",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Comprehensiveness**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "73.6%",
+    "answer_labels": [
+     "Diversity",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Diversity**: LightRAG significantly outperforms GraphRAG in all datasets, with the largest disparity observed in the Legal dataset (73.6% vs 26.4%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "26.4%",
+    "answer_labels": [
+     "Diversity",
+     "Legal"
+    ],
+    "source_labels": [
+     [
+      "Diversity",
+      "Legal",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- **Diversity**: LightRAG significantly outperforms GraphRAG in all datasets, with the largest disparity observed in the Legal dataset (73.6% vs 26.4%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "50.8%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- **Empowerment**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.8% vs 49.2%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "49.2%",
+    "answer_labels": [
+     "Empowerment",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Empowerment",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Empowerment**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.8% vs 49.2%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "50.4%",
+    "answer_labels": [
+     "Overall",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "GraphRAG",
+      "vs LightRAG"
+     ]
+    ],
+    "sentence": "- **Overall**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%).",
+    "reason": "ambiguous"
+   },
+   {
+    "number": "49.6%",
+    "answer_labels": [
+     "Overall",
+     "Mix"
+    ],
+    "source_labels": [
+     [
+      "Overall",
+      "Mix",
+      "LightRAG",
+      "vs GraphRAG"
+     ]
+    ],
+    "sentence": "- **Overall**: LightRAG performs better in the Agriculture, CS, and Legal datasets, but GraphRAG outperforms LightRAG in the Mix dataset (50.4% vs 49.6%).",
+    "reason": "ambiguous"
+   }
+  ],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "replace",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": [
+    1
+   ]
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 2698,
+   "completion_tokens": 579,
+   "estimated_prompt_tokens": 2714,
+   "finish_reason": "stop",
+   "duration_ms": 26496
+  }
+ ]
+}

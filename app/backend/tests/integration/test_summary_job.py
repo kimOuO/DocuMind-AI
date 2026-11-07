@@ -24,7 +24,7 @@ from app.ingestion.scheduler import get_job_scheduler
 from app.llm.gateway import OllamaGateway
 from app.llm.tokenizer import Qwen3TokenCounter
 from app.summarization.service import SummaryJobRunner, SummaryOutcome
-from tests.fakes import FakeEmbedder, RecordingScheduler, StubSummariser
+from tests.fakes import FakeEmbedder, RecordingScheduler, StubSummariser, written_summary
 from tests.integration.conftest import register_and_login
 
 pytestmark = pytest.mark.db
@@ -49,7 +49,13 @@ def user(client: TestClient) -> TestClient:
     return client
 
 
-def runners(tokenizer: Qwen3TokenCounter, model: StubSummariser, *, input_budget: int = 6_000):
+def runners(
+    tokenizer: Qwen3TokenCounter,
+    model: StubSummariser,
+    *,
+    input_budget: int = 6_000,
+    repair: bool = False,
+):
     settings = get_settings()
     storage = FileStorage(settings.data_dir)
     index = IndexJobRunner(
@@ -70,6 +76,7 @@ def runners(tokenizer: Qwen3TokenCounter, model: StubSummariser, *, input_budget
             transport=httpx.MockTransport(model),
         ),
         input_budget=input_budget,
+        repair=repair,
     )
     return (
         index,
@@ -325,7 +332,8 @@ class MisattributingSummariser(StubSummariser):
         if "Summary of" in body.get("response", ""):
             body["response"] = (
                 "The -High variant, which removes high-level retrieval, reaches 67.6% in "
-                "Agriculture Comprehensiveness, while LightRAG reaches 67.6% (p. 1)."
+                "Agriculture Comprehensiveness, while LightRAG reaches 67.6% (p. 1). "
+                "The variants are compared on two datasets (p. 1)."
             )
             return httpx.Response(200, json=body)
         return response
@@ -390,3 +398,102 @@ async def test_a_summary_without_figures_or_chunks_is_not_checked_rather_than_ve
     await dispatcher.run(uuid.UUID(job_id))
 
     assert summary.verification_reports[0]["status"] == "NOT_CHECKED"
+
+
+WRONG_SENTENCE = (
+    "The -High variant, which removes high-level retrieval, reaches 67.6% in "
+    "Agriculture Comprehensiveness, while LightRAG reaches 67.6% (p. 1)."
+)
+RIGHT_SENTENCE = (
+    "LightRAG reaches 67.6% in Agriculture Comprehensiveness, while the -High variant, which "
+    "removes high-level retrieval, reaches 65.2% (p. 1)."
+)
+
+
+class CorrectingSummariser(MisattributingSummariser):
+    """Misattributes once, then corrects when shown the table's figures."""
+
+    def corrected(self, prompt: str) -> str:
+        return written_summary(prompt).replace(WRONG_SENTENCE, RIGHT_SENTENCE)
+
+
+async def test_repair_rewrites_a_contradicted_section_summary_from_the_tables_figures(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D87 experiment B (B1): the contradicted summary is sent back once with the figure's
+    real labels and the condition's figures; the corrected text passes the re-check and is
+    what gets stored, with the repair on record."""
+    model = CorrectingSummariser()
+    _, summary, dispatcher = runners(tokenizer, model, repair=True)
+    document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    repair_prompt = next(p for p in model.prompts if p.rstrip().endswith("Corrected summary:"))
+    # Traceable evidence (B3), not just "this is wrong": where the figure really sits, the
+    # table's figures for the condition the summary named, and the difference.
+    assert "67.6% is given as" in repair_prompt and "-High" in repair_prompt
+    assert "LightRAG 67.6%" in repair_prompt and "-High 65.2%" in repair_prompt
+    assert "(-2.4 pp, -3.6% relative)" in repair_prompt
+    assert "Table 2" in repair_prompt  # the excerpt of the condition's rows
+    section = next(row for row in summaries(db, document_id) if row[0] == "section")
+    assert RIGHT_SENTENCE in section[5] and WRONG_SENTENCE not in section[5]
+    stored = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'section'",
+        (document_id,),
+    ).fetchone()[0]
+    assert stored["status"] != "CONTRADICTED" and stored["contradicted"] == []
+    assert stored["repair"]["before"] == "CONTRADICTED"
+    assert stored["repair"]["rewritten"] is True and stored["repair"]["removed_sentences"] == []
+    assert stored["repair"]["after"] == stored["status"]
+    assert summary.repair_reports and summary.repair_reports[0]["repair"]["rewritten"] is True
+    # One extra call, at answer temperature 0, within the ledger like every other.
+    purposes = db.execute(
+        "SELECT purpose, prompt_tokens + completion_tokens <= 10000 FROM llm_calls "
+        "WHERE purpose = 'summary_repair'"
+    ).fetchall()
+    assert purposes == [("summary_repair", True)]
+
+
+async def test_a_sentence_still_contradicted_after_the_rewrite_is_removed(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """The model does not budge: the sentence the re-check still contradicts is dropped so
+    that no contradicted figure is stored as the document's summary (B1 fallback)."""
+    model = MisattributingSummariser()  # its repair answer is the summary as written
+    _, _, dispatcher = runners(tokenizer, model, repair=True)
+    document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    section = next(row for row in summaries(db, document_id) if row[0] == "section")
+    assert WRONG_SENTENCE not in section[5]
+    stored = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'section'",
+        (document_id,),
+    ).fetchone()[0]
+    assert stored["repair"]["removed_sentences"] == [WRONG_SENTENCE]
+    assert stored["repair"]["rewritten"] is False
+    assert "The variants are compared on two datasets (p. 1)." in section[5]
+    assert stored["status"] != "CONTRADICTED"
+    assert sum(1 for p in model.prompts if p.rstrip().endswith("Corrected summary:")) == 1
+
+
+async def test_without_repair_a_contradicted_summary_is_stored_as_written(
+    user: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """B0: the flag off leaves D76's behaviour — marked, never rewritten, no extra call."""
+    model = CorrectingSummariser()
+    _, _, dispatcher = runners(tokenizer, model, repair=False)
+    document_id, job_id = upload(user, "ablation.txt", ABLATION_TABLE.encode())
+
+    await dispatcher.run(uuid.UUID(job_id))
+
+    section = next(row for row in summaries(db, document_id) if row[0] == "section")
+    assert WRONG_SENTENCE in section[5]
+    assert not any(p.rstrip().endswith("Corrected summary:") for p in model.prompts)
+    stored = db.execute(
+        "SELECT verification FROM summaries WHERE document_id = %s AND level = 'section'",
+        (document_id,),
+    ).fetchone()[0]
+    assert stored["status"] == "CONTRADICTED" and "repair" not in stored

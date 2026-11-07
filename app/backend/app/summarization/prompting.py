@@ -138,3 +138,40 @@ def group_within_budget(
     if current:
         groups.append(current)
     return groups
+
+
+REPAIR_INSTRUCTIONS = """\
+You wrote the summary below of a section of a document. A program checked every figure in it \
+against the tables on the section's pages and found the contradictions listed after it, each \
+with the table's own figures. Rewrite ONLY the sentences listed, so that every figure is \
+attributed exactly as the table gives it — the right method, dataset, metric and comparison — \
+or is left out; keep every other sentence word for word; do not add any figure that is not in \
+the table excerpts; keep the page markers like "(p. 8)". Return the whole corrected summary \
+as plain text.
+
+Document: {filename}
+Section: {title}
+
+Summary as written:
+{summary}
+
+Contradictions found by the program:
+{evidence}
+
+Table excerpts (as the program reads them; each pair is as the table pairs it):
+{excerpts}
+
+Corrected summary:"""
+
+
+def repair_prompt(
+    filename: str, title: str, summary: str, evidence: Sequence[str], excerpts: str
+) -> str:
+    """One rewrite of a summary whose figures contradict its tables (D87 experiment B)."""
+    return REPAIR_INSTRUCTIONS.format(
+        filename=filename,
+        title=title,
+        summary=summary,
+        evidence="\n".join(f"- {line}" for line in evidence) or "- (none)",
+        excerpts=excerpts or "(none)",
+    )

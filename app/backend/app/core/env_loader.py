@@ -81,6 +81,11 @@ class Settings(BaseSettings):
     #   replace — as inject, and a table chunk whose figures the facts cover is shown as the
     #             rows of the compared columns only (its caption and page kept)
     answer_facts: str = "off"
+    # D87 experiment B: when a section or document summary's figures contradict the tables
+    # of its pages, the model is asked once to rewrite the contradicted sentences with the
+    # table's own figures as evidence; what still contradicts afterwards is removed. Off by
+    # default: the status is stored, the text kept as written.
+    summary_repair: bool = False
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at

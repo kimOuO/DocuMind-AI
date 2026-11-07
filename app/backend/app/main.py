@@ -71,6 +71,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
                 storage=storage,
                 counter=counter,
                 gateway=OllamaGateway(settings=settings, sessions=sessions, counter=counter),
+                repair=settings.summary_repair,
             ),
         )
     )

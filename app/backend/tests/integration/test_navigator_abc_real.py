@@ -112,6 +112,7 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
         storage=storage,
         counter=counter,
         gateway=OllamaGateway(settings=settings, sessions=sessions, counter=counter),
+        repair=settings.summary_repair,  # D87 experiment B: SUMMARY_REPAIR=true is B1
     )
     documents: dict[str, str] = {}
     for key, path in (("lightrag", LIGHTRAG), ("graphrag", GRAPHRAG)):
@@ -128,7 +129,16 @@ async def test_abc_experiment(client: TestClient, db: psycopg.Connection) -> Non
     # D75: what the summary verification found and corrected, for the experiment's records.
     label_for_files = (os.environ.get("ABC_LABEL") or "-".join(_plan())).replace(",", "-")
     (RUNS_DIR / f"{label_for_files}-summaries.json").write_text(
-        json.dumps(summary.verification_reports, indent=1, ensure_ascii=False) + "\n"
+        json.dumps(
+            {
+                "summary_repair": settings.summary_repair,
+                "verification": summary.verification_reports,
+                "repairs": summary.repair_reports,
+            },
+            indent=1,
+            ensure_ascii=False,
+        )
+        + "\n"
     )
 
     # ABC_LABEL names the records: one label for a single arm, or one per arm in the

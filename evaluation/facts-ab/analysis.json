@@ -1,0 +1,885 @@
+[
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 2,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 3,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 4,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 5,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q2",
+  "run": 6,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3267,
+  "answer_completion_tokens": 279,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensi"
+  ],
+  "universal_wording": [
+   "consistently"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG across multiple datasets and evaluation dimensions."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": false,
+   "Empowerment": false,
+   "Overall": false
+  },
+  "mix_exceptions_count": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 2,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 3,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 4,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 5,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A0",
+  "question": "Q3",
+  "run": 6,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 3697,
+  "answer_completion_tokens": 342,
+  "calls": 1,
+  "facts": null,
+  "table_figures": 0,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "all datasets"
+  ],
+  "sentences_with_universal_wording": [
+   "- **Low-level-only Retrieval (-High variant)**: This variant removes high-order retrieval and shows a significant performance decline across nearly all datasets"
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 0,
+  "variant_figures": 0
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 2,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 3,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 4,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 5,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q2",
+  "run": 6,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3775,
+  "answer_completion_tokens": 301,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": []
+  },
+  "table_figures": 14,
+  "figures_mislabelled": [
+   "49.6%",
+   "49.2%",
+   "45.6%",
+   "45.2%"
+  ],
+  "figures_unresolved": [
+   "54.4%",
+   "54.8%",
+   "23.6%",
+   "22.8%",
+   "29.2%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts.",
+   "GraphRAG shows a trend of outperforming NaiveRAG in 15 of 16 conditions, with the only exception being Agriculture / Diversity (23.6% vs 22.8%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A1",
+  "question": "Q3",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 794,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 16,
+  "figures_mislabelled": [],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "in all"
+  ],
+  "sentences_with_universal_wording": [
+   "**LightRAG vs NaiveRAG (direct pair; higher is better)**: LightRAG outperforms NaiveRAG in all 16 conditions, with no cases where NaiveRAG performs better [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 7,
+  "variant_figures": 9
+ },
+ {
+  "arm": "A1",
+  "question": "Q3",
+  "run": 2,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 944,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 26,
+  "figures_mislabelled": [
+   "16.4%",
+   "62.0%",
+   "63.2%",
+   "57.2%",
+   "64.8%",
+   "67.6%",
+   "75.2%"
+  ],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "in all",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "The full version of LightRAG consistently outperformed these ablated variants in most conditions [1].",
+   "**LightRAG vs NaiveRAG**: LightRAG outperformed NaiveRAG in all 16 conditions across the four metrics and four datasets.",
+   "The only exception was in the CS dataset for Diversity, where LightRAG scored 62.0% compared to -High's 63.2% (a difference of -1.2 pp, or -1.9% relative) [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 11,
+  "variant_figures": 15
+ },
+ {
+  "arm": "A1",
+  "question": "Q3",
+  "run": 3,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 944,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 26,
+  "figures_mislabelled": [
+   "16.4%",
+   "62.0%",
+   "63.2%",
+   "57.2%",
+   "64.8%",
+   "67.6%",
+   "75.2%"
+  ],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "in all",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "The full version of LightRAG consistently outperformed these ablated variants in most conditions [1].",
+   "**LightRAG vs NaiveRAG**: LightRAG outperformed NaiveRAG in all 16 conditions across the four metrics and four datasets.",
+   "The only exception was in the CS dataset for Diversity, where LightRAG scored 62.0% compared to -High's 63.2% (a difference of -1.2 pp, or -1.9% relative) [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 11,
+  "variant_figures": 15
+ },
+ {
+  "arm": "A1",
+  "question": "Q3",
+  "run": 4,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 4245,
+  "answer_completion_tokens": 944,
+  "calls": 1,
+  "facts": {
+   "mode": "inject",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": []
+  },
+  "table_figures": 26,
+  "figures_mislabelled": [
+   "16.4%",
+   "62.0%",
+   "63.2%",
+   "57.2%",
+   "64.8%",
+   "67.6%",
+   "75.2%"
+  ],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "in all",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "The full version of LightRAG consistently outperformed these ablated variants in most conditions [1].",
+   "**LightRAG vs NaiveRAG**: LightRAG outperformed NaiveRAG in all 16 conditions across the four metrics and four datasets.",
+   "The only exception was in the CS dataset for Diversity, where LightRAG scored 62.0% compared to -High's 63.2% (a difference of -1.2 pp, or -1.9% relative) [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": true
+  },
+  "lightrag_own_figures": 11,
+  "variant_figures": 15
+ },
+ {
+  "arm": "A2",
+  "question": "Q2",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "UNCERTAIN",
+  "answer_prompt_tokens": 2698,
+  "answer_completion_tokens": 579,
+  "calls": 1,
+  "facts": {
+   "mode": "replace",
+   "cells": 128,
+   "facts": 112,
+   "block_tokens": 508,
+   "replaced_sources": [
+    1
+   ]
+  },
+  "table_figures": 22,
+  "figures_mislabelled": [],
+  "figures_unresolved": [
+   "50.4%",
+   "49.6%",
+   "73.6%",
+   "26.4%",
+   "50.8%",
+   "49.2%",
+   "50.4%",
+   "49.6%"
+  ],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "consistently",
+   "in all"
+  ],
+  "sentences_with_universal_wording": [
+   "LightRAG consistently outperforms GraphRAG in most conditions, particularly in larger datasets with complex language contexts [2].",
+   "- **Diversity**: LightRAG significantly outperforms GraphRAG in all datasets, with the largest disparity observed in the Legal dataset (73.6% vs 26.4%) [1]."
+  ],
+  "mix_exceptions_named": {
+   "Comprehensiveness": true,
+   "Empowerment": true,
+   "Overall": true
+  },
+  "mix_exceptions_count": 3
+ },
+ {
+  "arm": "A2",
+  "question": "Q3",
+  "run": 1,
+  "status": "completed",
+  "analysis_status": "FACTUALLY_INCORRECT",
+  "answer_prompt_tokens": 3182,
+  "answer_completion_tokens": 678,
+  "calls": 1,
+  "facts": {
+   "mode": "replace",
+   "cells": 128,
+   "facts": 64,
+   "block_tokens": 548,
+   "replaced_sources": [
+    1
+   ]
+  },
+  "table_figures": 16,
+  "figures_mislabelled": [
+   "62.0%",
+   "61.2%",
+   "57.2%",
+   "60.0%",
+   "67.6%",
+   "67.6%",
+   "67.6%",
+   "67.6%"
+  ],
+  "figures_unresolved": [],
+  "overstated_by_program": [],
+  "universal_wording": [
+   "in all",
+   "only exception"
+  ],
+  "sentences_with_universal_wording": [
+   "**LightRAG vs NaiveRAG (direct pair; higher is better)**: LightRAG outperformed NaiveRAG in all 16 conditions, with no cases where NaiveRAG performed better [1]",
+   "The only exception was in the CS / Diversity metric, where -High performed better (63.2% vs 62.0%, a difference of -1.2 pp or -1.9% relative) [1]."
+  ],
+  "definitions": {
+   "-High": true,
+   "-Low": true,
+   "-Origin": false
+  },
+  "lightrag_own_figures": 7,
+  "variant_figures": 9
+ }
+]
