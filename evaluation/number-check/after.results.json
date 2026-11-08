@@ -1374,7 +1374,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "GraphRAG"
+    "GraphRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -1397,7 +1398,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -1420,7 +1422,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "GraphRAG"
+    "GraphRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -1443,7 +1446,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -1515,7 +1519,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "GraphRAG"
+    "GraphRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -1538,7 +1543,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -1561,7 +1567,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "GraphRAG"
+    "GraphRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -1584,7 +1591,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -1607,7 +1615,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "GraphRAG"
+    "GraphRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -1630,7 +1639,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "LightRAG"
+    "LightRAG",
+    "vs GraphRAG"
    ],
    "source_labels": [
     [
@@ -2422,7 +2432,8 @@
    "answer_labels": [
     "Comprehensiveness",
     "Agriculture",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -2446,7 +2457,8 @@
    "answer_labels": [
     "Comprehensiveness",
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -2470,7 +2482,8 @@
    "answer_labels": [
     "Diversity",
     "Legal",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -2494,15 +2507,10 @@
    "answer_labels": [
     "Diversity",
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
-    [
-     "Diversity",
-     "Legal",
-     "NaiveRAG",
-     "vs LightRAG"
-    ],
     [
      "Diversity",
      "Legal",
@@ -2524,7 +2532,8 @@
    "answer_labels": [
     "Empowerment",
     "Mix",
-    "LightRAG"
+    "LightRAG",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -2548,7 +2557,8 @@
    "answer_labels": [
     "Empowerment",
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -2572,7 +2582,8 @@
    "answer_labels": [
     "Overall",
     "CS",
-    "-Origin"
+    "-Origin",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -2596,7 +2607,8 @@
    "answer_labels": [
     "Overall",
     "CS",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Origin"
    ],
    "source_labels": [
     [
@@ -6714,7 +6726,8 @@
    "answer_labels": [
     "Overall",
     "Agriculture",
-    "LightRAG"
+    "LightRAG",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6722,12 +6735,6 @@
      "Agriculture",
      "LightRAG",
      "vs NaiveRAG"
-    ],
-    [
-     "Overall",
-     "Agriculture",
-     "LightRAG",
-     "vs RQ-RAG"
     ]
    ],
    "sentence": "Representative figures supporting this include the overall performance in the Agriculture dataset, where LightRAG achieved 67.6% compared to NaiveRAG's 32.4%.",
@@ -6744,7 +6751,8 @@
    "answer_labels": [
     "Overall",
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -6767,7 +6775,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "LightRAG"
+    "LightRAG",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6781,18 +6790,6 @@
      "CS",
      "LightRAG",
      "vs NaiveRAG"
-    ],
-    [
-     "Comprehensiveness",
-     "CS",
-     "LightRAG",
-     "vs RQ-RAG"
-    ],
-    [
-     "Diversity",
-     "CS",
-     "LightRAG",
-     "vs HyDE"
     ]
    ],
    "sentence": "In the CS dataset, LightRAG scored 61.2% compared to NaiveRAG's 38.8%.",
@@ -6808,7 +6805,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -6837,7 +6835,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "LightRAG"
+    "LightRAG",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6845,18 +6844,6 @@
      "Legal",
      "LightRAG",
      "vs NaiveRAG"
-    ],
-    [
-     "Comprehensiveness",
-     "Legal",
-     "LightRAG",
-     "vs RQ-RAG"
-    ],
-    [
-     "Empowerment",
-     "Legal",
-     "LightRAG",
-     "vs RQ-RAG"
     ]
    ],
    "sentence": "In the Legal dataset, LightRAG achieved 84.8% compared to NaiveRAG's 15.2%.",
@@ -6872,7 +6859,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -6895,7 +6883,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "LightRAG"
+    "LightRAG",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6903,12 +6892,6 @@
      "Mix",
      "LightRAG",
      "vs NaiveRAG"
-    ],
-    [
-     "Overall",
-     "Mix",
-     "LightRAG",
-     "vs RQ-RAG"
     ]
    ],
    "sentence": "In the Mix dataset, LightRAG scored 60.0% compared to NaiveRAG's 40.0%.",
@@ -6924,7 +6907,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs LightRAG"
    ],
    "source_labels": [
     [
@@ -6947,7 +6931,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -6970,7 +6955,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -6978,18 +6964,6 @@
      "Agriculture",
      "NaiveRAG",
      "vs -High"
-    ],
-    [
-     "Empowerment",
-     "Agriculture",
-     "NaiveRAG",
-     "vs -Low"
-    ],
-    [
-     "Overall",
-     "Agriculture",
-     "NaiveRAG",
-     "vs -Low"
     ]
    ],
    "sentence": "For example, in the Agriculture dataset, the -High variant scores 65.2% compared to NaiveRAG's 34.8%.",
@@ -7005,7 +6979,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7028,7 +7003,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -7036,12 +7012,6 @@
      "CS",
      "NaiveRAG",
      "vs -High"
-    ],
-    [
-     "Empowerment",
-     "CS",
-     "NaiveRAG",
-     "vs -Low"
     ]
    ],
    "sentence": "In the CS dataset, the -High variant scores 57.2% compared to NaiveRAG's 42.8%.",
@@ -7057,7 +7027,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7080,7 +7051,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -7103,7 +7075,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7126,7 +7099,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -7149,7 +7123,8 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7172,15 +7147,10 @@
    "reason": "missing",
    "answer_labels": [
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
-    [
-     "Empowerment",
-     "Agriculture",
-     "NaiveRAG",
-     "vs -High"
-    ],
     [
      "Comprehensiveness",
      "Agriculture",
@@ -7201,7 +7171,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7224,7 +7195,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
     [
@@ -7232,12 +7204,6 @@
      "CS",
      "NaiveRAG",
      "vs -Low"
-    ],
-    [
-     "Empowerment",
-     "CS",
-     "NaiveRAG",
-     "vs -Origin"
     ]
    ],
    "sentence": "In the CS dataset, the -Low variant scores 56.8% compared to NaiveRAG's 43.2%.",
@@ -7253,7 +7219,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7276,7 +7243,8 @@
    "reason": "missing",
    "answer_labels": [
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
     [
@@ -7299,7 +7267,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7322,15 +7291,10 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
-    [
-     "Diversity",
-     "Mix",
-     "NaiveRAG",
-     "vs -High"
-    ],
     [
      "Comprehensiveness",
      "Mix",
@@ -7460,7 +7424,8 @@
    "answer_labels": [
     "Comprehensiveness",
     "Agriculture",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7484,7 +7449,8 @@
    "answer_labels": [
     "Comprehensiveness",
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -7507,7 +7473,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "-Origin"
+    "-Origin",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7530,7 +7497,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Origin"
    ],
    "source_labels": [
     [
@@ -7554,7 +7522,8 @@
    "answer_labels": [
     "Diversity",
     "Legal",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7578,15 +7547,10 @@
    "answer_labels": [
     "Diversity",
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
-    [
-     "Diversity",
-     "Legal",
-     "NaiveRAG",
-     "vs LightRAG"
-    ],
     [
      "Diversity",
      "Legal",
@@ -7607,7 +7571,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "-Origin"
+    "-Origin",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7630,7 +7595,8 @@
    "reason": "missing",
    "answer_labels": [
     "CS",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Origin"
    ],
    "source_labels": [
     [
@@ -7654,7 +7620,8 @@
    "answer_labels": [
     "Empowerment",
     "Legal",
-    "-High"
+    "-High",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7678,7 +7645,8 @@
    "answer_labels": [
     "Empowerment",
     "Legal",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -High"
    ],
    "source_labels": [
     [
@@ -7701,7 +7669,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "-Origin"
+    "-Origin",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7724,7 +7693,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Origin"
    ],
    "source_labels": [
     [
@@ -7748,7 +7718,8 @@
    "answer_labels": [
     "Overall",
     "Agriculture",
-    "-Origin"
+    "-Origin",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7772,7 +7743,8 @@
    "answer_labels": [
     "Overall",
     "Agriculture",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Origin"
    ],
    "source_labels": [
     [
@@ -7795,7 +7767,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "-Low"
+    "-Low",
+    "vs NaiveRAG"
    ],
    "source_labels": [
     [
@@ -7824,7 +7797,8 @@
    "reason": "missing",
    "answer_labels": [
     "Mix",
-    "NaiveRAG"
+    "NaiveRAG",
+    "vs -Low"
    ],
    "source_labels": [
     [
