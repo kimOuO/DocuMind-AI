@@ -91,7 +91,7 @@
 | GraphRAG | compare GraphRAG with vector RAG | 通過 | 勝率範圍 Podcast 72–83%／75–82%、News 72–80%／62–71%（p 值）與第 9 頁一致；「SS 最直接」「empowerment 結果混合」正確。事實塊 0 條：Table 6（第 26 頁）沒被檢索到，數字來自內文 |
 | GraphRAG | Performance of the different GraphRAG conditions (C0–C3) compared with TS and SS | 內容通過，**核對器誤報一則** | 以宣稱為主的評估（第 11 頁）：全部條件在 comprehensiveness 勝過 SS 且 p<.05、彼此與 TS 無顯著差異、News 的 diversity 只有 C0 全門檻顯著——與原文一致。empowerment 的「C2 59%、C3 55%」取自第 10 頁熱圖，無法逐格核對。**頁尾的「表格不支持」是誤報**：核對器把 comprehensiveness 的全稱句拿去對 Table 2（context units／tokens）的 C3 對 TS 格子——核對器缺口：全稱句的指標不在那張表裡時不該比對 |
 | RAPTOR | summary this document. | 通過（檢索版） | QuALITY +20% 絕對準確率（摘要）、消融 56.6% 對 55.8%（Table 9）、幻覺 150 節點 4%（6 個）、壓縮率 72%、摘要 131 tokens、子節點 86 tokens（Table 10 文字）全對 |
-| RAPTOR | compare RAPTOR with BM25 and DPR | 通過 | QuALITY 62.4%、+2.0／+5.1、UnifiedQA +2.7／+6.7、QASPER 55.7% 與「至少 +1.8／+5.3」、ROUGE-L +7.3／+2.7 全對；NarrativeQA 的「1.7 到 5.8、0.7 到 2.1」未在內文找到原句，標為無法核對。事實塊 0 條：RAPTOR 的表格排版（Model 列、四個指標欄）沒有被偵測成表格，數字來自內文 |
+| RAPTOR | compare RAPTOR with BM25 and DPR | 通過 | QuALITY 62.4%、+2.0／+5.1、UnifiedQA +2.7／+6.7、QASPER 55.7% 與「至少 +1.8／+5.3」、ROUGE-L +7.3／+2.7 全對；NarrativeQA 的「1.7 到 5.8、0.7 到 2.1」與第 7 頁內文一致。事實塊 0 條：RAPTOR 的表格排版（Model 列、四個指標欄）沒有被偵測成表格，數字來自內文 |
 | RAPTOR | Performance of the different retrieval strategies (tree traversal vs collapsed tree) | 通過 | collapsed tree 較好、2000 tokens ≈ top-20、UnifiedQA 給 400 tokens、20 篇 QASPER 故事，與第 6 頁一致 |
 
 - 三篇論文、九題，內容判定九題無錯誤資訊；改寫一次都沒觸發（三個問題都是完整句）；路線全部正確。
