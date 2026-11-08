@@ -52,14 +52,17 @@ class StubOllama:
         completion_tokens: int | None = None,
         status_code: int = 200,
         error: str = "",
+        rewrite_to: str | None = None,
     ) -> None:
         self.pieces = pieces
+        self.rewrite_to = rewrite_to  # what the rewrite call answers; None = the question as asked
         self.done_reason = done_reason
         self.completion_tokens = len(pieces) if completion_tokens is None else completion_tokens
         self.status_code = status_code
         self.error = error
         self.prompts: list[str] = []  # answer prompts
         self.rewrite_prompts: list[str] = []
+        self.rewrite_options: list[dict] = []
         self.options: list[dict] = []  # the options of each answer request
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
@@ -68,11 +71,12 @@ class StubOllama:
         if not body["stream"]:
             # A follow-up's rewrite (AC-16): hand the question back unchanged.
             self.rewrite_prompts.append(body["prompt"])
+            self.rewrite_options.append(body["options"])
             latest = body["prompt"].rsplit("Latest question: ", 1)[1].split("\n", 1)[0]
             return httpx.Response(
                 200,
                 json={
-                    "response": latest,
+                    "response": self.rewrite_to or latest,
                     "done": True,
                     "done_reason": "stop",
                     "prompt_eval_count": 150,
@@ -827,6 +831,28 @@ async def test_the_answer_temperature_setting_reaches_the_model_and_is_absent_by
     events(ask(kim, new_conversation(kim), "What does LightRAG build?"))
     assert model.options[-1]["temperature"] == 0
     kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+
+
+async def test_the_route_is_decided_by_the_question_as_asked_not_by_its_rewrite(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D95: a follow-up's rewrite is for retrieval only. When the rewrite adds words that
+    look like a request for a summary, the question still goes to retrieval, because the
+    user's own words did not ask for one; and the rewrite call runs at temperature 0."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(
+        ["Graphs [1]."], rewrite_to="What does the document summary say about what LightRAG builds?"
+    )
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    events(ask(kim, conversation, "summary this document."))
+    received = dict(events(ask(kim, conversation, QUESTION)))
+    assert model.rewrite_options[-1]["temperature"] == 0
+    assert received["route"] == {
+        "type": "retrieval",
+        "standalone_question": "What does the document summary say about what LightRAG builds?",
+    }
+    assert [s["kind"] for s in received["sources"]] == ["chunk"]
 
 
 async def test_the_request_can_set_the_answer_temperature_between_0_and_1(

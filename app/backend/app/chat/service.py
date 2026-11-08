@@ -123,6 +123,9 @@ EVIDENCE_TOKEN_BUDGET = 5_500
 BELOW_THRESHOLD_PASSAGES = 3
 # D87 experiment A: the room the comparison facts may take before the sources (single mode).
 FACTS_TOKEN_BUDGET = 800  # D92: the unambiguous exception wording needs the room
+# D95: the rewrite of a follow-up is deterministic; it was the one call still sampling at the
+# model's default (0.6), so the same follow-up could be rewritten differently each time.
+REWRITE_TEMPERATURE = 0.0
 # The answer is saved to the database every this many pieces while it streams.
 SAVE_EVERY = 20
 
@@ -269,10 +272,12 @@ class ChatService:
                     "temperature": prepared.temperature,
                 },
             )
-            # A follow-up is first made to stand on its own (AC-16); the route, the
-            # retrieval and the answer all work from that standalone question.
+            # A follow-up is first made to stand on its own (AC-16); the retrieval and the
+            # answer work from that standalone question. The route is decided by the
+            # question as the user asked it (D95): a rewrite that adds words such as
+            # "document summary" must not send a content question to the summary tree.
             question = await self._standalone_question(prepared)
-            kind = question_type(question)
+            kind = question_type(prepared.question)
             fallback_note = ""
             if kind == "summary" and await self._summary_tree_skipped(prepared):
                 # D91: the documents were uploaded without a summary tree; the question is
@@ -652,6 +657,7 @@ class ChatService:
             result = await self._gateway.generate(
                 rewrite_prompt(memory, prepared.question),
                 purpose="rewrite",
+                temperature=REWRITE_TEMPERATURE,
                 max_output_tokens=self._settings.question_token_budget,
                 context=context,
             )
