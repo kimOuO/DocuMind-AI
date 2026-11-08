@@ -67,11 +67,11 @@ WORSE = re.compile(
 )
 DEF_WRONG = {
     "-High": re.compile(
-        r"-High[^.]{0,40}(high-level-only|only high|high-level retrieval only|uses only high)",
+        r"-High[^.,]{0,40}(high-level-only|only high|high-level retrieval only|uses only high)",
         re.IGNORECASE,
     ),
     "-Low": re.compile(
-        r"-Low[^.]{0,40}(low-level-only|only low|low-level retrieval only|uses only low)",
+        r"-Low[^.,]{0,40}(low-level-only|only low|low-level retrieval only|uses only low)",
         re.IGNORECASE,
     ),
     "-Origin": re.compile(

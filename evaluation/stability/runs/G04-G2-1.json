@@ -1,0 +1,201 @@
+{
+ "arm": "G04",
+ "answer_mode": "single",
+ "question": "G2",
+ "question_text": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets",
+ "document": "graphrag",
+ "expectation": {
+  "kind": "detail",
+  "expected": "依 graphrag-key-facts.md 的 G2 標準",
+  "expect_refusal": false
+ },
+ "run": 1,
+ "settings": {
+  "model": "qwen3:32b",
+  "embed_model": "bge-m3",
+  "top_k": 5,
+  "chunk_size": 400,
+  "chunk_overlap": 80,
+  "min_similarity": 0.5
+ },
+ "elapsed_seconds": 16.5,
+ "stages": [],
+ "route": {
+  "type": "retrieval",
+  "standalone_question": "Compare condition C2 with vector RAG (SS) on comprehensiveness in the Podcast and News datasets"
+ },
+ "sources": [
+  {
+   "index": 1,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 9,
+   "page_end": 9,
+   "section_title": null,
+   "snippet": "8,564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2 and Table 6, global approaches signifi-\ncantly outperformed conventional vector RAG (SS) in both comprehensiveness and diversity criteria\nacross datasets. Specifically, global approaches achieved comprehensiveness win rates between 72-\n83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win\nrates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a\nvalidity test confirmed that vector RAG produces the most direct responses across all comparisons.\nEmpowerment. Empowerment comparisons showed mixed results for both global approaches ver-\nsus vector RAG (SS) and GraphRAG approaches versus source text summarization ( TS). Using an\nLLM to analyze LLM reasoning for this measure indicated that the ability to provide specific exam-\n9",
+   "score": 0.7066,
+   "origin": "retrieval"
+  },
+  {
+   "index": 2,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 11,
+   "page_end": 11,
+   "section_title": null,
+   "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+   "score": 0.6918,
+   "origin": "retrieval"
+  },
+  {
+   "index": 3,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\ndatasets. For each question and metric, the winning condition received a score of 100, the losing\ncondition received a score of 0, and in the event of a tie, each condition was scored 50. These scores\nwere then averaged over five evaluation runs for each condition. Results of Shapiro-Wilk tests in-\ndicated that the data did not follow a normal distribution. Thus, non-parametric tests (Wilcoxon\nsigned-rank tests) were employed to assess the performance differences between pairs of condi-\ntions, with Holm-Bonferroni correction applied to account for multiple pairwise comparisons. The\ncorrected p-values that indicated statistically significant differences are highlighted in bold.\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nComprehensiveness / C0 TS — Podcast Transcripts: Mean 1 50.24, Mean 2 49.76, Z-value -0.06, p-value 1; News Articles: Mean 1 55.52, Mean 2 44.48, Z-value -2.03, p-value 0.17\nComprehensiveness / C1 TS — Podcast Transcripts: Mean 1 51.92, Mean 2 48.08, Z-value -1.56, p-value 0.633; News Articles: Mean 1 58.8, Mean 2 41.2, Z-value -3.62, p-value 0.002\nComprehensiveness / C2 TS — Podcast Transcripts: Mean 1 57.28, Mean 2 42.72, Z-value -4.1, p-value <0.001; News Articles: Mean 1 62.08, Mean 2 37.92, Z-value -5.07, p-value <0.001\nComprehensiveness / C3 TS — Podcast Transcripts: Mean 1 56.48, Mean 2 43.52, Z-value -3.42, p-value 0.006; News Articles: Mean 1 63.6, Mean 2 36.4, Z-value -5.63, p-value <0.001\nComprehensiveness / C0 SS — Podcast Transcripts: Mean 1 71.92, Mean 2 28.08, Z-value -6.2, p-value <0.001; News Articles: Mean 1 71.76, Mean 2 28.24, Z-value -6.3, p-value <0.001\nComprehensiveness / C1 SS — Podcast Transcripts: Mean 1 75.44, Mean 2 24.56, Z-value -7.45, p-value <0.001; News Articles: Mean 1 74.72, Mean 2 25.28, Z-value -7.78, p-value <0.001\nComprehensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001\nComprehensiveness / C3 SS — Podcast Transcripts: Mean 1 78.96, Mean 2 21.04, Z-value -8.12, p-value <0.001; News Articles: Mean 1 79.44, Mean 2 20.56, Z-value -8.44, p-value <0.001\nComprehensiveness / TS SS — Podcast Transcripts: Mean 1 83.12, Mean 2 16.88, Z-value -8.85, p-value <0.001; News Articles: Mean 1 79.6, Mean 2 20.4, Z-value -8.27, p-value <0.001\nComprehensiveness / C0 C1 — Podcast Transcripts: Mean 1 53.2, Mean 2 46.8, Z-value -1.96, p-value 0.389; News Articles: Mean 1 51.92, Mean 2 48.08, Z-value -0.45, p-value 0.777\nComprehensiveness / C0 C2 — Podcast Transcripts: Mean 1 50.24, Mean 2 49.76, Z-value -0.23, p-value 1; News Articles: Mean 1 53.68, Mean 2 46.32, Z-value -1.54, p-value 0.371\nComprehensiveness / C1 C2 — Podcast Transcripts: Mean 1 51.52, Mean 2 48.48, Z-value -1.62, p-value 0.633; News Articles: Mean 1 57.76, Mean 2 42.24, Z-value -4.01, p-value <0.001\nComprehensiveness / C0 C3 — Podcast Transcripts: Mean 1 49.12, Mean 2 50.88, Z-value -0.56, p-value 1; News Articles: Mean 1 52.16, Mean 2 47.84, Z-value -0.86, p-value 0.777\nComprehensiveness / C1 C3 — Podcast Transcripts: Mean 1 50.32, Mean 2 49.68, Z-value -0.66, p-value 1; News Articles: Mean 1 55.12, Mean 2 44.88, Z-value -2.94, p-value 0.016\nComprehensiveness / C2 C3 — Podcast Transcripts: Mean 1 52.24, Mean 2 47.76, Z-value -1.97, p-value 0.389; News Articles: Mean 1 58.64, Mean 2 41.36, Z-value -3.68, p-value 0.002\nDiversity",
+   "score": 0.6514,
+   "origin": "retrieval"
+  },
+  {
+   "index": 4,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nDirectness / C2 SS — Podcast Transcripts: Mean 1 40.4, Mean 2 59.6, Z-value -4.67, p-value <0.001; News Articles: Mean 1 44.88, Mean 2 55.12, Z-value -3.65, p-value 0.003\nDirectness / C3 SS — Podcast Transcripts: Mean 1 40.48, Mean 2 59.52, Z-value -4.69, p-value <0.001; News Articles: Mean 1 45.6, Mean 2 54.4, Z-value -2.86, p-value 0.043\nDirectness / TS SS — Podcast Transcripts: Mean 1 43.6, Mean 2 56.4, Z-value -3.96, p-value <0.001; News Articles: Mean 1 46, Mean 2 54, Z-value -2.68, p-value 0.066\nDirectness / C0 C1 — Podcast Transcripts: Mean 1 46.96, Mean 2 53.04, Z-value -2.87, p-value 0.037; News Articles: Mean 1 47.6, Mean 2 52.4, Z-value -2.17, p-value 0.179\nDirectness / C0 C2 — Podcast Transcripts: Mean 1 48.4, Mean 2 51.6, Z-value -2.06, p-value 0.197; News Articles: Mean 1 48.48, Mean 2 51.52, Z-value -1.61, p-value 0.321\nDirectness / C1 C2 — Podcast Transcripts: Mean 1 49.84, Mean 2 50.16, Z-value -1, p-value 0.952; News Articles: Mean 1 49.28, Mean 2 50.72, Z-value -1.6, p-value 0.321\nDirectness / C0 C3 — Podcast Transcripts: Mean 1 48.4, Mean 2 51.6, Z-value -1.8, p-value 0.29; News Articles: Mean 1 47.2, Mean 2 52.8, Z-value -2.62, p-value 0.071\nDirectness / C1 C3 — Podcast Transcripts: Mean 1 49.76, Mean 2 50.24, Z-value 0, p-value 1; News Articles: Mean 1 48.8, Mean 2 51.2, Z-value -1.29, p-value 0.321\nDirectness / C2 C3 — Podcast Transcripts: Mean 1 50, Mean 2 50, Z-value 0, p-value 1; News Articles: Mean 1 48.8, Mean 2 51.2, Z-value -1.84, p-value 0.262",
+   "score": 0.6479,
+   "origin": "retrieval"
+  },
+  {
+   "index": 5,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "Table 6: Pairwise comparisons of six conditions on four metrics across 125 questions and two\nPodcast Transcripts News Articles\nCondition 1 Condition 2 Mean 1 Mean 2 Z-value p-value Mean 1 Mean 2 Z-value p-value\nComprehensiveness\nEmpowerment / C3 TS — Podcast Transcripts: Mean 1 48.72, Mean 2 51.28, Z-value -1.27, p-value 1; News Articles: Mean 1 51.68, Mean 2 48.32, Z-value -1.2, p-value 1\nEmpowerment / C0 SS — Podcast Transcripts: Mean 1 42.96, Mean 2 57.04, Z-value -3.71, p-value 0.003; News Articles: Mean 1 42.72, Mean 2 57.28, Z-value -3.12, p-value 0.022\nEmpowerment / C1 SS — Podcast Transcripts: Mean 1 47.68, Mean 2 52.32, Z-value -1.5, p-value 0.936; News Articles: Mean 1 51.36, Mean 2 48.64, Z-value -0.84, p-value 1\nEmpowerment / C2 SS — Podcast Transcripts: Mean 1 50.72, Mean 2 49.28, Z-value -0.55, p-value 1; News Articles: Mean 1 49.84, Mean 2 50.16, Z-value -0.2, p-value 1\nEmpowerment / C3 SS — Podcast Transcripts: Mean 1 48.96, Mean 2 51.04, Z-value -0.57, p-value 1; News Articles: Mean 1 49.52, Mean 2 50.48, Z-value -0.08, p-value 1\nEmpowerment / TS SS — Podcast Transcripts: Mean 1 57.52, Mean 2 42.48, Z-value -4.1, p-value <0.001; News Articles: Mean 1 52.88, Mean 2 47.12, Z-value -1.1, p-value 1\nEmpowerment / C0 C1 — Podcast Transcripts: Mean 1 48.72, Mean 2 51.28, Z-value -1.23, p-value 1; News Articles: Mean 1 42.4, Mean 2 57.6, Z-value -3.9, p-value 0.001\nEmpowerment / C0 C2 — Podcast Transcripts: Mean 1 46.64, Mean 2 53.36, Z-value -2.54, p-value 0.12; News Articles: Mean 1 44.8, Mean 2 55.2, Z-value -2.16, p-value 0.336\nEmpowerment / C1 C2 — Podcast Transcripts: Mean 1 49.28, Mean 2 50.72, Z-value -1.73, p-value 0.682; News Articles: Mean 1 52, Mean 2 48, Z-value -1.45, p-value 1\nEmpowerment / C0 C3 — Podcast Transcripts: Mean 1 47.6, Mean 2 52.4, Z-value -1.78, p-value 0.682; News Articles: Mean 1 44.32, Mean 2 55.68, Z-value -3.45, p-value 0.008\nEmpowerment / C1 C3 — Podcast Transcripts: Mean 1 50, Mean 2 50, Z-value 0, p-value 1; News Articles: Mean 1 51.44, Mean 2 48.56, Z-value -1.02, p-value 1\nEmpowerment / C2 C3 — Podcast Transcripts: Mean 1 50.72, Mean 2 49.28, Z-value -0.86, p-value 1; News Articles: Mean 1 50.4, Mean 2 49.6, Z-value -0.22, p-value 1\nDirectness\nDirectness / C0 TS — Podcast Transcripts: Mean 1 44.96, Mean 2 55.04, Z-value -4.09, p-value <0.001; News Articles: Mean 1 45.2, Mean 2 54.8, Z-value -3.68, p-value 0.003\nDirectness / C1 TS — Podcast Transcripts: Mean 1 47.92, Mean 2 52.08, Z-value -2.41, p-value 0.126; News Articles: Mean 1 46.64, Mean 2 53.36, Z-value -2.91, p-value 0.04\nDirectness / C2 TS — Podcast Transcripts: Mean 1 48.8, Mean 2 51.2, Z-value -2.23, p-value 0.179; News Articles: Mean 1 48.32, Mean 2 51.68, Z-value -2.12, p-value 0.179\nDirectness / C3 TS — Podcast Transcripts: Mean 1 48.08, Mean 2 51.92, Z-value -2.23, p-value 0.179; News Articles: Mean 1 48.32, Mean 2 51.68, Z-value -2.56, p-value 0.074\nDirectness / C0 SS — Podcast Transcripts: Mean 1 35.12, Mean 2 64.88, Z-value -6.17, p-value <0.001; News Articles: Mean 1 41.44, Mean 2 58.56, Z-value -4.82, p-value <0.001\nDirectness / C1 SS — Podcast Transcripts: Mean 1 40.32, Mean 2 59.68, Z-value -4.83, p-value <0.001; News Articles: Mean 1 45.2, Mean 2 54.8, Z-value -3.19, p-value 0.017",
+   "score": 0.6301,
+   "origin": "retrieval"
+  },
+  {
+   "index": 6,
+   "kind": "chunk",
+   "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+   "filename": "2404.16130v2.pdf",
+   "page_start": 26,
+   "page_end": 26,
+   "section_title": null,
+   "snippet": "26",
+   "score": null,
+   "origin": "table_context"
+  }
+ ],
+ "final_answer": "Global approaches significantly outperformed conventional vector RAG (SS) in comprehensiveness across datasets. For the Podcast dataset, condition C2 achieved comprehensiveness win rates of 77-78% (p < .001) compared to vector RAG (SS), while for the News dataset, the win rates were 79% (p < .001) [1]. \n\nFrom Table 6, the pairwise comparison of C2 with SS on comprehensiveness shows that for the Podcast dataset, C2 had a mean score of 77.76 compared to SS's 22.24, with a Z-value of -8.17 and a p-value < 0.001. For the News dataset, C2 had a mean score of 79.2 compared to SS's 20.8, with a Z-value of -8.34 and a p-value < 0.001 [3]. \n\nThese results indicate a strong and statistically significant advantage of condition C2 over vector RAG (SS) in comprehensiveness for both datasets.\n\nNumbers that could not be checked against the cited pages of the original text: 77, 78%, 79%.",
+ "usage": {
+  "prompt_tokens": 5346,
+  "completion_tokens": 235,
+  "limit": 10000
+ },
+ "done": {
+  "status": "completed",
+  "answered": true,
+  "cited": [
+   1,
+   3
+  ],
+  "unverified_numbers": [
+   "77",
+   "78%",
+   "79%"
+  ],
+  "verified_numbers": [
+   {
+    "number": "77.76",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…e -7.78, p-value <0.001 Comprehensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean…"
+   },
+   {
+    "number": "22.24",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…ue <0.001 Comprehensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-valu…"
+   },
+   {
+    "number": "8.17",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…hensiveness / C2 SS — Podcast Transcripts: Mean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-valu…"
+   },
+   {
+    "number": "0.001",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…C2 TS — Podcast Transcripts: Mean 1 57.28, Mean 2 42.72, Z-value -4.1, p-value <0.001; News Articles: Mean 1 62.08, Mean 2 37.92, Z-value -5.07, p-value <0.001 Compr…"
+   },
+   {
+    "number": "79.2",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…ean 1 77.76, Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast…"
+   },
+   {
+    "number": "20.8",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…Mean 2 22.24, Z-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast Transcripts:…"
+   },
+   {
+    "number": "8.34",
+    "document_id": "d425cf13-e715-460d-97ee-9feb419cae6a",
+    "page": 26,
+    "snippet": "…-value -8.17, p-value <0.001; News Articles: Mean 1 79.2, Mean 2 20.8, Z-value -8.34, p-value <0.001 Comprehensiveness / C3 SS — Podcast Transcripts: Mean 1 78.96,…"
+   }
+  ],
+  "mislabelled_numbers": [],
+  "unresolved_numbers": [],
+  "overstated_claims": [],
+  "doubtful_citations": [],
+  "direction_issues": [],
+  "completeness": {
+   "status": "not_applicable",
+   "required": [],
+   "missing": [],
+   "condition": null
+  },
+  "conclusion_issues": [],
+  "arithmetic_issues": [],
+  "analysis_status": "UNCERTAIN",
+  "finish_reason": "stop",
+  "revision": null,
+  "navigation": null,
+  "correction": null,
+  "facts": {
+   "mode": "inject",
+   "cells": 336,
+   "facts": 0,
+   "block_tokens": 0,
+   "replaced_sources": []
+  }
+ },
+ "error": null,
+ "llm_calls": [
+  {
+   "purpose": "answer",
+   "status": "completed",
+   "prompt_tokens": 5346,
+   "completion_tokens": 235,
+   "estimated_prompt_tokens": 5362,
+   "finish_reason": "stop",
+   "duration_ms": 15365
+  }
+ ]
+}

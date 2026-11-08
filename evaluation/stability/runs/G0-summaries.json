@@ -1,0 +1,360 @@
+{
+ "summary_repair": true,
+ "verification": [
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "INTRODUCTION",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 2
+  },
+  {
+   "summary": "RETRIEVAL-AUGMENTED GENERATION",
+   "pages": [
+    2,
+    3
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "THE LIGHT RAG ARCHITECTURE",
+   "pages": [
+    3,
+    5
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "54.4%"
+   ],
+   "overstated": [
+    "GraphRAG, while performing better than other baselines, is consistently outperformed by LightRAG in larger datasets."
+   ],
+   "unverified": [],
+   "unresolved": [
+    "16.4%",
+    "65.2%",
+    "67.6%",
+    "64.0%",
+    "75.2%"
+   ],
+   "checked_figures": 14
+  },
+  {
+   "summary": "RELATED WORK",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "CONCLUSION",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "APPENDIX",
+   "pages": [
+    13,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "12",
+    "10",
+    "94",
+    "61"
+   ],
+   "checked_figures": 8
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "65.2%",
+    "64.0%"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "16.4%",
+    "67.6%"
+   ],
+   "checked_figures": 12
+  },
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Introduction",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Background",
+   "pages": [
+    2,
+    4
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Methods",
+   "pages": [
+    4,
+    8
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 4
+  },
+  {
+   "summary": "Analysis",
+   "pages": [
+    8,
+    9
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 14
+  },
+  {
+   "summary": "Results",
+   "pages": [
+    9,
+    11
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 22
+  },
+  {
+   "summary": "Discussion",
+   "pages": [
+    11,
+    12
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 2
+  },
+  {
+   "summary": "Conclusion (part 1/3)",
+   "pages": [
+    12,
+    18
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 2
+  },
+  {
+   "summary": "Conclusion (part 2/3)",
+   "pages": [
+    18,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Conclusion (part 3/3)",
+   "pages": [
+    26,
+    26
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "0.12",
+    "0.036",
+    "0.1",
+    "0.001",
+    "0.669",
+    "0.002",
+    "0.281",
+    "0.003",
+    "0.936",
+    "0.126",
+    "0.037",
+    "0.197"
+   ],
+   "checked_figures": 31
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 14
+  }
+ ],
+ "repairs": [
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "16.4%",
+    "65.2%",
+    "67.6%",
+    "64.0%",
+    "75.2%"
+   ],
+   "checked_figures": 15,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"In the Agriculture dataset, LightRAG achieves 67.6% win rate in Comprehensiveness, while GraphRAG achieves 54.4%.\": 54.4% is given as Comprehensiveness, Agriculture, GraphRAG; in the table 54.4% is Comprehensiveness, Agriculture, LightRAG, vs GraphRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 32.4% (paired with LightRAG); LightRAG 67.6% (paired with NaiveRAG); RQ-RAG 31.6% (paired with LightRAG); LightRAG 68.4% (paired with RQ-RAG); HyDE 26.0% (paired with LightRAG); LightRAG 74.0% (paired with HyDE); GraphRAG 45.6% (paired with LightRAG); LightRAG 54.4% (paired with GraphRAG). Differences: GraphRAG 45.6% vs NaiveRAG 32.4% (+13.2 pp, +40.7% relative); GraphRAG 45.6% vs LightRAG 67.6% (-22.0 pp, -32.5% relative); GraphRAG 45.6% vs RQ-RAG 31.6% (+14.0 pp, +44.3% relative); GraphRAG 45.6% vs LightRAG 68.4% (-22.8 pp, -33.3% relative); GraphRAG 45.6% vs HyDE 26.0% (+19.6 pp, +75.4% relative).",
+     "\"GraphRAG, while performing better than other baselines, is consistently outperformed by LightRAG in larger datasets.\": in the table GraphRAG is above the compared methods in 3 cells and below in 13; the cases below: Comprehensiveness / Mix: GraphRAG 50.4% vs LightRAG 49.6% (p. 7); Empowerment / Mix: GraphRAG 50.8% vs LightRAG 49.2% (p. 7); Overall / Mix: GraphRAG 50.4% vs LightRAG 49.6% (p. 7)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [
+     "GraphRAG, while performing better than other baselines, is consistently outperformed by LightRAG in larger datasets."
+    ],
+    "after": "UNCERTAIN"
+   }
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "16.4%",
+    "65.2%",
+    "67.6%",
+    "64.0%"
+   ],
+   "checked_figures": 12,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"Removing high-level retrieval leads to a drop in win rates, such as 65.2% in Comprehensiveness, compared to 67.6% for full LightRAG.\": 65.2% is given as Comprehensiveness, LightRAG; in the table 65.2% is Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG.",
+     "\"Similarly, removing low-level retrieval results in a 64.0% win rate in Comprehensiveness, compared to 67.6% for full LightRAG.\": 64.0% is given as Comprehensiveness, LightRAG; in the table 64.0% is Diversity, Mix, LightRAG, vs GraphRAG / Diversity, Mix, -High, vs NaiveRAG / Empowerment, Agriculture, -High, vs NaiveRAG / Comprehensiveness, Agriculture, -Low, vs NaiveRAG / Comprehensiveness, Mix, -Low, vs NaiveRAG."
+    ],
+    "rewritten": true,
+    "removed_sentences": [],
+    "after": "UNCERTAIN"
+   }
+  }
+ ]
+}
