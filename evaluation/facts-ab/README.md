@@ -286,7 +286,7 @@ LightRAG 的兩題在新入庫下沒有變化；GraphRAG 四題 3 對 1 錯，�
 |---|---|---|
 | Q1 | **通過** | 71.2／71.5 消失（摘要修復對不存在的數字觸發）；兩篇摘要的數字全部核對得到（83.6／16.4、Podcast 約 100 萬、News 約 170 萬、72–83%、75–82%） |
 | Q2 | 內容通過，**一句措辭錯** | 13 of 16、三個例外含 pp、代表例全對；但有一句「在 Mix 資料集 LightRAG achieves higher scores in Comprehensiveness (49.6% vs 50.4%)」方向寫反，下一句與例外清單又寫對。方向核對沒抓到（句型是「higher scores in X (a vs b)」）。temperature 0.5 的代價：三輪裡只有這輪出現 |
-| Q3 | 數字、計數、例外、定義全對；A6 未達 | 程式標 FACTUALLY_INCORRECT 是**誤報**：結論核對把「對 -High 的唯一例外是 CS／Diversity」拿去和對 -Low 的三個例外比。核對器已知缺口（例外句的比較對象範圍） |
+| Q3 | 數字、計數、例外全對；A6 未達。**更正（11-08 D93 複查）**：0.5 的兩輪（`demo-t05`、`demo-final-t05`）後者把 -High／-Low 寫成 high-level-only／low-level-only，前者與 0 那輪沒寫定義；當時判「定義全對」是漏算 | 程式標 FACTUALLY_INCORRECT 是**誤報**：結論核對把「對 -High 的唯一例外是 CS／Diversity」拿去和對 -Low 的三個例外比。核對器已知缺口（例外句的比較對象範圍） |
 | U1 論文重點 | 通過 | 兩篇各一段；程式標「100」標籤不符是**誤報**（「不到 100 個 token」被當成 Table 2 的 % Max 100） |
 | U2、U3 | 通過 | 依系統描述回答、打招呼 |
 | N3 | 通過 | 明說文件沒提 |
