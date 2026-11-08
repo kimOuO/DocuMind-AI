@@ -57,8 +57,22 @@
 - 新發現的錯型「配對錯」：模型把 LightRAG 在「對 NaiveRAG」那一欄的數字，放到「對 GraphRAG」的句子裡。每個數字的資料集、指標、方法標籤都對，所以頁尾核對抓不到；判定時用「直接比較的一對 win rate 相加應為 100」抓出來。要補進核對器的缺口清單（比較對象的範圍）。
 - 程式把 Q3 裡「LightRAG 在 16 個條件全贏」這種對 NaiveRAG 的全稱句標成「表格不支持」（T02 第 5 次、T04 第 7 次）：句子本身是對的，是核對器把它對到了變體那幾欄——已知的「例外句比較範圍」缺口，兩篇都算通過。
 
+## 第三輪（2026-11-08 11:5x）：同一對話依序問三題，temperature 0，10 次（示範部署）
+
+使用者：「幫我測試10次 0 123題 同個對話」。對示範部署、demo 帳號、範圍只選 LightRAG，每次新開一個對話依序問 Q1→Q2→Q3（追問會先經改寫），temperature 0。記錄在 `conversation-runs/`（`judge_conversation.py` 產生 `analysis.json`、`answers.md`）。程式版本：a826f67（路由看原句、改寫 temperature 0、改寫長度守門 3 倍＋12）。
+
+| 題 | 10 次 | 結果 |
+|---|---|---|
+| Q1 | 10 次同一篇 | 通過：要點齊、83.6% 對 16.4%、100 對 610,000 tokens 正確（比單獨問時短，297 tokens） |
+| Q2 | 10 次同一篇 | 通過：改寫只加句號（8 → 9 tokens）、事實塊 16 條、13 of 16、Mix 三例外與方向對；沒列代表數字，所以沒有配對錯 |
+| Q3 | 10 次同一篇 | **不通過（不完整）**：改寫把問題膨脹成 35 tokens（「…in the context of its dual-level retrieval paradigm and graph-based indexing compared to the full model and other methods like GraphRAG」），守門上限 3×9＋12＝39 沒擋到；檢索因此抓到的是 4.3 節的文字段與導論，Table 2 不在前五、事實塊 0 條；回答只有 -High／-Low 的定性描述（定義正確）、沒有任何數字、沒有 -Origin |
+
+- 溫度 0 加同一次入庫，10 次三題各只有一種回答；問題與變化無關，是**改寫膨脹與記憶內容有關**：這裡 Q1、Q2 的回答都短（297、336 tokens），兩則都進了 800 tokens 的記憶，改寫就把它們的內容「補」進問題；使用者自己那次 Q1 回答較長被擠出記憶，Q3 沒膨脹、數字齊全。改寫膨脹在 D95 第一次修正時就看過（Q2，8 → 66），長度守門只擋得住那種程度。
+- 結論：對已經能獨立理解的問題（沒有代名詞、指示詞），改寫只有風險沒有好處。
+
 ### 檔案
 
 - `runs/`：160 筆記錄（T04 30、T0 30、G04 20、G0 20、T02 30、T0b 30）與各批的 `*-summaries.json`（Q1 的摘要樹）。
 - `runs-invalid/`：作廢的第一輪 100 筆，留作 D93 AI 出錯的證據。
+- `conversation-runs/`：第三輪同一對話連問的 10 筆（每筆含三題的路線、來源、核對與回答）、`judge_conversation.py` 的輸出。
 - `analysis.json`、`answers.md`：`judge.py` 的輸出；`answers.md` 是 100 篇回答全文，人工判定依此。
