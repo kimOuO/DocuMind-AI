@@ -253,6 +253,9 @@ class Message(Base):
     # The sampling temperature of the answer call (AC-60, D94): the request's value or
     # the server's default at the time; NULL for questions and for the model's default.
     temperature: Mapped[float | None] = mapped_column(Float)
+    # D101: the token usage of every LLM call behind the answer (the `usage` event as sent),
+    # so that a stored answer shows what it cost; NULL for questions and older answers.
+    usage: Mapped[dict[str, object] | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = _created()
     updated_at: Mapped[datetime] = _updated()
 

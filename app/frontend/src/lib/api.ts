@@ -95,7 +95,7 @@ export const logout = () => request<void>('POST', '/auth/logout')
 export const listDocuments = () => request<DocumentItem[]>('GET', '/documents')
 export const deleteDocument = (id: string) => request<void>('DELETE', `/documents/${id}`)
 export const retryDocument = (id: string) => request<DocumentItem>('POST', `/documents/${id}/retry`)
-export function uploadDocument(file: File, buildSummary = true) {
+export function uploadDocument(file: File, buildSummary = false) {
   const form = new FormData()
   form.append('file', file)
   form.append('build_summary', buildSummary ? 'true' : 'false')
@@ -182,6 +182,8 @@ export interface ChatMessage {
   sources: Source[]
   /** The answer's sampling temperature (AC-60); null for questions and the model default. */
   temperature?: number | null
+  /** D101: the token usage of the calls behind the answer; null for questions and older answers. */
+  usage?: Usage | null
   created_at: string
 }
 
@@ -223,7 +225,8 @@ export interface Revision {
   reason?: string
 }
 
-export type Stage = 'navigating' | 'generating' | 'verifying' | 'correcting' | 'revising' | 'finalizing'
+export type Stage =
+  'summarising' | 'navigating' | 'generating' | 'verifying' | 'correcting' | 'revising' | 'finalizing'
 
 /** What the experimental navigate mode did (D71); null in the other modes. */
 export interface DirectionIssue {
@@ -353,7 +356,8 @@ export type AskEvent =
     }
   | { name: 'route'; data: { type: string; standalone_question: string } }
   | { name: 'sources'; data: Source[] }
-  | { name: 'stage'; data: { stage: Stage } }
+  /** `summarising` (D101) carries how many of the documents in scope have their summary tree. */
+  | { name: 'stage'; data: { stage: Stage; ready?: number; total?: number } }
   | { name: 'delta'; data: { text: string } }
   | { name: 'usage'; data: Usage }
   | {
@@ -396,11 +400,14 @@ export async function askQuestion(
   documentIds: string[],
   onEvent: (event: AskEvent) => void,
   temperature: number | null = null,
+  action: 'summary' | null = null,
 ): Promise<void> {
   // `temperature` is sent only when the user chose one; omitted, the server's default
-  // applies (AC-60).
+  // applies (AC-60). `action` "summary" (D101) is the summary button: the summary trees
+  // of the documents in scope are built first where missing, then answered from.
   const body: Record<string, unknown> = { question, document_ids: documentIds }
   if (temperature !== null) body.temperature = temperature
+  if (action !== null) body.action = action
   const response = await fetch(`${API}/conversations/${conversationId}/messages`, {
     method: 'POST',
     credentials: 'same-origin',

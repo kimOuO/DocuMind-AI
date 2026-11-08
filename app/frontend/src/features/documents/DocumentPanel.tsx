@@ -185,7 +185,8 @@ export function DocumentPanel({
     }
   }, [])
 
-  const [buildSummary, setBuildSummary] = useState(true)
+  // D101 (user): off by default; the chat's 建立摘要 button builds the tree when wanted.
+  const [buildSummary, setBuildSummary] = useState(false)
 
   async function handleFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -262,8 +263,8 @@ export function DocumentPanel({
           onChange={(event) => setBuildSummary(event.target.checked)}
         />
         <span>
-          上傳後建立摘要樹（建議）。逐章讀完整份文件再濃縮，約 3 分鐘；關掉則 summary
-          類問題只依據檢索到的片段回答。
+          上傳後建立摘要樹。逐章讀完整份文件再濃縮，約 3 分鐘；不勾選時 summary
+          類問題只依據檢索到的片段回答，之後可在對話中按「建立摘要」補建。
         </span>
       </label>
 

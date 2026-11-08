@@ -17,8 +17,10 @@ from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
 from dataclasses import dataclass, field, replace
 from functools import partial
+from time import monotonic
 from typing import Any
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.chat.citation_check import DoubtfulCitation, SourceText, check_citations
@@ -109,6 +111,8 @@ from app.conversations.repository import ConversationRepository
 from app.conversations.service import ConversationService
 from app.core.env_loader import Settings
 from app.core.errors import ApiError
+from app.documents.repository import DocumentRepository
+from app.ingestion.scheduler import JobScheduler, NullScheduler
 from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
@@ -122,6 +126,10 @@ logger = logging.getLogger(__name__)
 
 # Budget of one answer call (docs/02-specs/02-architecture.md, section 4.3).
 ANSWER_MAX_OUTPUT_TOKENS = 2_500
+# D101: the summary action waits for the summary trees it queued, checking this often,
+# and gives up waiting (answering from whatever is ready) after this long.
+SUMMARY_POLL_SECONDS = 2.0
+SUMMARY_WAIT_SECONDS = 1_800.0
 _TABLE_CAPTION_LINE = re.compile(r"^\s*(Table\s+\d+)\s*[.:]", re.IGNORECASE)
 # D73: how many of a target's chunks are ranked before the turns start.
 NAVIGATION_CANDIDATES_PER_TARGET = 3 * CHUNKS_PER_TARGET
@@ -164,6 +172,9 @@ class PreparedQuestion:
     previous_chunk_ids: tuple[uuid.UUID, ...] = ()
     # D99: the model's judgement of this question (None before it is made or without earlier turns).
     follow_up: bool | None = None
+    # D101: "summary" — build the summary trees of the documents in scope first, then
+    # answer from them; None is an ordinary question.
+    action: str | None = None
 
 
 @dataclass(frozen=True)
@@ -218,6 +229,7 @@ class ChatService:
         counter: TokenCounter,
         embedder: Embedder,
         gateway: LLMGateway,
+        scheduler: JobScheduler | None = None,
     ) -> None:
         self._db = db
         self._sessions = sessions
@@ -225,6 +237,8 @@ class ChatService:
         self._counter = counter
         self._embedder = embedder
         self._gateway = gateway
+        # D101: runs the summary jobs the summary action queues; without one they stay queued.
+        self._scheduler: JobScheduler = scheduler if scheduler is not None else NullScheduler()
 
     async def prepare(
         self,
@@ -233,10 +247,11 @@ class ChatService:
         question: str,
         document_ids: list[uuid.UUID] | None,
         temperature: float | None = None,
+        action: str | None = None,
     ) -> PreparedQuestion:
         """Check the question and store it with a pending answer. `temperature` is the
         request's choice for the answer call (0–1, validated by the router); omitted, the
-        server's setting applies (AC-60)."""
+        server's setting applies (AC-60). `action` "summary" (D101) is the summary button."""
         conversation = await ConversationService(self._db).owned(actor, conversation_id)
 
         question = question.strip()
@@ -275,6 +290,7 @@ class ChatService:
             history,
             temperature,
             previous_chunk_ids,
+            action=action,
         )
 
     async def answer(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
@@ -297,14 +313,23 @@ class ChatService:
             # answer work from that standalone question. The route is decided by the
             # question as the user asked it (D95): a rewrite that adds words such as
             # "document summary" must not send a content question to the summary tree.
-            question, follow_up, pre_calls = await self._standalone_question(prepared)
-            prepared = replace(prepared, follow_up=follow_up)
-            kind = question_type(prepared.question)
-            if kind == "summary" and await self._summary_tree_skipped(prepared):
-                # D91: the documents were uploaded without a summary tree; the question is
-                # answered from retrieval. D97 (user): without a note after the answer —
-                # the route event and the document's summary status already say so.
-                kind = "retrieval"
+            pre_calls: list[tuple[str, LLMResult]]
+            if prepared.action == "summary":
+                # D101: the summary button. Nothing to judge or rewrite; the summary
+                # trees are built first where they are missing, then answered from.
+                question, follow_up, pre_calls = prepared.question, None, []
+                kind = "summary"
+                async for event in self._build_summaries(prepared):
+                    yield event
+            else:
+                question, follow_up, pre_calls = await self._standalone_question(prepared)
+                prepared = replace(prepared, follow_up=follow_up)
+                kind = question_type(prepared.question)
+                if kind == "summary" and await self._summary_tree_skipped(prepared):
+                    # D91: the documents were uploaded without a summary tree; the question
+                    # is answered from retrieval. D97 (user): without a note after the
+                    # answer — the route event and the summary status already say so.
+                    kind = "retrieval"
             yield ChatEvent(
                 "route",
                 {"type": kind, "standalone_question": question, "follow_up": follow_up},
@@ -548,30 +573,29 @@ class ChatService:
                     yield ChatEvent("delta", {"text": "\n\n" + note})
             status = "completed" if complete else "interrupted"
             answered = bool(cited) if complete else None
-            await self._finish(
-                prepared, status=status, content="".join(received), answered=answered
-            )
-            yield (
-                self._usage([*extra_calls, result])
+            usage = (
+                self._usage([*extra_calls, result]).data
                 if extra_calls
-                else ChatEvent(
-                    "usage",
-                    {
-                        "prompt_tokens": result.prompt_tokens,
-                        "completion_tokens": result.completion_tokens,
-                        "limit": self._settings.llm_context_limit,
-                        # D100 (user): every call of this question, each under the limit.
-                        "breakdown": [
-                            {
-                                "purpose": purpose,
-                                "prompt_tokens": call.prompt_tokens,
-                                "completion_tokens": call.completion_tokens,
-                            }
-                            for purpose, call in [*pre_calls, ("answer", result)]
-                        ],
-                    },
-                )
+                else {
+                    "prompt_tokens": result.prompt_tokens,
+                    "completion_tokens": result.completion_tokens,
+                    "limit": self._settings.llm_context_limit,
+                    # D100 (user): every call of this question, each under the limit.
+                    "breakdown": [
+                        {
+                            "purpose": purpose,
+                            "prompt_tokens": call.prompt_tokens,
+                            "completion_tokens": call.completion_tokens,
+                        }
+                        for purpose, call in [*pre_calls, ("answer", result)]
+                    ],
+                }
             )
+            # D101: stored with the answer, so that the conversation shows it later.
+            await self._finish(
+                prepared, status=status, content="".join(received), answered=answered, usage=usage
+            )
+            yield ChatEvent("usage", usage)
             yield ChatEvent(
                 "done",
                 {
@@ -1596,12 +1620,62 @@ class ChatService:
         return info, items, added, result
 
     async def _finish(
-        self, prepared: PreparedQuestion, *, status: str, content: str, answered: bool | None
+        self,
+        prepared: PreparedQuestion,
+        *,
+        status: str,
+        content: str,
+        answered: bool | None,
+        usage: dict[str, Any] | None = None,
     ) -> None:
         async with self._sessions() as session, session.begin():
             await ChatRepository(session).finish(
-                prepared.assistant_message_id, status=status, content=content, answered=answered
+                prepared.assistant_message_id,
+                status=status,
+                content=content,
+                answered=answered,
+                usage=usage,
             )
+
+    async def _build_summaries(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
+        """D101: queue a summary job for every indexed document in scope that has no
+        summary tree (never built, skipped at upload, or failed), then wait for the trees,
+        reporting progress as `summarising` stages. A tree that fails is reported by the
+        answer's note; waiting stops after SUMMARY_WAIT_SECONDS."""
+        queued: list[tuple[uuid.UUID, uuid.UUID]] = []  # (job id, document id)
+        async with self._sessions() as session, session.begin():
+            states = await SummaryRepository(session).states(
+                prepared.actor.id, prepared.scope.document_ids
+            )
+            documents = DocumentRepository(session)
+            for state in states:
+                if state.summary_status not in ("none", "skipped", "failed"):
+                    continue
+                document = await documents.get_for_update(prepared.actor.id, state.document_id)
+                if document is None or document.status != "ready":
+                    continue
+                document.build_summary = True
+                try:
+                    async with session.begin_nested():
+                        job = await documents.add_retry_job(document, "summary")
+                        job_id = job.id
+                except IntegrityError:
+                    continue  # already queued or running: wait for that one
+                queued.append((job_id, document.id))
+        for job_id, document_id in queued:
+            self._scheduler.schedule(job_id, document_id)
+        deadline = monotonic() + SUMMARY_WAIT_SECONDS
+        while True:
+            async with self._sessions() as session:
+                states = await SummaryRepository(session).states(
+                    prepared.actor.id, prepared.scope.document_ids
+                )
+            ready = sum(1 for s in states if s.summary_status == "ready")
+            yield ChatEvent("stage", {"stage": "summarising", "ready": ready, "total": len(states)})
+            settled = all(s.summary_status in ("ready", "failed") for s in states)
+            if settled or monotonic() > deadline:
+                return
+            await asyncio.sleep(SUMMARY_POLL_SECONDS)
 
 
 def _previous_chunk_ids(earlier: Sequence[Message]) -> tuple[uuid.UUID, ...]:

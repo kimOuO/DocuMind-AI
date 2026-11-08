@@ -843,14 +843,78 @@ test('the token usage lists every call behind a follow-up, each under the limit'
         ],
         ['done', { status: 'completed', answered: true, cited: [1], finish_reason: 'stop', ...NO_NUMBERS }],
       ]),
+      {
+        ...stored(),
+        messages: stored().messages.map((m) =>
+          m.role === 'assistant'
+            ? {
+                ...m,
+                temperature: 0,
+                usage: {
+                  prompt_tokens: 5276,
+                  completion_tokens: 1014,
+                  limit: 10000,
+                  breakdown: [
+                    { purpose: 'follow_up', prompt_tokens: 312, completion_tokens: 2 },
+                    { purpose: 'rewrite', prompt_tokens: 622, completion_tokens: 15 },
+                    { purpose: 'answer', prompt_tokens: 5276, completion_tokens: 1014 },
+                  ],
+                },
+              }
+            : m,
+        ),
+      },
     ),
   )
   render(<ChatPanel documents={[PAPER]} />)
   await ask()
   expect(await screen.findByText(/輸入 5,276 \+ 回答 1,014 = 6,290 \/ 10,000/)).toBeInTheDocument()
-  const calls = screen.getByLabelText('每次呼叫的 token')
-  expect(calls).toHaveTextContent('判斷追問 312 + 2')
-  expect(calls).toHaveTextContent('改寫 622 + 15')
-  expect(calls).toHaveTextContent('回答 5,276 + 1,014')
-  expect(calls).toHaveTextContent('3 次呼叫合計 7,241')
+  // D101 (user): the calls are listed at the answer's end, beside its temperature, with a
+  // note saying which calls they are; the stored answer carries them too.
+  const line = await screen.findByLabelText('這則回答的溫度與 token')
+  expect(line).toHaveTextContent('溫度 0.0')
+  expect(line).toHaveTextContent('判斷追問 312 + 2 · 改寫 622 + 15 · 回答 5,276 + 1,014')
+  expect(line).toHaveTextContent(
+    '3 次呼叫（判斷追問、改寫、回答）各自的 prompt + completion tokens，每次各自 ≤ 10,000',
+  )
+})
+
+test('the 建立摘要 button sends the summary action and shows the summary tree being built', async () => {
+  const calls = mockApi(
+    routesFor(
+      sse([
+        [
+          'start',
+          {
+            user_message_id: 'u1',
+            assistant_message_id: 'a1',
+            scope: { mode: 'all', document_ids: [PAPER.id] },
+            temperature: 0,
+          },
+        ],
+        ['stage', { stage: 'summarising', ready: 0, total: 1 }],
+        ['stage', { stage: 'summarising', ready: 1, total: 1 }],
+        ['route', { type: 'summary', standalone_question: '請為這份文件建立摘要', follow_up: null }],
+        [
+          'sources',
+          [{ ...SOURCE, kind: 'summary', origin: 'summary', score: null, page_start: 1, page_end: 16 }],
+        ],
+        ['delta', { text: 'The paper proposes LightRAG [1].' }],
+        ['usage', { prompt_tokens: 3000, completion_tokens: 400, limit: 10000 }],
+        ['done', { status: 'completed', answered: true, cited: [1], finish_reason: 'stop', ...NO_NUMBERS }],
+      ]),
+      {
+        ...stored('completed', true, [{ ...SOURCE, kind: 'summary', origin: 'summary', score: null }]),
+        messages: stored().messages.map((m) =>
+          m.role === 'user' ? { ...m, content: '請為這份文件建立摘要' } : m,
+        ),
+      },
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+  await userEvent.click(await screen.findByRole('button', { name: '建立摘要' }))
+  const request = calls.find((call) => call.key === ASK)
+  expect(request?.body).toEqual({ question: '請為這份文件建立摘要', document_ids: [], action: 'summary' })
+  expect(await screen.findByText('請為這份文件建立摘要')).toBeInTheDocument()
+  expect(await screen.findByText('問題類型：摘要')).toBeInTheDocument()
 })

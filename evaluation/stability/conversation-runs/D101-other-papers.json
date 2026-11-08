@@ -1,0 +1,1032 @@
+{
+ "label": "D101-other-papers",
+ "temperature": 0,
+ "no_summary": true,
+ "papers": [
+  {
+   "paper": "graphrag",
+   "file": "2404.16130v2.pdf",
+   "questions": [
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "summary this document.",
+      "follow_up": null
+     },
+     "usage": {
+      "prompt_tokens": 2608,
+      "completion_tokens": 175,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2608,
+        "completion_tokens": 175
+       }
+      ]
+     },
+     "done": {
+      "status": "completed",
+      "answered": true,
+      "cited": [
+       5,
+       1,
+       4
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [],
+      "doubtful_citations": [],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": "UNCERTAIN",
+      "finish_reason": "stop",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 0,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "cad37ad1-3f54-45e6-9a9b-fc2cbcd24ce6",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 22,
+       "page_end": 22,
+       "section_title": null,
+       "snippet": "---Goal---\nWrite a comprehensive report of a community, given a list of entities that belong to the community as well\nas their relationships and optional associated claims. The report will be used to inform decision-makers\nabout information associated with the community and their potential impact. The content of this report\nincludes an overview of the community’s key entities, their legal compliance, technical capabilities,\nreputation, and noteworthy claims.\n---Report Structure---\nThe report should include the following sections:\n- TITLE: community’s name that represents its key entities - title should be short but specific. When\npossible, include representative named entities in the title.\n- SUMMARY: An executive summary of the community’s overall structure, how its entities are related to each\nother, and significant information associated with its entities.\n- IMPACT SEVERITY RATING: a float score between 0-10 that represents the severity of IMPACT posed by\nentities within the community. IMPACT is the scored importance of a community.\n- RATING EXPLANATION: Give a single sentence explanation of the IMPACT severity rating.\n- DETAILED FINDINGS: A list of 5-10 key insights about the community. Each insight should have a short\nsummary followed by multiple paragraphs of explanatory text grounded according to the grounding rules\nbelow. Be comprehensive.\nReturn output as a well-formed JSON-formatted string with the following format:\n{{\n\"title\": <report title>,\n\"summary\": <executive summary>,\n\"rating\": <impact severity rating>,\n\"rating explanation\": <rating explanation>,\n\"findings\": [\n{{\n\"summary\":<insight 1 summary>,\n\"explanation\": <insight 1 explanation>\n}},\n{{\n\"summary\":<insight 2 summary>,\n\"explanation\": <insight 2 explanation>\n}}\n]\n}}\n---Grounding Rules---\nPoints supported by data should list their data references as follows:\n\"This is an example sentence supported by multiple data references [Data: <",
+       "score": 0.5614,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "888b9849-714c-46ab-9bc4-93898bf0990e",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 16,
+       "page_end": 16,
+       "section_title": null,
+       "snippet": "arXiv preprint arXiv:2402.11891.\nWang, X., Wei, J., Schuurmans, D., Le, Q., Chi, E., Narang, S., Chowdhery, A., and Zhou, D.\n(2022). Self-consistency improves chain of thought reasoning in language models.arXiv preprint\narXiv:2203.11171.\nWang, Y ., Lipka, N., Rossi, R. A., Siu, A., Zhang, R., and Derr, T. (2023b). Knowledge graph\nprompting for multi-document question answering.\nXu, Y . and Lapata, M. (2021). Text summarization with latent queries. arXiv preprint\narXiv:2106.00104.\nYang, Z., Qi, P., Zhang, S., Bengio, Y ., Cohen, W. W., Salakhutdinov, R., and Manning, C. D. (2018).\nHotpotQA: A dataset for diverse, explainable multi-hop question answering. In Conference on\nEmpirical Methods in Natural Language Processing (EMNLP).\nYao, J.-g., Wan, X., and Xiao, J. (2017). Recent advances in document summarization. Knowledge\nand Information Systems, 53:297–336.\nYao, L., Peng, J., Mao, C., and Luo, Y . (2023). Exploring large language models for knowledge\ngraph completion.\nYates, A., Banko, M., Broadhead, M., Cafarella, M., Etzioni, O., and Soderland, S. (2007). Tex-\ntRunner: Open information extraction on the",
+       "score": 0.5477,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "99881240-87b4-48c5-9480-748b82f607a5",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 23,
+       "page_end": 23,
+       "section_title": null,
+       "snippet": "this community. [Data: Entities(6),\nRelationships (38, 43)]\"\n}},\n{{\n\"summary\": \"Unity March as a significant event\",\n\"explanation\": \"The Unity March is a significant event taking place at Verdant Oasis Plaza. This event\nis a key factor in the community’s dynamics and could be a potential source of threat, depending on the\nnature of the march and the reactions it provokes. The relationship between the march and the plaza is\ncrucial in understanding the dynamics of this community. [Data: Relationships (39)]\"\n}},\n{{\n\"summary\": \"Role of Tribune Spotlight\", \"explanation\": \"Tribune Spotlight is reporting on the Unity\nMarch taking place in Verdant Oasis Plaza. This suggests that the event has attracted media attention,\nwhich could amplify its impact on the community. The role of Tribune Spotlight could be significant in\nshaping public perception of the event and the entities involved. [Data: Relationships (40)]\"\n}}\n]\n}}\n---Real Data---\nUse the following text for your answer. Do not make anything up in your answer.\nInput:\n{input text}\n...Report Structure and Grounding Rules Repeated...\nOutput:\nE.3 Community Answer Generation\n---Role---\nYou are a helpful assistant responding to questions about a dataset by synthesizing perspectives from\nmultiple analysts.\n---Goal---\nGenerate a response of the target length and format that responds to the user’s question, summarize\nall the reports from multiple analysts who focused on different parts of the dataset, and incorporate any\nrelevant general knowledge.\nNote that the analysts’ reports provided below are ranked in the **descending order of helpfulness**.\nIf you don’t know the answer, just say so. Do not make anything up.\nThe final response should remove all irrelevant information from the analysts’ reports and merge the\ncleaned information into a comprehensive answer that provides explanations of all the key points and\nimplications appropriate for",
+       "score": 0.5412,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "5dd5ea49-d565-432f-9b8e-2dbfd22742f2",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+       "score": 0.5364,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "598b65ef-b4d8-462d-a0a7-ce73425e5717",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 12,
+       "page_end": 12,
+       "section_title": null,
+       "snippet": "The graph index, rich text annotations, and hierarchical community structure supporting the current\nGraphRAG approach offer many possibilities for refinement and adaptation. This includes RAG\napproaches that operate in a more local manner, via embedding-based matching of user queries and\ngraph annotations. In particular, we see potential in hybrid RAG schemes that combine embedding-\nbased matching with just-in-time community report generation before employing our map-reduce\nsummarization mechanisms. This “roll-up” approach could also be extended across multiple levels\nof the community hierarchy, as well as implemented as a more exploratory “drill down” mechanism\nthat follows the information scent contained in higher-level community summaries.\nBroader impacts. As a mechanism for question answering over large document collections, there\nare risks to downstream sensemaking and decision-making tasks if the generated answers do not\naccurately represent the source data. System use should be accompanied by clear disclosures of AI\nuse and the potential for errors in outputs. Compared to vector RAG, however, GraphRAG shows\npromise as a way to mitigate these downstream risks for questions of a global nature, which might\notherwise be answered by samples of retrieved facts falsely presented as global summaries.\n7 Conclusion\nWe have presented GraphRAG, a RAG approach that combines knowledge graph generation and\nquery-focused summarization (QFS) to support human sensemaking over entire text corpora. Initial\nevaluations show substantial improvements over a vector RAG baseline for both the comprehensive-\nness and diversity of answers, as well as favorable comparisons to a global but graph-free approach\nusing map-reduce source text summarization. For situations requiring many global queries over the\nsame dataset, summaries of root-level communities in the entity-based graph index provide a data\nindex that is both superior to vector RAG and achieves competitive performance to other global\nmethods at a fraction of the token cost.\nAcknowledgements\nWe would also like to thank the following people who contributed to",
+       "score": 0.5338,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "The document presents **GraphRAG**, a novel Retrieval-Augmented Generation (RAG) approach that combines knowledge graph generation and query-focused summarization to support human sensemaking over large text corpora. The method is evaluated against traditional vector RAG and text summarization methods, showing improvements in the comprehensiveness and diversity of answers [5]. \n\nThe report outlines a structured approach to generating community-based reports, including a title, summary, impact severity rating, and detailed findings, with a focus on grounding insights in data [1]. The document also discusses the structure of the dataset used, which includes news articles and other text sources, divided into tokenized chunks for analysis [4]. \n\nAdditionally, the document explores the potential for hybrid RAG schemes and the broader implications of using AI for question answering, emphasizing the need for transparency and accuracy in outputs [5].",
+     "elapsed_seconds": 10.1,
+     "question": "summary this document."
+    },
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "compare GraphRAG with vector RAG",
+      "follow_up": false
+     },
+     "usage": {
+      "prompt_tokens": 2246,
+      "completion_tokens": 489,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "follow_up",
+        "prompt_tokens": 451,
+        "completion_tokens": 2
+       },
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2246,
+        "completion_tokens": 489
+       }
+      ]
+     },
+     "done": {
+      "status": "completed",
+      "answered": true,
+      "cited": [
+       2,
+       4,
+       3
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [
+       {
+        "number": "72",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…s. Specifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, w…"
+       },
+       {
+        "number": "83%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…pecifically, global approaches achieved comprehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while…"
+       },
+       {
+        "number": "75",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…s and 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a vali…"
+       },
+       {
+        "number": "82%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…nd 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity…"
+       },
+       {
+        "number": "80%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…rehensiveness win rates between 72- 83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win rates ranged from 75-82% (p <.…"
+       },
+       {
+        "number": "62",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…) for News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity test confirmed t…"
+       },
+       {
+        "number": "71%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 9,
+        "snippet": "…or News articles, while diversity win rates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a validity test confirmed that…"
+       }
+      ],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [],
+      "doubtful_citations": [],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": "UNCERTAIN",
+      "finish_reason": "stop",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 0,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "0fd1bdb2-3a9c-4287-9038-c5305a4b6c37",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 2,
+       "page_end": 2,
+       "section_title": null,
+       "snippet": "cases, before using a\nsecond LLM to judge the answers of two different RAG systems using predefined criteria (defined\nin Section 3.3). We use this approach to compare GraphRAG to vector RAG on two representative\nreal-world text datasets. Results show GraphRAG strongly outperforms vector RAG when using\nGPT-4 as the LLM.\nGraphRAG is available as open-source software at https://github .com/microsoft/graphrag. In ad-\ndition, versions of the GraphRAG approach are also available as extensions to multiple open-\nsource libraries, including LangChain (LangChain, 2024), LlamaIndex (LlamaIndex, 2024), Nebu-\nlaGraph (NebulaGraph, 2024), and Neo4J (Neo4J, 2024).\n2 Background\n2.1 RAG Approaches and Systems\nRAG generally refers to any system where a user query is used to retrieve relevant information from\nexternal data sources, whereupon this information is incorporated into the generation of a response\nto the query by an LLM (or other generative AI model, such as a multi-media model). The query and\nretrieved records populate a prompt template, which is then passed to the LLM (Ram et al., 2023).\nRAG is ideal when the total number of records in a data source is too large to include in a single\nprompt to the LLM, i.e. the amount of text in the data source exceeds the LLM’s context window.\nIn canonical RAG approaches, the retrieval process returns a set number of records that are seman-\ntically similar to the query and the generated answer uses only the information in those retrieved\nrecords. A common approach to conventional RAG is to use text embeddings, retrieving records\nclosest to the query in vector space where closeness corresponds to",
+       "score": 0.6533,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "97049c6e-7f55-42a3-8433-d7bc67c2580e",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 2,
+       "page_end": 2,
+       "section_title": null,
+       "snippet": "RAG approach, since vector RAG\napproaches are unable to support sensemaking over an entire corpus.\nIn this paper, we presentGraphRAG – a graph-based RAG approach that enables sensemaking over\nthe entirety of a large text corpus. GraphRAG first uses an LLM to construct a knowledge graph,\nwhere nodes correspond to key entities in the corpus and edges represent relationships between those\nentities. Next, it partitions the graph into a hierarchy of communities of closely related entities,\nbefore using an LLM to generate community-level summaries. These summaries are generated in\na bottom-up manner following the hierarchical structure of extracted communities, with summaries\nat higher levels of the hierarchy recursively incorporating lower-level summaries. Together, these\ncommunity summaries provide global descriptions and insights over the corpus. Finally, GraphRAG\nanswers queries through map-reduce processing of community summaries; in the map step, the\nsummaries are used to provide partial answers to the query independently and in parallel, then in the\nreduce step, the partial answers are combined and used to generate a final global answer.\nThe GraphRAG method and its ability to perform global sensemaking over an entire corpus form\nthe main contribution of this work. To demonstrate this ability, we developed a novel application\nof the LLM-as-a-judge technique (Zheng et al., 2024) suitable for questions targeting broad issues\nand themes where there is no ground-truth answer. This approach first uses one LLM to generate\na diverse set of global sensemaking questions based on corpus-specific use cases, before using a\nsecond LLM to judge the answers of two different RAG systems using predefined criteria (defined\nin Section 3.3). We use this approach to compare GraphRAG to vector RAG on two representative\nreal-world text datasets. Results show GraphRAG strongly outperforms vector RAG when using\nGPT-4 as the LLM.\nGraphRAG",
+       "score": 0.6163,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "c2cab2e7-affc-4906-8cfc-4cdcb9ebc4d9",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 9,
+       "page_end": 9,
+       "section_title": null,
+       "snippet": "8,564 nodes and 20,691 edges for the Podcast\ndataset, and a larger graph of 15,754 nodes and 19,520 edges for the News dataset. Table 2 shows\nthe number of community summaries at different levels of each graph community hierarchy.\nGlobal approaches vs. vector RAG. As shown in Figure 2 and Table 6, global approaches signifi-\ncantly outperformed conventional vector RAG (SS) in both comprehensiveness and diversity criteria\nacross datasets. Specifically, global approaches achieved comprehensiveness win rates between 72-\n83% (p<.001) for Podcast transcripts and 72-80% (p <.001) for News articles, while diversity win\nrates ranged from 75-82% (p <.001) and 62-71% (p <.01) respectively. Our use of directness as a\nvalidity test confirmed that vector RAG produces the most direct responses across all comparisons.\nEmpowerment. Empowerment comparisons showed mixed results for both global approaches ver-\nsus vector RAG (SS) and GraphRAG approaches versus source text summarization ( TS). Using an\nLLM to analyze LLM reasoning for this measure indicated that the ability to provide specific exam-\n9",
+       "score": 0.6146,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "797e4d38-3b68-4e38-9c4f-92086c04cc9c",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 2,
+       "page_end": 2,
+       "section_title": null,
+       "snippet": "in the data source exceeds the LLM’s context window.\nIn canonical RAG approaches, the retrieval process returns a set number of records that are seman-\ntically similar to the query and the generated answer uses only the information in those retrieved\nrecords. A common approach to conventional RAG is to use text embeddings, retrieving records\nclosest to the query in vector space where closeness corresponds to semantic similarity (Gao et al.,\n2023). While some RAG approaches may use alternative retrieval mechanisms, we collectively refer\nto the family of conventional approaches as vector RAG. GraphRAG contrasts with vector RAG in\nits ability to answer queries that require global sensemaking over the entire data corpus.\n2",
+       "score": 0.6049,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "54829224-2ec1-4451-85d8-9b03b06c9ec8",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 2,
+       "page_end": 2,
+       "section_title": null,
+       "snippet": "generates a response based on both the query and the retrieved records (Baumel et al., 2018; Dang,\n2006; Laskar et al., 2020; Yao et al., 2017). This conventional approach, which we collectively call\nvector RAG, works well for queries that can be answered with information localized within a small\nset of records. However, vector RAG approaches do not support sensemaking queries, meaning\nqueries that require global understanding of the entire dataset, such as ” What are the key trends in\nhow scientific discoveries are influenced by interdisciplinary research over the past decade?”\nSensemaking tasks require reasoning over “ connections (which can be among people, places, and\nevents) in order to anticipate their trajectories and act effectively” (Klein et al., 2006). LLMs such\nas GPT (Achiam et al., 2023; Brown et al., 2020), Llama (Touvron et al., 2023), and Gemini (Anil\net al., 2023) excel at sensemaking in complex domains like scientific discovery (Microsoft, 2023)\nand intelligence analysis (Ranade and Joshi, 2023). Given a sensemaking query and a text with an\nimplicit and interconnected set of concepts, an LLM can generate a summary that answers the query.\nThe challenge, however, arises when the volume of data requires a RAG approach, since vector RAG\napproaches are unable to support sensemaking over an entire corpus.\nIn this paper, we presentGraphRAG – a graph-based RAG approach that enables sensemaking over\nthe entirety of a large text corpus. GraphRAG first uses an LLM to construct a knowledge graph,\nwhere nodes correspond to key entities in the corpus and edges represent relationships between",
+       "score": 0.5947,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "GraphRAG and vector RAG are two distinct approaches to Retrieval-Augmented Generation (RAG), each with different capabilities and limitations. Here is a comparison based on the provided sources:\n\n### **Main Findings**\n- **GraphRAG** is a graph-based RAG approach designed to enable **global sensemaking** over an entire large text corpus. It constructs a knowledge graph using an LLM, partitions it into hierarchical communities, and generates community-level summaries. These summaries are then used to answer queries through a map-reduce process [2].\n- **Vector RAG**, in contrast, is a conventional RAG approach that retrieves records semantically similar to the query in vector space and generates answers based on those records. It is effective for queries that can be answered using information localized within a small set of records [4].\n\n### **Representative Figures Supporting the Findings**\n- **Comprehensiveness and Diversity**: Global approaches like GraphRAG significantly outperformed vector RAG in both comprehensiveness and diversity criteria across datasets. For the Podcast dataset, comprehensiveness win rates ranged from 72–83% (p < .001), and diversity win rates from 75–82% (p < .001). For the News dataset, comprehensiveness win rates were 72–80% (p < .001), and diversity win rates 62–71% (p < .01) [3].\n- **Directness**: Vector RAG produced the most direct responses across all comparisons, suggesting it is better suited for straightforward, localized queries [3].\n\n### **Results That Go Against the Trend**\n- **Empowerment**: The empowerment comparisons showed mixed results for both global approaches versus vector RAG and GraphRAG versus source text summarization. This suggests that while GraphRAG excels in global sensemaking, it may not always provide the most empowering responses in all contexts [3].\n\n### **Conclusion**\nGraphRAG is particularly effective for **sensemaking queries** that require global understanding of the entire dataset, such as identifying key trends or themes. It outperforms vector RAG in comprehensiveness and diversity for such tasks. However, vector RAG is more suitable for **localized queries** and provides more direct responses. The choice between the two depends on the nature of the query and the desired outcome.",
+     "elapsed_seconds": 23.1,
+     "question": "compare GraphRAG with vector RAG"
+    },
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "Performance of the different GraphRAG conditions (C0, C1, C2, C3) compared with TS and SS",
+      "follow_up": false
+     },
+     "usage": {
+      "prompt_tokens": 2281,
+      "completion_tokens": 747,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "follow_up",
+        "prompt_tokens": 970,
+        "completion_tokens": 2
+       },
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2281,
+        "completion_tokens": 747
+       }
+      ]
+     },
+     "done": {
+      "status": "completed",
+      "answered": true,
+      "cited": [
+       4,
+       1
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [
+       {
+        "number": "59%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…55 52 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Diversity 50 42 57 52 49 51 58 50 59 55 52 51 43 41 50 49 47 48 48 45 51 50 49 50 51 48 53 51 50 51 49 49 52 50 49 5…"
+       },
+       {
+        "number": "55%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…2 50 50 50 43 46 77 50 50 50 46 44 75 50 50 50 44 45 81 57 54 56 50 48 81 54 56 55 52 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Diversity 50 42 57 52 49 51 58 50 59…"
+       },
+       {
+        "number": "67%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…5 41 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Comprehensiveness 50 33 38 35 29 31 67 50 53 45 44 40 62 47 50 40 41 41 65 55 60 50 50 50 71 56 59 50 50 51 69 60 59 5…"
+       },
+       {
+        "number": "62%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…cles 50 20 28 25 21 21 80 50 44 41 38 36 72 56 50 52 54 52 75 59 48 50 58 55 79 62 46 42 50 59 79 64 48 45 41 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Comprehensive…"
+       },
+       {
+        "number": "65%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…1 50 51 49 49 52 50 49 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Empowerment 50 56 65 60 60 60 44 50 55 52 51 52 35 45 50 47 48 48 40 48 53 50 50 50 40 49 52 50 50 5…"
+       },
+       {
+        "number": "60%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…0 51 49 49 52 50 49 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Empowerment 50 56 65 60 60 60 44 50 55 52 51 52 35 45 50 47 48 48 40 48 53 50 50 50 40 49 52 50 50 50 4…"
+       },
+       {
+        "number": "53%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "Podcast transcripts 50 17 28 25 22 21 83 50 50 48 43 44 72 50 50 53 50 49 75 52 47 50 52 50 78 57 50 48 50 52 79 56 51 50 48 50 SS TS C0 C1 C2 C3 S…"
+       },
+       {
+        "number": "58%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…54 56 55 52 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Diversity 50 42 57 52 49 51 58 50 59 55 52 51 43 41 50 49 47 48 48 45 51 50 49 50 51 48 53 51 50 51 49 49 52 5…"
+       },
+       {
+        "number": "51%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "…1 83 50 50 48 43 44 72 50 50 53 50 49 75 52 47 50 52 50 78 57 50 48 50 52 79 56 51 50 48 50 SS TS C0 C1 C2 C3 SS TS C0 C1 C2 C3 Comprehensiveness 50 18 23 25 19 1…"
+       },
+       {
+        "number": "50%",
+        "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+        "page": 10,
+        "snippet": "Podcast transcripts 50 17 28 25 22 21 83 50 50 48 43 44 72 50 50 53 50 49 75 52 47 50 52 50 78 57 50 4…"
+       }
+      ],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [
+       {
+        "sentence": "- All GraphRAG conditions (C0-C3) outperformed SS across both datasets (News and Podcast) in terms of comprehensiveness, as measured by the average number of extracted claims.",
+        "method": "C3",
+        "compared": [],
+        "higher": 18,
+        "lower": 6,
+        "examples": [
+         "Units / Podcast Transcripts: C3 1310 vs TS 1669 (p. 10)",
+         "Units / News Articles: C3 2142 vs TS 3197 (p. 10)",
+         "Tokens / Podcast Transcripts: C3 746100 vs TS 1014611 (p. 10)",
+         "Tokens / News Articles: C3 1140266 vs TS 1707694 (p. 10)",
+         "% Max / Podcast Transcripts: C3 73.5 vs TS 100 (p. 10)",
+         "% Max / News Articles: C3 66.8 vs TS 100 (p. 10)"
+        ],
+        "status": "contradicted",
+        "reason": null
+       },
+       {
+        "sentence": "- For the Podcast dataset, all GraphRAG conditions (C0-C3) significantly outperformed SS across all distance thresholds.",
+        "method": "C3",
+        "compared": [],
+        "higher": 18,
+        "lower": 6,
+        "examples": [
+         "Units / Podcast Transcripts: C3 1310 vs TS 1669 (p. 10)",
+         "Units / News Articles: C3 2142 vs TS 3197 (p. 10)",
+         "Tokens / Podcast Transcripts: C3 746100 vs TS 1014611 (p. 10)",
+         "Tokens / News Articles: C3 1140266 vs TS 1707694 (p. 10)",
+         "% Max / Podcast Transcripts: C3 73.5 vs TS 100 (p. 10)",
+         "% Max / News Articles: C3 66.8 vs TS 100 (p. 10)"
+        ],
+        "status": "contradicted",
+        "reason": null
+       }
+      ],
+      "doubtful_citations": [
+       {
+        "sentence": "For example, C0 had a win rate of 59% over TS in the Podcast dataset.",
+        "cited": [
+         1
+        ],
+        "closer": [
+         4
+        ],
+        "coverage_cited": 0.25,
+        "coverage_closer": 0.75
+       },
+       {
+        "sentence": "- C2 and C3 also showed strong performance, with C2 achieving a win rate of 55% over TS in the Podcast dataset.",
+        "cited": [
+         1
+        ],
+        "closer": [
+         4
+        ],
+        "coverage_cited": 0.29,
+        "coverage_closer": 0.57
+       }
+      ],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": "FACTUALLY_INCORRECT",
+      "finish_reason": "stop",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 0,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "9e27a094-0fdd-4ca9-84a8-51debd1fa82f",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 10,
+       "page_end": 10,
+       "section_title": null,
+       "snippet": "C2\nC3\nSS TS C0 C1 C2 C3\nEmpowerment\n50 54 59 55 55 54\n46 50 55 53 52 52\n41 45 50 48 48 47\n45 47 52 50 49 49\n45 48 52 51 50 49\n46 48 53 51 51 50\nSS\nTS\nC0\nC1\nC2\nC3\nSS TS C0 C1 C2 C3\nDirectness\nFigure 2: Head-to-head win rate percentages of (row condition) over (column condition) across two\ndatasets, four metrics, and 125 questions per comparison (each repeated five times and averaged).\nThe overall winner per dataset and metric is shown in bold. Self-win rates were not computed but\nare shown as the expected 50% for reference. All Graph RAG conditions outperformed na¨ıve RAG\non comprehensiveness and diversity. Conditions C1-C3 also showed slight improvements in answer\ncomprehensiveness and diversity over TS (global text summarization without a graph index).",
+       "score": 0.6438,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "04b3fea6-f3ee-4de4-9c45-6e036142211c",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and the prompts used for answer generation are the same across\nall six conditions (except for minor modifications to reference styles to match the types of context\ninformation used). Conditions only differ in how the contents of the context window are created.\nThe graph index supporting conditions C0-C3 was created using our generic prompts for entity and\nrelationship extraction, with entity types and few-shot examples tailored to the domain of the data.\n8",
+       "score": 0.5831,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "5dd5ea49-d565-432f-9b8e-2dbfd22742f2",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "corpus was divided into 1669 × 600-token text chunks, with 100-token\noverlaps between chunks (∼1 million tokens).\nNews articles. A benchmark dataset comprised of news articles published from September 2013\nto December 2023 in a range of categories, including entertainment, business, sports, technology,\nhealth, and science (Tang and Yang, 2024). The corpus is divided into 3197 × 600-token text\nchunks, with 100-token overlaps between chunks (∼1.7 million tokens).\n4.1.2 Conditions\nWe compared six conditions including GraphRAG at four different graph community levels ( C0,\nC1, C2, C3), a text summarization method that applies our map-reduce approach directly to source\ntexts (TS), and a vector RAG “semantic search” approach (SS):\n• CO. Uses root-level community summaries (fewest in number) to answer user queries.\n• C1. Uses high-level community summaries to answer queries. These are sub-communities\nof C0, if present, otherwise C0 communities projected downwards.\n• C2. Uses intermediate-level community summaries to answer queries. These are sub-\ncommunities of C1, if present, otherwise C1 communities projected downwards.\n• C3. Uses low-level community summaries (greatest in number) to answer queries. These\nare sub-communities of C2, if present, otherwise C2 communities projected downwards.\n• TS. The same method as in Section 3.1.6, except source texts (rather than community\nsummaries) are shuffled and chunked for the map-reduce summarization stages.\n• SS. An implementation of vector RAG in which text chunks are retrieved and added to the\navailable context window until the specified token limit is reached.\nThe size of the context window and",
+       "score": 0.5634,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "0df6cd3e-648d-4673-aff5-9619c6849805",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 11,
+       "page_end": 11,
+       "section_title": null,
+       "snippet": "Table 3 shows the results for the average number of extracted claims (i.e., the claim-based measure\nof comprehensiveness) per condition. For both the News and Podcast datasets, all global search\nconditions (C0-C3) and source text summarization (TS) had greater comprehensiveness than vector\nRAG (SS). The differences were statistically significant (p <.05) in all cases. These findings align\nwith the LLM-based win rates from Experiment 1.\nTable 4 contains the results for the average number of clusters, the claim-based measure of diver-\nsity. For the Podcast dataset, all global search conditions had significantly greater diversity than SS\nacross all distance thresholds (p<.05), consistent with the win rates observed in Experiment 1. For\nthe News dataset, however, only C0 significantly outperformed SS across all distance thresholds\n(p<.05). While C1-C3 also achieved higher average cluster counts than SS, the differences were\nstatistically significant only at certain distance thresholds. In Experiment 1, all global search con-\nditions significantly outperformed SS in the News dataset – not just C0. However, the differences\nin mean diversity scores between SS and the global search conditions were smaller for the News\ndataset than for the Podcast dataset, aligning directionally with the claim-based results.\nFor both comprehensiveness and diversity, across both datasets, there were no statistically significant\ndifferences observed among the global search conditions or between global search and TS.\nFinally, for each pairwise comparison in Experiment 1, we tested whether the answer preferred by\nthe LLM aligned with the winner based on the claim-based metrics. Since each pairwise comparison\nin Experiment 1 was performed five times, while the claim-based metrics provided only one outcome\nper comparison, we aggregated the Experiment 1 results into a single label using majority voting.\nFor example, if C0 won",
+       "score": 0.5483,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "cc67a6ce-953b-4e49-bbb2-a17b2b7246a2",
+       "document_id": "a42ebea2-5f3a-4357-9a58-89b2f48a86c3",
+       "filename": "2404.16130v2.pdf",
+       "page_start": 10,
+       "page_end": 10,
+       "section_title": null,
+       "snippet": "46 42 50 59\n79 64 48 45 41 50\nSS\nTS\nC0\nC1\nC2\nC3\nSS TS C0 C1 C2 C3\nComprehensiveness\n50 33 38 35 29 31\n67 50 53 45 44 40\n62 47 50 40 41 41\n65 55 60 50 50 50\n71 56 59 50 50 51\n69 60 59 50 49 50\nSS\nTS\nC0\nC1\nC2\nC3\nSS TS C0 C1 C2 C3\nDiversity\n50 47 57 49 50 50\n53 50 58 50 50 48\n43 42 50 42 45 44\n51 50 58 50 52 51\n50 50 55 48 50 50\n50 52 56 49 50 50\nSS\nTS\nC0\nC1\nC2\nC3\nSS TS C0 C1 C2 C3\nEmpowerment\n50 54 59 55 55 54\n46 50 55 53 52 52\n41 45 50 48 48 47\n45 47",
+       "score": 0.5407,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "The performance of the different GraphRAG conditions (C0, C1, C2, C3) compared with TS (text summarization) and SS (vector RAG semantic search) is analyzed across three metrics: comprehensiveness, diversity, and empowerment. The results are derived from head-to-head win rates and statistical comparisons.\n\n### Main Findings:\n1. **Comprehensiveness**:\n   - All GraphRAG conditions (C0-C3) outperformed SS across both datasets (News and Podcast) in terms of comprehensiveness, as measured by the average number of extracted claims [4]. \n   - There were no statistically significant differences among the GraphRAG conditions or between GraphRAG and TS [4].\n\n2. **Diversity**:\n   - For the Podcast dataset, all GraphRAG conditions (C0-C3) significantly outperformed SS across all distance thresholds [4].\n   - For the News dataset, only C0 significantly outperformed SS across all distance thresholds, while C1-C3 showed improvements at certain thresholds [4].\n   - The differences in mean diversity scores between SS and the global search conditions were smaller for the News dataset compared to the Podcast dataset [4].\n\n3. **Empowerment**:\n   - The head-to-head win rates for empowerment show that C0 and C1 generally outperformed TS and SS. For example, C0 had a win rate of 59% over TS in the Podcast dataset [1].\n   - C2 and C3 also showed strong performance, with C2 achieving a win rate of 55% over TS in the Podcast dataset [1].\n\n### Representative Figures:\n- **Comprehensiveness**:\n  - For the Podcast dataset, C0 had a win rate of 67% over SS, and C1 had a win rate of 62% over SS [1].\n  - For the News dataset, C0 had a win rate of 65% over SS, and C1 had a win rate of 60% over SS [1].\n\n- **Diversity**:\n  - For the Podcast dataset, C0 had a win rate of 53% over SS, and C1 had a win rate of 58% over SS [1].\n  - For the News dataset, C0 had a win rate of 51% over SS, and C1 had a win rate of 50% over SS [1].\n\n- **Empowerment**:\n  - For the Podcast dataset, C0 had a win rate of 59% over TS, and C1 had a win rate of 55% over TS [1].\n  - For the News dataset, C0 had a win rate of 55% over TS, and C1 had a win rate of 53% over TS [1].\n\n### Exceptions:\n- For the News dataset, the improvements in diversity for C1-C3 over SS were not statistically significant at all distance thresholds [4].\n- There were no statistically significant differences among the GraphRAG conditions or between GraphRAG and TS for both comprehensiveness and diversity [4].\n\n### Conclusion:\n- GraphRAG conditions (C0-C3) consistently outperformed SS in comprehensiveness and diversity, with C0 showing the strongest performance in the News dataset [1][4].\n- The performance of GraphRAG conditions was comparable to TS, with no statistically significant differences observed [4].\n- C0 and C1 showed the strongest performance in empowerment, with C0 generally outperforming C1 in the Podcast dataset [1].",
+     "elapsed_seconds": 34.4,
+     "question": "Performance of the different GraphRAG conditions (C0, C1, C2, C3) compared with TS and SS"
+    }
+   ]
+  },
+  {
+   "paper": "raptor",
+   "file": "2401.18059.pdf",
+   "questions": [
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "summary this document.",
+      "follow_up": null
+     },
+     "usage": {
+      "prompt_tokens": 2467,
+      "completion_tokens": 428,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2467,
+        "completion_tokens": 428
+       }
+      ]
+     },
+     "done": {
+      "status": "completed",
+      "answered": true,
+      "cited": [
+       4,
+       2,
+       3,
+       1
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [
+       {
+        "number": "20%",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 1,
+        "snippet": "…e use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolute accuracy. 1 I NTRODUCTION Large Language Models (LLMs) have emerged…"
+       },
+       {
+        "number": "56.6%",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…ased tree approach Configuration Accuracy RAPTOR + SBERT embeddings + UnifiedQA 56.6% Recency-based tree + SBERT embeddings + UnifiedQA 55.8% C D ATASET STATISTICS A…"
+       },
+       {
+        "number": "55.8%",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…embeddings + UnifiedQA 56.6% Recency-based tree + SBERT embeddings + UnifiedQA 55.8% C D ATASET STATISTICS AND COMPRESSION RATIOS The average ratio of the summary l…"
+       },
+       {
+        "number": "72%",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…ngth to the sum of child node lengths across all datasets is 0.28, indicating a 72% compression rate. On average, the summary length is 131 tokens, and the average…"
+       },
+       {
+        "number": "131",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…s is 0.28, indicating a 72% compression rate. On average, the summary length is 131 tokens, and the average child node length is 86 tokens. Below are the detailed…"
+       },
+       {
+        "number": "86",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…average, the summary length is 131 tokens, and the average child node length is 86 tokens. Below are the detailed statistics for all three datasets: Table 10: Sta…"
+       },
+       {
+        "number": "150",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…impact on question- answering (QA) tasks. E.1 M ETHODOLOGY We randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This sampling st…"
+       },
+       {
+        "number": "40",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 17,
+        "snippet": "…on- answering (QA) tasks. E.1 M ETHODOLOGY We randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This sampling strategy provides…"
+       },
+       {
+        "number": "4%",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 1,
+        "snippet": "…-the-art results; for example, by coupling RAPTOR retrieval with the use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolut…"
+       }
+      ],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [],
+      "doubtful_citations": [],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": "UNCERTAIN",
+      "finish_reason": "stop",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 0,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "888e8d25-6fe6-44d4-ae0e-755221296a24",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 17,
+       "page_end": 17,
+       "section_title": null,
+       "snippet": "Prompt for Summarization\nRole Content\nsystem You are a Summarizing Text Portal\nuser Write a summary of the following, including as many key details as\npossible: {context}:\nE H ALLUCINATION ANALYSIS\nTo assess the quality and accuracy of the summarizations within our RAPTOR model, we conducted\nan analysis focusing on hallucinations in the generated summaries. The summaries were generated\nby gpt-3.5-turbo and subsequently annotated to quantify the rates of hallucinations, to examine\nwhether such inaccuracies propagate to parent nodes, and to evaluate their impact on question-\nanswering (QA) tasks.\nE.1 M ETHODOLOGY\nWe randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This\nsampling strategy provides a broad view of the model’s performance across different contexts. Each\nnode was annotated by hand, and determined if it contained a hallucination.\nE.2 F INDINGS\nOut of the 150 nodes sampled, 4% (6 nodes) contained some form of hallucination. Most commonly,\nthese hallucinations originated from the model adding minor information possibly from its training\ndata that was not present in the text being summarized, or from incorrectly extrapolating some\ninformation when creating the summary.\n17",
+       "score": 0.583,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "1347cdff-5b2b-4fa5-8977-c7fb7a731e26",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 2,
+       "page_end": 2,
+       "section_title": null,
+       "snippet": "Published as a conference paper at ICLR 2024\n2\n 3\n 4\n 5\n1\n1\n 2\n3\n 3\n4\n 5\n5\n6\n 8\n7\n Index #8\nText:  summary of \nnodes 2 and 3\nChild Nodes: 2, 3\nText Embedding\nText chunks\n3\n.1\n4\n.1\n5\n2. Summarization \nby LLM\n1. Clustering\n10\n7\n1\n 2\n8\n4\n3\n 5\n6\n9\nFormation of one tree layer\nRoot layer\nLeaf layer\nContents of a nodeRAPTOR Tree \nFigure 1: Tree construction process: RAPTOR recursively clusters chunks of text based on their\nvector embeddings and generates text summaries of those clusters, constructing a tree from the\nbottom up. Nodes clustered together are siblings; a parent node contains the text summary of that\ncluster.\nOur main contribution is the idea of using text summarization to allow retrieval augmentation of\ncontext at different scales, and to show its effectiveness in experiments on collections of long doc-\numents. Controlled experiments with three language models (UnifiedQA (Khashabi et al., 2020),\nGPT-3 (Brown et al., 2020) and GPT-4 (OpenAI, 2023)) show that RAPTOR outperforms current\nretrieval augmentation. Moreover, RAPTOR coupled with GPT-4, and sometimes even with Uni-\nfiedQA, gives new state-of-the-art results on three QA tasks: free text response questions on books\nand movies (NarrativeQA, Koˇcisk`y et al. 2018), full-text NLP papers (QASPER, Dasigi et al. 2021),\nand",
+       "score": 0.5753,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "496988ff-4d7a-41f5-865f-f0a57ad5f0a0",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 17,
+       "page_end": 17,
+       "section_title": null,
+       "snippet": "Published as a conference paper at ICLR 2024\nTable 9: Ablation study results comparing RAPTOR with a recency-based tree approach\nConfiguration Accuracy\nRAPTOR + SBERT embeddings + UnifiedQA 56.6%\nRecency-based tree + SBERT embeddings + UnifiedQA 55.8%\nC D ATASET STATISTICS AND COMPRESSION RATIOS\nThe average ratio of the summary length to the sum of child node lengths across all datasets is 0.28,\nindicating a 72% compression rate. On average, the summary length is 131 tokens, and the average\nchild node length is 86 tokens. Below are the detailed statistics for all three datasets:\nTable 10: Statistics of Average Summary Length and Child Node Length Across Datasets\nDataset Avg.\nSummary\nLength\n(tokens)\nAvg. Child\nNode Text\nLength\n(tokens)\nAvg. # of\nChild Nodes\nPer Parent\nAvg.\nCompression\nRatio (%)\nAll Datasets 131 85.6 6.7 .28\nQuALITY 124.4 87.9 5.7 .28\nNarrativeQA 129.7 85.5 6.8 .27\nQASPER 145.9 86.2 5.7 .35\nD S UMMARIZATION PROMPT\nTable 11 shows the prompt used for summarization.\nTable 11: Prompt for Summarization\nRole Content\nsystem You are a Summarizing Text Portal\nuser Write a summary of the following, including as many key details as\npossible: {context}:\nE H ALLUCINATION ANALYSIS\nTo assess the quality and accuracy of the summarizations within our RAPTOR model, we conducted\nan analysis focusing on hallucinations in the generated summaries. The",
+       "score": 0.5559,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "aadd5a77-7972-4798-acd2-69e15751589f",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 1,
+       "page_end": 1,
+       "section_title": null,
+       "snippet": "Published as a conference paper at ICLR 2024\nRAPTOR: R ECURSIVE ABSTRACTIVE PROCESSING\nFOR TREE -O RGANIZED RETRIEVAL\nParth Sarthi, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, Christopher D. Manning\nStanford University\npsarthi@cs.stanford.edu\nABSTRACT\nRetrieval-augmented language models can better adapt to changes in world state\nand incorporate long-tail knowledge. However, most existing methods retrieve\nonly short contiguous chunks from a retrieval corpus, limiting holistic under-\nstanding of the overall document context. We introduce the novel approach of\nrecursively embedding, clustering, and summarizing chunks of text, constructing\na tree with differing levels of summarization from the bottom up. At inference\ntime, our RAPTOR model retrieves from this tree, integrating information across\nlengthy documents at different levels of abstraction. Controlled experiments show\nthat retrieval with recursive summaries offers significant improvements over tra-\nditional retrieval-augmented LMs on several tasks. On question-answering tasks\nthat involve complex, multi-step reasoning, we show state-of-the-art results; for\nexample, by coupling RAPTOR retrieval with the use of GPT-4, we can improve\nthe best performance on the QuALITY benchmark by 20% in absolute accuracy.\n1 I NTRODUCTION\nLarge Language Models (LLMs) have emerged as transformative tools showing impressive perfor-\nmance on many tasks. With the growing size of LLMs, they can serve standalone as very effective\nknowledge stores, with facts encoded within their parameters (Petroni et al., 2019; Jiang et al., 2020;\nTalmor et al., 2020; Rae et al., 2021; Hoffmann et al., 2022;",
+       "score": 0.5417,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "8f809df5-5986-45d5-8e1f-5e75b9862a43",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 10,
+       "page_end": 10,
+       "section_title": null,
+       "snippet": "1808.08858 , 2018. URL\nhttps://arxiv.org/abs/1808.08858.\nManoj Ghuhan Arivazhagan, Lan Liu, Peng Qi, Xinchi Chen, William Yang Wang, and Zhiheng\nHuang. Hybrid hierarchical retrieval for open-domain question answering. In Anna Rogers,\nJordan Boyd-Graber, and Naoaki Okazaki (eds.), Findings of the Association for Computational\nLinguistics: ACL 2023, pp. 10680–10689, Toronto, Canada, July 2023. Association for Computa-\ntional Linguistics. doi: 10.18653/v1/2023.findings-acl.679. URL https://aclanthology.\norg/2023.findings-acl.679.\nIz Beltagy, Matthew E. Peters, and Arman Cohan. Longformer: The Long-document Transformer,\n2020. URL https://arxiv.org/abs/2004.05150. arXiv preprint arXiv:2004.05150.\nSebastian Borgeaud, Arthur Mensch, Jordan Hoffmann, Trevor Cai, Eliza Rutherford, Katie Milli-\ncan, George Bm Van Den Driessche, Jean-Baptiste Lespiau, Bogdan Damoc, Aidan Clark, et al.\nImproving language models by retrieving from trillions of tokens. In International conference on\nmachine learning, pp. 2206–2240. PMLR, 2022. URL https://arxiv.org/abs/2112.\n04426.\nTom Brown,",
+       "score": 0.5375,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "The document introduces RAPTOR (Recursive Abstractive Processing for Tree-Organized Retrieval), a novel method for retrieval-augmented language models. RAPTOR recursively clusters and summarizes text chunks based on their vector embeddings, constructing a tree from the bottom up. This approach allows for retrieval augmentation at different levels of abstraction, improving holistic understanding of lengthy documents [4].\n\nThe methodology involves embedding and clustering text chunks, generating summaries for each cluster, and building a hierarchical tree structure. Nodes in the tree represent clusters of text, with parent nodes containing summaries of their child nodes. This structure enables multi-scale retrieval and integration of information during inference [2].\n\nExperiments demonstrate that RAPTOR outperforms traditional retrieval-augmented language models. When combined with GPT-4, it achieves state-of-the-art results on three question-answering (QA) tasks: NarrativeQA (free text response questions on books and movies), QASPER (full-text NLP papers), and QuALITY. For example, coupling RAPTOR with GPT-4 improves performance on the QuALITY benchmark by 20% in absolute accuracy [4].\n\nAn ablation study compares RAPTOR with a recency-based tree approach. The results show that RAPTOR achieves an accuracy of 56.6%, slightly outperforming the recency-based approach, which achieves 55.8%. The average compression ratio across all datasets is 72%, with an average summary length of 131 tokens and an average child node length of 86 tokens [3].\n\nTo assess the quality of the summaries, an analysis of hallucinations was conducted. Out of 150 nodes sampled across 40 stories, 4% (6 nodes) contained hallucinations. These hallucinations typically involved the model adding minor information from its training data or incorrectly extrapolating information not present in the original text [1].\n\nOverall, RAPTOR offers a significant improvement in retrieval-augmented language modeling by enabling multi-scale retrieval and summarization, leading to better performance on complex QA tasks [4].",
+     "elapsed_seconds": 20.0,
+     "question": "summary this document."
+    },
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "compare RAPTOR with BM25 and DPR",
+      "follow_up": false
+     },
+     "usage": {
+      "prompt_tokens": 2277,
+      "completion_tokens": 2500,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "follow_up",
+        "prompt_tokens": 706,
+        "completion_tokens": 2
+       },
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2277,
+        "completion_tokens": 2500
+       }
+      ]
+     },
+     "done": {
+      "status": "interrupted",
+      "answered": null,
+      "cited": [
+       1,
+       4,
+       3,
+       5,
+       2
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [],
+      "doubtful_citations": [],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": null,
+      "finish_reason": "output_limit",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 36,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "e05ddd08-7e0a-47d3-b2cc-53d741e273d5",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 7,
+       "page_end": 7,
+       "section_title": null,
+       "snippet": "Likewise, in the QuALITY dataset as shown in Table 4, RAPTOR achieves an accuracy of 62.4%,\nwhich is a 2% and 5.1% improvement over DPR and BM25. Similar trends are observed when Uni-\nfiedQA is employed, with RAPTOR outperforming DPR and BM25 by 2.7% and 6.7%, respectively.\nFinally, in the NarrativeQA dataset, as presented in Table 6, RAPTOR excels across multiple met-\nrics. For ROUGE-L, it surpasses BM25 and DPR by 7.3 and 2.7 points, respectively. In other\nmetrics like BLEU-1, BLEU-4, and METEOR, RAPTOR outperforms BM25 and DPR by margins\nranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively.\n2For the DPR experiments in Tables 1 and 2, we used the dpr-multiset-base model as opposed to\ndpr-single-nq-base which was used in rest of the experiments done earlier. This decision was based on\nthe performance observed in Karpukhin et al. (2020), wheredpr-multiset-base showed superior results.\n7",
+       "score": 0.6808,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "6c07f5ba-e5fd-442a-b557-ab3d6b8840ee",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 7,
+       "page_end": 7,
+       "section_title": null,
+       "snippet": "Table 1: NarrativeQA Performance With + Without RAPTOR: Performance comparison of\nvarious retrieval methods (SBERT, BM25, DPR) with and without RAPTOR on the NarrativeQA\ndataset, using UnifiedQA-3B as the language model. RAPTOR outperforms baselines of each re-\nspective retrieval method.\nModel ROUGE BLEU-1 BLEU-4 METEOR\nSBERT with RAPTOR — ROUGE: 30.87%; BLEU-1: 23.50%; BLEU-4: 6.42%; METEOR: 19.20%\nSBERT without RAPTOR — ROUGE: 29.26%; BLEU-1: 22.56%; BLEU-4: 5.95%; METEOR: 18.15%\nBM25 with RAPTOR — ROUGE: 27.93%; BLEU-1: 21.17%; BLEU-4: 5.70%; METEOR: 17.03%\nBM25 without RAPTOR — ROUGE: 23.52%; BLEU-1: 17.73%; BLEU-4: 4.65%; METEOR: 13.98%\nDPR with RAPTOR — ROUGE: 30.94%; BLEU-1: 23.51%; BLEU-4: 6.45%; METEOR: 19.05%\nDPR without RAPTOR — ROUGE: 29.56%; BLEU-1: 22.84%; BLEU-4: 6.12%; METEOR: 18.44%",
+       "score": 0.6715,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "d5aa3771-21f6-4c89-ba73-33f64acc9a3e",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "BM25 and DPR by at least 2.0% in accuracy.\nModel GPT-3 Acc. UnifiedQA Acc.\nBM25 57.3 49.9\nDPR 60.4 53.9\nRAPTOR 62.4 56.6\nTable 5: Results on F-1 Match scores of various\nmodels on the QASPER dataset.\nModel F-1 Match\nLongT5 XL (Guo et al., 2022) 53.1\nCoLT5 XL (Ainslie et al., 2023) 53.9\nRAPTOR + GPT-4 55.7\nComparison to State-of-the-art Systems\nBuilding upon our controlled comparisons,\nwe examine RAPTOR’s performance relative\nto other state-of-the-art models. As shown\nin Table 5, RAPTOR with GPT-4 sets a new\nbenchmark on QASPER, with a 55.7% F-1\nscore, surpassing the CoLT5 XL’s score of\n53.9%.\nIn the QuALITY dataset, as shown in Table 7,\nRAPTOR paired with GPT-4 sets a new state-\nof-the-art with an accuracy of 82.6%, surpass-\ning the previous best result of 62.3%. In par-\nticular, it outperforms CoLISA by 21.5% on\nQuALITY-HARD, which represents questions\nthat humans took unusually long to correctly\nanswer, requiring rereading parts of the text,\ndifficult reasoning, or both.\nFor the NarrativeQA dataset, as represented in\nTable 6, RAPTOR paired with UnifiedQA sets\na new state-of-the-art METEOR score. When compared to the recursively summarizing model by\nWu",
+       "score": 0.6167,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "b41e7cf4-cac8-4e33-8d15-ac4ed5ee2423",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "Table 3: Controlled comparison of F-1 scores on the QASPER dataset, using three different lan-\nguage models (GPT-3, GPT-4, UnifiedQA 3B) and various retrieval methods. The column ”Title +\nAbstract” reflects performance when only the title and abstract of the papers are used for context.\nRAPTOR outperforms the established baselines BM25 and DPR across all tested language models.\nSpecifically, RAPTOR’s F-1 scores are at least 1.8% points higher than DPR and at least 5.3% points\nhigher than BM25.\nRetriever GPT-3 F-1 Match GPT-4 F-1 Match UnifiedQA F-1 Match\nTitle + Abstract 25.2 22.2 17.5\nBM25 46.6 50.2 26.4\nDPR 51.3 53.0 32.1\nRAPTOR 53.1 55.7 36.6\nTable 4: Comparison of accuracies on the QuAL-\nITY dev dataset for two different language mod-\nels (GPT-3, UnifiedQA 3B) using various retrieval\nmethods. RAPTOR outperforms the baselines of",
+       "score": 0.6021,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "5c2bfc34-94b0-45c5-8172-a46f8528adc5",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 8,
+       "page_end": 8,
+       "section_title": null,
+       "snippet": "Table 2: QuALITY and QASPER Performance With + Without RAPTOR: Performance com-\nparison across the QuALITY and QASPER datasets of various retrieval methods (SBERT, BM25,\nDPR) with and without RAPTOR. UnifiedQA-3B is used as the language model. RAPTOR outper-\nforms baselines of each respective retrieval method for both datasets.\nModel Accuracy (QuALITY) Answer F1 (QASPER)\nSBERT with RAPTOR — Model Accuracy (QuALITY): 56.6%; Answer F1 (QASPER): 36.70%\nSBERT without RAPTOR — Model Accuracy (QuALITY): 54.9%; Answer F1 (QASPER): 36.23%\nBM25 with RAPTOR — Model Accuracy (QuALITY): 52.1%; Answer F1 (QASPER): 27.00%\nBM25 without RAPTOR — Model Accuracy (QuALITY): 49.9%; Answer F1 (QASPER): 26.47%\nDPR with RAPTOR — Model Accuracy (QuALITY): 54.7%; Answer F1 (QASPER): 32.23%\nDPR without RAPTOR — Model Accuracy (QuALITY): 53.1%; Answer F1 (QASPER): 31.70%",
+       "score": 0.5988,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "RAPTOR consistently outperforms both BM25 and DPR across multiple datasets and metrics. In the QuALITY dataset, RAPTOR achieves an accuracy of 62.4%, which is a 2% and 5.1% improvement over DPR and BM25, respectively [1]. When using UnifiedQA, RAPTOR outperforms DPR and BM25 by 2.7% and 6.7%, respectively [1]. In the QASPER dataset, RAPTOR achieves an F-1 score of 55.7%, which is at least 1.8% higher than DPR and at least 5.3% higher than BM25 [4]. In the NarrativeQA dataset, RAPTOR excels across multiple metrics, surpassing BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively [1]. For example, in ROUGE-L, RAPTOR surpasses BM25 and DPR by 7.3 and 2.7 points, respectively [1]. In the QuALITY dataset, RAPTOR paired with GPT-4 sets a new state-of-the-art with an accuracy of 82.6%, surpassing the previous best result of 62.3% [3]. In the NarrativeQA dataset, RAPTOR paired with UnifiedQA sets a new state-of-the-art METEOR score [3]. In the QASPER dataset, RAPTOR with GPT-4 sets a new benchmark with a 55.7% F-1 score, surpassing the CoLT5 XL’s score of 53.9% [3]. In the QuALITY dataset, RAPTOR outperforms BM25 and DPR by at least 2.0% in accuracy [3]. In the QASPER dataset, RAPTOR outperforms BM25 and DPR across all tested language models [4]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 56.6%, which is a 1.7% improvement over SBERT without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 36.70%, which is a 0.47% improvement over SBERT without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 52.1%, which is a 2.2% improvement over BM25 without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 27.00%, which is a 0.53% improvement over BM25 without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 54.7%, which is a 1.6% improvement over DPR without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 32.23%, which is a 0.53% improvement over DPR without RAPTOR [5]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 30.87%, which is a 1.61% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 23.50%, which is a 0.94% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 6.42%, which is a 0.47% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 19.20%, which is a 1.05% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 27.93%, which is a 4.41% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 21.17%, which is a 3.44% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 5.70%, which is a 1.05% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 17.03%, which is a 3.05% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 30.94%, which is a 1.38% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 23.51%, which is a 0.67% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 6.45%, which is a 0.33% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 19.05%, which is a 0.61% improvement over DPR without RAPTOR [2]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 56.6%, which is a 1.7% improvement over SBERT without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 36.70%, which is a 0.47% improvement over SBERT without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 52.1%, which is a 2.2% improvement over BM25 without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 27.00%, which is a 0.53% improvement over BM25 without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 54.7%, which is a 1.6% improvement over DPR without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 32.23%, which is a 0.53% improvement over DPR without RAPTOR [5]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 30.87%, which is a 1.61% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 23.50%, which is a 0.94% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 6.42%, which is a 0.47% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 19.20%, which is a 1.05% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 27.93%, which is a 4.41% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 21.17%, which is a 3.44% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 5.70%, which is a 1.05% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 17.03%, which is a 3.05% improvement over BM25 without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 30.94%, which is a 1.38% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 23.51%, which is a 0.67% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 6.45%, which is a 0.33% improvement over DPR without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a METEOR score of 19.05%, which is a 0.61% improvement over DPR without RAPTOR [2]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 56.6%, which is a 1.7% improvement over SBERT without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 36.70%, which is a 0.47% improvement over SBERT without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 52.1%, which is a 2.2% improvement over BM25 without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 27.00%, which is a 0.53% improvement over BM25 without RAPTOR [5]. In the QuALITY dataset, RAPTOR with RAPTOR achieves a model accuracy of 54.7%, which is a 1.6% improvement over DPR without RAPTOR [5]. In the QASPER dataset, RAPTOR with RAPTOR achieves an answer F1 of 32.23%, which is a 0.53% improvement over DPR without RAPTOR [5]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a ROUGE score of 30.87%, which is a 1.61% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-1 score of 23.50%, which is a 0.94% improvement over SBERT without RAPTOR [2]. In the NarrativeQA dataset, RAPTOR with RAPTOR achieves a BLEU-4 score of 6.42%, which is a 0.47% improvement over SBERT without RAPTOR [",
+     "elapsed_seconds": 106.6,
+     "question": "compare RAPTOR with BM25 and DPR"
+    },
+    {
+     "route": {
+      "type": "retrieval",
+      "standalone_question": "Performance of the different retrieval strategies of RAPTOR (tree traversal vs collapsed tree)",
+      "follow_up": false
+     },
+     "usage": {
+      "prompt_tokens": 2421,
+      "completion_tokens": 239,
+      "limit": 10000,
+      "breakdown": [
+       {
+        "purpose": "follow_up",
+        "prompt_tokens": 725,
+        "completion_tokens": 2
+       },
+       {
+        "purpose": "answer",
+        "prompt_tokens": 2421,
+        "completion_tokens": 239
+       }
+      ]
+     },
+     "done": {
+      "status": "completed",
+      "answered": true,
+      "cited": [
+       3,
+       1
+      ],
+      "unverified_numbers": [],
+      "verified_numbers": [
+       {
+        "number": "20",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 5,
+        "snippet": "…ng you don’t exceed the model’s input limitations. We tested both approaches on 20 stories from the QASPER dataset. Figure 3 shows the performance of tree travers…"
+       },
+       {
+        "number": "2000",
+        "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+        "page": 6,
+        "snippet": "…values, and collapsed tree with different context lengths. Collapsed tree with 2000 tokens produces the best results, so we use this querying strategy for our main…"
+       }
+      ],
+      "mislabelled_numbers": [],
+      "unresolved_numbers": [],
+      "overstated_claims": [],
+      "doubtful_citations": [],
+      "direction_issues": [],
+      "completeness": {
+       "status": "not_applicable",
+       "required": [],
+       "missing": [],
+       "condition": null
+      },
+      "conclusion_issues": [],
+      "arithmetic_issues": [],
+      "analysis_status": "UNCERTAIN",
+      "finish_reason": "stop",
+      "revision": null,
+      "navigation": null,
+      "correction": null,
+      "facts": {
+       "mode": "inject",
+       "cells": 0,
+       "facts": 0,
+       "block_tokens": 0,
+       "replaced_sources": []
+      }
+     },
+     "error": null,
+     "sources": [
+      {
+       "index": 1,
+       "kind": "chunk",
+       "chunk_id": "a36c78e3-7804-4f79-b651-67c37deb1b8a",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 5,
+       "page_end": 5,
+       "section_title": null,
+       "snippet": "for relevant information by considering\nall nodes in the tree simultaneously, as depicted in Figure 2. Instead of going layer-by-layer, this\nmethod flattens the multi-layered tree into a single layer, essentially bringing all the nodes onto the\nsame level for comparison. The steps for this method are outlined below:\n1. First, collapse the entire RAPTOR tree into a single layer. This new set of nodes, denoted\nas C, contains nodes from every layer of the original tree.\n2. Next, calculate the cosine similarity between the query embedding and the embeddings of\nall nodes present in the collapsed set C.\n3. Finally, pick the top- k nodes that have the highest cosine similarity scores with the query.\nKeep adding nodes to the result set until you reach a predefined maximum number of\ntokens, ensuring you don’t exceed the model’s input limitations.\nWe tested both approaches on 20 stories from the QASPER dataset. Figure 3 shows the performance\nof tree traversal with different top- sizes and collapsed tree with different maximum token numbers.\nThe collapsed tree approach consistently performs better. We believe collapsed tree retrieval is\nbetter due to offering greater flexibility than tree traversal; i.e., by searching through all the nodes\nsimultaneously, it retrieves information that is at the correct level of granularity for a given question.\nIn comparison, while using tree traversal with the same values of d and k, the ratio of nodes from\neach level of the tree will be constant. So, the ratio of higher-order thematic information to granular\ndetails will remain the same regardless of the question.\n5",
+       "score": 0.7405,
+       "origin": "retrieval"
+      },
+      {
+       "index": 2,
+       "kind": "chunk",
+       "chunk_id": "efb20512-9294-4d96-ab5a-63b89b4392a0",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 5,
+       "page_end": 5,
+       "section_title": null,
+       "snippet": "Published as a conference paper at ICLR 2024\nFigure 2: Illustration of the tree traversal and collapsed tree retrieval mechanisms.Tree traver-\nsal starts at the root level of the tree and retrieves the top- k (here, top-1) node(s) based on cosine\nsimilarity to the query vector. At each level, it retrieves the top- k node(s) from the child nodes of\nthe previous layer’s top-k. Collapsed tree collapses the tree into a single layer and retrieves nodes\nuntil a threshold number of tokens is reached, based on cosine similarity to the query vector. The\nnodes on which cosine similarity search is performed are highlighted in both illustrations.\n3. Proceed to the child nodes of the elements in setS1. Compute the cosine similarity between\nthe query vector and the vector embeddings of these child nodes.\n4. Select the top k child nodes with the highest cosine similarity scores to the query, forming\nthe set S2.\n5. Continue this process recursively for d layers, producing sets S1, S2, . . . , Sd.\n6. Concatenate sets S1 through Sd to assemble the relevant context to the query.\nBy adjusting the depth d and the number of nodes k selected at each layer, the tree traversal method\noffers control over the specificity and breadth of the information retrieved. The algorithm starts with\na broad outlook by considering the top layers of the tree and progressively focuses on finer details\nas it descends through the lower layers.\nThe collapsed tree approach offers a simpler way to search for relevant information by considering\nall nodes in the tree simultaneously, as depicted in Figure 2. Instead of going layer-by-layer, this\nmethod flattens the multi-layered tree into a single layer, essentially bringing all the nodes onto the\nsame level for comparison. The steps for this method are outlined below:\n1. First, collapse the entire RAPTOR tree into a single layer.",
+       "score": 0.7191,
+       "origin": "retrieval"
+      },
+      {
+       "index": 3,
+       "kind": "chunk",
+       "chunk_id": "dda6ecb1-b852-4a93-afd8-20d6554b7d9e",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 6,
+       "page_end": 6,
+       "section_title": null,
+       "snippet": "Published as a conference paper at ICLR 2024\nOne drawback, however, of the collapsed tree approach is that it requires cosine similarity search to\nbe performed on all nodes in the tree. However, this can be made more efficient with fast k-nearest\nneighbor libraries such as FAISS (Johnson et al., 2019).\nFigure 3: Comparison of querying methods.\nResults on 20 stories from the QASPER dataset\nusing tree traversal with different top-k values,\nand collapsed tree with different context lengths.\nCollapsed tree with 2000 tokens produces the best\nresults, so we use this querying strategy for our\nmain results.\nOverall, given the collapsed tree approach’s\ngreater flexibility and its superior performance\non the subset of the QASPER dataset, this is\nthe querying approach with which we proceed.\nSpecifically, we use the collapsed tree with\n2000 maximum tokens, which approximately\nequates to retrieving the top-20 nodes. Using a\ntoken-based approach ensures the context does\nnot exceed model context constraints as token\ncounts can vary across nodes. For experiments\nwith the UnifiedQA model, we provide 400 to-\nkens of context, as UnifiedQA has a max con-\ntext length of 512 tokens. We provide the same\namount of tokens of context to RAPTOR and to\nthe baselines.\nQualitative Study We conduct a qualitative\nanalysis to understand the benefits of RAP-\nTOR’s retrieval process compared to Dense\nPassage Retrieval (DPR) methods. Our study\nfocuses on thematic, multi-hop questions using\na 1500-word Cinderella fairytale. As illustrated\nin Figure 4, RAPTOR’s tree-based retrieval allows it to choose nodes from different tree layers,\nmatching the question’s detail level. This approach often yields more relevant and comprehensive\ninformation for downstream tasks than",
+       "score": 0.7024,
+       "origin": "retrieval"
+      },
+      {
+       "index": 4,
+       "kind": "chunk",
+       "chunk_id": "bf77d636-d10f-4785-80c4-c2aba5d05caa",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 18,
+       "page_end": 18,
+       "section_title": null,
+       "snippet": "In our findings, hallucinations had no discernible impact on the performance of QA tasks. This sug-\ngests that hallucination is not a major concerns for the summarization component in our RAPTOR\narchitecture.\nF P SEUDOCODE FOR RETRIEVAL METHODS\nAlgorithm 1 Tree Traversal Algorithm\nfunction TRAVERSE TREE(tree, query, k)\nScurrent ← tree.layer[0]\nfor layer in range(tree.num layers) do\ntopk ← []\nfor node in Scurrent do\nscore ← dot product(query, node)\ntop k.append((node, score))\nend for\nSlayer ← sorted(top k)[:k].nodes\nScurrent ← Slayer\nend for\nreturn S0 ∪ S1 ∪ S2 ∪ . . .∪ Sk\nend function\nG Q UALITATIVE ANALYSIS\nTo qualitatively examine RAPTOR’s retrieval process, we test it on thematic, multi-hop questions\nabout a 1500-word version of the fairytale Cinderella. We compare the context retrieved by RAP-\nTOR with the context retrieved by Dense Passage Retrieval (DPR). Figure 4 in the main paper details\nthe retrieval process within RAPTOR’s tree structure for two questions. The nodes that RAPTOR\nselects for each question are highlighted, while the leaf nodes that DPR selects for the same question\nare indicated with arrows. This comparison illustrates the advantage of RAPTOR’s tree structure.\nRAPTOR selects nodes from different layers depending on the level of granularity required by the\n18",
+       "score": 0.6902,
+       "origin": "retrieval"
+      },
+      {
+       "index": 5,
+       "kind": "chunk",
+       "chunk_id": "522223c2-0032-482d-80b2-db81c30a6ddc",
+       "document_id": "02e90315-2538-465b-9005-bbadd182c04d",
+       "filename": "2401.18059.pdf",
+       "page_start": 4,
+       "page_end": 4,
+       "section_title": null,
+       "snippet": "gpt-3.5-turbo to generate the summaries. The summarization step con-\ndenses the potentially large volume of retrieved information into a manageable size. We provide\nstatistics on the compression due to the summarization in Appendix C and the prompt used for\nsummarization in Appendix D.\nWhile the summarization model generally produces reliable summaries, a focused annotation study\nrevealed that about 4% of the summaries contained minor hallucinations. These did not propagate\nto parent nodes and had no discernible impact on question-answering tasks. For an in-depth analysis\nof hallucinations, refer to the appendix E.\nQuerying In this section, we elaborate on the two querying mechanisms employed by RAPTOR:\ntree traversal and collapsed tree. These methods offer unique ways of traversing the multi-layered\nRAPTOR tree to retrieve relevant information, each with its own advantages and trade-offs. We\nprovide the pseudocode of both methods in Appendix F. Note that we embed all nodes using SBERT.\nThe tree traversal method first selects the top-k most relevant root nodes based on their cosine\nsimilarity to the query embedding. The children of these selected nodes are considered at the next\nlayer and the top-k nodes are selected from this pool again based on their cosine similarity to the\nquery vector. This process is repeated until we reach the leaf nodes. Finally, the text from all selected\nnodes is concatenated to form the retrieved context. The algorithm’s steps are outlined below:\n1. Start at the root layer of the RAPTOR tree. Compute the cosine similarity between the\nquery embedding and the embeddings of all nodes present at this initial layer.\n2. Choose the top- k nodes based on the highest cosine similarity scores, forming the set S1.\n4",
+       "score": 0.6867,
+       "origin": "retrieval"
+      }
+     ],
+     "stages": [],
+     "answer": "RAPTOR employs two retrieval strategies: **tree traversal** and **collapsed tree**. The performance of these methods was evaluated on 20 stories from the QASPER dataset, as shown in Figure 3 [3].\n\n### Main Findings:\n- The **collapsed tree approach** consistently outperforms the **tree traversal method**.\n- The best results were achieved with the **collapsed tree using a maximum of 2000 tokens**, which approximately corresponds to retrieving the top-20 nodes [3].\n\n### Representative Figures:\n- **Figure 3** compares the performance of both methods with varying parameters. It shows that the collapsed tree achieves better results across different context lengths [3].\n\n### Exceptions or Contradictory Results:\n- No specific exceptions or contradictory results are mentioned in the provided sources. The collapsed tree approach is consistently reported to perform better [3].\n\n### Conclusion:\nThe **collapsed tree method** is more effective for retrieving relevant information due to its greater flexibility in selecting nodes at the appropriate level of granularity for a given query. It allows for a more targeted retrieval process compared to the tree traversal method, which maintains a fixed ratio of nodes from each level [1].",
+     "elapsed_seconds": 13.5,
+     "question": "Performance of the different retrieval strategies of RAPTOR (tree traversal vs collapsed tree)"
+    }
+   ]
+  }
+ ]
+}

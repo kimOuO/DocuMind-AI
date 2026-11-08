@@ -69,12 +69,18 @@ class ChatRepository:
         )
 
     async def finish(
-        self, message_id: uuid.UUID, *, status: str, content: str, answered: bool | None
+        self,
+        message_id: uuid.UUID,
+        *,
+        status: str,
+        content: str,
+        answered: bool | None,
+        usage: dict[str, Any] | None = None,
     ) -> None:
         await self._db.execute(
             update(Message)
             .where(Message.id == message_id, Message.status.in_(UNFINISHED))
-            .values(status=status, content=content, answered=answered)
+            .values(status=status, content=content, answered=answered, usage=usage)
         )
 
     async def interrupt_unfinished(self) -> int:

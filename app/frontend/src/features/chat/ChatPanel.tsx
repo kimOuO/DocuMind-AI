@@ -129,6 +129,7 @@ const ROUTE_LABEL: Record<string, string> = {
   summary: '摘要',
 }
 const STAGE_LABEL: Record<Stage, string> = {
+  summarising: '建立摘要樹中：逐章讀完整份文件再濃縮，約 3 分鐘',
   navigating: 'Navigator 規劃要看的章節與表格中',
   generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
   verifying: '核對中',
@@ -152,8 +153,17 @@ const COVERAGE_LABEL: Record<string, string> = {
 /** Generic prompts for a first question — not tied to any particular document. */
 const QUICK_QUESTIONS = ['summary this document.', '這份文件的主要結論是什麼？', '文件裡有哪些表格與數據？']
 
-const STAGE_ORDER: Stage[] = ['navigating', 'generating', 'verifying', 'correcting', 'revising', 'finalizing']
+const STAGE_ORDER: Stage[] = [
+  'summarising',
+  'navigating',
+  'generating',
+  'verifying',
+  'correcting',
+  'revising',
+  'finalizing',
+]
 const STAGE_SHORT: Record<Stage, string> = {
+  summarising: '建立摘要',
   navigating: '規劃閱讀',
   generating: '產生初稿',
   verifying: '核對',
@@ -163,7 +173,7 @@ const STAGE_SHORT: Record<Stage, string> = {
 }
 
 /** The pipeline's steps so far; the current one carries its full description. */
-function StageSteps({ stage }: { stage: Stage | null }) {
+function StageSteps({ stage, detail }: { stage: Stage | null; detail?: string | null }) {
   // The single-call default reports no stages: only the waiting line shows.
   if (stage === null) return <p className="mt-2 text-muted">檢索並產生回答中…</p>
   const reached = STAGE_ORDER.indexOf(stage)
@@ -183,9 +193,40 @@ function StageSteps({ stage }: { stage: Stage | null }) {
           </li>
         ))}
       </ol>
-      <p className="mt-1 text-muted">{STAGE_LABEL[stage]}</p>
+      <p className="mt-1 text-muted">
+        {STAGE_LABEL[stage]}
+        {detail && `（${detail}）`}
+      </p>
     </div>
   )
+}
+
+/** D101 (user): every LLM call behind an answer, shown at the answer's end beside its
+ * temperature — "判斷追問 328 + 5 · 改寫 2,168 + 29 · 回答 5,801 + 215". */
+function callsText(usage: Usage): string {
+  const calls =
+    usage.breakdown && usage.breakdown.length > 0
+      ? usage.breakdown
+      : [
+          {
+            purpose: 'answer',
+            prompt_tokens: usage.prompt_tokens,
+            completion_tokens: usage.completion_tokens,
+          },
+        ]
+  return calls
+    .map(
+      (c) =>
+        `${CALL_LABEL[c.purpose] ?? c.purpose} ${(c.prompt_tokens ?? 0).toLocaleString()} + ${(c.completion_tokens ?? 0).toLocaleString()}`,
+    )
+    .join(' · ')
+}
+
+function callsNote(usage: Usage): string {
+  const names = (usage.breakdown ?? []).map((c) => CALL_LABEL[c.purpose] ?? c.purpose)
+  const which = names.length > 1 ? `${names.length} 次呼叫（${names.join('、')}）各自的` : '這次呼叫的'
+  const limit = usage.limit !== null ? `，每次各自 ≤ ${usage.limit.toLocaleString()}` : ''
+  return `${which} prompt + completion tokens${limit}`
 }
 
 /** Tokens of this answer's calls against the 10K limit (AC-21). */
@@ -203,22 +244,6 @@ function UsageMeter({ usage }: { usage: Usage }) {
         ：輸入 {prompt.toLocaleString()} + 回答 {completion.toLocaleString()} = {total.toLocaleString()}
         {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
       </p>
-      {usage.breakdown && usage.breakdown.length > 1 && (
-        <p className="text-xs text-muted" aria-label="每次呼叫的 token">
-          {usage.breakdown
-            .map(
-              (c) =>
-                `${CALL_LABEL[c.purpose] ?? c.purpose} ${(c.prompt_tokens ?? 0).toLocaleString()} + ${(c.completion_tokens ?? 0).toLocaleString()}`,
-            )
-            .join('　·　')}
-          {' ｜ '}
-          {usage.breakdown.length} 次呼叫合計{' '}
-          {usage.breakdown
-            .reduce((sum, c) => sum + (c.prompt_tokens ?? 0) + (c.completion_tokens ?? 0), 0)
-            .toLocaleString()}
-          ，每次各自 ≤ {usage.limit?.toLocaleString() ?? '—'}
-        </p>
-      )}
       {share !== null && (
         <div
           role="progressbar"
@@ -644,9 +669,18 @@ function MessageView({
             </details>
           )}
           <SourceList sources={message.sources} onView={(source) => onCite(source, '')} />
-          {message.temperature !== undefined && message.temperature !== null && (
-            <p className="mt-1 text-xs text-muted" aria-label="這則回答的溫度">
-              溫度 {message.temperature.toFixed(1)}
+          {((message.temperature !== undefined && message.temperature !== null) || message.usage) && (
+            <p className="mt-1 text-xs text-muted" aria-label="這則回答的溫度與 token">
+              {message.temperature !== undefined && message.temperature !== null && (
+                <span>溫度 {message.temperature.toFixed(1)}</span>
+              )}
+              {message.usage && (
+                <>
+                  {message.temperature !== undefined && message.temperature !== null && <span> ｜ </span>}
+                  <span>{callsText(message.usage)}</span>
+                  <span className="ml-1 opacity-70">tokens，{callsNote(message.usage)}</span>
+                </>
+              )}
             </p>
           )}
         </div>
@@ -673,6 +707,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   } | null>(null)
   const [usage, setUsage] = useState<Usage | null>(null)
   const [stage, setStage] = useState<Stage | null>(null)
+  const [stageDetail, setStageDetail] = useState<string | null>(null)
   const [revision, setRevision] = useState<Revision | null>(null)
   const [navigation, setNavigation] = useState<Navigation | null>(null)
   const [check, setCheck] = useState<NumberCheck | null>(null)
@@ -738,6 +773,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
     setRoute(null)
     setUsage(null)
     setStage(null)
+    setStageDetail(null)
     setRevision(null)
     setNavigation(null)
     setCheck(null)
@@ -766,7 +802,16 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
 
   async function handleAsk(event: FormEvent) {
     event.preventDefault()
-    const text = question.trim()
+    await send(question.trim(), null)
+  }
+
+  /** D101 (user): the 建立摘要 button — a record in the chat, then the summary streams in. */
+  async function handleSummary() {
+    const count = scopeIds.length === 0 ? ready.length : scopeIds.length
+    await send(count === 1 ? '請為這份文件建立摘要' : `請為這 ${count} 份文件建立摘要`, 'summary')
+  }
+
+  async function send(text: string, action: 'summary' | null) {
     if (!text || asking) return
     setAsking(true)
     setError(null)
@@ -774,6 +819,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
     setRoute(null)
     setUsage(null)
     setStage(null)
+    setStageDetail(null)
     setRevision(null)
     setNavigation(null)
     setCheck(null)
@@ -833,6 +879,11 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
               break
             case 'stage':
               setStage(askEvent.data.stage)
+              setStageDetail(
+                askEvent.data.total !== undefined
+                  ? `${askEvent.data.ready ?? 0}/${askEvent.data.total} 份文件的摘要樹已就緒`
+                  : null,
+              )
               break
             case 'delta':
               updateAnswer((answer) => ({
@@ -842,6 +893,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
               break
             case 'usage':
               setUsage(askEvent.data)
+              updateAnswer((answer) => ({ ...answer, usage: askEvent.data }))
               break
             case 'done':
               updateAnswer((answer) => ({
@@ -853,6 +905,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
               setRevision(askEvent.data.revision ?? null)
               setNavigation(askEvent.data.navigation ?? null)
               setStage(null)
+              setStageDetail(null)
               break
             case 'error':
               updateAnswer((answer) => ({ ...answer, status: 'failed' }))
@@ -861,6 +914,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
           }
         },
         temperature,
+        action,
       )
       // The stored conversation is the authority: reload it, and its title.
       if (started) await reload(conversationId)
@@ -913,7 +967,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
       {route !== null && route.standalone_question !== route.asked && (
         <p className="text-muted">改寫後的問題：{route.standalone_question}</p>
       )}
-      {(stage !== null || asking) && <StageSteps stage={stage} />}
+      {(stage !== null || asking) && <StageSteps stage={stage} detail={stageDetail} />}
       {navigation !== null && <NavigationNote navigation={navigation} />}
       {revision !== null && <RevisionNote revision={revision} />}
       {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
@@ -1099,6 +1153,15 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
                 {ready.length > 0 &&
                   (scopeIds.length === 0 ? `${ready.length} 份來源` : `${scopeIds.length} 份來源`)}
               </span>
+              <button
+                type="button"
+                className="rounded-full border border-border px-3 py-1.5 text-sm hover:border-accent hover:text-accent disabled:opacity-50"
+                disabled={asking || ready.length === 0}
+                title="為範圍內的文件建立摘要樹（沒有的才建，約 3 分鐘），再把摘要寫在對話裡"
+                onClick={handleSummary}
+              >
+                建立摘要
+              </button>
               <button
                 type="submit"
                 className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-on-accent disabled:opacity-50"

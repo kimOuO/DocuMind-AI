@@ -38,6 +38,9 @@ class MessageResponse(BaseModel):
     sources: list[dict[str, Any]]
     # The answer's sampling temperature (AC-60); null for questions and the model default.
     temperature: float | None
+    # D101: the token usage of the calls behind the answer (the `usage` event); null for
+    # questions and for answers stored before it was kept.
+    usage: dict[str, Any] | None
     created_at: datetime
 
 
@@ -63,6 +66,7 @@ def message_response(message: Message) -> MessageResponse:
         answered=message.answered,
         sources=list(message.sources),
         temperature=message.temperature,
+        usage=message.usage,
         created_at=message.created_at,
     )
 

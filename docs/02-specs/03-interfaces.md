@@ -27,7 +27,7 @@
 | GET | `/users/me` | 目前使用者 | 200 | P2-A |
 | PATCH | `/users/me` | 修改顯示名稱與偏好 | 200 | P5 |
 | GET | `/health` | 健康檢查（不需登入） | 200 | P0，改前綴 |
-| POST | `/documents` | 上傳（multipart：`file`；`build_summary` 預設 true，false 則不建摘要樹、`summary_status` 為 `skipped`，摘要類問題改走檢索並註明，D91） | 202 | P2-B |
+| POST | `/documents` | 上傳（multipart：`file`；`build_summary` 預設 true，false 則不建摘要樹、`summary_status` 為 `skipped`，摘要類問題改走檢索，D91；前端的勾選框預設不勾、之後可用對話的「建立摘要」補建，D101） | 202 | P2-B |
 | GET | `/documents` | 自己的文件清單 | 200 | P2-B |
 | GET | `/documents/{id}` | 單一文件與它最近的處理工作 | 200 | P2-B |
 | GET | `/documents/{id}/file` | 原始檔案（inline；來源卡以 `#page=N` 開啟引用頁；僅擁有者，D89） | 200 | P7 |
@@ -148,6 +148,7 @@
   "status": "pending | streaming | completed | failed | interrupted",
   "answered": true,
   "sources": [],
+  "usage": {"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000, "breakdown": [{"purpose": "answer", "prompt_tokens": 2610, "completion_tokens": 412}]},
   "created_at": "…"
 }
 ```
@@ -162,9 +163,12 @@
 {
   "question": "compare lightRAG with GraphRAG",
   "document_ids": ["uuid"],
-  "temperature": 0.2
+  "temperature": 0.2,
+  "action": "summary"
 }
 ```
+
+`action`（選填，D101）：`"summary"` 是前端的「建立摘要」按鍵：先為範圍內沒有摘要樹的已索引文件排摘要任務並等待（`stage` 事件 `summarising`），再以摘要路線回答；不判斷追問、不改寫；`question` 就是對話裡顯示的紀錄（前端送「請為這份文件建立摘要」）。省略或 `null` 是一般提問。
 
 `temperature`（選填，D94）：這次回答呼叫的取樣溫度，0.0 至 1.0；省略或 `null` 時用伺服器的 `ANSWER_TEMPERATURE`。超出範圍回 `422`，不建立訊息、不呼叫 LLM。只影響回答那一次呼叫，追問改寫與導航呼叫不受影響。
 
@@ -184,7 +188,7 @@
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
 | `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000, "breakdown": [{"purpose": "follow_up", "prompt_tokens": 328, "completion_tokens": 5}, {"purpose": "rewrite", …}, {"purpose": "answer", …}]}` | Ollama 回報的實測用量；`prompt_tokens`／`completion_tokens` 是回答那一次，`breakdown`（D100）列出這一題的每一次呼叫，各自受 `limit` 約束 |
-| `stage` | `{"stage": "generating"}` — 只在實驗模式出現。兩次呼叫修正模式（`ANSWER_REVISION=true`，D69）依序 `generating`、`verifying`、（`revising`、`verifying`）、`finalizing`；此模式不串流初稿，`delta` 在 `finalizing` 之後才送，是**生成完成後的逐段傳送**，不是模型即時串流。導航模式（`ANSWER_MODE=navigate`，D71）在 `sources` 之前送一個 `navigating`，之後的回答仍是即時串流 | 進行中 |
+| `stage` | `{"stage": "generating"}` — 只在實驗模式出現；例外是 `{"stage": "summarising", "ready": 0, "total": 1}`（D101，`action: "summary"` 等待摘要樹時每 2 秒一次，`ready` 是範圍內已有摘要樹的文件數）。兩次呼叫修正模式（`ANSWER_REVISION=true`，D69）依序 `generating`、`verifying`、（`revising`、`verifying`）、`finalizing`；此模式不串流初稿，`delta` 在 `finalizing` 之後才送，是**生成完成後的逐段傳送**，不是模型即時串流。導航模式（`ANSWER_MODE=navigate`，D71）在 `sources` 之前送一個 `navigating`，之後的回答仍是即時串流 | 進行中 |
 | `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "mislabelled_numbers": [{"number": "59.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Comprehensiveness", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…"}], "unresolved_numbers": [{"number": "57.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Overall", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…", "reason": "missing"}], "overstated_claims": [{"sentence": "…", "method": "LightRAG", "compared": ["-High"], "higher": 4, "lower": 2, "examples": ["Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)"], "status": "contradicted", "reason": null}], "doubtful_citations": [{"sentence": "…", "cited": [3], "closer": [5], "coverage_cited": 0.1, "coverage_closer": 0.7}], "finish_reason": "stop", "revision": null}` | 結束 |
 | `error` | `{"detail": "…", "code": "…"}` | 失敗；助理訊息的狀態為 `failed` |
 

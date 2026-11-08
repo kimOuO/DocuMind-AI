@@ -354,7 +354,7 @@ test('a ready document without a summary offers to build one', async () => {
   expect(await screen.findByText('可以提問 · 16 頁 · 48 個片段 · 摘要產生中')).toBeInTheDocument()
 })
 
-test('the upload sends whether to build the summary tree, and a document without one says so', async () => {
+test('the upload leaves the summary tree out by default (D101), and a document without one says so', async () => {
   const skipped = {
     ...PAPER,
     status: 'ready',
@@ -372,7 +372,7 @@ test('the upload sends whether to build the summary tree, and a document without
   })
   render(<DocumentPanel />)
 
-  await userEvent.click(await screen.findByRole('checkbox', { name: /建立摘要樹/ }))
+  expect(await screen.findByRole('checkbox', { name: /建立摘要樹/ })).not.toBeChecked()
   await userEvent.upload(screen.getByLabelText(/上傳文件/), new File(['%PDF'], 'paper.pdf'))
 
   const post = calls.find((c) => c.key === 'POST /api/v1/documents')!

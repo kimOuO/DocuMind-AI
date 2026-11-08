@@ -122,6 +122,7 @@ def test_a_conversation_is_read_with_its_messages_in_order(
         "answered",
         "sources",
         "temperature",
+        "usage",
         "created_at",
     }
 

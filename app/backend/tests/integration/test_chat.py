@@ -22,13 +22,16 @@ from app.chat.service import BELOW_THRESHOLD_PASSAGES, ChatService
 from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
 from app.documents.storage import FileStorage
+from app.ingestion.dispatcher import JobDispatcher
 from app.ingestion.indexing import IndexJobRunner
 from app.ingestion.parsing import parse_document
+from app.ingestion.scheduler import InProcessScheduler, get_job_scheduler
 from app.llm.embedding import EmbeddingError, EmbeddingInputError
 from app.llm.gateway import OllamaGateway
 from app.llm.tokenizer import Qwen3TokenCounter
 from app.models import User
-from tests.fakes import FakeEmbedder
+from app.summarization.service import SummaryJobRunner
+from tests.fakes import FakeEmbedder, StubSummariser
 from tests.integration.conftest import register_and_login
 
 pytestmark = pytest.mark.db
@@ -1154,3 +1157,70 @@ async def test_a_summary_question_about_documents_without_a_summary_tree_is_answ
     assert content.startswith("LightRAG builds a graph [1].")
     # D97 (user): no note is appended; the route event and the summary status say it.
     assert "summary tree" not in content
+
+
+async def test_the_summary_action_builds_the_missing_summary_tree_and_answers_from_it(
+    kim: TestClient,
+    db: psycopg.Connection,
+    tokenizer: Qwen3TokenCounter,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """D101: the summary button. The document was uploaded without a summary tree; the
+    action queues the summary job, waits for it (reporting progress), then answers from
+    the stored summaries — no judgement or rewrite call. The usage is stored with the
+    answer."""
+    body = kim.post(
+        DOCUMENTS,
+        files={"file": ("graph.txt", GRAPH.encode())},
+        data={"build_summary": "false"},
+    ).json()
+    settings = get_settings()
+    storage = FileStorage(settings.data_dir)
+    index = IndexJobRunner(
+        sessions=get_sessionmaker(),
+        storage=storage,
+        tokenizer=tokenizer,
+        embedder=FakeEmbedder(),
+        settings=settings,
+    )
+    await index.run(uuid.UUID(body["jobs"][0]["id"]))
+    summary = SummaryJobRunner(
+        sessions=get_sessionmaker(),
+        storage=storage,
+        counter=tokenizer,
+        gateway=OllamaGateway(
+            settings=settings,
+            sessions=get_sessionmaker(),
+            counter=tokenizer,
+            transport=httpx.MockTransport(StubSummariser()),
+        ),
+    )
+    dispatcher = JobDispatcher(
+        sessions=get_sessionmaker(), index_runner=index, summary_runner=summary
+    )
+    kim.app.dependency_overrides[get_job_scheduler] = lambda: InProcessScheduler(dispatcher)  # type: ignore[attr-defined]
+    monkeypatch.setattr("app.chat.service.SUMMARY_POLL_SECONDS", 0.05)
+    model = StubOllama(["The notes propose LightRAG [1]."])
+    use_model(kim, tokenizer, model)
+
+    received = events(ask(kim, new_conversation(kim), "請為這份文件建立摘要", action="summary"))
+    kim.app.dependency_overrides.pop(get_job_scheduler, None)  # type: ignore[attr-defined]
+
+    by_name = dict(received)
+    assert by_name["route"] == {
+        "type": "summary",
+        "standalone_question": "請為這份文件建立摘要",
+        "follow_up": None,
+    }
+    stages = [data for name, data in received if name == "stage"]
+    assert stages[0] == {"stage": "summarising", "ready": 0, "total": 1}
+    assert stages[-1] == {"stage": "summarising", "ready": 1, "total": 1}
+    assert {s["kind"] for s in by_name["sources"]} == {"summary"}
+    assert one(db, "SELECT summary_status FROM documents WHERE id = %s", body["id"]) == ("ready",)
+    assert model.judge_prompts == [] and model.rewrite_prompts == []
+    assert by_name["done"]["status"] == "completed"
+    stored = one(
+        db, "SELECT usage FROM messages WHERE id = %s", by_name["start"]["assistant_message_id"]
+    )[0]
+    assert stored == by_name["usage"]
+    assert [c["purpose"] for c in stored["breakdown"]] == ["answer"]
