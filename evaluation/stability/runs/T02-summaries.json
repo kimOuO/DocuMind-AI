@@ -1,0 +1,370 @@
+{
+ "summary_repair": true,
+ "verification": [
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "INTRODUCTION",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "RETRIEVAL-AUGMENTED GENERATION",
+   "pages": [
+    2,
+    3
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "THE LIGHT RAG ARCHITECTURE",
+   "pages": [
+    3,
+    5
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "15.2%",
+    "54.4%",
+    "54.8%",
+    "67.6%",
+    "76.4%",
+    "61.6%",
+    "76.4%",
+    "62.0%",
+    "67.6%",
+    "61.2%"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "65.2%"
+   ],
+   "checked_figures": 17
+  },
+  {
+   "summary": "RELATED WORK",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 3
+  },
+  {
+   "summary": "CONCLUSION",
+   "pages": [
+    10,
+    10
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "APPENDIX",
+   "pages": [
+    13,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "12",
+    "10",
+    "94",
+    "61"
+   ],
+   "checked_figures": 8
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "CONTRADICTED",
+   "contradicted": [
+    "54.4%",
+    "54.8%"
+   ],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Front matter",
+   "pages": [
+    1,
+    1
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Introduction",
+   "pages": [
+    1,
+    2
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Background",
+   "pages": [
+    2,
+    4
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Methods",
+   "pages": [
+    4,
+    8
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 9
+  },
+  {
+   "summary": "Analysis",
+   "pages": [
+    8,
+    9
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 7
+  },
+  {
+   "summary": "Results",
+   "pages": [
+    9,
+    11
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 20
+  },
+  {
+   "summary": "Discussion",
+   "pages": [
+    11,
+    12
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "23.42",
+    "21.85",
+    "21.90",
+    "22.13",
+    "21.80",
+    "17.92",
+    "23.16",
+    "21.65",
+    "20.41",
+    "19.26"
+   ],
+   "checked_figures": 12
+  },
+  {
+   "summary": "Conclusion (part 1/3)",
+   "pages": [
+    12,
+    18
+   ],
+   "status": "NOT_CHECKED",
+   "contradicted": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 0,
+   "reason": "no figures in the summary"
+  },
+  {
+   "summary": "Conclusion (part 2/3)",
+   "pages": [
+    18,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 6
+  },
+  {
+   "summary": "Conclusion (part 3/3)",
+   "pages": [
+    26,
+    26
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "0.12",
+    "0.036",
+    "0.1",
+    "0.001",
+    "0.669",
+    "0.011",
+    "0.065",
+    "0.026"
+   ],
+   "checked_figures": 49
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    26
+   ],
+   "status": "VERIFIED",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [],
+   "checked_figures": 13
+  }
+ ],
+ "repairs": [
+  {
+   "summary": "EVALUATION",
+   "pages": [
+    5,
+    10
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "54.8%"
+   ],
+   "checked_figures": 10,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"For example, in the Legal dataset, LightRAG achieves 83.6% in Comprehensiveness, 86.4% in Diversity, and 83.6% in Empowerment compared to 15.2% for NaiveRAG in Comprehensiveness.\": 15.2% is given as Comprehensiveness, Legal, NaiveRAG; in the table 15.2% is Overall, Legal, NaiveRAG, vs LightRAG / Comprehensiveness, Legal, RQ-RAG, vs LightRAG / Empowerment, Legal, RQ-RAG, vs LightRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 16.4% (paired with LightRAG); LightRAG 83.6% (paired with NaiveRAG); RQ-RAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with RQ-RAG); HyDE 26.8% (paired with LightRAG); LightRAG 73.2% (paired with HyDE); GraphRAG 48.4% (paired with LightRAG); LightRAG 51.6% (paired with GraphRAG). Differences: NaiveRAG 16.4% vs LightRAG 83.6% (-67.2 pp, -80.4% relative); NaiveRAG 16.4% vs RQ-RAG 15.2% (+1.2 pp, +7.9% relative); NaiveRAG 16.4% vs LightRAG 84.8% (-68.4 pp, -80.7% relative); NaiveRAG 16.4% vs HyDE 26.8% (-10.4 pp, -38.8% relative); NaiveRAG 16.4% vs LightRAG 73.2% (-56.8 pp, -77.6% relative).",
+     "\"Compared to GraphRAG, LightRAG shows consistent superiority, especially in larger datasets, with win rates of 54.4% in Comprehensiveness and 54.8% in Overall for the Legal dataset.\": 54.4% is given as Comprehensiveness, Legal, LightRAG, vs GraphRAG; in the table 54.4% is Comprehensiveness, Agriculture, LightRAG, vs GraphRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 16.4% (paired with LightRAG); LightRAG 83.6% (paired with NaiveRAG); RQ-RAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with RQ-RAG); HyDE 26.8% (paired with LightRAG); LightRAG 73.2% (paired with HyDE); GraphRAG 48.4% (paired with LightRAG); LightRAG 51.6% (paired with GraphRAG). Differences: LightRAG 83.6% vs NaiveRAG 16.4% (+67.2 pp, +409.8% relative); LightRAG 83.6% vs RQ-RAG 15.2% (+68.4 pp, +450.0% relative); LightRAG 83.6% vs HyDE 26.8% (+56.8 pp, +211.9% relative); LightRAG 83.6% vs GraphRAG 48.4% (+35.2 pp, +72.7% relative); LightRAG 83.6% vs NaiveRAG 16.4% (+67.2 pp, +409.8% relative).",
+     "\"Compared to GraphRAG, LightRAG shows consistent superiority, especially in larger datasets, with win rates of 54.4% in Comprehensiveness and 54.8% in Overall for the Legal dataset.\": 54.8% is given as Overall, Legal, LightRAG, vs GraphRAG; in the table 54.8% is Empowerment, CS, LightRAG, vs GraphRAG / Overall, Agriculture, LightRAG, vs GraphRAG / Empowerment, Mix, -Origin, vs NaiveRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with NaiveRAG); RQ-RAG 14.4% (paired with LightRAG); LightRAG 85.6% (paired with RQ-RAG); HyDE 26.4% (paired with LightRAG); LightRAG 73.6% (paired with HyDE); GraphRAG 47.2% (paired with LightRAG); LightRAG 52.8% (paired with GraphRAG). Differences: LightRAG 84.8% vs NaiveRAG 15.2% (+69.6 pp, +457.9% relative); LightRAG 84.8% vs RQ-RAG 14.4% (+70.4 pp, +488.9% relative); LightRAG 84.8% vs HyDE 26.4% (+58.4 pp, +221.2% relative); LightRAG 84.8% vs GraphRAG 47.2% (+37.6 pp, +79.7% relative); LightRAG 84.8% vs NaiveRAG 15.2% (+69.6 pp, +457.9% relative).",
+     "\"Removing high-level retrieval leads to a significant performance drop, with win rates of 65.2% in Comprehensiveness for the -High variant compared to 67.6% for the full model.\": 67.6% is given as Comprehensiveness, -High; in the table 67.6% is Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs RQ-RAG / Diversity, Mix, LightRAG, vs HyDE.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 76.4% is given as Comprehensiveness, LightRAG, vs GraphRAG; in the table 76.4% is Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 61.6% is given as GraphRAG, vs LightRAG; in the table 61.6% is Comprehensiveness, CS, LightRAG, vs NaiveRAG.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 76.4% is given as Diversity, LightRAG, vs GraphRAG; in the table 76.4% is Diversity, Agriculture, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, -High, vs NaiveRAG.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 62.0% is given as GraphRAG, vs LightRAG; in the table 62.0% is Diversity, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs RQ-RAG.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 67.6% is given as Empowerment, LightRAG, vs GraphRAG; in the table 67.6% is Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs RQ-RAG / Diversity, Mix, LightRAG, vs HyDE.",
+     "\"In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%).\": 61.2% is given as GraphRAG, vs LightRAG; in the table 61.2% is Comprehensiveness, Mix, LightRAG, vs NaiveRAG / Empowerment, CS, LightRAG, vs NaiveRAG / Overall, CS, LightRAG, vs NaiveRAG / Comprehensiveness, CS, LightRAG, vs RQ-RAG / Diversity, CS, LightRAG, vs HyDE."
+    ],
+    "rewritten": true,
+    "removed_sentences": [
+     "Removing high-level retrieval leads to a significant performance drop, with win rates of 65.2% in Comprehensiveness for the -High variant compared to 67.6% for the full model (p. 8).",
+     "In a case study comparing LightRAG with GraphRAG on a machine learning question, LightRAG outperforms in all evaluation dimensions, including Comprehensiveness (76.4% vs. 61.6%), Diversity (76.4% vs. 62.0%), and Empowerment (67.6% vs. 61.2%) (p. 8)."
+    ],
+    "after": "UNCERTAIN"
+   }
+  },
+  {
+   "summary": "document",
+   "pages": [
+    1,
+    16
+   ],
+   "status": "UNCERTAIN",
+   "contradicted": [],
+   "overstated": [],
+   "unverified": [],
+   "unresolved": [
+    "51.6%",
+    "52.8%"
+   ],
+   "checked_figures": 6,
+   "repair": {
+    "before": "CONTRADICTED",
+    "evidence": [
+     "\"It also shows a win rate of 54.4% in Comprehensiveness and 54.8% in Overall for the Legal dataset compared to GraphRAG.\": 54.4% is given as Comprehensiveness, Legal, vs GraphRAG; in the table 54.4% is Comprehensiveness, Agriculture, LightRAG, vs GraphRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 16.4% (paired with LightRAG); LightRAG 83.6% (paired with NaiveRAG); RQ-RAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with RQ-RAG); HyDE 26.8% (paired with LightRAG); LightRAG 73.2% (paired with HyDE); GraphRAG 48.4% (paired with LightRAG); LightRAG 51.6% (paired with GraphRAG).",
+     "\"It also shows a win rate of 54.4% in Comprehensiveness and 54.8% in Overall for the Legal dataset compared to GraphRAG.\": 54.8% is given as Overall, Legal, vs GraphRAG; in the table 54.8% is Empowerment, CS, LightRAG, vs GraphRAG / Overall, Agriculture, LightRAG, vs GraphRAG / Empowerment, Mix, -Origin, vs NaiveRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with NaiveRAG); RQ-RAG 14.4% (paired with LightRAG); LightRAG 85.6% (paired with RQ-RAG); HyDE 26.4% (paired with LightRAG); LightRAG 73.6% (paired with HyDE); GraphRAG 47.2% (paired with LightRAG); LightRAG 52.8% (paired with GraphRAG)."
+    ],
+    "rewritten": true,
+    "removed_sentences": [],
+    "after": "UNCERTAIN"
+   }
+  }
+ ]
+}
