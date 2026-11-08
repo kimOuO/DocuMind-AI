@@ -658,9 +658,14 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [panelOpen, setPanelOpen] = useState(false)
   const [temperature, setTemperature] = useState<number | null>(() => readStoredTemperature())
   const [defaultTemperature, setDefaultTemperature] = useState<number | null>(null)
+  // D98: the number-check panel is a debug aid, shown only when the server runs in debug mode.
+  const [debugChecks, setDebugChecks] = useState(false)
   useEffect(() => {
     fetchHealth()
-      .then((health) => setDefaultTemperature(health.answer_temperature))
+      .then((health) => {
+        setDefaultTemperature(health.answer_temperature)
+        setDebugChecks(health.check_notes)
+      })
       .catch(() => {
         // The slider then shows no default figure; asking still works.
       })
@@ -892,7 +897,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
       {usage && usage.prompt_tokens !== null && usage.completion_tokens !== null && (
         <UsageMeter usage={usage} />
       )}
-      {check !== null && <NumberCheckView check={check} />}
+      {debugChecks && check !== null && <NumberCheckView check={check} />}
     </details>
   )
 

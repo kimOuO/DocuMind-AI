@@ -157,9 +157,21 @@ function stored(status = 'completed', answered: boolean | null = true, sources: 
   }
 }
 
+const HEALTH = {
+  status: 'ok',
+  database: { ok: true, detail: 'pgvector' },
+  ollama: { ok: true, detail: 'models available' },
+  llm_model: 'qwen3:32b',
+  embed_model: 'bge-m3',
+  llm_context_limit: 10000,
+  answer_temperature: 0,
+  check_notes: true, // the check-panel tests describe debug mode (D98)
+}
+
 /** The routes every answer test needs: a new conversation, the stream, the stored result. */
 function routesFor(stream: Reply, storedDetail: object = stored()) {
   return {
+    'GET /api/v1/health': { status: 200, body: HEALTH },
     'GET /api/v1/conversations': [
       { status: 200, body: [] },
       { status: 200, body: [{ ...CONVERSATION, title: QUESTION.slice(0, 40) }] },
@@ -763,18 +775,6 @@ test('the temperature slider sets the sampling temperature of the next answer an
       { status: 200, body: stored() },
       { status: 200, body: warm },
     ],
-    'GET /api/v1/health': {
-      status: 200,
-      body: {
-        status: 'ok',
-        database: { ok: true, detail: 'pgvector' },
-        ollama: { ok: true, detail: 'models available' },
-        llm_model: 'qwen3:32b',
-        embed_model: 'bge-m3',
-        llm_context_limit: 10000,
-        answer_temperature: 0,
-      },
-    },
   })
   render(<ChatPanel documents={[PAPER]} />)
 
@@ -799,4 +799,15 @@ test('the temperature slider sets the sampling temperature of the next answer an
   await userEvent.click(screen.getByRole('button', { name: '回預設' }))
   expect(screen.getByText('0.0（預設）')).toBeInTheDocument()
   expect(localStorage.getItem('documind.temperature')).toBeNull()
+})
+
+test('outside debug mode the number-check panel is not shown', async () => {
+  mockApi({
+    ...routesFor(answerStream({ done: { unverified_numbers: ['12.5%'] } })),
+    'GET /api/v1/health': { status: 200, body: { ...HEALTH, check_notes: false } },
+  })
+  render(<ChatPanel documents={[PAPER]} />)
+  await ask()
+  await screen.findByRole('list', { name: '對話內容' })
+  expect(screen.queryByText(/無法核對|未能核對|核對/)).not.toBeInTheDocument()
 })

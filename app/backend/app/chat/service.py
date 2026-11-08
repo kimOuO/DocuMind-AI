@@ -513,15 +513,18 @@ class ChatService:
                 check = _without_derived_figures(check, derived_numbers(text, pages))
                 language = question_language(prepared.question)
                 notes = [evidence.note] if evidence.note else []
-                if check.unverified:
-                    notes.append(check_note(check.unverified, language))
-                if check.mislabelled:
-                    notes.append(label_note(check.mislabelled, language))
-                if any(c.status == "contradicted" for c in check.overstated):
-                    notes.append(claim_note(check.overstated, language))
-                if any(a.status == "inconsistent" for a in arithmetic):
-                    # D96: a difference the answer derived that its own figures do not give.
-                    notes.append(arithmetic_note(arithmetic, language))
+                # D98: the check notes are a debug aid; the demo shows the answer alone. The
+                # results still reach the `done` event and the ledger-side analyses.
+                if self._settings.check_notes:
+                    if check.unverified:
+                        notes.append(check_note(check.unverified, language))
+                    if check.mislabelled:
+                        notes.append(label_note(check.mislabelled, language))
+                    if any(c.status == "contradicted" for c in check.overstated):
+                        notes.append(claim_note(check.overstated, language))
+                    if any(a.status == "inconsistent" for a in arithmetic):
+                        # D96: a difference the answer derived that its figures do not give.
+                        notes.append(arithmetic_note(arithmetic, language))
                 for note in notes:
                     # Said after the answer, as part of it: documents whose summary was
                     # not available, and numbers that could not be checked.
@@ -757,6 +760,8 @@ class ChatService:
     def _notes(self, check: NumberCheck, evidence: Evidence, language: str) -> list[str]:
         check = _without_program_figures(check, evidence.facts_text)
         notes = [evidence.note] if evidence.note else []
+        if not self._settings.check_notes:  # D98: debug mode only
+            return notes
         if check.unverified:
             notes.append(check_note(check.unverified, language))
         if check.mislabelled:

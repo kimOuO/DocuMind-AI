@@ -892,6 +892,27 @@ async def test_a_follow_up_that_stands_on_its_own_is_not_rewritten(
     assert received["route"] == {"type": "retrieval", "standalone_question": QUESTION}
 
 
+async def test_without_debug_mode_the_answer_carries_no_check_notes(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D98 (user): the demo shows the answer alone. The checks still run and their results
+    are in the done event; only the appended notes are a debug aid."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"check_notes": False}
+    )
+    model = StubOllama(["Graphs cost 12.5% less [1]."])  # 12.5% is on no page
+    use_model(kim, tokenizer, model)
+    received = dict(events(ask(kim, new_conversation(kim))))
+    assert kim.get("/api/v1/health").json()["check_notes"] is False
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+    assert received["done"]["unverified_numbers"] == ["12.5%"]
+    content = one(
+        db, "SELECT content FROM messages WHERE id = %s", received["start"]["assistant_message_id"]
+    )[0]
+    assert content == "Graphs cost 12.5% less [1]."
+
+
 async def test_the_request_can_set_the_answer_temperature_between_0_and_1(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:

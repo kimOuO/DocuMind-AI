@@ -86,6 +86,9 @@ class Settings(BaseSettings):
     # table's own figures as evidence; what still contradicts afterwards is removed. Off by
     # default: the status is stored, the text kept as written.
     summary_repair: bool = True
+    # D98 (user): the checks always run and go into the `done` event, but their notes are
+    # appended to the answer only in debug mode; the demo shows the answer alone.
+    check_notes: bool = False
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at

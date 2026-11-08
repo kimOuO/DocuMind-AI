@@ -269,7 +269,7 @@
 
 ### 1.7 `GET /health`
 
-不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、context 上限，以及回答的預設取樣溫度 `answer_temperature`（`ANSWER_TEMPERATURE` 的值；`null` 表示模型預設，D94），供前端的溫度控制項顯示「預設」是多少。其餘格式與 P0 相同。
+不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、context 上限，以及回答的預設取樣溫度 `answer_temperature`（`ANSWER_TEMPERATURE` 的值；`null` 表示模型預設，D94），供前端的溫度控制項顯示「預設」是多少；`check_notes`（`CHECK_NOTES`，D98）為 true 時是 debug 模式：核對註記接在回答後、前端顯示核對面板，否則都不顯示。其餘格式與 P0 相同。
 
 ## 2. 受管理的物件與生命週期
 

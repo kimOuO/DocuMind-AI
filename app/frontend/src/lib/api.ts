@@ -14,6 +14,8 @@ export interface Health {
   llm_context_limit: number
   /** The server's default answer temperature (AC-60); null = the model's default. */
   answer_temperature: number | null
+  /** Debug mode (D98): the check notes are appended to answers and the check panel shown. */
+  check_notes: boolean
 }
 
 export type DocumentStatus = 'uploaded' | 'processing' | 'ready' | 'failed'

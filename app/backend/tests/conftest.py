@@ -17,6 +17,7 @@ os.environ["DB_NULL_POOL"] = "true"
 # the model's default temperature because this used to assign unconditionally).
 os.environ.setdefault("ANSWER_FACTS", "off")
 os.environ.setdefault("SUMMARY_REPAIR", "false")
+os.environ.setdefault("CHECK_NOTES", "true")  # the note tests describe debug mode (D98)
 os.environ.setdefault("ANSWER_TEMPERATURE", "")
 # Uploaded files written by tests go to a throwaway directory.
 os.environ["DATA_DIR"] = tempfile.mkdtemp(prefix="documind-test-data-")

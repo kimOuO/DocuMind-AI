@@ -33,6 +33,8 @@ class HealthResponse(BaseModel):
     llm_context_limit: int
     # The server's default answer temperature (AC-60); None = the model's default.
     answer_temperature: float | None
+    # D98: whether the check notes are shown (debug mode).
+    check_notes: bool
 
 
 class HealthProbe(Protocol):
@@ -94,6 +96,7 @@ async def health(
         embed_model=settings.embed_model,
         llm_context_limit=settings.llm_context_limit,
         answer_temperature=settings.answer_temperature,
+        check_notes=settings.check_notes,
     )
 
 
