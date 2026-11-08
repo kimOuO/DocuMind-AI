@@ -18,7 +18,7 @@
 | T0（0） | Q2 | 10/10 | — （十次同一篇；13 of 16、Mix 三個例外、方向對） |
 | T0（0） | Q3 | 9/10 | 1 次把 -High 寫成「high-level-only」、-Low 寫成「low-level-only」（定義相反）。另 9 次同一篇，數字、計數、八個例外與方向全對；自算的「110.5% relative」錯（應 108.6%），頁尾已標為無法核對 |
 | T04（0.4） | Q1 | 9/10 | 1 次逐章複述，用滿 2,500 tokens 的輸出預算被中止（狀態 interrupted） |
-| T04（0.4） | Q2 | 8/10 | 1 次舉例「Legal / Overall 54.8% vs 47.2%」（實為 56.4% vs 43.6%；頁尾標出 54.8% 標籤不符）；1 次自相矛盾（先說 LightRAG 在 Mix comprehensiveness 較好，再說 GraphRAG 較好） |
+| T04（0.4） | Q2 | 8/10 | 1 次舉例「Legal / Overall 54.8% vs 47.2%」（47.2% 對，54.8% 是 Agriculture 的數字，Legal 應為 52.8%；頁尾標出 54.8% 標籤不符）；1 次自相矛盾（先說 LightRAG 在 Mix comprehensiveness 較好，再說 GraphRAG 較好） |
 | T04（0.4） | Q3 | 5/10 | 2 次 -High／-Low 定義相反（其中 1 次 -Origin 也反，且與後文自相矛盾）；2 次把 Mix / Diversity 的 74.4% 歸到 Agriculture（頁尾標出）；1 次寫「-High performs worse than LightRAG in 1 out of 16 conditions」（計數方向反，與下一句矛盾） |
 | G04（0.4） | G1–G4 | 20/20 | — （數字全對；G2 把 77.76 寫成「77-78%」，頁尾標為無法核對；G3 中文問、中文答） |
 | G0（0） | G1–G4 | 20/20 | — （各題 5 次幾乎同一篇） |
