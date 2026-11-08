@@ -1,6 +1,6 @@
 # DocuMind-AI — AI 協作憲章
 
-給 AI coding agent（Claude Code、OpenCode、Codex）讀的專案規則。人類讀者請看 `README.md`。
+給 AI coding agent（Claude Code）讀的專案規則。人類讀者請看 `README.md`。
 
 ## 專案是什麼
 

@@ -101,7 +101,7 @@ DocuMind-AI/
 │   └── 03-decisions/           架構決策紀錄：選了什麼、為什麼
 ├── scripts/                    工具腳本（匯出逐字稿、打包）
 ├── .venv/                      開發環境（不進版控，make setup 建立）
-├── CLAUDE.md / AGENTS.md       給 AI coding agent 的專案規則
+├── CLAUDE.md                   給 AI coding agent（Claude Code）的專案規則
 └── Makefile / docker-compose.yml / .env.sample
 ```
 
