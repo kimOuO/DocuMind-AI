@@ -875,7 +875,7 @@ test('the token usage lists every call behind a follow-up, each under the limit'
   expect(line).toHaveTextContent('溫度 0.0')
   expect(line).toHaveTextContent('判斷追問 312 + 2 · 改寫 622 + 15 · 回答 5,276 + 1,014')
   expect(line).toHaveTextContent(
-    '3 次呼叫（判斷追問、改寫、回答）各自的 prompt + completion tokens，每次各自 ≤ 10,000',
+    '3 次呼叫（判斷追問、改寫、回答）各自的 prompt + completion，每次各自 ≤ 10,000',
   )
 })
 

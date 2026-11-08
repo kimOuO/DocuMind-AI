@@ -224,9 +224,15 @@ function callsText(usage: Usage): string {
 
 function callsNote(usage: Usage): string {
   const names = (usage.breakdown ?? []).map((c) => CALL_LABEL[c.purpose] ?? c.purpose)
-  const which = names.length > 1 ? `${names.length} 次呼叫（${names.join('、')}）各自的` : '這次呼叫的'
-  const limit = usage.limit !== null ? `，每次各自 ≤ ${usage.limit.toLocaleString()}` : ''
-  return `${which} prompt + completion tokens${limit}`
+  const several = names.length > 1
+  const which = several ? `${names.length} 次呼叫（${names.join('、')}）各自的` : '這次呼叫的'
+  const limit =
+    usage.limit === null
+      ? ''
+      : several
+        ? `，每次各自 ≤ ${usage.limit.toLocaleString()}`
+        : `，上限 ${usage.limit.toLocaleString()}`
+  return `${which} prompt + completion${limit}`
 }
 
 /** Tokens of this answer's calls against the 10K limit (AC-21). */
@@ -678,7 +684,7 @@ function MessageView({
                 <>
                   {message.temperature !== undefined && message.temperature !== null && <span> ｜ </span>}
                   <span>{callsText(message.usage)}</span>
-                  <span className="ml-1 opacity-70">tokens，{callsNote(message.usage)}</span>
+                  <span className="ml-1 opacity-70"> tokens，{callsNote(message.usage)}</span>
                 </>
               )}
             </p>
