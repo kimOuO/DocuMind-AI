@@ -1000,6 +1000,23 @@ async def test_without_debug_mode_the_answer_carries_no_check_notes(
     assert content == "Graphs cost 12.5% less [1]."
 
 
+async def test_the_answers_language_follows_the_users_words_not_the_rewrite(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D99 proof run: 「每個有幾份文件？」 was rewritten into English and answered in English.
+    The language rule is chosen from the question as the user typed it."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."], rewrite_to="How many documents does each dataset contain?")
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    events(ask(kim, conversation, QUESTION))
+    received = dict(events(ask(kim, conversation, "每個有幾份文件？")))
+    assert (
+        received["route"]["standalone_question"] == "How many documents does each dataset contain?"
+    )
+    assert "繁體中文" in model.prompts[-1]
+
+
 async def test_the_request_can_set_the_answer_temperature_between_0_and_1(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:

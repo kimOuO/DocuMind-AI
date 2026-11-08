@@ -1237,6 +1237,8 @@ class ChatService:
             preamble=preamble,
             documents=cards,
             conversation=self._conversation(prepared),
+            # The answer's language follows the user's own words, not the rewrite's (D99).
+            language=question_language(prepared.question),
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "", facts_info, preamble if facts_info else "")
@@ -1330,6 +1332,7 @@ class ChatService:
             evidence_budget=EVIDENCE_TOKEN_BUDGET,
             preamble=preamble,
             extra_chunks=list(added),
+            language=language,
         )
         if navigation is not None:
             # The prompt builder has the last word on the budget: a selected chunk it

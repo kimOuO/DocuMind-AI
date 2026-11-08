@@ -115,6 +115,7 @@ def build_answer_prompt(
     preamble: str = "",
     documents: Sequence[StoredSummary] = (),
     conversation: str = "",
+    language: str | None = None,
 ) -> tuple[str, list[RetrievedChunk]]:
     """The prompt, and the chunks that were included in it (numbered from 1 in that order).
 
@@ -141,7 +142,8 @@ def build_answer_prompt(
         "\n\n".join(blocks) if blocks else "(no passage of the documents resembles the question)"
     )
     instructions = INSTRUCTIONS.format(
-        language_rule=LANGUAGE_RULES[question_language(question)], documents=documents_block
+        language_rule=LANGUAGE_RULES[language or question_language(question)],
+        documents=documents_block,
     )
     context = CONVERSATION_BLOCK.format(conversation=conversation) if conversation else ""
     return f"{preamble}{instructions}{sources}\n\n{context}Question: {question}\nAnswer:", used
@@ -249,6 +251,7 @@ def build_summary_prompt(
     evidence_budget: int,
     preamble: str = "",
     extra_chunks: Sequence[RetrievedChunk] = (),
+    language: str | None = None,
 ) -> tuple[str, list[StoredSummary | RetrievedChunk]]:
     """The prompt, and the sources included in it (numbered from 1 in that order).
 
@@ -286,7 +289,7 @@ def build_summary_prompt(
     documents_rule = DOCUMENTS_RULE.format(count=len(documents)) if len(documents) > 1 else ""
     instructions = SUMMARY_INSTRUCTIONS.format(
         documents_rule=documents_rule,
-        language_rule=LANGUAGE_RULES[question_language(question)],
+        language_rule=LANGUAGE_RULES[language or question_language(question)],
     )
     return f"{preamble}{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
 
