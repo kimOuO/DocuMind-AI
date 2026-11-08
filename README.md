@@ -3,7 +3,7 @@
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 Chat with your documents: upload a file, ask questions, get answers grounded in the document with citations.
 
-> 狀態 / Status（2026-11-08）：帳號、文件管理（PDF／TXT／Markdown）、入庫（表格整塊保留並逐格改寫、五種表格排版、多區塊表格一區塊一向量）、入庫時建立摘要樹（章節摘要 → 全文摘要，數字核對；可選的證據導向修復）、對話式問答（串流、來源的檔名／頁碼／片段、追問改寫、文件沒有的就明說、問系統本身也會回答、回答後的數字與結論核對；可選的比較事實注入）皆已完成；另有實驗性的兩次呼叫 `navigate` 模式（預設關閉）。已知限制：模型偶爾把正確數字寫成方向相反的句子；核對器對部分句型有誤報；表格支援範圍見 `evaluation/table-generalization/`。
+> 狀態 / Status（2026-11-08）：帳號、文件管理（PDF／TXT／Markdown）、入庫（表格整塊保留並逐格改寫、五種表格排版、多區塊表格一區塊一向量）、入庫時建立摘要樹（章節摘要 → 全文摘要，數字核對；可選的證據導向修復）、對話式問答（串流、來源的檔名／頁碼／片段、追問改寫、文件沒有的就明說、問系統本身也會回答、回答後的數字與結論核對；可選的比較事實注入）皆已完成；另有實驗性的兩次呼叫 `navigate` 模式（預設關閉）。回答溫度可由前端滑桿逐題調整（預設 0）。已知限制：模型偶爾把變體的定義望文生義（-High 讀成「只用 high-level」）；核對器對部分句型有誤報；表格支援範圍見 `evaluation/table-generalization/`。目前結果見下方「目前結果」。
 > Accounts, document management (PDF/TXT/Markdown), ingestion (tables kept whole and rewritten cell by cell in five layouts, one vector per block of a multi-block table), a summary tree built at ingestion (section summaries → document summary, figures checked; optional evidence-guided repair), and conversational chat (streaming, sources with file name/page/snippet, follow-up rewriting, saying plainly when the documents do not cover a question, answering questions about the assistant itself, post-answer checks of figures and conclusions; optional injection of program-computed comparison facts) are done; an experimental two-call `navigate` mode exists (off by default). Known limits: the model occasionally words a correct figure in the wrong direction; the checker has false positives on some sentence shapes; the supported table layouts are listed in `evaluation/table-generalization/`.
 
 ## 題目限制 / Constraints
@@ -40,8 +40,8 @@ Open the site at one of those two addresses. If you use another address, add it 
 
 - Ollama 必須監聽容器連得到的位址（`OLLAMA_HOST=0.0.0.0`）。若沒有預裝 Ollama，可改用內建的容器：`docker compose --profile ollama up --build`，並在 `.env` 設定 `COMPOSE_OLLAMA_HOST=ollama`（此模式尚未實測）。
 - 設定值見 `.env.sample`。`make setup`、`make up` 會在 `.env` 不存在時由它複製一份。
-- 兩個可選的回答改善，預設關閉，實驗數據在 `evaluation/facts-ab/`：`ANSWER_FACTS=inject` 把程式從表格算出的比較事實（哪邊高、差幾個百分點、哪些例外）放進 prompt，讓比較題的結論與例外對得上表格；`SUMMARY_REPAIR=true` 在入庫時對數字歸錯對象或不存在的摘要句，以表格證據重寫一次，仍錯就刪句。`ANSWER_TEMPERATURE` 是回答取樣溫度的預設值（空白＝模型預設）；前端輸入框旁的滑桿可逐題調整 0 到 1，每則回答標示它用的溫度（AC-60）。
-- Two optional answering improvements, off by default, measured in `evaluation/facts-ab/`: `ANSWER_FACTS=inject` puts the program's comparison facts from the tables (which side is higher, by how many points, every exception) into the prompt so that conclusions match the tables; `SUMMARY_REPAIR=true` rewrites, once and with the table's figures as evidence, a summary sentence whose figure is misattributed or absent from the pages, removing it if still wrong. `ANSWER_TEMPERATURE` is the default answer sampling temperature (empty = the model's default); a slider beside the composer sets it per question between 0 and 1, and every answer shows the temperature it used (AC-60).
+- 兩個可選的回答改善，預設開啟（D88 起），實驗數據在 `evaluation/facts-ab/`：`ANSWER_FACTS=inject` 把程式從表格算出的比較事實（哪邊高、差幾個百分點、哪些例外）放進 prompt，讓比較題的結論與例外對得上表格；`SUMMARY_REPAIR=true` 在入庫時對數字歸錯對象或不存在的摘要句，以表格證據重寫一次，仍錯就刪句。`ANSWER_TEMPERATURE` 是回答取樣溫度的預設值（空白＝模型預設）；前端輸入框旁的滑桿可逐題調整 0 到 1，每則回答標示它用的溫度（AC-60）。
+- Two optional answering improvements, on by default since D88, measured in `evaluation/facts-ab/`: `ANSWER_FACTS=inject` puts the program's comparison facts from the tables (which side is higher, by how many points, every exception) into the prompt so that conclusions match the tables; `SUMMARY_REPAIR=true` rewrites, once and with the table's figures as evidence, a summary sentence whose figure is misattributed or absent from the pages, removing it if still wrong. `ANSWER_TEMPERATURE` is the default answer sampling temperature (empty = the model's default); a slider beside the composer sets it per question between 0 and 1, and every answer shows the temperature it used (AC-60).
 - API 文件：`http://127.0.0.1:3000/api/v1/docs`。
 
 ## 本地開發 / Local development
@@ -83,6 +83,22 @@ DocuMind-AI/
 ```
 
 原則：資料夾用完整英文名稱、不用縮寫；還沒有內容的資料夾不預先建立。
+
+## 目前結果 / Current results
+
+以下數字都可從 `evaluation/` 重跑；判定標準是「有錯誤資訊才算不通過」。
+Every figure below can be re-run from `evaluation/`; an answer fails only when it states something wrong.
+
+| 測試 / Test | 條件 / Condition | 結果 / Result |
+|---|---|---|
+| 題庫 19 題 / 19-question set | 逐題一次，事實注入與摘要修復開 | 18 / 19（剩跨文件名額 X1） |
+| 三個必答題 × 10，溫度 0 / Three required questions ×10 at temperature 0 | 各自新對話，兩批 | 29/30、29/30（一次定義反向、一次配對錯，均為 D96 前） |
+| 同溫度 0.2、0.4 / at 0.2 and 0.4 | 同上 | 23/30、22/30（0 到 0.2 之間是明顯的坎） |
+| 同一對話三題，溫度 0，不建摘要樹 × 10 / Three questions in one conversation, no summary tree, ×10 | D96 之後 | 30 / 30，十次同一篇 |
+| 其他論文 / Other papers | GraphRAG、RAPTOR 各一個對話三題（該論文版本的問題），溫度 0、不建摘要樹 | 6 / 6 無錯誤資訊；兩篇的表格未進事實塊，數字由模型從內文抄對 |
+| 10K 合規 / 10K compliance | 所有實驗與示範部署的帳本 | 單次最大 7,487 tokens |
+
+未修的缺口 / Open gaps：變體定義望文生義（溫度 0 下 1/10、0.2 以上 2–3/10）；核對器把全稱句拿去對不含該指標的表（GraphRAG 一則誤報）；RAPTOR 的表格排版不在支援的五種內。詳見 `evaluation/stability/README.md`。
 
 ## 兩個說明題 / The two required explanations
 
