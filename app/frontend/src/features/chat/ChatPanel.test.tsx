@@ -811,3 +811,46 @@ test('outside debug mode the number-check panel is not shown', async () => {
   await screen.findByRole('list', { name: '對話內容' })
   expect(screen.queryByText(/無法核對|未能核對|核對/)).not.toBeInTheDocument()
 })
+
+test('the token usage lists every call behind a follow-up, each under the limit', async () => {
+  mockApi(
+    routesFor(
+      sse([
+        [
+          'start',
+          {
+            user_message_id: 'u1',
+            assistant_message_id: 'a1',
+            scope: { mode: 'all', document_ids: [PAPER.id] },
+            temperature: 0,
+          },
+        ],
+        ['route', { type: 'retrieval', standalone_question: QUESTION, follow_up: true }],
+        ['sources', [SOURCE]],
+        ['delta', { text: 'The ablated versions perform worse [1].' }],
+        [
+          'usage',
+          {
+            prompt_tokens: 5276,
+            completion_tokens: 1014,
+            limit: 10000,
+            breakdown: [
+              { purpose: 'follow_up', prompt_tokens: 312, completion_tokens: 2 },
+              { purpose: 'rewrite', prompt_tokens: 622, completion_tokens: 15 },
+              { purpose: 'answer', prompt_tokens: 5276, completion_tokens: 1014 },
+            ],
+          },
+        ],
+        ['done', { status: 'completed', answered: true, cited: [1], finish_reason: 'stop', ...NO_NUMBERS }],
+      ]),
+    ),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+  await ask()
+  expect(await screen.findByText(/輸入 5,276 \+ 回答 1,014 = 6,290 \/ 10,000/)).toBeInTheDocument()
+  const calls = screen.getByLabelText('每次呼叫的 token')
+  expect(calls).toHaveTextContent('判斷追問 312 + 2')
+  expect(calls).toHaveTextContent('改寫 622 + 15')
+  expect(calls).toHaveTextContent('回答 5,276 + 1,014')
+  expect(calls).toHaveTextContent('3 次呼叫合計 7,241')
+})

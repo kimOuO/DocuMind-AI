@@ -50,6 +50,8 @@ from app.chat.evidence import (
 from app.chat.memory import (
     FOLLOW_UP_MAX_OUTPUT_TOKENS,
     MEMORY_TOKEN_BUDGET,
+    REWRITE_HEAD_TOKENS,
+    REWRITE_MEMORY_BUDGET,
     HistoryMessage,
     build_memory,
     clean_rewrite,
@@ -295,7 +297,7 @@ class ChatService:
             # answer work from that standalone question. The route is decided by the
             # question as the user asked it (D95): a rewrite that adds words such as
             # "document summary" must not send a content question to the summary tree.
-            question, follow_up = await self._standalone_question(prepared)
+            question, follow_up, pre_calls = await self._standalone_question(prepared)
             prepared = replace(prepared, follow_up=follow_up)
             kind = question_type(prepared.question)
             if kind == "summary" and await self._summary_tree_skipped(prepared):
@@ -558,6 +560,15 @@ class ChatService:
                         "prompt_tokens": result.prompt_tokens,
                         "completion_tokens": result.completion_tokens,
                         "limit": self._settings.llm_context_limit,
+                        # D100 (user): every call of this question, each under the limit.
+                        "breakdown": [
+                            {
+                                "purpose": purpose,
+                                "prompt_tokens": call.prompt_tokens,
+                                "completion_tokens": call.completion_tokens,
+                            }
+                            for purpose, call in [*pre_calls, ("answer", result)]
+                        ],
                     },
                 )
             )
@@ -662,7 +673,9 @@ class ChatService:
                 "error", {"code": "INTERNAL_ERROR", "detail": "The answer could not be produced."}
             )
 
-    async def _standalone_question(self, prepared: PreparedQuestion) -> tuple[str, bool | None]:
+    async def _standalone_question(
+        self, prepared: PreparedQuestion
+    ) -> tuple[str, bool | None, list[tuple[str, LLMResult]]]:
         """The question rewritten from the conversation so far, or as asked, and whether
         the model judged it a follow-up (None: no earlier turns, or the judgement failed).
 
@@ -678,7 +691,8 @@ class ChatService:
             list(prepared.history), self._counter, budget_tokens=MEMORY_TOKEN_BUDGET
         )
         if not memory:
-            return prepared.question, None
+            return prepared.question, None, []
+        calls: list[tuple[str, LLMResult]] = []
         context = CallContext(
             owner_id=prepared.actor.id,
             conversation_id=prepared.conversation_id,
@@ -694,13 +708,22 @@ class ChatService:
                 context=context,
             )
             follow_up = parse_follow_up(judged.text)
+            calls.append(("follow_up", judged))
         except (LLMCallFailed, ContextBudgetExceeded) as error:
             logger.warning("Follow-up judgement skipped, the question is rewritten: %s", error)
         if follow_up is False:
-            return prepared.question, False
+            return prepared.question, False, calls
+        # D100: the rewrite sees more of the conversation than the judgement, including the
+        # head of a long previous answer (where its conclusions and figures are).
+        rewrite_memory = build_memory(
+            list(prepared.history),
+            self._counter,
+            budget_tokens=REWRITE_MEMORY_BUDGET,
+            head_tokens=REWRITE_HEAD_TOKENS,
+        )
         try:
             result = await self._gateway.generate(
-                rewrite_prompt(memory, prepared.question),
+                rewrite_prompt(rewrite_memory, prepared.question),
                 purpose="rewrite",
                 temperature=REWRITE_TEMPERATURE,
                 max_output_tokens=self._settings.question_token_budget,
@@ -708,19 +731,20 @@ class ChatService:
             )
         except (LLMCallFailed, ContextBudgetExceeded) as error:
             logger.warning("Rewrite skipped, question used as asked: %s", error)
-            return prepared.question, follow_up
+            return prepared.question, follow_up, calls
+        calls.append(("rewrite", result))
         if not result.finish_reason.is_complete:
-            return prepared.question, follow_up
+            return prepared.question, follow_up, calls
         rewritten = clean_rewrite(result.text)
         if rewritten is None:
-            return prepared.question, follow_up
+            return prepared.question, follow_up, calls
         length = self._counter.count(rewritten)
         grown = length > REWRITE_GROWTH_FACTOR * self._counter.count(prepared.question) + (
             REWRITE_GROWTH_ALLOWANCE
         )
         if length > self._settings.question_token_budget or grown:
-            return prepared.question, follow_up
-        return rewritten, follow_up
+            return prepared.question, follow_up, calls
+        return rewritten, follow_up, calls
 
     async def _pages(
         self, prepared: PreparedQuestion, evidence: Evidence, cited: list[int]

@@ -200,6 +200,8 @@ export interface Usage {
   /** The per-call limit; null when the figures are the sum of several calls (D69). */
   limit: number | null
   calls?: number
+  /** D100: every LLM call behind this answer (follow-up judgement, rewrite, answer), each under the limit. */
+  breakdown?: { purpose: string; prompt_tokens: number | null; completion_tokens: number | null }[]
 }
 
 /** A finding that faulted a draft in the two-call mode (D69). */

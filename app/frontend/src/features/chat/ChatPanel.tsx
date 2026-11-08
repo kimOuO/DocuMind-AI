@@ -119,6 +119,11 @@ function describe(error: unknown): string {
   return '無法連線到伺服器，請稍後再試。'
 }
 
+const CALL_LABEL: Record<string, string> = {
+  follow_up: '判斷追問',
+  rewrite: '改寫',
+  answer: '回答',
+}
 const ROUTE_LABEL: Record<string, string> = {
   retrieval: '檢索',
   summary: '摘要',
@@ -198,6 +203,22 @@ function UsageMeter({ usage }: { usage: Usage }) {
         ：輸入 {prompt.toLocaleString()} + 回答 {completion.toLocaleString()} = {total.toLocaleString()}
         {usage.limit !== null && ` / ${usage.limit.toLocaleString()}`}
       </p>
+      {usage.breakdown && usage.breakdown.length > 1 && (
+        <p className="text-xs text-muted" aria-label="每次呼叫的 token">
+          {usage.breakdown
+            .map(
+              (c) =>
+                `${CALL_LABEL[c.purpose] ?? c.purpose} ${(c.prompt_tokens ?? 0).toLocaleString()} + ${(c.completion_tokens ?? 0).toLocaleString()}`,
+            )
+            .join('　·　')}
+          {' ｜ '}
+          {usage.breakdown.length} 次呼叫合計{' '}
+          {usage.breakdown
+            .reduce((sum, c) => sum + (c.prompt_tokens ?? 0) + (c.completion_tokens ?? 0), 0)
+            .toLocaleString()}
+          ，每次各自 ≤ {usage.limit?.toLocaleString() ?? '—'}
+        </p>
+      )}
       {share !== null && (
         <div
           role="progressbar"

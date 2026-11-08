@@ -233,7 +233,12 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         " a graph",
         " [1].",
     ]
-    assert by_name["usage"] == {"prompt_tokens": 321, "completion_tokens": 3, "limit": 10_000}
+    assert by_name["usage"] == {
+        "prompt_tokens": 321,
+        "completion_tokens": 3,
+        "limit": 10_000,
+        "breakdown": [{"purpose": "answer", "prompt_tokens": 321, "completion_tokens": 3}],
+    }
     assert by_name["done"] == {
         "status": "completed",
         "answered": True,

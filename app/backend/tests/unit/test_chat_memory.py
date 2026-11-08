@@ -130,3 +130,28 @@ def test_the_follow_up_judgement_is_asked_without_any_word_of_the_documents() ->
     assert parse_follow_up(" FOLLOW-UP\n") is True
     assert parse_follow_up("New") is False
     assert parse_follow_up("I am not sure") is None
+
+
+def test_the_rewrite_memory_keeps_the_head_of_a_long_newest_answer() -> None:
+    """D100: an answer longer than the memory used to be dropped whole, leaving the rewrite
+    only the questions. With head_tokens the newest answer keeps its opening."""
+    from app.chat.memory import REWRITE_HEAD_TOKENS, REWRITE_MEMORY_BUDGET
+
+    long_answer = "The ablated versions lose in four cells. " + "More detail follows here. " * 80
+    history = [
+        HistoryMessage("user", "compare A with B", "completed"),
+        HistoryMessage("assistant", "A wins 13 of 16 [1].", "completed"),
+        HistoryMessage("user", "Performance of ablated versions", "completed"),
+        HistoryMessage("assistant", long_answer, "completed"),
+    ]
+    counter = Qwen3TokenCounter()
+    assert counter.count("Assistant: " + long_answer) > 300
+    without = build_memory(history, counter, budget_tokens=300)
+    assert "lose in four cells" not in without  # dropped whole, as before
+    memory = build_memory(history, counter, budget_tokens=300, head_tokens=120)
+    assert "Assistant: The ablated versions lose in four cells." in memory
+    assert memory.rstrip().endswith("…")
+    assert counter.count(memory) <= 300
+    # Earlier turns still fall back to their questions.
+    assert "User: compare A with B" in memory and "A wins 13 of 16" not in memory
+    assert REWRITE_MEMORY_BUDGET == 2000 and REWRITE_HEAD_TOKENS == 600
