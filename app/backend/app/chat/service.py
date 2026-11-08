@@ -15,7 +15,7 @@ import re
 import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import partial
 from typing import Any
 
@@ -160,6 +160,8 @@ class PreparedQuestion:
     # D99: the chunks the previous completed answer cited as sources, for a follow-up that
     # retrieval cannot place (every candidate below the similarity threshold).
     previous_chunk_ids: tuple[uuid.UUID, ...] = ()
+    # D99: the model's judgement of this question (None before it is made or without earlier turns).
+    follow_up: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -294,6 +296,7 @@ class ChatService:
             # question as the user asked it (D95): a rewrite that adds words such as
             # "document summary" must not send a content question to the summary tree.
             question, follow_up = await self._standalone_question(prepared)
+            prepared = replace(prepared, follow_up=follow_up)
             kind = question_type(prepared.question)
             if kind == "summary" and await self._summary_tree_skipped(prepared):
                 # D91: the documents were uploaded without a summary tree; the question is
@@ -1246,7 +1249,8 @@ class ChatService:
     def _conversation(self, prepared: PreparedQuestion) -> str:
         """The conversation so far for the answer prompt (D99), within its budget; empty
         when the setting is off or there are no earlier turns."""
-        if not self._settings.answer_context:
+        mode = self._settings.answer_context
+        if mode == "off" or (mode == "follow_up" and prepared.follow_up is not True):
             return ""
         return build_memory(
             list(prepared.history), self._counter, budget_tokens=CONVERSATION_BUDGET

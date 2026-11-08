@@ -940,7 +940,7 @@ async def test_the_answer_of_a_follow_up_sees_the_conversation_as_context(
     events(ask(kim, conversation, "How many tokens does retrieval cost?"))
     assert "Conversation so far" not in model.prompts[-1]  # the default: off
     kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
-        update={"answer_context": True}
+        update={"answer_context": "always"}
     )
     use_model(kim, tokenizer, model)
     second = dict(events(ask(kim, conversation, "How many tokens does retrieval cost?")))

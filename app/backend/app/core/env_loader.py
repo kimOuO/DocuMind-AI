@@ -6,6 +6,7 @@ Rule (docs/02-specs/03-interfaces.md, section 5.3): no other module may call
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -89,10 +90,10 @@ class Settings(BaseSettings):
     # D98 (user): the checks always run and go into the `done` event, but their notes are
     # appended to the answer only in debug mode; the demo shows the answer alone.
     check_notes: bool = False
-    # D99: the conversation so far can go into the answer prompt as context (not a source).
-    # Off by default: with it, Q3 wrote the variants' definitions and reversed them in both
-    # flows; without it the follow-up is still answered from the previous turn's sources.
-    answer_context: bool = False
+    # D99: when the conversation so far goes into the answer prompt as context (not a
+    # source): "off", "follow_up" (only when the model judged the question a follow-up) or
+    # "always". With "always", Q3 wrote the variants' definitions and reversed them.
+    answer_context: Literal["off", "follow_up", "always"] = "off"
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at
@@ -106,6 +107,14 @@ class Settings(BaseSettings):
         if value not in ("off", "inject", "replace"):
             raise ValueError("ANSWER_FACTS must be off, inject or replace")
         return value
+
+    @field_validator("answer_context", mode="before")
+    @classmethod
+    def _answer_context_aliases(cls, value: object) -> object:
+        text = str(value).strip().lower()
+        return {"true": "always", "1": "always", "false": "off", "0": "off", "": "off"}.get(
+            text, text
+        )
 
     @field_validator("navigation_temperature", "answer_temperature", mode="before")
     @classmethod
