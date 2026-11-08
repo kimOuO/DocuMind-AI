@@ -94,7 +94,7 @@ DocuMind-AI/
 ├── app/                        要執行的程式
 │   ├── backend/                FastAPI 後端（程式、資料庫 migration、測試）
 │   └── frontend/               React 前端
-├── evaluation/                 檢索與回答品質的評測（P4 開始有內容）
+├── evaluation/                 檢索與回答品質的評測資料與紀錄（保留在開發 repo，不隨交付 zip）
 ├── sample-documents/           測試用文件（LightRAG 論文）
 ├── docs/                       規格與架構決策紀錄
 │   ├── 02-specs/               規格：01 需求、02 架構、03 介面、04 使用情境
@@ -109,8 +109,8 @@ DocuMind-AI/
 
 ## 目前結果 / Current results
 
-以下數字都可從 `evaluation/` 重跑；判定標準是「有錯誤資訊才算不通過」。
-Every figure below can be re-run from `evaluation/`; an answer fails only when it states something wrong.
+判定標準是「有錯誤資訊才算不通過」。數字出自開發 repo 的 `evaluation/`（題庫、腳本、逐題紀錄），交付 zip 不含該資料夾，需要時可另外提供。
+An answer fails only when it states something wrong. The figures come from `evaluation/` in the development repository (question set, scripts, per-question records); that folder is not in the delivery zip and can be provided separately.
 
 | 測試 / Test | 條件 / Condition | 結果 / Result |
 |---|---|---|
@@ -124,7 +124,7 @@ Every figure below can be re-run from `evaluation/`; an answer fails only when i
 | 建立摘要按鍵 / Summary button | 未建摘要樹的 16 頁論文按一次 | 建樹 156 秒、全程 178 秒，來源全為摘要節點 |
 | 10K 合規 / 10K compliance | 示範部署帳本，2026-11-05 至 11-08，所有帳號 550 次完成呼叫 | 單次最大 7,971 tokens |
 
-逐題的問答原文見 `evaluation/stability/conversation-runs/`；分析在 `evaluation/stability/README.md`。
+逐題的問答原文與分析在開發 repo 的 `evaluation/stability/`。
 
 未修的缺口 / Open gaps：變體定義望文生義（溫度 0 下 1/10、0.2 以上 2–3/10）；核對器把全稱句拿去對不含該指標的表（GraphRAG 一則誤報）；RAPTOR 的表格排版不在支援的五種內。詳見 `evaluation/stability/README.md`。
 
