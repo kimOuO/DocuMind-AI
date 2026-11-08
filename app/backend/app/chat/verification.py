@@ -322,6 +322,9 @@ class _Claim:
     # swapped. "GraphRAG beats NaiveRAG … (23.6% vs 22.8%)" may list the figures in either
     # order; when only the swapped reading fits the table, the pair is ambiguous, not wrong.
     alternative: tuple[str | None, str | None] | None = None
+    # D96: where the method label came from: "figure" (written with it, "LightRAG 67.6%"),
+    # "clause" (the one method of the figure's clause), "sentence", "inherited", "heading".
+    method_scope: str = ""
 
     @property
     def empty(self) -> bool:
@@ -380,16 +383,19 @@ def _claims(
         labels: list[str | None] = []
         ambiguous = False
         comparator: str | None = None
+        method_scope = ""
         for position, mentions in enumerate(per_category):
             is_method = position == method
             own = [m for m in mentions if owner[m] in ranges[figure]]
             if own:
                 labels.append(own[0][2])
+                method_scope = "figure" if is_method else method_scope
                 continue
             free = [m for m in mentions if owner[m] is None and not (is_method and after_cue(m))]
             in_clause = _distinct(m for m in free if clause[0] <= m[0] < clause[1])
             if len(in_clause) == 1:
                 labels.append(in_clause.pop())
+                method_scope = "clause" if is_method else method_scope
                 continue
             if len(in_clause) > 1:
                 ambiguous = True
@@ -419,7 +425,7 @@ def _claims(
                 if len(_distinct(scope)) == 1:
                     comparator = scope[0][2]
                     break
-        claims.append(_Claim(figure, labels, comparator, ambiguous))
+        claims.append(_Claim(figure, labels, comparator, ambiguous, method_scope=method_scope))
     cue_labels = {m[2] for m in per_category[method] if owner[m] is None and after_cue(m)}
     return _paired(
         sentence, figures, claims, clauses, per_category[method], owner, method, cue_labels
@@ -620,7 +626,10 @@ def label_outcomes(
             )
             >= 2
         )
-        for claim in _claims(sentence, vocabulary, inherited, heading, aliases):
+        claims = _claims(sentence, vocabulary, inherited, heading, aliases)
+        if compares:
+            claims = _mutual_pair(sentence, claims, cells, pairing, categories - 1)
+        for claim in claims:
             start, end = claim.figure
             number = sentence[start:end]
             candidates = cells.get(_key(number))
@@ -666,6 +675,44 @@ def label_outcomes(
             for found_mentions in mentions
         ]
     return outcomes
+
+
+def _mutual_pair(
+    sentence: str,
+    claims: list[_Claim],
+    cells: dict[str, list[_Cell]],
+    pairing: _Pairing,
+    method: int,
+) -> list[_Claim]:
+    """Two table figures, each with its own method (written with it or the one method of
+    its clause), under the same condition, of two methods the tables pair directly, are the
+    two sides of that pair: each is the other's comparator (D96). "LightRAG 67.6% vs.
+    GraphRAG 45.6%" then has to take LightRAG's figure from the pair with GraphRAG. Methods
+    the tables only compare through a shared reference are left as they were."""
+    table = [
+        (i, c) for i, c in enumerate(claims) if _key(sentence[c.figure[0] : c.figure[1]]) in cells
+    ]
+    if len(table) != 2:
+        return claims
+    (i, a), (j, b) = table
+    conditions = a.labels[:method], b.labels[:method]
+    first, second = a.labels[method], b.labels[method]
+    if not (
+        a.method_scope in ("figure", "clause")
+        and b.method_scope in ("figure", "clause")
+        and first is not None
+        and second is not None
+        and first != second
+        and a.comparator is None
+        and b.comparator is None
+        and conditions[0] == conditions[1]
+        and any(label is not None for label in conditions[0])
+        and any(key[-2:] == (first, second) for key in pairing.direct)
+    ):
+        return claims
+    claims[i] = replace(a, comparator=b.labels[method])
+    claims[j] = replace(b, comparator=a.labels[method])
+    return claims
 
 
 def _swapped(claim: _Claim, method: int) -> _Claim | None:

@@ -556,7 +556,8 @@ def test_a_wrong_item_under_a_list_heading_is_contradicted() -> None:
 
     [wrong] = verify_numbers(answer, PAGES).mislabelled
 
-    assert wrong.answer_labels == ["Diversity", "Legal", "LightRAG"]
+    # D96: NaiveRAG and LightRAG are a pair of the table, so the claim carries the pairing.
+    assert wrong.answer_labels == ["Diversity", "Legal", "LightRAG", "vs NaiveRAG"]
 
 
 # --- D68: a claim that one method wins everywhere, checked against the table -----------
@@ -733,3 +734,29 @@ def test_a_comparator_the_tables_do_not_know_blocks_the_clause_wide_fallback() -
     result = verify_numbers(answer, [table1])
 
     assert result.mislabelled == [] and result.unresolved == []
+
+
+def test_two_owned_figures_of_one_condition_must_be_the_tables_pair_of_each_other() -> None:
+    """D96: "LightRAG 67.6% vs. GraphRAG 45.6%" takes LightRAG's figure from the NaiveRAG
+    pairing; Table 1 pairs LightRAG with GraphRAG directly (54.4% vs 45.6%), so the figure
+    is contradicted. The correct pair passes, and so does a comparison the table only
+    makes through a shared reference."""
+    wrong = "- Agriculture / Comprehensiveness: LightRAG 67.6% vs. GraphRAG 45.6% [1]."
+    assert outcomes(wrong) == (["67.6%"], [])
+    also_wrong = (
+        "Comprehensiveness in the CS dataset: LightRAG scores 61.6%, while GraphRAG scores "
+        "48.4% [1]."
+    )
+    assert outcomes(also_wrong) == (["61.6%"], [])
+    right = "- Agriculture / Comprehensiveness: LightRAG 54.4% vs. GraphRAG 45.6% [1]."
+    assert outcomes(right) == ([], [])
+    indirect = "In Agriculture Comprehensiveness, LightRAG 67.6% vs -High 65.2% [1]."
+    assert outcomes(indirect) == ([], [])
+
+
+def test_two_owned_figures_of_different_conditions_are_not_read_as_a_pair() -> None:
+    answer = (
+        "LightRAG reaches 83.6% in Legal Comprehensiveness, "
+        "while GraphRAG reaches 50.4% in Mix [1]."
+    )
+    assert outcomes(answer) == ([], [])

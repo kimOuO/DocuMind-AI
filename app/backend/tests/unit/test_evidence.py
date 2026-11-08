@@ -649,3 +649,55 @@ def test_a_two_letter_capitalised_label_narrows_the_facts_but_a_threshold_row_do
     from app.chat.evidence import _named_labels
 
     assert _named_labels({"TS", "CS", "0.5", "x"}, "the CS and TS rows at 0.5") == {"CS", "TS"}
+
+
+# --- D96: the figures of the compared pair, and the answer's own deltas -----------------
+
+
+def test_the_facts_text_lists_every_conditions_figures_for_the_compared_pair() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    text = facts_text(facts, WordCounter(), budget=400)
+
+    # The model no longer needs the raw table row to quote a figure of this pair.
+    assert "Figures (Full vs Other): " in text
+    assert "Agri / Comprehensiveness: Full 54.4% vs Other 45.6%" in text
+    assert "Mix / Comprehensiveness: Full 49.6% vs Other 50.4%" in text
+
+
+def test_the_figures_line_is_the_first_to_go_when_the_budget_is_tight() -> None:
+    cells = build_matrix([(1, chunk(20, 7, PAIRED))])
+    facts = comparison_facts(cells, "compare Full with Other")
+
+    text = facts_text(facts, WordCounter(), budget=60)
+
+    assert "Full vs Other" in text and "Figures (" not in text
+
+
+def test_a_difference_the_answer_computes_is_checked_against_its_two_figures() -> None:
+    page = pages(TABLE)
+    wrong = "Legal / Empowerment: Full 67.6% vs. Naive 32.4% (+35.2 pp, +501.2% relative) [1]."
+    right = "Agri / Comprehensiveness: Full 67.6% vs. Naive 32.4% (+35.2 pp, +108.6% relative) [1]."
+    points_wrong = "Full 67.6% against Naive 32.4%, a 25.2 percentage point gap [1]."
+
+    [issue] = check_arithmetic(wrong, page)
+    assert issue.status == "inconsistent" and issue.stated == "+501.2% relative"
+    assert "108.6" in issue.detail
+    assert check_arithmetic(right, page) == []
+    [gap] = check_arithmetic(points_wrong, page)
+    assert gap.status == "inconsistent" and "35.2" in gap.detail
+
+
+def test_the_arithmetic_note_names_the_wrong_value_and_the_right_one() -> None:
+    from app.chat.evidence import arithmetic_note
+
+    page = pages(TABLE)
+    issues = check_arithmetic("Full 67.6% vs. Naive 32.4% (+35.2 pp, +501.2% relative) [1].", page)
+
+    note = arithmetic_note(issues, "other")
+    assert note.startswith(
+        "Differences the answer computed that do not follow from its own figures"
+    )
+    assert "+501.2% relative" in note and "108.6" in note
+    assert "回答自行計算" in arithmetic_note(issues, "zh")

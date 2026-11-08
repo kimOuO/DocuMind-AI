@@ -30,12 +30,14 @@ from app.chat.evidence import (
     ConclusionIssue,
     DirectionIssue,
     analysis_preamble,
+    arithmetic_note,
     build_matrix,
     check_arithmetic,
     check_completeness,
     check_conclusions,
     check_directions,
     comparison_facts,
+    derived_numbers,
     facts_block,
     matrix_cells_of_pages,
     matrix_text,
@@ -50,6 +52,7 @@ from app.chat.memory import (
     HistoryMessage,
     build_memory,
     clean_rewrite,
+    needs_rewrite,
     rewrite_prompt,
 )
 from app.chat.navigation import (
@@ -122,7 +125,7 @@ EVIDENCE_TOKEN_BUDGET = 5_500
 # D88: how many of the closest passages the model sees when none reaches MIN_SIMILARITY.
 BELOW_THRESHOLD_PASSAGES = 3
 # D87 experiment A: the room the comparison facts may take before the sources (single mode).
-FACTS_TOKEN_BUDGET = 800  # D92: the unambiguous exception wording needs the room
+FACTS_TOKEN_BUDGET = 1400  # D92: exception wording; D96: the figures of each pair
 # D95: the rewrite of a follow-up is deterministic; it was the one call still sampling at the
 # model's default (0.6), so the same follow-up could be rewritten differently each time.
 REWRITE_TEMPERATURE = 0.0
@@ -130,8 +133,8 @@ REWRITE_TEMPERATURE = 0.0
 # material the user did not ask — the model pads "compare LightRAG with GraphRAG" with both
 # definitions from the memory, 8 → 66 tokens — and is discarded. Real follow-ups grow far
 # less: 「那它的缺點呢？」 6 → 9, "and its drawbacks?" 4 → 13 tokens.
-REWRITE_GROWTH_FACTOR = 3
-REWRITE_GROWTH_ALLOWANCE = 12
+REWRITE_GROWTH_FACTOR = 2  # D96: tightened from 3 and 12 (a 9-token question grew to 35)
+REWRITE_GROWTH_ALLOWANCE = 10
 # The answer is saved to the database every this many pieces while it streams.
 SAVE_EVERY = 20
 
@@ -510,6 +513,7 @@ class ChatService:
                     ],
                 )
                 check = _without_program_figures(check, evidence.facts_text)
+                check = _without_derived_figures(check, derived_numbers(text, pages))
                 language = question_language(prepared.question)
                 notes = [evidence.note] if evidence.note else []
                 if check.unverified:
@@ -518,6 +522,9 @@ class ChatService:
                     notes.append(label_note(check.mislabelled, language))
                 if any(c.status == "contradicted" for c in check.overstated):
                     notes.append(claim_note(check.overstated, language))
+                if any(a.status == "inconsistent" for a in arithmetic):
+                    # D96: a difference the answer derived that its own figures do not give.
+                    notes.append(arithmetic_note(arithmetic, language))
                 for note in notes:
                     # Said after the answer, as part of it: documents whose summary was
                     # not available, and numbers that could not be checked.
@@ -653,7 +660,9 @@ class ChatService:
         memory = build_memory(
             list(prepared.history), self._counter, budget_tokens=MEMORY_TOKEN_BUDGET
         )
-        if not memory:
+        # D96: a question that does not lean on the conversation is used as asked; the
+        # rewrite only ever added material to one.
+        if not memory or not needs_rewrite(prepared.question):
             return prepared.question
         context = CallContext(
             owner_id=prepared.actor.id,
@@ -1520,6 +1529,17 @@ class ChatService:
             await ChatRepository(session).finish(
                 prepared.assistant_message_id, status=status, content=content, answered=answered
             )
+
+
+def _without_derived_figures(check: NumberCheck, derived: Sequence[str]) -> NumberCheck:
+    """The check without the "unverified" figures the answer derived from two table
+    figures (D96): those are judged by arithmetic, not looked for on the pages."""
+    if not derived or not check.unverified:
+        return check
+    kept = [n for n in check.unverified if n not in set(derived)]
+    if len(kept) == len(check.unverified):
+        return check
+    return NumberCheck(check.verified, kept, check.mislabelled, check.unresolved, check.overstated)
 
 
 def _without_program_figures(check: NumberCheck, facts_text: str) -> NumberCheck:

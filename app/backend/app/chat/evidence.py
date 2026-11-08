@@ -979,6 +979,9 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
     lines: list[str] = []
     spent = 0
     left_out = 0
+    # D96: every condition's two figures of the pair, so that an example is copied from
+    # here and not from the table row, where the same method stands in several pairings.
+    figures_lines: dict[int, str] = {}  # position in `lines` of the head -> its figures line
     for (a, b, setting), members in groups.items():
         higher = [f for f in members if f.relation == "GREATER"]
         lower = [f for f in members if f.relation == "LESS"]
@@ -1028,6 +1031,25 @@ def facts_text(facts: Sequence[Fact], counter: TokenCounter, *, budget: int) -> 
             continue
         lines.append(head)
         spent += cost
+        ordered = sorted(members, key=lambda f: (f.group, f.row))
+        figures_lines[len(lines) - 1] = (
+            f"  Figures ({a} vs {b}): "
+            + "; ".join(
+                f"{f.group + ' / ' if f.group else ''}{f.row}: {a} {f.value_a} vs {b} {f.value_b}"
+                for f in ordered
+            )
+            + "."
+        )
+    # The figures lines come after every head has had its room; the first to go when the
+    # budget is tight.
+    with_figures: list[str] = []
+    for position, line in enumerate(lines):
+        with_figures.append(line)
+        figures = figures_lines.get(position)
+        if figures is not None and spent + (cost := counter.count(figures)) <= budget:
+            with_figures.append(figures)
+            spent += cost
+    lines = with_figures
     if left_out:
         # D92: said as a count, not as a line per pair — "left out for room" per pair was
         # repeated by the model as "this comparison was omitted due to space constraints".
@@ -1214,6 +1236,56 @@ class ArithmeticIssue:
 
 _RATIO = re.compile(r"(?<![\d.])(\d+(?:\.\d+)?)\s*(?:x|×|times)\b", re.IGNORECASE)
 _RATIO_TOLERANCE = 0.05
+# D96: a difference the answer derives from two percentages of the same sentence — in
+# percentage points, or relative to one of them.
+_POINTS = re.compile(
+    r"(?<![\d.%])([+\-−]?\d+(?:\.\d+)?)\s*(?:pp\b|percentage[\s-]points?\b|個百分點)",
+    re.IGNORECASE,
+)
+_RELATIVE = re.compile(r"(?<![\d.])([+\-−]?\d+(?:\.\d+)?)%\s*(?:relative(?:ly)?)\b", re.IGNORECASE)
+_POINTS_TOLERANCE = 0.06
+
+
+def _deltas(
+    sentence: str, page_keys: set[str]
+) -> list[tuple[re.Match[str], str, float, float, float]]:
+    """Each stated difference of the sentence with its kind ("pp" or "relative") and the
+    two table percentages before it that it must follow from; stated numbers themselves
+    are never bases."""
+    stated = [(m, "pp") for m in _POINTS.finditer(sentence)]
+    stated += [(m, "relative") for m in _RELATIVE.finditer(sentence)]
+    excluded = [(m.start(1), m.end(1)) for m, _ in stated]
+    percents = [
+        (m.start(), m.end(), _as_float(m.group()))
+        for m in _NUMBER.finditer(sentence)
+        if m.group().endswith("%")
+        and _key(m.group()) in page_keys
+        and not any(a <= m.start() < b for a, b in excluded)
+    ]
+    found = []
+    for m, kind in sorted(stated, key=lambda item: item[0].start()):
+        bases = [p for p in percents if p[1] <= m.start() and p[2] is not None]
+        if len(bases) < 2:
+            continue
+        (_, _, x), (_, _, y) = bases[-2], bases[-1]
+        value = _as_float(m.group(1).replace("−", "-").lstrip("+"))
+        if value is None or x is None or y is None:
+            continue
+        found.append((m, kind, abs(value), x, y))
+    return found
+
+
+def derived_numbers(answer: str, pages: Sequence[PageText]) -> list[str]:
+    """The differences the answer computed itself, as `numbers_in` writes them: they are
+    checked by arithmetic (D96), not looked for on the cited pages."""
+    page_keys = {_key(n) for n in numbers_in(" ".join(p.text for p in pages))}
+    blanked = _blank(answer)
+    derived = []
+    for s_start, s_end in _pieces(blanked, _SENTENCE_END):
+        for m, kind, _, _, _ in _deltas(blanked[s_start:s_end], page_keys):
+            number = m.group(1).replace("−", "-").lstrip("+-")
+            derived.append(number + ("%" if kind == "relative" else ""))
+    return derived
 
 
 def check_arithmetic(answer: str, pages: Sequence[PageText]) -> list[ArithmeticIssue]:
@@ -1226,7 +1298,7 @@ def check_arithmetic(answer: str, pages: Sequence[PageText]) -> list[ArithmeticI
     for s_start, s_end in _pieces(blanked, _SENTENCE_END):
         sentence = blanked[s_start:s_end]
         ratios = list(_RATIO.finditer(sentence))
-        if not ratios:
+        if not ratios and not (_POINTS.search(sentence) or _RELATIVE.search(sentence)):
             continue
         ratio_spans = [(m.start(1), m.end(1)) for m in ratios]
         bases = []
@@ -1238,6 +1310,38 @@ def check_arithmetic(answer: str, pages: Sequence[PageText]) -> list[ArithmeticI
                 continue
             bases.append(value)
         shown = _tidy(answer[s_start:s_end])
+        for m, kind, value, x, y in _deltas(sentence, page_keys):
+            diff = abs(x - y)
+            low, high = min(x, y), max(x, y)
+            if kind == "pp":
+                if abs(value - diff) > _POINTS_TOLERANCE:
+                    issues.append(
+                        ArithmeticIssue(
+                            shown,
+                            m.group(0).strip(),
+                            round(diff, 1),
+                            "inconsistent",
+                            f"{x:g}% − {y:g}% = {diff:.1f} pp, not {value:g}",
+                        )
+                    )
+                continue
+            if low == 0:
+                continue
+            to_low, to_high = diff / low * 100, diff / high * 100
+            if all(
+                abs(value - reference) > max(0.15, reference * 0.01)
+                for reference in (to_low, to_high)
+            ):
+                issues.append(
+                    ArithmeticIssue(
+                        shown,
+                        m.group(0).strip(),
+                        round(to_low, 1),
+                        "inconsistent",
+                        f"{x:g}% vs {y:g}%: {diff:.1f} pp, {to_low:.1f}% relative to {low:g}% "
+                        f"({to_high:.1f}% relative to {high:g}%), not {value:g}%",
+                    )
+                )
         for m in ratios:
             stated = m.group(0).strip()
             factor = float(m.group(1))
@@ -1265,3 +1369,18 @@ def check_arithmetic(answer: str, pages: Sequence[PageText]) -> list[ArithmeticI
                     )
                 )
     return issues
+
+
+_ARITHMETIC_NOTES = {
+    "other": "Differences the answer computed that do not follow from its own figures: {}.",
+    "zh": "回答自行計算、與其數字不符的差距：{}。",
+}
+
+
+def arithmetic_note(issues: Sequence[ArithmeticIssue], language: str) -> str:
+    """What the reader is told after the answer when a derived difference or ratio is
+    inconsistent with the two figures it came from (D96)."""
+    wrong = [i for i in issues if i.status == "inconsistent"]
+    separator = "；" if language == "zh" else "; "
+    items = [f"{i.stated} ({i.detail})" for i in wrong]
+    return _ARITHMETIC_NOTES["zh" if language == "zh" else "other"].format(separator.join(items))

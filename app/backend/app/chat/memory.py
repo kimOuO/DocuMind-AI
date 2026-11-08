@@ -7,11 +7,43 @@ recent turns verbatim, earlier turns reduced to their questions, nothing from
 answers that did not complete.
 """
 
+import re
 from dataclasses import dataclass
 
 from app.llm.tokenizer import TokenCounter
 
 MEMORY_TOKEN_BUDGET = 800  # docs/02-specs/02-architecture.md, section 4.3
+
+# D96: what makes a question lean on the conversation — a pronoun, a demonstrative (not
+# one pointing at the document itself: "this paper"), a connective at the start, a Chinese
+# referent, or a sentence-final 呢. A closed set, so a rule decides; the model asked the
+# same question called 16 of 19 self-contained questions "dependent" (decision log D95).
+_REFERENCE = re.compile(
+    r"\b(?:it|its|it's|they|them|their|theirs|one|ones|former|latter|above|same|also|too"
+    r"|either|both|other|others|another|such|then|again|previous|earlier|mentioned|said)\b"
+    r"|\b(?:this|that|these|those)\b(?!\s+(?:paper|document|file|report|article|study|work)s?\b)"
+    r"|\b(?:what|how)\s+about\b|^\s*(?:and|or|but|also|plus)\b"
+    r"|它|他們|她們|它們|牠|其|此|該|前者|後者|上述|同樣|也|又|還有|那麼|怎麼樣|如何呢|哪一?個|兩者|二者"
+    r"|(?:這|那)(?!(?:篇|份|個|本)?(?:論文|文件|文章|報告|檔案))"
+    r"|呢\s*[?？]?\s*$",
+    re.IGNORECASE,
+)
+_WORD = re.compile(r"[A-Za-z0-9][\w'-]*")
+_CJK = re.compile(r"[\u4e00-\u9fff]")
+
+
+def needs_rewrite(question: str) -> bool:
+    """Whether a follow-up has to be rewritten before retrieval (D96): it refers to the
+    conversation, or it is a fragment of two or three words. A complete question is used
+    as asked — the rewrite only adds material to it."""
+    text = question.strip()
+    if _REFERENCE.search(text):
+        return True
+    cjk = _CJK.findall(text)
+    words = _WORD.findall(text)
+    if cjk:
+        return len(cjk) <= 4 and not words
+    return len(words) <= 2
 
 
 @dataclass(frozen=True)

@@ -846,7 +846,7 @@ async def test_the_route_is_decided_by_the_question_as_asked_not_by_its_rewrite(
     use_model(kim, tokenizer, model)
     conversation = new_conversation(kim)
     events(ask(kim, conversation, "summary this document."))
-    received = dict(events(ask(kim, conversation, QUESTION)))
+    received = dict(events(ask(kim, conversation, "What does it build?")))
     assert model.rewrite_options[-1]["temperature"] == 0
     assert received["route"] == {
         "type": "retrieval",
@@ -872,9 +872,24 @@ async def test_a_rewrite_that_pads_the_question_with_material_is_discarded(
     use_model(kim, tokenizer, model)
     conversation = new_conversation(kim)
     events(ask(kim, conversation, "summary this document."))
-    received = dict(events(ask(kim, conversation, "compare lightRAG with GraphRAG")))
+    received = dict(events(ask(kim, conversation, "compare it with GraphRAG")))
     assert len(model.rewrite_prompts) == 1  # the rewrite was attempted and is in the ledger
-    assert received["route"]["standalone_question"] == "compare lightRAG with GraphRAG"
+    assert received["route"]["standalone_question"] == "compare it with GraphRAG"
+
+
+async def test_a_follow_up_that_stands_on_its_own_is_not_rewritten(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D96: with earlier turns, a complete question still skips the rewrite call — no
+    pronoun or fragment to resolve — and goes to retrieval as asked."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."], rewrite_to="padded, must not be asked for")
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    events(ask(kim, conversation, "summary this document."))
+    received = dict(events(ask(kim, conversation, QUESTION)))
+    assert model.rewrite_prompts == []
+    assert received["route"] == {"type": "retrieval", "standalone_question": QUESTION}
 
 
 async def test_the_request_can_set_the_answer_temperature_between_0_and_1(

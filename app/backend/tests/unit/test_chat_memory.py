@@ -10,6 +10,7 @@ from app.chat.memory import (
     HistoryMessage,
     build_memory,
     clean_rewrite,
+    needs_rewrite,
     rewrite_prompt,
 )
 from app.llm.tokenizer import Qwen3TokenCounter
@@ -113,3 +114,34 @@ def test_the_rewritten_question_is_cleaned_or_rejected() -> None:
     assert clean_rewrite("「LightRAG 的缺點是什麼？」") == "LightRAG 的缺點是什麼？"
     assert clean_rewrite("   ") is None
     assert clean_rewrite("First line?\nSecond line explaining.") is None  # not a single question
+
+
+def test_only_a_question_that_leans_on_the_conversation_is_rewritten() -> None:
+    """D96: the rewrite resolves references; a question without any is used as asked (the
+    model padded "compare lightRAG with GraphRAG" with both definitions, 8 → 66 tokens)."""
+    for question in [
+        "那它的缺點呢？",
+        "and its drawbacks?",
+        "what about the ablated versions?",
+        "那第二篇呢？",
+        "Which one is cheaper?",
+        "它們的差別在哪？",
+        "為什麼會這樣？",
+        "Can you give the numbers for that?",
+        "the second one?",
+        "缺點？",
+        "drawbacks?",
+        "And the costs?",
+    ]:
+        assert needs_rewrite(question), question
+    for question in [
+        "summary this document.",
+        "compare lightRAG with GraphRAG",
+        "Performance of ablated versions of LightRAG",
+        "LightRAG 用哪四個評估面向比較回答品質？各是什麼意思？",
+        "In the Legal dataset, what are the Diversity win rates of NaiveRAG versus LightRAG?",
+        "GraphRAG 論文中，Podcast 與 News 資料集建出的圖各有多少節點與邊？",
+        "How large (in tokens) are the corpora each paper evaluates on?",
+        "如何在家烤酸種麵包？",
+    ]:
+        assert not needs_rewrite(question), question

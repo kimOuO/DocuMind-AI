@@ -55,8 +55,8 @@ class RewritingModel:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
         if not body["stream"]:
-            # The rewrite: bounded by the question budget, not the answer's.
-            assert body["options"] == {"num_ctx": 10_000, "num_predict": 200}
+            # The rewrite: bounded by the question budget, not the answer's; deterministic (D95).
+            assert body["options"] == {"num_ctx": 10_000, "num_predict": 200, "temperature": 0.0}
             self.rewrite_prompts.append(body["prompt"])
             if self.rewrite_status != 200:
                 return httpx.Response(self.rewrite_status, json={"error": "model failed to load"})
