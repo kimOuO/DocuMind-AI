@@ -36,6 +36,8 @@ class MessageResponse(BaseModel):
     status: str
     answered: bool | None
     sources: list[dict[str, Any]]
+    # The answer's sampling temperature (AC-60); null for questions and the model default.
+    temperature: float | None
     created_at: datetime
 
 
@@ -60,6 +62,7 @@ def message_response(message: Message) -> MessageResponse:
         status=message.status,
         answered=message.answered,
         sources=list(message.sources),
+        temperature=message.temperature,
         created_at=message.created_at,
     )
 

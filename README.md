@@ -40,8 +40,8 @@ Open the site at one of those two addresses. If you use another address, add it 
 
 - Ollama 必須監聽容器連得到的位址（`OLLAMA_HOST=0.0.0.0`）。若沒有預裝 Ollama，可改用內建的容器：`docker compose --profile ollama up --build`，並在 `.env` 設定 `COMPOSE_OLLAMA_HOST=ollama`（此模式尚未實測）。
 - 設定值見 `.env.sample`。`make setup`、`make up` 會在 `.env` 不存在時由它複製一份。
-- 兩個可選的回答改善，預設關閉，實驗數據在 `evaluation/facts-ab/`：`ANSWER_FACTS=inject` 把程式從表格算出的比較事實（哪邊高、差幾個百分點、哪些例外）放進 prompt，讓比較題的結論與例外對得上表格；`SUMMARY_REPAIR=true` 在入庫時對數字歸錯對象或不存在的摘要句，以表格證據重寫一次，仍錯就刪句。`ANSWER_TEMPERATURE` 可固定回答的取樣溫度（空白＝模型預設）。
-- Two optional answering improvements, off by default, measured in `evaluation/facts-ab/`: `ANSWER_FACTS=inject` puts the program's comparison facts from the tables (which side is higher, by how many points, every exception) into the prompt so that conclusions match the tables; `SUMMARY_REPAIR=true` rewrites, once and with the table's figures as evidence, a summary sentence whose figure is misattributed or absent from the pages, removing it if still wrong. `ANSWER_TEMPERATURE` fixes the answer sampling temperature (empty = the model's default).
+- 兩個可選的回答改善，預設關閉，實驗數據在 `evaluation/facts-ab/`：`ANSWER_FACTS=inject` 把程式從表格算出的比較事實（哪邊高、差幾個百分點、哪些例外）放進 prompt，讓比較題的結論與例外對得上表格；`SUMMARY_REPAIR=true` 在入庫時對數字歸錯對象或不存在的摘要句，以表格證據重寫一次，仍錯就刪句。`ANSWER_TEMPERATURE` 是回答取樣溫度的預設值（空白＝模型預設）；前端輸入框旁的滑桿可逐題調整 0 到 1，每則回答標示它用的溫度（AC-60）。
+- Two optional answering improvements, off by default, measured in `evaluation/facts-ab/`: `ANSWER_FACTS=inject` puts the program's comparison facts from the tables (which side is higher, by how many points, every exception) into the prompt so that conclusions match the tables; `SUMMARY_REPAIR=true` rewrites, once and with the table's figures as evidence, a summary sentence whose figure is misattributed or absent from the pages, removing it if still wrong. `ANSWER_TEMPERATURE` is the default answer sampling temperature (empty = the model's default); a slider beside the composer sets it per question between 0 and 1, and every answer shows the temperature it used (AC-60).
 - API 文件：`http://127.0.0.1:3000/api/v1/docs`。
 
 ## 本地開發 / Local development

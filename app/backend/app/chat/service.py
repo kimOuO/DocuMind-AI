@@ -139,6 +139,9 @@ class PreparedQuestion:
     scope: SearchScope
     # The conversation before this question, oldest first (memory for a follow-up).
     history: tuple[HistoryMessage, ...] = ()
+    # The sampling temperature of the answer call: the request's value, else the server's
+    # ANSWER_TEMPERATURE; None means the model's default (AC-60, D94).
+    temperature: float | None = None
 
 
 @dataclass(frozen=True)
@@ -207,8 +210,11 @@ class ChatService:
         conversation_id: uuid.UUID,
         question: str,
         document_ids: list[uuid.UUID] | None,
+        temperature: float | None = None,
     ) -> PreparedQuestion:
-        """Check the question and store it with a pending answer."""
+        """Check the question and store it with a pending answer. `temperature` is the
+        request's choice for the answer call (0–1, validated by the router); omitted, the
+        server's setting applies (AC-60)."""
         conversation = await ConversationService(self._db).owned(actor, conversation_id)
 
         question = question.strip()
@@ -230,12 +236,21 @@ class ChatService:
 
         earlier = await ConversationRepository(self._db).messages(actor.id, conversation.id)
         history = tuple(HistoryMessage(m.role, m.content, m.status) for m in earlier)
+        if temperature is None:
+            temperature = self._settings.answer_temperature
         user_message_id, assistant_message_id = await ChatRepository(self._db).add_exchange(
-            conversation, question
+            conversation, question, temperature
         )
         await self._db.commit()
         return PreparedQuestion(
-            actor, conversation.id, user_message_id, assistant_message_id, question, scope, history
+            actor,
+            conversation.id,
+            user_message_id,
+            assistant_message_id,
+            question,
+            scope,
+            history,
+            temperature,
         )
 
     async def answer(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
@@ -251,6 +266,7 @@ class ChatService:
                         "mode": prepared.scope.mode,
                         "document_ids": [str(i) for i in prepared.scope.document_ids],
                     },
+                    "temperature": prepared.temperature,
                 },
             )
             # A follow-up is first made to stand on its own (AC-16); the route, the
@@ -424,7 +440,7 @@ class ChatService:
             stream = self._gateway.stream(
                 evidence.prompt,
                 purpose="answer",
-                temperature=self._settings.answer_temperature,
+                temperature=prepared.temperature,
                 max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
                 context=context,
             )
@@ -751,7 +767,7 @@ class ChatService:
         result = await self._gateway.generate(
             evidence.prompt,
             purpose="answer",
-            temperature=self._settings.answer_temperature,
+            temperature=prepared.temperature,
             max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
             context=context,
         )
@@ -879,7 +895,7 @@ class ChatService:
         first = await self._gateway.generate(
             evidence.prompt,
             purpose="answer",
-            temperature=self._settings.answer_temperature,
+            temperature=prepared.temperature,
             max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
             context=context,
         )

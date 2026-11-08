@@ -829,6 +829,39 @@ async def test_the_answer_temperature_setting_reaches_the_model_and_is_absent_by
     kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
 
 
+async def test_the_request_can_set_the_answer_temperature_between_0_and_1(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """AC-60 (D94): a `temperature` in the request is used for the answer call, reported in
+    `start` and stored on the answer; omitted, the setting applies and is reported too;
+    out of range is refused before anything is stored."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."])
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    received = events(ask(kim, conversation, temperature=0.2))
+    assert model.options[-1]["temperature"] == 0.2
+    assert dict(received)["start"]["temperature"] == 0.2
+    stored = kim.get(f"{CONVERSATIONS}/{conversation}").json()["messages"]
+    assert [m["temperature"] for m in stored] == [None, 0.2]
+
+    before = counts(db)
+    refused = ask(kim, conversation, temperature=1.5)
+    assert refused.status_code == 422
+    assert refused.json()["code"] == "VALIDATION_ERROR"
+    assert counts(db) == before
+
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"answer_temperature": 0.0}
+    )
+    use_model(kim, tokenizer, model)
+    received = events(ask(kim, new_conversation(kim)))
+    assert model.options[-1]["temperature"] == 0
+    assert dict(received)["start"]["temperature"] == 0
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
+
+
 async def test_answer_facts_inject_puts_the_programs_comparison_facts_before_the_sources(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:

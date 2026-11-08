@@ -13,6 +13,7 @@ from sqlalchemy import (
     Boolean,
     CheckConstraint,
     DateTime,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -249,6 +250,9 @@ class Message(Base):
     )
     status: Mapped[str] = mapped_column(Text)
     answered: Mapped[bool | None] = mapped_column(Boolean)
+    # The sampling temperature of the answer call (AC-60, D94): the request's value or
+    # the server's default at the time; NULL for questions and for the model's default.
+    temperature: Mapped[float | None] = mapped_column(Float)
     created_at: Mapped[datetime] = _created()
     updated_at: Mapped[datetime] = _updated()
 

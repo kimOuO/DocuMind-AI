@@ -12,6 +12,8 @@ export interface Health {
   llm_model: string
   embed_model: string
   llm_context_limit: number
+  /** The server's default answer temperature (AC-60); null = the model's default. */
+  answer_temperature: number | null
 }
 
 export type DocumentStatus = 'uploaded' | 'processing' | 'ready' | 'failed'
@@ -90,8 +92,7 @@ export const logout = () => request<void>('POST', '/auth/logout')
 
 export const listDocuments = () => request<DocumentItem[]>('GET', '/documents')
 export const deleteDocument = (id: string) => request<void>('DELETE', `/documents/${id}`)
-export const retryDocument = (id: string) =>
-  request<DocumentItem>('POST', `/documents/${id}/retry`)
+export const retryDocument = (id: string) => request<DocumentItem>('POST', `/documents/${id}/retry`)
 export function uploadDocument(file: File, buildSummary = true) {
   const form = new FormData()
   form.append('file', file)
@@ -177,6 +178,8 @@ export interface ChatMessage {
   status: MessageStatus
   answered: boolean | null
   sources: Source[]
+  /** The answer's sampling temperature (AC-60); null for questions and the model default. */
+  temperature?: number | null
   created_at: string
 }
 
@@ -235,10 +238,7 @@ export interface Completeness {
 }
 
 export type AnalysisStatus =
-  | 'SUPPORTED_AND_COMPLETE'
-  | 'FACTUALLY_CORRECT_BUT_INCOMPLETE'
-  | 'FACTUALLY_INCORRECT'
-  | 'UNCERTAIN'
+  'SUPPORTED_AND_COMPLETE' | 'FACTUALLY_CORRECT_BUT_INCOMPLETE' | 'FACTUALLY_INCORRECT' | 'UNCERTAIN'
 
 export interface NavigationTarget {
   text: string
@@ -273,7 +273,14 @@ export interface Navigation {
   unmet_required?: string[]
   supplementary_used?: number
   matrix?: { cells: number; tables: string[]; definitions: string[] }
-  log?: { ordinal: number; page: number; kept: boolean; reason: string; target?: number | null; score?: number | null }[]
+  log?: {
+    ordinal: number
+    page: number
+    kept: boolean
+    reason: string
+    target?: number | null
+    score?: number | null
+  }[]
 }
 
 /** A figure of the answer found on a cited page, with the original text around it (AC-26). */
@@ -330,7 +337,16 @@ export interface NumberCheck {
 
 /** The events of an answer stream, in the order they arrive. */
 export type AskEvent =
-  | { name: 'start'; data: { user_message_id: string; assistant_message_id: string; scope: SearchScope } }
+  | {
+      name: 'start'
+      data: {
+        user_message_id: string
+        assistant_message_id: string
+        scope: SearchScope
+        /** The temperature the answer call uses: the request's, else the server's default. */
+        temperature: number | null
+      }
+    }
   | { name: 'route'; data: { type: string; standalone_question: string } }
   | { name: 'sources'; data: Source[] }
   | { name: 'stage'; data: { stage: Stage } }
@@ -363,8 +379,7 @@ export type AskEvent =
 export const listConversations = () => request<Conversation[]>('GET', '/conversations')
 export const createConversation = (title?: string) =>
   request<Conversation>('POST', '/conversations', { title: title ?? null })
-export const getConversation = (id: string) =>
-  request<ConversationDetail>('GET', `/conversations/${id}`)
+export const getConversation = (id: string) => request<ConversationDetail>('GET', `/conversations/${id}`)
 export const deleteConversation = (id: string) => request<void>('DELETE', `/conversations/${id}`)
 
 /**
@@ -376,12 +391,17 @@ export async function askQuestion(
   question: string,
   documentIds: string[],
   onEvent: (event: AskEvent) => void,
+  temperature: number | null = null,
 ): Promise<void> {
+  // `temperature` is sent only when the user chose one; omitted, the server's default
+  // applies (AC-60).
+  const body: Record<string, unknown> = { question, document_ids: documentIds }
+  if (temperature !== null) body.temperature = temperature
   const response = await fetch(`${API}/conversations/${conversationId}/messages`, {
     method: 'POST',
     credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, document_ids: documentIds }),
+    body: JSON.stringify(body),
   })
   if (!response.ok || response.body === null) {
     let code = 'HTTP_ERROR'

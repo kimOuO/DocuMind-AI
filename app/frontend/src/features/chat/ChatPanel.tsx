@@ -7,6 +7,7 @@ import {
   askQuestion,
   createConversation,
   deleteConversation,
+  fetchHealth,
   getConversation,
   listConversations,
   type ChatMessage,
@@ -21,6 +22,75 @@ import {
   type Stage,
   type Usage,
 } from '../../lib/api'
+
+/** The user's temperature choice is a per-browser convenience (AC-60): null = server default. */
+const TEMPERATURE_KEY = 'documind.temperature'
+
+function readStoredTemperature(): number | null {
+  try {
+    const raw = localStorage.getItem(TEMPERATURE_KEY)
+    if (raw === null) return null
+    const value = Number(raw)
+    return Number.isFinite(value) && value >= 0 && value <= 1 ? value : null
+  } catch {
+    return null
+  }
+}
+
+function storeTemperature(value: number | null) {
+  try {
+    if (value === null) localStorage.removeItem(TEMPERATURE_KEY)
+    else localStorage.setItem(TEMPERATURE_KEY, String(value))
+  } catch {
+    // Storage unavailable: the choice still applies for this page.
+  }
+}
+
+/** The temperature control beside the composer: a 0–1 slider in steps of 0.1 and a way
+ * back to the server's default (AC-60, D94). */
+function TemperatureControl({
+  value,
+  fallback,
+  disabled,
+  onChange,
+}: {
+  value: number | null
+  fallback: number | null
+  disabled: boolean
+  onChange: (value: number | null) => void
+}) {
+  const shown = value ?? fallback
+  const label =
+    value !== null ? value.toFixed(1) : fallback !== null ? `${fallback.toFixed(1)}（預設）` : '模型預設'
+  return (
+    <div className="mt-1 flex items-center gap-2 px-2 text-xs text-muted" aria-label="回答溫度">
+      <span>溫度</span>
+      <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.1}
+        aria-label="回答溫度"
+        className="h-1 w-28 accent-[var(--color-accent)]"
+        value={shown ?? 0}
+        disabled={disabled}
+        onChange={(event) => onChange(Number(event.target.value))}
+      />
+      <span className="font-mono">{label}</span>
+      {value !== null && (
+        <button
+          type="button"
+          className="rounded-full border border-border px-2 py-0.5 hover:border-accent hover:text-accent"
+          disabled={disabled}
+          onClick={() => onChange(null)}
+        >
+          回預設
+        </button>
+      )}
+      <span className="hidden sm:inline">0 最穩定；越高越多變化</span>
+    </div>
+  )
+}
 
 const MESSAGES: Record<string, string> = {
   QUESTION_TOO_LONG: '問題太長，請縮短後再送出。',
@@ -552,6 +622,11 @@ function MessageView({
             </details>
           )}
           <SourceList sources={message.sources} onView={(source) => onCite(source, '')} />
+          {message.temperature !== undefined && message.temperature !== null && (
+            <p className="mt-1 text-xs text-muted" aria-label="這則回答的溫度">
+              溫度 {message.temperature.toFixed(1)}
+            </p>
+          )}
         </div>
       </div>
     </li>
@@ -581,6 +656,15 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [check, setCheck] = useState<NumberCheck | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Conversation | null>(null)
   const [panelOpen, setPanelOpen] = useState(false)
+  const [temperature, setTemperature] = useState<number | null>(() => readStoredTemperature())
+  const [defaultTemperature, setDefaultTemperature] = useState<number | null>(null)
+  useEffect(() => {
+    fetchHealth()
+      .then((health) => setDefaultTemperature(health.answer_temperature))
+      .catch(() => {
+        // The slider then shows no default figure; asking still works.
+      })
+  }, [])
   const transcriptRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -679,71 +763,78 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
           current.map((message, index) => (index === current.length - 1 ? change(message) : message)),
         )
       let started = false
-      await askQuestion(conversationId, text, scopeIds, (askEvent) => {
-        switch (askEvent.name) {
-          case 'start': {
-            started = true
-            const now = new Date().toISOString()
-            setQuestion('')
-            setScope(askEvent.data.scope)
-            setMessages((current) => [
-              ...current,
-              {
-                id: askEvent.data.user_message_id,
-                role: 'user',
-                content: text,
-                status: 'completed',
-                answered: null,
-                sources: [],
-                created_at: now,
-              },
-              {
-                id: askEvent.data.assistant_message_id,
-                role: 'assistant',
-                content: '',
-                status: 'streaming',
-                answered: null,
-                sources: [],
-                created_at: now,
-              },
-            ])
-            break
+      await askQuestion(
+        conversationId,
+        text,
+        scopeIds,
+        (askEvent) => {
+          switch (askEvent.name) {
+            case 'start': {
+              started = true
+              const now = new Date().toISOString()
+              setQuestion('')
+              setScope(askEvent.data.scope)
+              setMessages((current) => [
+                ...current,
+                {
+                  id: askEvent.data.user_message_id,
+                  role: 'user',
+                  content: text,
+                  status: 'completed',
+                  answered: null,
+                  sources: [],
+                  created_at: now,
+                },
+                {
+                  id: askEvent.data.assistant_message_id,
+                  role: 'assistant',
+                  content: '',
+                  status: 'streaming',
+                  answered: null,
+                  sources: [],
+                  temperature: askEvent.data.temperature,
+                  created_at: now,
+                },
+              ])
+              break
+            }
+            case 'route':
+              setRoute({ ...askEvent.data, asked: text })
+              break
+            case 'sources':
+              updateAnswer((answer) => ({ ...answer, sources: askEvent.data }))
+              break
+            case 'stage':
+              setStage(askEvent.data.stage)
+              break
+            case 'delta':
+              updateAnswer((answer) => ({
+                ...answer,
+                content: answer.content + askEvent.data.text,
+              }))
+              break
+            case 'usage':
+              setUsage(askEvent.data)
+              break
+            case 'done':
+              updateAnswer((answer) => ({
+                ...answer,
+                status: askEvent.data.status,
+                answered: askEvent.data.answered,
+              }))
+              setCheck(askEvent.data)
+              setRevision(askEvent.data.revision ?? null)
+              setNavigation(askEvent.data.navigation ?? null)
+              setStage(null)
+              break
+            case 'error':
+              updateAnswer((answer) => ({ ...answer, status: 'failed' }))
+              setError(MESSAGES[askEvent.data.code] ?? askEvent.data.detail)
+              break
           }
-          case 'route':
-            setRoute({ ...askEvent.data, asked: text })
-            break
-          case 'sources':
-            updateAnswer((answer) => ({ ...answer, sources: askEvent.data }))
-            break
-          case 'stage':
-            setStage(askEvent.data.stage)
-            break
-          case 'delta':
-            updateAnswer((answer) => ({
-              ...answer,
-              content: answer.content + askEvent.data.text,
-            }))
-            break
-          case 'usage':
-            setUsage(askEvent.data)
-            break
-          case 'done':
-            updateAnswer((answer) => ({
-              ...answer,
-              status: askEvent.data.status,
-              answered: askEvent.data.answered,
-            }))
-            setCheck(askEvent.data)
-            setRevision(askEvent.data.revision ?? null)
-            setNavigation(askEvent.data.navigation ?? null)
-            setStage(null)
-            break
-          case 'error':
-            updateAnswer((answer) => ({ ...answer, status: 'failed' }))
-            setError(MESSAGES[askEvent.data.code] ?? askEvent.data.detail)
-            break
-        }
-      })
+        },
+        temperature,
+      )
       // The stored conversation is the authority: reload it, and its title.
       if (started) await reload(conversationId)
     } catch (caught) {
@@ -989,6 +1080,17 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
                 {asking ? '回答中…' : '送出'}
               </button>
             </form>
+            {ready.length > 0 && (
+              <TemperatureControl
+                value={temperature}
+                fallback={defaultTemperature}
+                disabled={asking}
+                onChange={(value) => {
+                  setTemperature(value)
+                  storeTemperature(value)
+                }}
+              />
+            )}
             {ready.length > 0 && messages.length === 0 && (
               <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">
                 {QUICK_QUESTIONS.map((text) => (

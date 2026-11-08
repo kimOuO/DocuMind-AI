@@ -24,9 +24,10 @@ class ChatRepository:
         self._db = db
 
     async def add_exchange(
-        self, conversation: Conversation, question: str
+        self, conversation: Conversation, question: str, temperature: float | None = None
     ) -> tuple[uuid.UUID, uuid.UUID]:
-        """Store the question and an empty, pending answer. Returns their ids."""
+        """Store the question and an empty, pending answer (with the temperature its
+        answer call will use, AC-60). Returns their ids."""
         # clock_timestamp() differs between the two rows; now() would be the same
         # for both and leave their order undefined.
         user = Message(
@@ -43,6 +44,7 @@ class ChatRepository:
             role="assistant",
             content="",
             status="pending",
+            temperature=temperature,
             created_at=func.clock_timestamp(),
         )
         self._db.add(assistant)

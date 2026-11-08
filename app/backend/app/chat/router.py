@@ -27,6 +27,8 @@ ConversationId = Annotated[uuid.UUID, Path(alias="id")]
 class QuestionBody(BaseModel):
     question: str = Field(min_length=1, max_length=20_000)
     document_ids: list[uuid.UUID] | None = None
+    # The answer call's sampling temperature (AC-60, D94); omitted = ANSWER_TEMPERATURE.
+    temperature: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
 def get_embedder(settings: Settings = Depends(get_settings)) -> Embedder:
@@ -60,7 +62,9 @@ async def ask(
     )
     # Every check happens here, before the stream starts: a refused question
     # gets an ordinary error response and leaves nothing behind.
-    prepared = await service.prepare(user, conversation_id, body.question, body.document_ids)
+    prepared = await service.prepare(
+        user, conversation_id, body.question, body.document_ids, body.temperature
+    )
     # The answer can take a while and uses short sessions of its own.
     await db.close()
 

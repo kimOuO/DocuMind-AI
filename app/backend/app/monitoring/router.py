@@ -31,6 +31,8 @@ class HealthResponse(BaseModel):
     llm_model: str
     embed_model: str
     llm_context_limit: int
+    # The server's default answer temperature (AC-60); None = the model's default.
+    answer_temperature: float | None
 
 
 class HealthProbe(Protocol):
@@ -91,6 +93,7 @@ async def health(
         llm_model=settings.llm_model,
         embed_model=settings.embed_model,
         llm_context_limit=settings.llm_context_limit,
+        answer_temperature=settings.answer_temperature,
     )
 
 

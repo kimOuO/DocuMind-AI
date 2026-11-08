@@ -161,9 +161,12 @@
 ```json
 {
   "question": "compare lightRAG with GraphRAG",
-  "document_ids": ["uuid"]
+  "document_ids": ["uuid"],
+  "temperature": 0.2
 }
 ```
+
+`temperature`（選填，D94）：這次回答呼叫的取樣溫度，0.0 至 1.0；省略或 `null` 時用伺服器的 `ANSWER_TEMPERATURE`。超出範圍回 `422`，不建立訊息、不呼叫 LLM。只影響回答那一次呼叫，追問改寫與導航呼叫不受影響。
 
 搜尋範圍：
 
@@ -176,7 +179,7 @@
 
 | event | data | 說明 |
 |---|---|---|
-| `start` | `{"user_message_id": "uuid", "assistant_message_id": "uuid", "scope": {"mode": "all \| selected", "document_ids": ["uuid"]}}` | 兩則訊息已建立；`scope` 是這次實際搜尋的文件範圍 |
+| `start` | `{"user_message_id": "uuid", "assistant_message_id": "uuid", "scope": {"mode": "all \| selected", "document_ids": ["uuid"]}, "temperature": 0.2}` | 兩則訊息已建立；`scope` 是這次實際搜尋的文件範圍；`temperature` 是回答呼叫實際使用的溫度（請求沒帶時為伺服器預設；`null` 表示模型預設，D94） |
 | `route` | `{"type": "retrieval \| summary", "standalone_question": "…"}` | 問題類型與改寫後的問題 |
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
@@ -266,7 +269,7 @@
 
 ### 1.7 `GET /health`
 
-不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、context 上限。格式與 P0 相同。
+不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、context 上限，以及回答的預設取樣溫度 `answer_temperature`（`ANSWER_TEMPERATURE` 的值；`null` 表示模型預設，D94），供前端的溫度控制項顯示「預設」是多少。其餘格式與 P0 相同。
 
 ## 2. 受管理的物件與生命週期
 

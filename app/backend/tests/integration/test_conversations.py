@@ -114,7 +114,16 @@ def test_a_conversation_is_read_with_its_messages_in_order(
     )
     assert answer["sources"][0]["filename"] == "paper.pdf"
     assert answer["sources"][0]["page_start"] == 8
-    assert set(answer) == {"id", "role", "content", "status", "answered", "sources", "created_at"}
+    assert set(answer) == {
+        "id",
+        "role",
+        "content",
+        "status",
+        "answered",
+        "sources",
+        "temperature",
+        "created_at",
+    }
 
 
 def test_conversations_survive_logging_out_and_in_again(

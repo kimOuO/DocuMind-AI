@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test, vi } from 'vitest'
 import type { DocumentItem } from '../../lib/api'
@@ -86,7 +86,14 @@ const NO_NUMBERS = {
 }
 
 function answerStream(
-  overrides: { done?: object; scope?: object; pieces?: string[]; sources?: object[]; route?: object } = {},
+  overrides: {
+    done?: object
+    scope?: object
+    pieces?: string[]
+    sources?: object[]
+    route?: object
+    temperature?: number | null
+  } = {},
 ) {
   const pieces = overrides.pieces ?? ['The ablated versions', ' perform worse [1].']
   return sse([
@@ -96,6 +103,7 @@ function answerStream(
         user_message_id: 'u1',
         assistant_message_id: 'a1',
         scope: overrides.scope ?? { mode: 'all', document_ids: [PAPER.id, NOTES.id] },
+        temperature: overrides.temperature ?? null,
       },
     ],
     ['route', overrides.route ?? { type: 'retrieval', standalone_question: QUESTION }],
@@ -169,6 +177,7 @@ async function ask(text = QUESTION) {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  localStorage.clear()
 })
 
 test('asking creates a conversation and shows the answer with its sources, scope and usage', async () => {
@@ -739,4 +748,55 @@ test('opening another citation moves the embedded page, and Esc closes the panel
 
   await userEvent.keyboard('{Escape}')
   expect(screen.queryByRole('region', { name: '來源檢視' })).not.toBeInTheDocument()
+})
+
+test('the temperature slider sets the sampling temperature of the next answer and can go back to the default', async () => {
+  // After each answer the stored conversation is reloaded; the second one carries its temperature.
+  const warm = {
+    ...stored(),
+    messages: stored().messages.map((m, i) => (i === 1 ? { ...m, temperature: 0.4 } : m)),
+  }
+  const calls = mockApi({
+    ...routesFor(answerStream()),
+    [ASK]: [answerStream(), answerStream({ temperature: 0.4 })],
+    [`GET /api/v1/conversations/${CONVERSATION.id}`]: [
+      { status: 200, body: stored() },
+      { status: 200, body: warm },
+    ],
+    'GET /api/v1/health': {
+      status: 200,
+      body: {
+        status: 'ok',
+        database: { ok: true, detail: 'pgvector' },
+        ollama: { ok: true, detail: 'models available' },
+        llm_model: 'qwen3:32b',
+        embed_model: 'bge-m3',
+        llm_context_limit: 10000,
+        answer_temperature: 0,
+      },
+    },
+  })
+  render(<ChatPanel documents={[PAPER]} />)
+
+  // Untouched, the slider shows the server's default and the request carries no temperature.
+  expect(await screen.findByText('0.0（預設）')).toBeInTheDocument()
+  await ask()
+  expect(calls.find((c) => c.key === ASK)!.body).toEqual({ question: QUESTION, document_ids: [] })
+
+  // Moved to 0.4: the next request says so, the answer is labelled, the choice is remembered.
+  fireEvent.change(screen.getByRole('slider', { name: '回答溫度' }), { target: { value: '0.4' } })
+  expect(screen.getByText('0.4')).toBeInTheDocument()
+  await ask('Another question')
+  expect(calls.filter((c) => c.key === ASK)[1].body).toEqual({
+    question: 'Another question',
+    document_ids: [],
+    temperature: 0.4,
+  })
+  expect(await screen.findByText('溫度 0.4')).toBeInTheDocument()
+  expect(localStorage.getItem('documind.temperature')).toBe('0.4')
+
+  // Back to the default: the figure returns and the stored choice is gone.
+  await userEvent.click(screen.getByRole('button', { name: '回預設' }))
+  expect(screen.getByText('0.0（預設）')).toBeInTheDocument()
+  expect(localStorage.getItem('documind.temperature')).toBeNull()
 })
