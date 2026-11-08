@@ -1,0 +1,525 @@
+{
+ "paper": "raptor",
+ "file": "2401.18059.pdf",
+ "temperature": 0,
+ "no_summary": true,
+ "questions": [
+  {
+   "question": "summary this document.",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "summary this document."
+   },
+   "usage": {
+    "prompt_tokens": 2467,
+    "completion_tokens": 423,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     4,
+     2,
+     3,
+     1
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "20%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 1,
+      "snippet": "…e use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolute accuracy. 1 I NTRODUCTION Large Language Models (LLMs) have emerged…"
+     },
+     {
+      "number": "56.6%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…ased tree approach Configuration Accuracy RAPTOR + SBERT embeddings + UnifiedQA 56.6% Recency-based tree + SBERT embeddings + UnifiedQA 55.8% C D ATASET STATISTICS A…"
+     },
+     {
+      "number": "55.8%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…embeddings + UnifiedQA 56.6% Recency-based tree + SBERT embeddings + UnifiedQA 55.8% C D ATASET STATISTICS AND COMPRESSION RATIOS The average ratio of the summary l…"
+     },
+     {
+      "number": "150",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…impact on question- answering (QA) tasks. E.1 M ETHODOLOGY We randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This sampling st…"
+     },
+     {
+      "number": "40",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…on- answering (QA) tasks. E.1 M ETHODOLOGY We randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This sampling strategy provides…"
+     },
+     {
+      "number": "4%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 1,
+      "snippet": "…-the-art results; for example, by coupling RAPTOR retrieval with the use of GPT-4, we can improve the best performance on the QuALITY benchmark by 20% in absolut…"
+     },
+     {
+      "number": "72%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…ngth to the sum of child node lengths across all datasets is 0.28, indicating a 72% compression rate. On average, the summary length is 131 tokens, and the average…"
+     },
+     {
+      "number": "131",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…s is 0.28, indicating a 72% compression rate. On average, the summary length is 131 tokens, and the average child node length is 86 tokens. Below are the detailed…"
+     },
+     {
+      "number": "86",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 17,
+      "snippet": "…average, the summary length is 131 tokens, and the average child node length is 86 tokens. Below are the detailed statistics for all three datasets: Table 10: Sta…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "UNCERTAIN",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 0,
+     "facts": 0,
+     "block_tokens": 0,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 17,
+     "page_end": 17,
+     "section_title": null,
+     "snippet": "Prompt for Summarization\nRole Content\nsystem You are a Summarizing Text Portal\nuser Write a summary of the following, including as many key details as\npossible: {context}:\nE H ALLUCINATION ANALYSIS\nTo assess the quality and accuracy of the summarizations within our RAPTOR model, we conducted\nan analysis focusing on hallucinations in the generated summaries. The summaries were generated\nby gpt-3.5-turbo and subsequently annotated to quantify the rates of hallucinations, to examine\nwhether such inaccuracies propagate to parent nodes, and to evaluate their impact on question-\nanswering (QA) tasks.\nE.1 M ETHODOLOGY\nWe randomly sampled 150 nodes across 40 stories and evaluated them for hallucinations. This\nsampling strategy provides a broad view of the model’s performance across different contexts. Each\nnode was annotated by hand, and determined if it contained a hallucination.\nE.2 F INDINGS\nOut of the 150 nodes sampled, 4% (6 nodes) contained some form of hallucination. Most commonly,\nthese hallucinations originated from the model adding minor information possibly from its training\ndata that was not present in the text being summarized, or from incorrectly extrapolating some\ninformation when creating the summary.\n17",
+     "score": 0.583,
+     "origin": "retrieval"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 2,
+     "page_end": 2,
+     "section_title": null,
+     "snippet": "Published as a conference paper at ICLR 2024\n2\n 3\n 4\n 5\n1\n1\n 2\n3\n 3\n4\n 5\n5\n6\n 8\n7\n Index #8\nText:  summary of \nnodes 2 and 3\nChild Nodes: 2, 3\nText Embedding\nText chunks\n3\n.1\n4\n.1\n5\n2. Summarization \nby LLM\n1. Clustering\n10\n7\n1\n 2\n8\n4\n3\n 5\n6\n9\nFormation of one tree layer\nRoot layer\nLeaf layer\nContents of a nodeRAPTOR Tree \nFigure 1: Tree construction process: RAPTOR recursively clusters chunks of text based on their\nvector embeddings and generates text summaries of those clusters, constructing a tree from the\nbottom up. Nodes clustered together are siblings; a parent node contains the text summary of that\ncluster.\nOur main contribution is the idea of using text summarization to allow retrieval augmentation of\ncontext at different scales, and to show its effectiveness in experiments on collections of long doc-\numents. Controlled experiments with three language models (UnifiedQA (Khashabi et al., 2020),\nGPT-3 (Brown et al., 2020) and GPT-4 (OpenAI, 2023)) show that RAPTOR outperforms current\nretrieval augmentation. Moreover, RAPTOR coupled with GPT-4, and sometimes even with Uni-\nfiedQA, gives new state-of-the-art results on three QA tasks: free text response questions on books\nand movies (NarrativeQA, Koˇcisk`y et al. 2018), full-text NLP papers (QASPER, Dasigi et al. 2021),\nand",
+     "score": 0.5753,
+     "origin": "retrieval"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 17,
+     "page_end": 17,
+     "section_title": null,
+     "snippet": "Published as a conference paper at ICLR 2024\nTable 9: Ablation study results comparing RAPTOR with a recency-based tree approach\nConfiguration Accuracy\nRAPTOR + SBERT embeddings + UnifiedQA 56.6%\nRecency-based tree + SBERT embeddings + UnifiedQA 55.8%\nC D ATASET STATISTICS AND COMPRESSION RATIOS\nThe average ratio of the summary length to the sum of child node lengths across all datasets is 0.28,\nindicating a 72% compression rate. On average, the summary length is 131 tokens, and the average\nchild node length is 86 tokens. Below are the detailed statistics for all three datasets:\nTable 10: Statistics of Average Summary Length and Child Node Length Across Datasets\nDataset Avg.\nSummary\nLength\n(tokens)\nAvg. Child\nNode Text\nLength\n(tokens)\nAvg. # of\nChild Nodes\nPer Parent\nAvg.\nCompression\nRatio (%)\nAll Datasets 131 85.6 6.7 .28\nQuALITY 124.4 87.9 5.7 .28\nNarrativeQA 129.7 85.5 6.8 .27\nQASPER 145.9 86.2 5.7 .35\nD S UMMARIZATION PROMPT\nTable 11 shows the prompt used for summarization.\nTable 11: Prompt for Summarization\nRole Content\nsystem You are a Summarizing Text Portal\nuser Write a summary of the following, including as many key details as\npossible: {context}:\nE H ALLUCINATION ANALYSIS\nTo assess the quality and accuracy of the summarizations within our RAPTOR model, we conducted\nan analysis focusing on hallucinations in the generated summaries. The",
+     "score": 0.5559,
+     "origin": "retrieval"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 1,
+     "page_end": 1,
+     "section_title": null,
+     "snippet": "Published as a conference paper at ICLR 2024\nRAPTOR: R ECURSIVE ABSTRACTIVE PROCESSING\nFOR TREE -O RGANIZED RETRIEVAL\nParth Sarthi, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, Christopher D. Manning\nStanford University\npsarthi@cs.stanford.edu\nABSTRACT\nRetrieval-augmented language models can better adapt to changes in world state\nand incorporate long-tail knowledge. However, most existing methods retrieve\nonly short contiguous chunks from a retrieval corpus, limiting holistic under-\nstanding of the overall document context. We introduce the novel approach of\nrecursively embedding, clustering, and summarizing chunks of text, constructing\na tree with differing levels of summarization from the bottom up. At inference\ntime, our RAPTOR model retrieves from this tree, integrating information across\nlengthy documents at different levels of abstraction. Controlled experiments show\nthat retrieval with recursive summaries offers significant improvements over tra-\nditional retrieval-augmented LMs on several tasks. On question-answering tasks\nthat involve complex, multi-step reasoning, we show state-of-the-art results; for\nexample, by coupling RAPTOR retrieval with the use of GPT-4, we can improve\nthe best performance on the QuALITY benchmark by 20% in absolute accuracy.\n1 I NTRODUCTION\nLarge Language Models (LLMs) have emerged as transformative tools showing impressive perfor-\nmance on many tasks. With the growing size of LLMs, they can serve standalone as very effective\nknowledge stores, with facts encoded within their parameters (Petroni et al., 2019; Jiang et al., 2020;\nTalmor et al., 2020; Rae et al., 2021; Hoffmann et al., 2022;",
+     "score": 0.5417,
+     "origin": "retrieval"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 10,
+     "page_end": 10,
+     "section_title": null,
+     "snippet": "1808.08858 , 2018. URL\nhttps://arxiv.org/abs/1808.08858.\nManoj Ghuhan Arivazhagan, Lan Liu, Peng Qi, Xinchi Chen, William Yang Wang, and Zhiheng\nHuang. Hybrid hierarchical retrieval for open-domain question answering. In Anna Rogers,\nJordan Boyd-Graber, and Naoaki Okazaki (eds.), Findings of the Association for Computational\nLinguistics: ACL 2023, pp. 10680–10689, Toronto, Canada, July 2023. Association for Computa-\ntional Linguistics. doi: 10.18653/v1/2023.findings-acl.679. URL https://aclanthology.\norg/2023.findings-acl.679.\nIz Beltagy, Matthew E. Peters, and Arman Cohan. Longformer: The Long-document Transformer,\n2020. URL https://arxiv.org/abs/2004.05150. arXiv preprint arXiv:2004.05150.\nSebastian Borgeaud, Arthur Mensch, Jordan Hoffmann, Trevor Cai, Eliza Rutherford, Katie Milli-\ncan, George Bm Van Den Driessche, Jean-Baptiste Lespiau, Bogdan Damoc, Aidan Clark, et al.\nImproving language models by retrieving from trillions of tokens. In International conference on\nmachine learning, pp. 2206–2240. PMLR, 2022. URL https://arxiv.org/abs/2112.\n04426.\nTom Brown,",
+     "score": 0.5375,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "The document introduces RAPTOR (Recursive Abstractive Processing for Tree-Organized Retrieval), a novel method for retrieval-augmented language models. RAPTOR recursively clusters and summarizes text chunks based on their vector embeddings, constructing a tree from the bottom up. This approach allows for retrieval augmentation at different levels of abstraction, improving holistic understanding of lengthy documents [4].\n\nThe methodology involves embedding and clustering text chunks, generating summaries for each cluster, and building a hierarchical tree structure. Nodes in the tree represent clusters of text, with parent nodes containing summaries of their child nodes. This structure enables multi-scale retrieval and integration of information during inference [2].\n\nExperiments demonstrate that RAPTOR outperforms traditional retrieval-augmented language models. When combined with GPT-4, it achieves state-of-the-art results on three question-answering (QA) tasks: NarrativeQA (free text response questions on books and movies), QASPER (full-text NLP papers), and QuALITY. For example, coupling RAPTOR with GPT-4 improves performance on the QuALITY benchmark by 20% in absolute accuracy [4].\n\nAn ablation study compares RAPTOR with a recency-based tree approach. The results show that RAPTOR achieves slightly higher accuracy (56.6%) compared to the recency-based approach (55.8%) when using SBERT embeddings and UnifiedQA [3].\n\nThe document also includes a hallucination analysis of the summaries generated by the RAPTOR model. Out of 150 nodes sampled across 40 stories, 4% (6 nodes) contained hallucinations. These hallucinations typically involved the model adding minor information from its training data or incorrectly extrapolating information not present in the original text [1].\n\nThe average compression ratio across all datasets is 72%, with an average summary length of 131 tokens and an average child node length of 86 tokens. Detailed statistics are provided for each dataset, showing variations in summary length, child node length, and compression ratios [3].\n\nThese documents were uploaded without a summary tree, so this answer comes from the passages most similar to the question, not from a reading of the whole document.",
+   "elapsed_seconds": 19.7
+  },
+  {
+   "question": "compare RAPTOR with BM25 and DPR",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "compare RAPTOR with BM25 and DPR"
+   },
+   "usage": {
+    "prompt_tokens": 2277,
+    "completion_tokens": 365,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     1,
+     4,
+     2,
+     5
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "62.4%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…ise, in the QuALITY dataset as shown in Table 4, RAPTOR achieves an accuracy of 62.4%, which is a 2% and 5.1% improvement over DPR and BM25. Similar trends are obser…"
+     },
+     {
+      "number": "2%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…triever, consistently outperforms the respective retriever across all datasets. 2 Since RAPTOR with SBERT has the best performance, we use it in all subsequent e…"
+     },
+     {
+      "number": "5.1%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…et as shown in Table 4, RAPTOR achieves an accuracy of 62.4%, which is a 2% and 5.1% improvement over DPR and BM25. Similar trends are observed when Uni- fiedQA is…"
+     },
+     {
+      "number": "2.7%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…GPT-4, and UnifiedQA, respectively. These scores surpass DPR by margins of 1.8, 2.7, and 4.5 points, and outdo BM25 by 6.5, 5.5, and 10.2 points across the respect…"
+     },
+     {
+      "number": "6.7%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…hen Uni- fiedQA is employed, with RAPTOR outperforming DPR and BM25 by 2.7% and 6.7%, respectively. Finally, in the NarrativeQA dataset, as presented in Table 6, RA…"
+     },
+     {
+      "number": "55.7%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…ree Language Models on the QASPER dataset. RAPTOR’s F-1 Match scores are 53.1%, 55.7%, and 36.6% when using GPT-3, GPT-4, and UnifiedQA, respectively. These scores s…"
+     },
+     {
+      "number": "1.8%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…T-3, GPT-4, and UnifiedQA, respectively. These scores surpass DPR by margins of 1.8, 2.7, and 4.5 points, and outdo BM25 by 6.5, 5.5, and 10.2 points across the re…"
+     },
+     {
+      "number": "5.3%",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 8,
+      "snippet": "…ally, RAPTOR’s F-1 scores are at least 1.8% points higher than DPR and at least 5.3% points higher than BM25. Retriever GPT-3 F-1 Match GPT-4 F-1 Match UnifiedQA F-…"
+     },
+     {
+      "number": "1.7",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…-1, BLEU-4, and METEOR, RAPTOR outperforms BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively. 2For the DPR experiments in Tables…"
+     },
+     {
+      "number": "5.8",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…U-4, and METEOR, RAPTOR outperforms BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively. 2For the DPR experiments in Tables 1 and 2…"
+     },
+     {
+      "number": "0.7",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…METEOR, RAPTOR outperforms BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively. 2For the DPR experiments in Tables 1 and 2, we use…"
+     },
+     {
+      "number": "2.1",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…, RAPTOR outperforms BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively. 2For the DPR experiments in Tables 1 and 2, we used the d…"
+     },
+     {
+      "number": "7.3",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…TOR excels across multiple met- rics. For ROUGE-L, it surpasses BM25 and DPR by 7.3 and 2.7 points, respectively. In other metrics like BLEU-1, BLEU-4, and METEOR,…"
+     },
+     {
+      "number": "2.7",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 7,
+      "snippet": "…GPT-4, and UnifiedQA, respectively. These scores surpass DPR by margins of 1.8, 2.7, and 4.5 points, and outdo BM25 by 6.5, 5.5, and 10.2 points across the respect…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "UNCERTAIN",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 36,
+     "facts": 0,
+     "block_tokens": 0,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "Likewise, in the QuALITY dataset as shown in Table 4, RAPTOR achieves an accuracy of 62.4%,\nwhich is a 2% and 5.1% improvement over DPR and BM25. Similar trends are observed when Uni-\nfiedQA is employed, with RAPTOR outperforming DPR and BM25 by 2.7% and 6.7%, respectively.\nFinally, in the NarrativeQA dataset, as presented in Table 6, RAPTOR excels across multiple met-\nrics. For ROUGE-L, it surpasses BM25 and DPR by 7.3 and 2.7 points, respectively. In other\nmetrics like BLEU-1, BLEU-4, and METEOR, RAPTOR outperforms BM25 and DPR by margins\nranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively.\n2For the DPR experiments in Tables 1 and 2, we used the dpr-multiset-base model as opposed to\ndpr-single-nq-base which was used in rest of the experiments done earlier. This decision was based on\nthe performance observed in Karpukhin et al. (2020), wheredpr-multiset-base showed superior results.\n7",
+     "score": 0.6808,
+     "origin": "retrieval"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "Table 1: NarrativeQA Performance With + Without RAPTOR: Performance comparison of\nvarious retrieval methods (SBERT, BM25, DPR) with and without RAPTOR on the NarrativeQA\ndataset, using UnifiedQA-3B as the language model. RAPTOR outperforms baselines of each re-\nspective retrieval method.\nModel ROUGE BLEU-1 BLEU-4 METEOR\nSBERT with RAPTOR — ROUGE: 30.87%; BLEU-1: 23.50%; BLEU-4: 6.42%; METEOR: 19.20%\nSBERT without RAPTOR — ROUGE: 29.26%; BLEU-1: 22.56%; BLEU-4: 5.95%; METEOR: 18.15%\nBM25 with RAPTOR — ROUGE: 27.93%; BLEU-1: 21.17%; BLEU-4: 5.70%; METEOR: 17.03%\nBM25 without RAPTOR — ROUGE: 23.52%; BLEU-1: 17.73%; BLEU-4: 4.65%; METEOR: 13.98%\nDPR with RAPTOR — ROUGE: 30.94%; BLEU-1: 23.51%; BLEU-4: 6.45%; METEOR: 19.05%\nDPR without RAPTOR — ROUGE: 29.56%; BLEU-1: 22.84%; BLEU-4: 6.12%; METEOR: 18.44%",
+     "score": 0.6715,
+     "origin": "retrieval"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "BM25 and DPR by at least 2.0% in accuracy.\nModel GPT-3 Acc. UnifiedQA Acc.\nBM25 57.3 49.9\nDPR 60.4 53.9\nRAPTOR 62.4 56.6\nTable 5: Results on F-1 Match scores of various\nmodels on the QASPER dataset.\nModel F-1 Match\nLongT5 XL (Guo et al., 2022) 53.1\nCoLT5 XL (Ainslie et al., 2023) 53.9\nRAPTOR + GPT-4 55.7\nComparison to State-of-the-art Systems\nBuilding upon our controlled comparisons,\nwe examine RAPTOR’s performance relative\nto other state-of-the-art models. As shown\nin Table 5, RAPTOR with GPT-4 sets a new\nbenchmark on QASPER, with a 55.7% F-1\nscore, surpassing the CoLT5 XL’s score of\n53.9%.\nIn the QuALITY dataset, as shown in Table 7,\nRAPTOR paired with GPT-4 sets a new state-\nof-the-art with an accuracy of 82.6%, surpass-\ning the previous best result of 62.3%. In par-\nticular, it outperforms CoLISA by 21.5% on\nQuALITY-HARD, which represents questions\nthat humans took unusually long to correctly\nanswer, requiring rereading parts of the text,\ndifficult reasoning, or both.\nFor the NarrativeQA dataset, as represented in\nTable 6, RAPTOR paired with UnifiedQA sets\na new state-of-the-art METEOR score. When compared to the recursively summarizing model by\nWu",
+     "score": 0.6167,
+     "origin": "retrieval"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "Table 3: Controlled comparison of F-1 scores on the QASPER dataset, using three different lan-\nguage models (GPT-3, GPT-4, UnifiedQA 3B) and various retrieval methods. The column ”Title +\nAbstract” reflects performance when only the title and abstract of the papers are used for context.\nRAPTOR outperforms the established baselines BM25 and DPR across all tested language models.\nSpecifically, RAPTOR’s F-1 scores are at least 1.8% points higher than DPR and at least 5.3% points\nhigher than BM25.\nRetriever GPT-3 F-1 Match GPT-4 F-1 Match UnifiedQA F-1 Match\nTitle + Abstract 25.2 22.2 17.5\nBM25 46.6 50.2 26.4\nDPR 51.3 53.0 32.1\nRAPTOR 53.1 55.7 36.6\nTable 4: Comparison of accuracies on the QuAL-\nITY dev dataset for two different language mod-\nels (GPT-3, UnifiedQA 3B) using various retrieval\nmethods. RAPTOR outperforms the baselines of",
+     "score": 0.6021,
+     "origin": "retrieval"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "Table 2: QuALITY and QASPER Performance With + Without RAPTOR: Performance com-\nparison across the QuALITY and QASPER datasets of various retrieval methods (SBERT, BM25,\nDPR) with and without RAPTOR. UnifiedQA-3B is used as the language model. RAPTOR outper-\nforms baselines of each respective retrieval method for both datasets.\nModel Accuracy (QuALITY) Answer F1 (QASPER)\nSBERT with RAPTOR — Model Accuracy (QuALITY): 56.6%; Answer F1 (QASPER): 36.70%\nSBERT without RAPTOR — Model Accuracy (QuALITY): 54.9%; Answer F1 (QASPER): 36.23%\nBM25 with RAPTOR — Model Accuracy (QuALITY): 52.1%; Answer F1 (QASPER): 27.00%\nBM25 without RAPTOR — Model Accuracy (QuALITY): 49.9%; Answer F1 (QASPER): 26.47%\nDPR with RAPTOR — Model Accuracy (QuALITY): 54.7%; Answer F1 (QASPER): 32.23%\nDPR without RAPTOR — Model Accuracy (QuALITY): 53.1%; Answer F1 (QASPER): 31.70%",
+     "score": 0.5988,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "RAPTOR consistently outperforms both BM25 and DPR across multiple datasets and metrics. In the QuALITY dataset, RAPTOR achieves an accuracy of 62.4%, which is a 2% and 5.1% improvement over DPR and BM25, respectively [1]. When using UnifiedQA, RAPTOR outperforms DPR and BM25 by 2.7% and 6.7%, respectively [1]. In the QASPER dataset, RAPTOR achieves an F-1 score of 55.7%, which is at least 1.8% higher than DPR and at least 5.3% higher than BM25 [4]. In the NarrativeQA dataset, RAPTOR excels across multiple metrics, surpassing BM25 and DPR by margins ranging from 1.7 to 5.8 and 0.7 to 2.1 points, respectively [1]. For example, in ROUGE-L, RAPTOR surpasses BM25 and DPR by 7.3 and 2.7 points, respectively [1]. In Table 1, RAPTOR with SBERT, BM25, and DPR shows improvements in ROUGE, BLEU-1, BLEU-4, and METEOR scores compared to the same methods without RAPTOR [2]. In the QuALITY and QASPER datasets, RAPTOR with SBERT, BM25, and DPR shows improvements in accuracy and Answer F1 scores compared to the same methods without RAPTOR [5]. However, there are no explicit results that go against this trend in the provided sources. In conclusion, RAPTOR consistently outperforms BM25 and DPR across multiple datasets and metrics.",
+   "elapsed_seconds": 17.0
+  },
+  {
+   "question": "Performance of the different retrieval strategies of RAPTOR (tree traversal vs collapsed tree)",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "Performance of the different retrieval strategies of RAPTOR (tree traversal vs collapsed tree)"
+   },
+   "usage": {
+    "prompt_tokens": 2421,
+    "completion_tokens": 298,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     1,
+     3
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "20",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 5,
+      "snippet": "…ng you don’t exceed the model’s input limitations. We tested both approaches on 20 stories from the QASPER dataset. Figure 3 shows the performance of tree travers…"
+     },
+     {
+      "number": "2000",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 6,
+      "snippet": "…values, and collapsed tree with different context lengths. Collapsed tree with 2000 tokens produces the best results, so we use this querying strategy for our main…"
+     },
+     {
+      "number": "512",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 6,
+      "snippet": "…we provide 400 to- kens of context, as UnifiedQA has a max con- text length of 512 tokens. We provide the same amount of tokens of context to RAPTOR and to the ba…"
+     },
+     {
+      "number": "400",
+      "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+      "page": 6,
+      "snippet": "…nts can vary across nodes. For experiments with the UnifiedQA model, we provide 400 to- kens of context, as UnifiedQA has a max con- text length of 512 tokens. We…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [
+     {
+      "sentence": "In conclusion, the **collapsed tree method** is preferred due to its superior performance and flexibility, particularly in retrieving information that matches the required level of detail for a given query.",
+      "cited": [
+       1
+      ],
+      "closer": [
+       3
+      ],
+      "coverage_cited": 0.25,
+      "coverage_closer": 0.62
+     }
+    ],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "UNCERTAIN",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 0,
+     "facts": 0,
+     "block_tokens": 0,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 5,
+     "page_end": 5,
+     "section_title": null,
+     "snippet": "for relevant information by considering\nall nodes in the tree simultaneously, as depicted in Figure 2. Instead of going layer-by-layer, this\nmethod flattens the multi-layered tree into a single layer, essentially bringing all the nodes onto the\nsame level for comparison. The steps for this method are outlined below:\n1. First, collapse the entire RAPTOR tree into a single layer. This new set of nodes, denoted\nas C, contains nodes from every layer of the original tree.\n2. Next, calculate the cosine similarity between the query embedding and the embeddings of\nall nodes present in the collapsed set C.\n3. Finally, pick the top- k nodes that have the highest cosine similarity scores with the query.\nKeep adding nodes to the result set until you reach a predefined maximum number of\ntokens, ensuring you don’t exceed the model’s input limitations.\nWe tested both approaches on 20 stories from the QASPER dataset. Figure 3 shows the performance\nof tree traversal with different top- sizes and collapsed tree with different maximum token numbers.\nThe collapsed tree approach consistently performs better. We believe collapsed tree retrieval is\nbetter due to offering greater flexibility than tree traversal; i.e., by searching through all the nodes\nsimultaneously, it retrieves information that is at the correct level of granularity for a given question.\nIn comparison, while using tree traversal with the same values of d and k, the ratio of nodes from\neach level of the tree will be constant. So, the ratio of higher-order thematic information to granular\ndetails will remain the same regardless of the question.\n5",
+     "score": 0.7405,
+     "origin": "retrieval"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 5,
+     "page_end": 5,
+     "section_title": null,
+     "snippet": "Published as a conference paper at ICLR 2024\nFigure 2: Illustration of the tree traversal and collapsed tree retrieval mechanisms.Tree traver-\nsal starts at the root level of the tree and retrieves the top- k (here, top-1) node(s) based on cosine\nsimilarity to the query vector. At each level, it retrieves the top- k node(s) from the child nodes of\nthe previous layer’s top-k. Collapsed tree collapses the tree into a single layer and retrieves nodes\nuntil a threshold number of tokens is reached, based on cosine similarity to the query vector. The\nnodes on which cosine similarity search is performed are highlighted in both illustrations.\n3. Proceed to the child nodes of the elements in setS1. Compute the cosine similarity between\nthe query vector and the vector embeddings of these child nodes.\n4. Select the top k child nodes with the highest cosine similarity scores to the query, forming\nthe set S2.\n5. Continue this process recursively for d layers, producing sets S1, S2, . . . , Sd.\n6. Concatenate sets S1 through Sd to assemble the relevant context to the query.\nBy adjusting the depth d and the number of nodes k selected at each layer, the tree traversal method\noffers control over the specificity and breadth of the information retrieved. The algorithm starts with\na broad outlook by considering the top layers of the tree and progressively focuses on finer details\nas it descends through the lower layers.\nThe collapsed tree approach offers a simpler way to search for relevant information by considering\nall nodes in the tree simultaneously, as depicted in Figure 2. Instead of going layer-by-layer, this\nmethod flattens the multi-layered tree into a single layer, essentially bringing all the nodes onto the\nsame level for comparison. The steps for this method are outlined below:\n1. First, collapse the entire RAPTOR tree into a single layer.",
+     "score": 0.7191,
+     "origin": "retrieval"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 6,
+     "page_end": 6,
+     "section_title": null,
+     "snippet": "Published as a conference paper at ICLR 2024\nOne drawback, however, of the collapsed tree approach is that it requires cosine similarity search to\nbe performed on all nodes in the tree. However, this can be made more efficient with fast k-nearest\nneighbor libraries such as FAISS (Johnson et al., 2019).\nFigure 3: Comparison of querying methods.\nResults on 20 stories from the QASPER dataset\nusing tree traversal with different top-k values,\nand collapsed tree with different context lengths.\nCollapsed tree with 2000 tokens produces the best\nresults, so we use this querying strategy for our\nmain results.\nOverall, given the collapsed tree approach’s\ngreater flexibility and its superior performance\non the subset of the QASPER dataset, this is\nthe querying approach with which we proceed.\nSpecifically, we use the collapsed tree with\n2000 maximum tokens, which approximately\nequates to retrieving the top-20 nodes. Using a\ntoken-based approach ensures the context does\nnot exceed model context constraints as token\ncounts can vary across nodes. For experiments\nwith the UnifiedQA model, we provide 400 to-\nkens of context, as UnifiedQA has a max con-\ntext length of 512 tokens. We provide the same\namount of tokens of context to RAPTOR and to\nthe baselines.\nQualitative Study We conduct a qualitative\nanalysis to understand the benefits of RAP-\nTOR’s retrieval process compared to Dense\nPassage Retrieval (DPR) methods. Our study\nfocuses on thematic, multi-hop questions using\na 1500-word Cinderella fairytale. As illustrated\nin Figure 4, RAPTOR’s tree-based retrieval allows it to choose nodes from different tree layers,\nmatching the question’s detail level. This approach often yields more relevant and comprehensive\ninformation for downstream tasks than",
+     "score": 0.7024,
+     "origin": "retrieval"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 18,
+     "page_end": 18,
+     "section_title": null,
+     "snippet": "In our findings, hallucinations had no discernible impact on the performance of QA tasks. This sug-\ngests that hallucination is not a major concerns for the summarization component in our RAPTOR\narchitecture.\nF P SEUDOCODE FOR RETRIEVAL METHODS\nAlgorithm 1 Tree Traversal Algorithm\nfunction TRAVERSE TREE(tree, query, k)\nScurrent ← tree.layer[0]\nfor layer in range(tree.num layers) do\ntopk ← []\nfor node in Scurrent do\nscore ← dot product(query, node)\ntop k.append((node, score))\nend for\nSlayer ← sorted(top k)[:k].nodes\nScurrent ← Slayer\nend for\nreturn S0 ∪ S1 ∪ S2 ∪ . . .∪ Sk\nend function\nG Q UALITATIVE ANALYSIS\nTo qualitatively examine RAPTOR’s retrieval process, we test it on thematic, multi-hop questions\nabout a 1500-word version of the fairytale Cinderella. We compare the context retrieved by RAP-\nTOR with the context retrieved by Dense Passage Retrieval (DPR). Figure 4 in the main paper details\nthe retrieval process within RAPTOR’s tree structure for two questions. The nodes that RAPTOR\nselects for each question are highlighted, while the leaf nodes that DPR selects for the same question\nare indicated with arrows. This comparison illustrates the advantage of RAPTOR’s tree structure.\nRAPTOR selects nodes from different layers depending on the level of granularity required by the\n18",
+     "score": 0.6902,
+     "origin": "retrieval"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "document_id": "05a1f044-7d26-48c1-b58a-ed527bb4038e",
+     "filename": "2401.18059.pdf",
+     "page_start": 4,
+     "page_end": 4,
+     "section_title": null,
+     "snippet": "gpt-3.5-turbo to generate the summaries. The summarization step con-\ndenses the potentially large volume of retrieved information into a manageable size. We provide\nstatistics on the compression due to the summarization in Appendix C and the prompt used for\nsummarization in Appendix D.\nWhile the summarization model generally produces reliable summaries, a focused annotation study\nrevealed that about 4% of the summaries contained minor hallucinations. These did not propagate\nto parent nodes and had no discernible impact on question-answering tasks. For an in-depth analysis\nof hallucinations, refer to the appendix E.\nQuerying In this section, we elaborate on the two querying mechanisms employed by RAPTOR:\ntree traversal and collapsed tree. These methods offer unique ways of traversing the multi-layered\nRAPTOR tree to retrieve relevant information, each with its own advantages and trade-offs. We\nprovide the pseudocode of both methods in Appendix F. Note that we embed all nodes using SBERT.\nThe tree traversal method first selects the top-k most relevant root nodes based on their cosine\nsimilarity to the query embedding. The children of these selected nodes are considered at the next\nlayer and the top-k nodes are selected from this pool again based on their cosine similarity to the\nquery vector. This process is repeated until we reach the leaf nodes. Finally, the text from all selected\nnodes is concatenated to form the retrieved context. The algorithm’s steps are outlined below:\n1. Start at the root layer of the RAPTOR tree. Compute the cosine similarity between the\nquery embedding and the embeddings of all nodes present at this initial layer.\n2. Choose the top- k nodes based on the highest cosine similarity scores, forming the set S1.\n4",
+     "score": 0.6867,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "The RAPTOR system employs two retrieval strategies: **tree traversal** and **collapsed tree**, and their performance was evaluated on 20 stories from the QASPER dataset [1]. \n\nThe **collapsed tree approach** consistently outperformed the **tree traversal method**. This is attributed to the greater flexibility of the collapsed tree, which allows for simultaneous comparison of all nodes in the tree, enabling retrieval of information at the appropriate level of granularity for a given question [1]. In contrast, the tree traversal method maintains a fixed ratio of higher-order thematic information to granular details, regardless of the question's requirements [1].\n\nFigure 3 in the document compares the performance of these methods using different top-k values for tree traversal and varying maximum token numbers for the collapsed tree [3]. The best results were achieved with the **collapsed tree approach using 2000 tokens**, which approximately corresponds to retrieving the top-20 nodes [3]. This method ensures that the context does not exceed the model's input limitations, as token counts can vary across nodes [3].\n\nFor experiments involving the UnifiedQA model, which has a maximum context length of 512 tokens, 400 tokens of context were provided for both RAPTOR and the baseline methods [3]. \n\nIn conclusion, the **collapsed tree method** is preferred due to its superior performance and flexibility, particularly in retrieving information that matches the required level of detail for a given query [1].",
+   "elapsed_seconds": 14.4
+  }
+ ]
+}
