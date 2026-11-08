@@ -928,15 +928,23 @@ async def test_a_question_the_model_judges_new_is_used_as_asked_without_a_rewrit
 async def test_the_answer_of_a_follow_up_sees_the_conversation_as_context(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:
-    """D99: the recent turns go into the answer prompt, after the sources, as context —
-    the first question's answer sees none."""
+    """D99: with ANSWER_CONTEXT on, the recent turns go into the answer prompt, after the
+    sources, as context — the first question's answer sees none. Off by default (the A/B
+    showed the context makes the model write and reverse the variants' definitions)."""
     await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
     model = StubOllama(["Graphs [1]."], judge="NEW")
     use_model(kim, tokenizer, model)
     conversation = new_conversation(kim)
     events(ask(kim, conversation, QUESTION))
     assert "Conversation so far" not in model.prompts[-1]
+    events(ask(kim, conversation, "How many tokens does retrieval cost?"))
+    assert "Conversation so far" not in model.prompts[-1]  # the default: off
+    kim.app.dependency_overrides[get_settings] = lambda: get_settings().model_copy(  # type: ignore[attr-defined]
+        update={"answer_context": True}
+    )
+    use_model(kim, tokenizer, model)
     second = dict(events(ask(kim, conversation, "How many tokens does retrieval cost?")))
+    kim.app.dependency_overrides.pop(get_settings, None)  # type: ignore[attr-defined]
     assert "error" not in second, second.get("error")
     prompt = model.prompts[-1]
     assert "Conversation so far" in prompt
