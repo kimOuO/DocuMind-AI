@@ -1,0 +1,1307 @@
+{
+ "label": "D99-b-with-summary",
+ "temperature": 0,
+ "document_ids": [
+  "dbb7c092-2340-4bf5-aba9-59ac761245b5"
+ ],
+ "questions": [
+  {
+   "question": "summary this document.",
+   "route": {
+    "type": "summary",
+    "standalone_question": "summary this document.",
+    "follow_up": null
+   },
+   "usage": {
+    "prompt_tokens": 3438,
+    "completion_tokens": 297,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     1,
+     6
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "83.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+     },
+     {
+      "number": "16.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…eRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: N…"
+     },
+     {
+      "number": "100",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 9,
+      "snippet": "…Incremental Text Update Model GraphRAG Ours GraphRAG Ours Tokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract API 610×1,000 Cmax 1 1,399 × 2 +Cextract Ce…"
+     },
+     {
+      "number": "610,000",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 9,
+      "snippet": "…mmunity report averages 1,000 tokens, resulting in a total token consumption of 610,000 tokens (610 communities × 1,000 tokens per community). Additionally, GraphRAG’s…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "UNCERTAIN",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": null
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 1,
+     "page_end": 16,
+     "section_title": null,
+     "snippet": "Retrieval-Augmented Generation (RAG) systems enhance large language models (LLMs) by incorporating external knowledge sources to improve the accuracy and context of generated responses. However, current RAG systems often rely on flat data representations and lack contextual awareness, leading to fragmented and incomplete answers, especially for complex queries. The document proposes LightRAG, a framework that integrates graph structures into text indexing and retrieval to better capture interdependencies among entities and improve retrieval effectiveness. LightRAG features a dual-level retrieval system—low-level for specific entity relationships and high-level for broader topics—and combines graph-based indexing with vector representations to enable efficient and comprehensive retrieval. An incremental update mechanism ensures the system remains up to date without full reprocessing. Experimental evaluations across four datasets (Agriculture, CS, Legal, and Mix) show LightRAG outperforms existing methods in retrieval accuracy and efficiency. In the Legal dataset, LightRAG achieves a 83.6% win rate in Comprehensiveness compared to 16.4% for Naive RAG (p. 7). In cost and adaptability analysis, LightRAG uses fewer than 100 tokens for retrieval in the Legal dataset compared to 610,000 tokens for GraphRAG (p. 10). Ablation studies confirm the effectiveness of dual-level retrieval and graph-based indexing. LightRAG's open-source implementation is available at https://github.com/HKUDS/LightRAG (p. 1).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "repair": {
+       "after": "VERIFIED",
+       "before": "CONTRADICTED",
+       "evidence": [
+        "\"LightRAG also shows a 65.2% win rate in Overall when low-level retrieval is removed, highlighting the contribution of the dual-level paradigm.\": 65.2% is given as Overall, LightRAG; in the table 65.2% is Comprehensiveness, Agriculture, -High, vs NaiveRAG / Empowerment, Agriculture, -Low, vs NaiveRAG / Overall, Agriculture, -Low, vs NaiveRAG."
+       ],
+       "rewritten": false,
+       "removed_sentences": [
+        "LightRAG also shows a 65.2% win rate in Overall when low-level retrieval is removed (p. 9), highlighting the contribution of the dual-level paradigm."
+       ]
+      },
+      "status": "VERIFIED",
+      "overstated": [],
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 4
+     }
+    },
+    {
+     "index": 2,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 1,
+     "page_end": 1,
+     "section_title": "Front matter",
+     "snippet": "Retrieval-Augmented Generation (RAG) systems improve large language models (LLMs) by incorporating external knowledge sources to provide more accurate and contextually relevant responses (p. 1). However, existing RAG systems have limitations such as reliance on flat data representations and inadequate contextual awareness, leading to fragmented answers that miss complex inter-dependencies (p. 1). To address these issues, the authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval (p. 1). LightRAG features a dual-level retrieval system to enhance information retrieval at both low-level and high-level knowledge discovery (p. 1). The use of graph structures alongside vector representations enables efficient retrieval of related entities and their relationships, improving response times while maintaining contextual relevance (p. 1). An incremental update algorithm ensures new data is timely integrated, allowing the system to remain effective in dynamic data environments (p. 1). Experimental validation shows significant improvements in retrieval accuracy and efficiency compared to existing methods (p. 1). The LightRAG implementation is open-source and available at https://github.com/HKUDS/LightRAG (p. 1).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "reason": "no figures in the summary",
+      "status": "NOT_CHECKED",
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 0
+     }
+    },
+    {
+     "index": 3,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 1,
+     "page_end": 2,
+     "section_title": "INTRODUCTION",
+     "snippet": "Retrieval-Augmented Generation (RAG) systems aim to enhance large language models (LLMs) by integrating external knowledge sources, allowing for more accurate and contextually relevant responses (p. 1). These systems adapt to specific domain knowledge and provide up-to-date information, with chunking playing a critical role in improving information retrieval accuracy by breaking down large text corpora into manageable segments (p. 1). However, current RAG systems face limitations, including the use of flat data representations and a lack of contextual awareness, which hinders their ability to synthesize information and provide coherent responses to complex queries (p. 1). For example, a query about the impact of electric vehicles on urban air quality and public transportation may receive a fragmented response due to the inability to connect interdependent concepts (p. 1).\n\nTo address these limitations, the authors propose integrating graph structures into text indexing and retrieval, as graphs effectively represent interdependencies among entities (p. 2). The proposed solution, LightRAG, introduces a dual-level retrieval framework—low-level for precise entity relationships and high-level for broader topics—enabling comprehensive and efficient retrieval (p. 2). LightRAG combines graph structures with vector representations to facilitate retrieval of related entities and improve result comprehensiveness (p. 2). Key contributions include the development of a graph-empowered RAG system, the LightRAG methodology with dual-level retrieval and incremental updates, and experimental findings demonstrating improvements in retrieval accuracy, response efficiency, and adaptability compared to baseline methods (p. 2).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "reason": "no figures in the summary",
+      "status": "NOT_CHECKED",
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 0
+     }
+    },
+    {
+     "index": 4,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 2,
+     "page_end": 3,
+     "section_title": "RETRIEVAL-AUGMENTED GENERATION",
+     "snippet": "Retrieval-Augmented Generation (RAG) combines user queries with relevant documents from an external knowledge database through two components: the Retrieval Component and the Generation Component (p. 2). The retrieval component identifies and fetches relevant data based on the input query, while the generation component uses the retrieved information to generate coherent, contextually relevant responses (p. 2). The RAG framework is formally defined as M = (G, R = (φ, ψ)), where G is the generation module, R is the retrieval module, q is the input query, and D is the external database. The retrieval module R includes two functionalities: the Data Indexer φ(·), which builds a specific data structure ˆD based on D, and the Data Retriever ψ(·), which retrieves relevant documents by comparing the query against the indexed data (p. 3). Using the retrieved content and the query, the generative model G(·) produces high-quality responses. The work emphasizes three key aspects for an efficient RAG system: Comprehensive Information Retrieval, which requires the indexing function φ(·) to extract global information to enhance query answering (p. 3); Efficient and Low-Cost Retrieval, which requires the indexed data structure ˆD to enable fast and cost-effective retrieval for handling a high volume of queries (p. 3); and Fast Adaptation to Data Changes, which ensures the system can efficiently update to incorporate new information and remain current (p. 3).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "reason": "no figures in the summary",
+      "status": "NOT_CHECKED",
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 0
+     }
+    },
+    {
+     "index": 5,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 3,
+     "page_end": 5,
+     "section_title": "THE LIGHT RAG ARCHITECTURE",
+     "snippet": "LightRAG enhances retrieval systems by segmenting documents into smaller chunks, using LLMs to extract entities and relationships, and constructing a knowledge graph represented as ˆD = (ˆV, ˆE) = Dedupe ◦ Prof(V, E), V, E = ∪Di∈DRecog(Di) (p. 3). The process includes extracting entities and relationships (R(·)), generating key-value pairs (P(·)), and deduplicating entities and relations (D(·)) to optimize graph operations (p. 3). This graph-based indexing enables comprehensive information understanding and enhanced retrieval performance, outperforming embedding matching (Gao et al., 2023) and chunk traversal techniques (Edge et al., 2024) (p. 4). LightRAG supports fast adaptation to incremental knowledge by updating the knowledge base without reprocessing the entire dataset, integrating new data via ˆD′ = (ˆV ′, ˆE ′) and combining it with the original graph (p. 4). The dual-level retrieval paradigm addresses specific and abstract queries using low-level and high-level retrieval strategies, integrating graph and vector representations to improve relevance. Query processing involves keyword extraction, matching, and incorporating high-order relatedness through neighboring nodes (p. 5). The answer generation phase uses a general-purpose LLM with retrieved information to produce context-integrated answers (p. 5). Complexity analysis shows that the graph-based indexing phase requires LLM calls proportional to total tokenschunk size, with no additional overhead. The retrieval phase uses vector-based search to retrieve entities and relations, reducing overhead compared to community-based traversal methods in GraphRAG (p. 5).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "status": "VERIFIED",
+      "overstated": [],
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 2
+     }
+    },
+    {
+     "index": 6,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 5,
+     "page_end": 10,
+     "section_title": "EVALUATION",
+     "snippet": "The evaluation section of the document assesses the LightRAG framework across four research questions. Four datasets—Agriculture, CS, Legal, and Mix—are selected from the UltraDomain benchmark, each containing 600,000 to 5,000,000 tokens. For evaluation, an LLM generates 125 questions per dataset to assess RAG systems in high-level sensemaking tasks. LightRAG is compared against four baselines: Naive RAG, RQ-RAG, HyDE, and GraphRAG. The evaluation uses four dimensions: Comprehensiveness, Diversity, Empowerment, and Overall, with results presented as win rates. For example, in the Legal dataset, LightRAG achieves 83.6% win rate in Comprehensiveness compared to 16.4% for Naive RAG (p. 7). Graph-based systems like LightRAG and GraphRAG outperform chunk-based systems as dataset size increases. LightRAG also shows a significant lead in Diversity, particularly in the Legal dataset, due to its dual-level retrieval mechanism. Ablation studies show the effectiveness of LightRAG’s dual-level retrieval. Similarly, removing low-level retrieval results in a 65.2% win rate in Overall for the -Low variant. The hybrid mode, combining both retrieval levels, achieves balanced performance. Removing the original text in favor of graph-based indexing does not significantly impact performance, sometimes even improving it. A case study comparing LightRAG and GraphRAG in a machine learning question shows LightRAG outperforms in all four evaluation dimensions. For example, LightRAG provides a broader range of metrics, including MAPK, AUC, and user engagement metrics, while GraphRAG focuses on traditional metrics like precision and recall (p. 9). Cost and adaptability analysis show LightRAG is more efficient. For the Legal dataset, LightRAG uses fewer than 100 tokens for retrieval compared to 610,000 tokens for GraphRAG (p. 10). LightRAG also adapts better to incremental data updates, avoiding full reconstruction of community reports, which would cost GraphRAG approximately 1,399 × 2 × 5,000 tokens.",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "repair": {
+       "after": "UNCERTAIN",
+       "before": "CONTRADICTED",
+       "evidence": [
+        "\"In direct comparison to GraphRAG, LightRAG achieves higher win rates in all four datasets, with the highest difference in the Legal dataset (84.8% vs. 15.2% in Overall).\": 84.8% is given as Overall, Legal, GraphRAG, vs LightRAG; in the table 84.8% is Overall, Legal, LightRAG, vs NaiveRAG / Comprehensiveness, Legal, LightRAG, vs RQ-RAG / Empowerment, Legal, LightRAG, vs RQ-RAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with NaiveRAG); RQ-RAG 14.4% (paired with LightRAG); LightRAG 85.6% (paired with RQ-RAG); HyDE 26.4% (paired with LightRAG); LightRAG 73.6% (paired with HyDE); GraphRAG 47.2% (paired with LightRAG); LightRAG 52.8% (paired with GraphRAG). Differences: GraphRAG 47.2% vs NaiveRAG 15.2% (+32.0 pp, +210.5% relative); GraphRAG 47.2% vs LightRAG 84.8% (-37.6 pp, -44.3% relative); GraphRAG 47.2% vs RQ-RAG 14.4% (+32.8 pp, +227.8% relative); GraphRAG 47.2% vs LightRAG 85.6% (-38.4 pp, -44.9% relative); GraphRAG 47.2% vs HyDE 26.4% (+20.8 pp, +78.8% relative).",
+        "\"In direct comparison to GraphRAG, LightRAG achieves higher win rates in all four datasets, with the highest difference in the Legal dataset (84.8% vs. 15.2% in Overall).\": 15.2% is given as Overall, Legal, LightRAG, vs GraphRAG; in the table 15.2% is Overall, Legal, NaiveRAG, vs LightRAG / Comprehensiveness, Legal, RQ-RAG, vs LightRAG / Empowerment, Legal, RQ-RAG, vs LightRAG. The table's figures for that condition (Table 1, p. 7): NaiveRAG 15.2% (paired with LightRAG); LightRAG 84.8% (paired with NaiveRAG); RQ-RAG 14.4% (paired with LightRAG); LightRAG 85.6% (paired with RQ-RAG); HyDE 26.4% (paired with LightRAG); LightRAG 73.6% (paired with HyDE); GraphRAG 47.2% (paired with LightRAG); LightRAG 52.8% (paired with GraphRAG). Differences: LightRAG 84.8% vs NaiveRAG 15.2% (+69.6 pp, +457.9% relative); LightRAG 84.8% vs RQ-RAG 14.4% (+70.4 pp, +488.9% relative); LightRAG 84.8% vs HyDE 26.4% (+58.4 pp, +221.2% relative); LightRAG 84.8% vs GraphRAG 47.2% (+37.6 pp, +79.7% relative); LightRAG 84.8% vs NaiveRAG 15.2% (+69.6 pp, +457.9% relative).",
+        "\"Removing high-level retrieval leads to a 35.2% win rate in Overall for the -High variant compared to 67.6% for the full model in the Agriculture dataset.\": 35.2% is given as Overall, Agriculture, -High; in the table 35.2% is Overall, Agriculture, NaiveRAG, vs -High / Empowerment, Mix, NaiveRAG, vs -Low / Overall, Mix, NaiveRAG, vs -Low. The table's figures for that condition (Table 1, p. 7): NaiveRAG 32.4% (paired with LightRAG); LightRAG 67.6% (paired with NaiveRAG); RQ-RAG 32.4% (paired with LightRAG); LightRAG 67.6% (paired with RQ-RAG); HyDE 24.8% (paired with LightRAG); LightRAG 75.2% (paired with HyDE); GraphRAG 45.2% (paired with LightRAG); LightRAG 54.8% (paired with GraphRAG). Differences: -High 64.8% vs NaiveRAG 32.4% (+32.4 pp, +100.0% relative); -High 64.8% vs LightRAG 67.6% (-2.8 pp, -4.1% relative); -High 64.8% vs RQ-RAG 32.4% (+32.4 pp, +100.0% relative); -High 64.8% vs LightRAG 67.6% (-2.8 pp, -4.1% relative); -High 64.8% vs HyDE 24.8% (+40.0 pp, +161.3% relative).",
+        "\"Removing high-level retrieval leads to a 35.2% win rate in Overall for the -High variant compared to 67.6% for the full model in the Agriculture dataset.\": 67.6% is given as Overall, Agriculture, -High; in the table 67.6% is Comprehensiveness, Agriculture, LightRAG, vs NaiveRAG / Diversity, Mix, LightRAG, vs NaiveRAG / Empowerment, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs NaiveRAG / Overall, Agriculture, LightRAG, vs RQ-RAG / Diversity, Mix, LightRAG, vs HyDE. The table's figures for that condition (Table 1, p. 7): NaiveRAG 32.4% (paired with LightRAG); LightRAG 67.6% (paired with NaiveRAG); RQ-RAG 32.4% (paired with LightRAG); LightRAG 67.6% (paired with RQ-RAG); HyDE 24.8% (paired with LightRAG); LightRAG 75.2% (paired with HyDE); GraphRAG 45.2% (paired with LightRAG); LightRAG 54.8% (paired with GraphRAG). Differences: -High 64.8% vs NaiveRAG 32.4% (+32.4 pp, +100.0% relative); -High 64.8% vs LightRAG 67.6% (-2.8 pp, -4.1% relative); -High 64.8% vs RQ-RAG 32.4% (+32.4 pp, +100.0% relative); -High 64.8% vs LightRAG 67.6% (-2.8 pp, -4.1% relative); -High 64.8% vs HyDE 24.8% (+40.0 pp, +161.3% relative).",
+        "\"Similarly, removing low-level retrieval results in a 34.8% win rate in Overall for the -Low variant.\": 34.8% is given as Overall, -Low; in the table 34.8% is Comprehensiveness, Agriculture, NaiveRAG, vs -High / Empowerment, Agriculture, NaiveRAG, vs -Low / Overall, Agriculture, NaiveRAG, vs -Low.",
+        "\"Across all datasets and metrics, LightRAG outperforms the baselines.\": in the table LightRAG is above the compared methods in 306 cells and below in 11; the cases below: Comprehensiveness / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Comprehensiveness / Agriculture: LightRAG 67.6% vs -Origin 75.2% (p. 8); Empowerment / Mix: LightRAG 49.2% vs GraphRAG 50.8% (p. 7); Comprehensiveness / Mix: LightRAG 61.2% vs -Low 64.0% (p. 8); Overall / Mix: LightRAG 49.6% vs GraphRAG 50.4% (p. 7); Diversity / CS: LightRAG 62.0% vs -High 63.2% (p. 8)."
+       ],
+       "rewritten": true,
+       "removed_sentences": [
+        "Across all datasets and metrics, LightRAG outperforms the baselines.",
+        "In direct comparison to GraphRAG, LightRAG achieves higher win rates in all four datasets, with the highest difference in the Legal dataset (84.8% vs. 47.2% in Overall) (p. 7).",
+        "Removing high-level retrieval leads to a 64.8% win rate in Overall for the -High variant compared to 67.6% for the full model in the Agriculture dataset (p. 8)."
+       ]
+      },
+      "status": "UNCERTAIN",
+      "overstated": [],
+      "unresolved": [
+       "65.2%"
+      ],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 10
+     }
+    },
+    {
+     "index": 7,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 10,
+     "page_end": 10,
+     "section_title": "RELATED WORK",
+     "snippet": "Retrieval-Augmented Generation (RAG) systems improve LLM inputs by retrieving information from external sources to ground responses in factual knowledge (Ram et al., 2023; Fan et al., 2024). Current RAG approaches (Gao et al., 2022; 2023; Chan et al., 2024; Yu et al., 2024) typically use vector embeddings to find nearest context vectors, but often rely on fragmented text chunks and top-k retrieval, limiting their ability to capture global information (p. 10). Recent work (Edge et al., 2024) has explored graph structures for knowledge representation, but these methods often lack dynamic updates and expansions, making it hard to incorporate new information. In contrast, the proposed LightRAG model enables RAG systems to adapt quickly to new information, ensuring timeliness and accuracy. Existing methods also rely on inefficient brute-force searches for each community. LightRAG addresses this by using a dual-level retrieval paradigm to enable rapid retrieval from the graph, improving efficiency and response speed (p. 10). Graphs are a powerful framework for representing complex relationships. Research on LLMs for graphs is divided into three categories: i) GNNs as Prefix, where GNNs generate structure-aware tokens for LLMs (GraphGPT, LLaGA); ii) LLMs as Prefix, where LLMs process graph data to refine GNN training (GALM, OFA); iii) LLMs-Graphs Integration, focusing on seamless interaction using techniques like fusion training and GNN alignment (Li et al., 2023; Brannon et al., 2023) (p. 10).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "status": "VERIFIED",
+      "overstated": [],
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 3
+     }
+    },
+    {
+     "index": 8,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 10,
+     "page_end": 10,
+     "section_title": "CONCLUSION",
+     "snippet": "This work introduces an advancement in Retrieval-Augmented Generation (RAG) through the integration of a graph-based indexing approach that enhances both efficiency and comprehension in information retrieval (p. 10). LightRAG utilizes a comprehensive knowledge graph to facilitate rapid and relevant document retrieval, enabling a deeper understanding of complex queries (p. 10). Its dual-level retrieval paradigm allows for the extraction of both specific and abstract information, catering to diverse user needs (p. 10). Furthermore, LightRAG’s seamless incremental update capability ensures that the system remains current and responsive to new information, thereby maintaining its effectiveness over time (p. 10). Overall, LightRAG excels in both efficiency and effectiveness, significantly improving the speed and quality of information retrieval and generation while reducing costs for LLM inference (p. 10).",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "reason": "no figures in the summary",
+      "status": "NOT_CHECKED",
+      "unresolved": [],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 0
+     }
+    },
+    {
+     "index": 9,
+     "kind": "summary",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 13,
+     "page_end": 16,
+     "section_title": "APPENDIX",
+     "snippet": "The appendix section of the document provides details on the LightRAG framework's methodologies and experimental setup. It outlines the extraction of entities and relationships from documents using LLMs, the prompt templates for graph generation, query generation, keyword extraction, and RAG evaluation, and the evaluation criteria for performance assessment. Table 4 (p. 13) summarizes the datasets: Agriculture (12 documents, 2,017,886 tokens), CS (10 documents, 2,306,535 tokens), Legal (94 documents, 5,081,069 tokens), and Mix (61 documents, 619,009 tokens). A case example in Figure 3 (p. 13) illustrates the retrieve-and-generate process for answering a query using dual-level retrieval on a knowledge graph. Figures 4–7 (p. 14–15) detail the prompts for graph generation, query generation, keyword extraction, and RAG evaluation, emphasizing structured extraction and evaluation criteria such as Comprehensiveness, Diversity, and Empowerment. Table 5 (p. 16) presents a case study comparing LightRAG and NaiveRAG in addressing a query about Indigenous perspectives in corporate mergers. LightRAG provides a more in-depth exploration with specific examples, covering cultural significance, collaboration, and legal frameworks. The LLM evaluation identifies LightRAG as the winner in all three criteria: Comprehensiveness, Diversity, and Empowerment, with detailed explanations for each. The overall winner is Answer 2 (LightRAG), justified by its depth, breadth, and actionable insights. The evaluation is presented in JSON format, ensuring clarity and consistency in the comparison.",
+     "score": null,
+     "origin": "summary",
+     "verification": {
+      "status": "UNCERTAIN",
+      "overstated": [],
+      "unresolved": [
+       "12",
+       "10",
+       "94",
+       "61"
+      ],
+      "unverified": [],
+      "contradicted": [],
+      "checked_figures": 8
+     }
+    }
+   ],
+   "answer": "The document addresses the limitations of current Retrieval-Augmented Generation (RAG) systems, which often rely on flat data representations and lack contextual awareness, leading to fragmented and incomplete answers for complex queries [1]. To solve this, the authors propose LightRAG, a framework that integrates graph structures into text indexing and retrieval to better capture interdependencies among entities and improve retrieval effectiveness [1]. LightRAG features a dual-level retrieval system—low-level for specific entity relationships and high-level for broader topics—and combines graph-based indexing with vector representations to enable efficient and comprehensive retrieval [1]. An incremental update mechanism ensures the system remains up to date without full reprocessing [1]. Experimental evaluations across four datasets (Agriculture, CS, Legal, and Mix) show LightRAG outperforms existing methods in retrieval accuracy and efficiency [1]. For example, in the Legal dataset, LightRAG achieves an 83.6% win rate in Comprehensiveness compared to 16.4% for Naive RAG [6]. In cost and adaptability analysis, LightRAG uses fewer than 100 tokens for retrieval in the Legal dataset compared to 610,000 tokens for GraphRAG [6]. Ablation studies confirm the effectiveness of dual-level retrieval and graph-based indexing [6]. LightRAG's open-source implementation is available at https://github.com/HKUDS/LightRAG [1].",
+   "elapsed_seconds": 19.5
+  },
+  {
+   "question": "compare lightRAG with GraphRAG",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "compare lightRAG with GraphRAG",
+    "follow_up": false
+   },
+   "usage": {
+    "prompt_tokens": 4498,
+    "completion_tokens": 467,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     1,
+     2
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "54.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…RAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix…"
+     },
+     {
+      "number": "45.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…G GraphRAG LightRAG GraphRAG LightRAG Comprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, Lig…"
+     },
+     {
+      "number": "59.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0% Overall — A…"
+     },
+     {
+      "number": "40.8%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…LightRAG 67.6% Empowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 5…"
+     },
+     {
+      "number": "56.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…tRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, Lig…"
+     },
+     {
+      "number": "43.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…hRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: Gra…"
+     },
+     {
+      "number": "50.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…RAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: Gr…"
+     },
+     {
+      "number": "49.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…RAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6% Diversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, Li…"
+     },
+     {
+      "number": "50.8%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…RAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: Grap…"
+     },
+     {
+      "number": "49.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 7,
+      "snippet": "…RAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2% Overall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, Ligh…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "UNCERTAIN",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 128,
+     "facts": 16,
+     "block_tokens": 623,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "chunk_id": "96b514ee-d13f-4b2a-99d7-b1f97b989356",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "Table 1: Win rates (%) of baselines v.s. LightRAG across four datasets and four evaluation dimensions.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nRQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG RQ-RAG LightRAG\nComprehensiveness — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 38.8%, LightRAG 61.2%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 39.2%, LightRAG 60.8%\nDiversity — Agriculture: RQ-RAG 29.2%, LightRAG 70.8%; CS: RQ-RAG 39.2%, LightRAG 60.8%; Legal: RQ-RAG 11.6%, LightRAG 88.4%; Mix: RQ-RAG 30.8%, LightRAG 69.2%\nEmpowerment — Agriculture: RQ-RAG 31.6%, LightRAG 68.4%; CS: RQ-RAG 36.4%, LightRAG 63.6%; Legal: RQ-RAG 15.2%, LightRAG 84.8%; Mix: RQ-RAG 42.4%, LightRAG 57.6%\nOverall — Agriculture: RQ-RAG 32.4%, LightRAG 67.6%; CS: RQ-RAG 38.0%, LightRAG 62.0%; Legal: RQ-RAG 14.4%, LightRAG 85.6%; Mix: RQ-RAG 40.0%, LightRAG 60.0%\nHyDE LightRAG HyDE LightRAG HyDE LightRAG HyDE LightRAG\nComprehensiveness — Agriculture: HyDE 26.0%, LightRAG 74.0%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.8%, LightRAG 73.2%; Mix: HyDE 40.4%, LightRAG 59.6%\nDiversity — Agriculture: HyDE 24.0%, LightRAG 76.0%; CS: HyDE 38.8%, LightRAG 61.2%; Legal: HyDE 20.0%, LightRAG 80.0%; Mix: HyDE 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: HyDE 25.2%, LightRAG 74.8%; CS: HyDE 40.8%, LightRAG 59.2%; Legal: HyDE 26.0%, LightRAG 74.0%; Mix: HyDE 46.0%, LightRAG 54.0%\nOverall — Agriculture: HyDE 24.8%, LightRAG 75.2%; CS: HyDE 41.6%, LightRAG 58.4%; Legal: HyDE 26.4%, LightRAG 73.6%; Mix: HyDE 42.4%, LightRAG 57.6%\nGraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG GraphRAG LightRAG\nComprehensiveness — Agriculture: GraphRAG 45.6%, LightRAG 54.4%; CS: GraphRAG 48.4%, LightRAG 51.6%; Legal: GraphRAG 48.4%, LightRAG 51.6%; Mix: GraphRAG 50.4%, LightRAG 49.6%\nDiversity — Agriculture: GraphRAG 22.8%, LightRAG 77.2%; CS: GraphRAG 40.8%, LightRAG 59.2%; Legal: GraphRAG 26.4%, LightRAG 73.6%; Mix: GraphRAG 36.0%, LightRAG 64.0%\nEmpowerment — Agriculture: GraphRAG 41.2%, LightRAG 58.8%; CS: GraphRAG 45.2%, LightRAG 54.8%; Legal: GraphRAG 43.6%, LightRAG 56.4%; Mix: GraphRAG 50.8%, LightRAG 49.2%\nOverall — Agriculture: GraphRAG 45.2%, LightRAG 54.8%; CS: GraphRAG 48.0%, LightRAG 52.0%; Legal: GraphRAG 47.2%, LightRAG 52.8%; Mix: GraphRAG 50.4%, LightRAG 49.6%",
+     "score": 0.6504,
+     "origin": "retrieval"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "chunk_id": "02867f73-0e04-4769-a6ef-67f6a8db3015",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "The Superiority of Graph-enhanced RAG Systems in Large-Scale Corpora When handling large\ntoken counts and complex queries that require a thorough understanding of the dataset’s context,\ngraph-based RAG systems like LightRAG and GraphRAG consistently outperform purely chunk-\nbased retrieval methods such as NaiveRAG, HyDE, and RQRAG. This performance gap becomes\nparticularly pronounced as the dataset size increases. For instance, in the largest dataset (Legal), the\ndisparity widens significantly, with baseline methods achieving only about 20% win rates compared\nto the dominance of LightRAG. This trend underscores the advantages of graph-enhanced RAG\nsystems in capturing complex semantic dependencies within large-scale corpora, facilitating a more\ncomprehensive understanding of knowledge and leading to improved generalization performance.\nEnhancing Response Diversity with LightRAG: Compared to various baselines, LightRAG demon-\nstrates a significant advantage in the Diversity metric, particularly within the larger Legal dataset.\nIts consistent lead in this area underscores LightRAG’s effectiveness in generating a wider range\nof responses, especially in scenarios where diverse content is essential. We attribute this advantage\nto LightRAG’s dual-level retrieval paradigm, which facilitates comprehensive information retrieval\nfrom both low-level and high-level dimensions. This approach effectively leverages graph-based text\nindexing to consistently capture the full context in response to queries.\nLightRAG’s Superiority over GraphRAG: While both LightRAG and GraphRAG use graph-based\nretrieval mechanisms, LightRAG consistently outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of",
+     "score": 0.6455,
+     "origin": "retrieval"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "chunk_id": "803e887b-4bf6-4a05-8669-d7fe68837730",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+     "score": 0.6299,
+     "origin": "retrieval"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "chunk_id": "2ff1c720-778e-4752-808f-c1e2e2058e35",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 9,
+     "page_end": 9,
+     "section_title": null,
+     "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+     "score": 0.6265,
+     "origin": "retrieval"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "chunk_id": "577eceb9-b077-40e3-bbac-ada374937b91",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+     "score": 0.6123,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "LightRAG and GraphRAG are both graph-based Retrieval-Augmented Generation (RAG) systems, but LightRAG consistently outperforms GraphRAG in most conditions across four datasets (Agriculture, CS, Legal, and Mix) and four evaluation dimensions (Comprehensiveness, Diversity, Empowerment, and Overall) [1]. Specifically, LightRAG achieves a higher win rate in 13 out of 16 conditions, while GraphRAG is higher in 3 [1]. \n\nRepresentative figures supporting this trend include:\n- **Agriculture / Comprehensiveness**: LightRAG 54.4% vs GraphRAG 45.6% [1].\n- **CS / Diversity**: LightRAG 59.2% vs GraphRAG 40.8% [1].\n- **Legal / Empowerment**: LightRAG 56.4% vs GraphRAG 43.6% [1].\n\nHowever, there are exceptions where GraphRAG performs better:\n- **Mix / Comprehensiveness**: GraphRAG 50.4% vs LightRAG 49.6% (+0.8 pp, +1.6% relative) [1].\n- **Mix / Empowerment**: GraphRAG 50.8% vs LightRAG 49.2% (+1.6 pp, +3.3% relative) [1].\n- **Mix / Overall**: GraphRAG 50.4% vs LightRAG 49.6% (+0.8 pp, +1.6% relative) [1].\n\nThese exceptions suggest that while LightRAG generally performs better, GraphRAG shows competitive performance in the \"Mix\" dataset, particularly in metrics like Comprehensiveness and Empowerment. The document attributes LightRAG’s superiority to its dual-level retrieval paradigm, which combines low-level retrieval of specific entities with high-level retrieval of broader topics, enabling more comprehensive and diverse responses [2]. \n\nIn conclusion, LightRAG outperforms GraphRAG in most conditions, especially in larger datasets with complex language contexts, but GraphRAG performs better in specific cases within the \"Mix\" dataset.",
+   "elapsed_seconds": 25.1
+  },
+  {
+   "question": "Performance of ablated versions of LightRAG",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "What is the performance of ablated versions of LightRAG compared to the full model?",
+    "follow_up": true
+   },
+   "usage": {
+    "prompt_tokens": 5752,
+    "completion_tokens": 1005,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     1,
+     5
+    ],
+    "unverified_numbers": [
+     "13"
+    ],
+    "verified_numbers": [
+     {
+      "number": "63.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+     },
+     {
+      "number": "62.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+     },
+     {
+      "number": "64.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -Hi…"
+     },
+     {
+      "number": "61.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+     },
+     {
+      "number": "64.8%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+     },
+     {
+      "number": "57.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+     },
+     {
+      "number": "60.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High Comprehensiveness —…"
+     },
+     {
+      "number": "75.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…rigin NaiveRAG -Origin Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix:…"
+     },
+     {
+      "number": "67.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+     },
+     {
+      "number": "74.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…rigin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -…"
+     },
+     {
+      "number": "68.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…aiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix:…"
+     },
+     {
+      "number": "83.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…tRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, L…"
+     },
+     {
+      "number": "76.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…aiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix…"
+     },
+     {
+      "number": "61.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…ess — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Div…"
+     },
+     {
+      "number": "80.8%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0% Diversity — Agriculture: NaiveRAG 28.0%, -Low…"
+     }
+    ],
+    "mislabelled_numbers": [],
+    "unresolved_numbers": [
+     {
+      "number": "64.0%",
+      "answer_labels": [
+       "Mix",
+       "-Low"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Mix",
+        "-Low",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 13 out of 16 conditions, with exceptions in **Mix / Comprehensiveness** (-Low 64.0% vs LightRAG 61.2%), **Mix / Empowerment** (-Low 64.8% vs LightRAG 57.2%), and **Mix / Overall** (-Low 64.8% vs LightRAG 60.0%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "61.2%",
+      "answer_labels": [
+       "Mix",
+       "LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 13 out of 16 conditions, with exceptions in **Mix / Comprehensiveness** (-Low 64.0% vs LightRAG 61.2%), **Mix / Empowerment** (-Low 64.8% vs LightRAG 57.2%), and **Mix / Overall** (-Low 64.8% vs LightRAG 60.0%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "64.8%",
+      "answer_labels": [
+       "Mix",
+       "-Low"
+      ],
+      "source_labels": [
+       [
+        "Empowerment",
+        "Mix",
+        "-Low",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Mix",
+        "-Low",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 13 out of 16 conditions, with exceptions in **Mix / Comprehensiveness** (-Low 64.0% vs LightRAG 61.2%), **Mix / Empowerment** (-Low 64.8% vs LightRAG 57.2%), and **Mix / Overall** (-Low 64.8% vs LightRAG 60.0%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "57.2%",
+      "answer_labels": [
+       "Mix",
+       "LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Empowerment",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 13 out of 16 conditions, with exceptions in **Mix / Comprehensiveness** (-Low 64.0% vs LightRAG 61.2%), **Mix / Empowerment** (-Low 64.8% vs LightRAG 57.2%), and **Mix / Overall** (-Low 64.8% vs LightRAG 60.0%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "75.2%",
+      "answer_labels": [
+       "-Origin"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "-Origin",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 11 out of 16 conditions, with exceptions in **Agriculture / Comprehensiveness** (-Origin 75.2% vs LightRAG 67.6%), **Mix / Diversity** (-Origin 74.4% vs LightRAG 67.6%), **Agriculture / Empowerment** (-Origin 68.0% vs LightRAG 67.6%), and **Agriculture / Overall** (-Origin 74.4% vs LightRAG 67.6%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "67.6%",
+      "answer_labels": [
+       "LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Diversity",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 11 out of 16 conditions, with exceptions in **Agriculture / Comprehensiveness** (-Origin 75.2% vs LightRAG 67.6%), **Mix / Diversity** (-Origin 74.4% vs LightRAG 67.6%), **Agriculture / Empowerment** (-Origin 68.0% vs LightRAG 67.6%), and **Agriculture / Overall** (-Origin 74.4% vs LightRAG 67.6%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "74.4%",
+      "answer_labels": [
+       "-Origin"
+      ],
+      "source_labels": [
+       [
+        "Diversity",
+        "Mix",
+        "-Origin",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "-Origin",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 11 out of 16 conditions, with exceptions in **Agriculture / Comprehensiveness** (-Origin 75.2% vs LightRAG 67.6%), **Mix / Diversity** (-Origin 74.4% vs LightRAG 67.6%), **Agriculture / Empowerment** (-Origin 68.0% vs LightRAG 67.6%), and **Agriculture / Overall** (-Origin 74.4% vs LightRAG 67.6%).",
+      "reason": "ambiguous"
+     },
+     {
+      "number": "68.0%",
+      "answer_labels": [
+       "-Origin"
+      ],
+      "source_labels": [
+       [
+        "Empowerment",
+        "Agriculture",
+        "-Origin",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "It performs worse than the full LightRAG in 11 out of 16 conditions, with exceptions in **Agriculture / Comprehensiveness** (-Origin 75.2% vs LightRAG 67.6%), **Mix / Diversity** (-Origin 74.4% vs LightRAG 67.6%), **Agriculture / Empowerment** (-Origin 68.0% vs LightRAG 67.6%), and **Agriculture / Overall** (-Origin 74.4% vs LightRAG 67.6%).",
+      "reason": "ambiguous"
+     }
+    ],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "incomplete",
+     "required": [
+      "-High",
+      "-Low",
+      "-Origin",
+      "LightRAG"
+     ],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "FACTUALLY_CORRECT_BUT_INCOMPLETE",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 128,
+     "facts": 64,
+     "block_tokens": 1390,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "chunk_id": "43850b31-a6b4-4dfd-a778-9e8baf5c226d",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nNaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\nComprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6%\nDiversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0%\nEmpowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4%\nOverall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6%\nNaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\nComprehensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0%\nDiversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%\nEmpowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low 57.2%; Legal: NaiveRAG 16.4%, -Low 83.6%; Mix: NaiveRAG 35.2%, -Low 64.8%\nOverall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8%\nNaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\nComprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6%\nDiversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4%\nEmpowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8%\nOverall — Agriculture: NaiveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6%",
+     "score": 0.6554,
+     "origin": "retrieval"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "chunk_id": "803e887b-4bf6-4a05-8669-d7fe68837730",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+     "score": 0.5796,
+     "origin": "retrieval"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "chunk_id": "577eceb9-b077-40e3-bbac-ada374937b91",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+     "score": 0.5578,
+     "origin": "retrieval"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "chunk_id": "2ff1c720-778e-4752-808f-c1e2e2058e35",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 9,
+     "page_end": 9,
+     "section_title": null,
+     "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+     "score": 0.5476,
+     "origin": "retrieval"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "chunk_id": "ca6f64e7-68f3-47a2-964d-360efacef963",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, leading to a significant\nperformance decline across nearly all datasets and metrics. This drop is mainly due to its emphasis\non the specific information, which focuses excessively on entities and their immediate neighbors.\nWhile this approach enables deeper exploration of directly related entities, it struggles to gather\ninformation for complex queries that demand comprehensive insights.\n• High-level-only Retrieval: The -Low variant prioritizes capturing a broader range of content by\nleveraging entity-wise relationships rather than focusing on specific entities. This approach offers\na significant advantage in comprehensiveness, allowing it to gather more extensive and varied\ninformation. However, the trade-off is a reduced depth in examining specific entities, which can\nlimit its ability to provide highly detailed insights. Consequently, this high-level-only retrieval\nmethod may struggle with tasks that require precise, detailed answers.\n• Hybrid Mode: The hybrid mode, or the full version of LightRAG, combines the strengths of\nboth low-level and high-level retrieval methods. It retrieves a broader set of relationships while\nsimultaneously conducting an in-depth exploration of specific entities. This dual-level approach\nensures both breadth in the retrieval process and depth in the analysis, providing a comprehensive\nview of the data. As a result, LightRAG achieves balanced performance across multiple dimensions.\nSemantic Graph Excels in RAG. We eliminated the use of original text in our retrieval process.\nSurprisingly, the resulting variant, -Origin, does not exhibit significant performance declines across\nall four datasets. In some cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between",
+     "score": 0.5396,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "The ablated versions of LightRAG, which omit either the low-level or high-level retrieval components, show mixed performance compared to the full model. Here is a detailed comparison:\n\n### Main Findings:\n- **-High variant (high-level-only retrieval)**: This variant removes low-level retrieval and focuses on high-level retrieval. It performs worse than the full LightRAG in 15 out of 16 conditions, with only one exception in **CS / Diversity**, where -High (63.2%) slightly outperforms LightRAG (62.0%) [1].\n- **-Low variant (low-level-only retrieval)**: This variant removes high-level retrieval and focuses on low-level retrieval. It performs worse than the full LightRAG in 13 out of 16 conditions, with exceptions in **Mix / Comprehensiveness** (-Low 64.0% vs LightRAG 61.2%), **Mix / Empowerment** (-Low 64.8% vs LightRAG 57.2%), and **Mix / Overall** (-Low 64.8% vs LightRAG 60.0%) [1].\n- **-Origin variant (graph-based indexing without original text)**: This variant removes the original text from the retrieval process. It performs worse than the full LightRAG in 11 out of 16 conditions, with exceptions in **Agriculture / Comprehensiveness** (-Origin 75.2% vs LightRAG 67.6%), **Mix / Diversity** (-Origin 74.4% vs LightRAG 67.6%), **Agriculture / Empowerment** (-Origin 68.0% vs LightRAG 67.6%), and **Agriculture / Overall** (-Origin 74.4% vs LightRAG 67.6%) [1].\n\n### Representative Figures:\n- **-High variant**:\n  - **Legal / Comprehensiveness**: LightRAG 83.6% vs -High 76.4% [1].\n  - **CS / Comprehensiveness**: LightRAG 61.6% vs -High 57.2% [1].\n- **-Low variant**:\n  - **Legal / Comprehensiveness**: LightRAG 83.6% vs -Low 80.8% [1].\n  - **Mix / Comprehensiveness**: -Low 64.0% vs LightRAG 61.2% [1].\n- **-Origin variant**:\n  - **Agriculture / Comprehensiveness**: -Origin 75.2% vs LightRAG 67.6% [1].\n  - **Mix / Diversity**: -Origin 74.4% vs LightRAG 67.6% [1].\n\n### Exceptions:\n- **-High variant**:\n  - **CS / Diversity**: -High 63.2% vs LightRAG 62.0% [1].\n- **-Low variant**:\n  - **Mix / Comprehensiveness**: -Low 64.0% vs LightRAG 61.2% [1].\n  - **Mix / Empowerment**: -Low 64.8% vs LightRAG 57.2% [1].\n  - **Mix / Overall**: -Low 64.8% vs LightRAG 60.0% [1].\n- **-Origin variant**:\n  - **Agriculture / Comprehensiveness**: -Origin 75.2% vs LightRAG 67.6% [1].\n  - **Mix / Diversity**: -Origin 74.4% vs LightRAG 67.6% [1].\n  - **Agriculture / Empowerment**: -Origin 68.0% vs LightRAG 67.6% [1].\n  - **Agriculture / Overall**: -Origin 74.4% vs LightRAG 67.6% [1].\n\n### Conclusion:\nThe full LightRAG model generally outperforms its ablated versions across most conditions and metrics. The -High variant, which relies solely on high-level retrieval, performs poorly in most cases, while the -Low variant, which focuses on low-level retrieval, shows some improvements in the \"Mix\" dataset. The -Origin variant, which uses graph-based indexing without the original text, performs better in a few specific conditions but worse in most others. These results highlight the importance of the dual-level retrieval paradigm in LightRAG, which combines the strengths of both low-level and high-level retrieval to achieve balanced performance [5].",
+   "elapsed_seconds": 52.0
+  },
+  {
+   "question": "所以剛剛那個performance 論文方法輸在哪幾個地方",
+   "route": {
+    "type": "retrieval",
+    "standalone_question": "所以剛剛那個performance 論文方法輸在哪幾個地方",
+    "follow_up": true
+   },
+   "usage": {
+    "prompt_tokens": 5669,
+    "completion_tokens": 816,
+    "limit": 10000
+   },
+   "done": {
+    "status": "completed",
+    "answered": true,
+    "cited": [
+     2,
+     3
+    ],
+    "unverified_numbers": [],
+    "verified_numbers": [
+     {
+      "number": "63.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…Diversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerme…"
+     },
+     {
+      "number": "62.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…ity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6% Emp…"
+     },
+     {
+      "number": "64.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0% Empowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -Hi…"
+     },
+     {
+      "number": "61.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2% Diversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, Li…"
+     },
+     {
+      "number": "64.8%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…; Mix: NaiveRAG 47.6%, -High 52.4% Overall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: Naiv…"
+     },
+     {
+      "number": "57.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2% Overall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, Ligh…"
+     },
+     {
+      "number": "60.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0% NaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High Comprehensiveness —…"
+     },
+     {
+      "number": "75.2%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…rigin NaiveRAG -Origin Comprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix:…"
+     },
+     {
+      "number": "67.6%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…RAG NaiveRAG LightRAG Comprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix…"
+     },
+     {
+      "number": "74.4%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…rigin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -…"
+     },
+     {
+      "number": "68.0%",
+      "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+      "page": 8,
+      "snippet": "…aiveRAG 25.6%, -Origin 74.4% Empowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix:…"
+     }
+    ],
+    "mislabelled_numbers": [
+     {
+      "number": "62.0%",
+      "answer_labels": [
+       "Diversity",
+       "CS",
+       "-High",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Diversity",
+        "CS",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **CS / Diversity** 條件下，-High 的 63.2% 高於 LightRAG 的 62.0%，差距為 +1.2 個百分點（+1.9% 相對值） 。"
+     },
+     {
+      "number": "61.2%",
+      "answer_labels": [
+       "Comprehensiveness",
+       "Mix",
+       "-Low",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "CS",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "CS",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Mix / Comprehensiveness** 條件下，-Low 的 64.0% 高於 LightRAG 的 61.2%，差距為 +2.8 個百分點（+4.6% 相對值） 。"
+     },
+     {
+      "number": "57.2%",
+      "answer_labels": [
+       "Empowerment",
+       "Mix",
+       "-Low",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Empowerment",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Comprehensiveness",
+        "CS",
+        "-High",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "CS",
+        "-Low",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Mix / Empowerment** 條件下，-Low 的 64.8% 高於 LightRAG 的 57.2%，差距為 +7.6 個百分點（+13.3% 相對值） 。"
+     },
+     {
+      "number": "60.0%",
+      "answer_labels": [
+       "Overall",
+       "Mix",
+       "-Low",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Overall",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Mix / Overall** 條件下，-Low 的 64.8% 高於 LightRAG 的 60.0%，差距為 +4.8 個百分點（+8.0% 相對值） 。"
+     },
+     {
+      "number": "67.6%",
+      "answer_labels": [
+       "Comprehensiveness",
+       "Agriculture",
+       "-Origin",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Diversity",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Agriculture / Comprehensiveness** 條件下，-Origin 的 75.2% 高於 LightRAG 的 67.6%，差距為 +7.6 個百分點（+11.2% 相對值） 。"
+     },
+     {
+      "number": "67.6%",
+      "answer_labels": [
+       "Diversity",
+       "Mix",
+       "-Origin",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Diversity",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Mix / Diversity** 條件下，-Origin 的 74.4% 高於 LightRAG 的 67.6%，差距為 +6.8 個百分點（+10.1% 相對值） 。"
+     },
+     {
+      "number": "67.6%",
+      "answer_labels": [
+       "Empowerment",
+       "Agriculture",
+       "-Origin",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Diversity",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Agriculture / Empowerment** 條件下，-Origin 的 68.0% 高於 LightRAG 的 67.6%，差距為 +0.4 個百分點（+0.6% 相對值） 。"
+     },
+     {
+      "number": "67.6%",
+      "answer_labels": [
+       "Overall",
+       "Agriculture",
+       "-Origin",
+       "vs LightRAG"
+      ],
+      "source_labels": [
+       [
+        "Comprehensiveness",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Diversity",
+        "Mix",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Empowerment",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ],
+       [
+        "Overall",
+        "Agriculture",
+        "LightRAG",
+        "vs NaiveRAG"
+       ]
+      ],
+      "sentence": "- 在 **Agriculture / Overall** 條件下，-Origin 的 74.4% 高於 LightRAG 的 67.6%，差距為 +6.8 個百分點（+10.1% 相對值） 。"
+     }
+    ],
+    "unresolved_numbers": [],
+    "overstated_claims": [],
+    "doubtful_citations": [],
+    "direction_issues": [],
+    "completeness": {
+     "status": "not_applicable",
+     "required": [],
+     "missing": [],
+     "condition": null
+    },
+    "conclusion_issues": [],
+    "arithmetic_issues": [],
+    "analysis_status": "FACTUALLY_INCORRECT",
+    "finish_reason": "stop",
+    "revision": null,
+    "navigation": null,
+    "correction": null,
+    "facts": {
+     "mode": "inject",
+     "cells": 128,
+     "facts": 160,
+     "block_tokens": 1253,
+     "replaced_sources": []
+    }
+   },
+   "error": null,
+   "sources": [
+    {
+     "index": 1,
+     "kind": "chunk",
+     "chunk_id": "803e887b-4bf6-4a05-8669-d7fe68837730",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 7,
+     "page_end": 7,
+     "section_title": null,
+     "snippet": "outperforms GraphRAG, particularly in larger datasets\nwith complex language contexts. In the Agriculture, CS, and Legal datasets—each containing millions\nof tokens—LightRAG shows a clear advantage, significantly surpassing GraphRAG and highlighting\nits strength in comprehensive information understanding within diverse environments. Enhanced\nResponse Variety: By integrating low-level retrieval of specific entities with high-level retrieval of\nbroader topics, LightRAG boosts response diversity. This dual-level mechanism effectively addresses\nboth detailed and abstract queries, ensuring a thorough grasp of information. Complex Query\nHandling: This approach is especially valuable in scenarios requiring diverse perspectives. By\naccessing both specific details and overarching themes, LightRAG adeptly responds to complex\nqueries involving interconnected topics, providing contextually relevant answers.\n4.3 A BLATION STUDIES (RQ2)\nWe also conduct ablation studies to evaluate the impact of our dual-level retrieval paradigm and the\neffectiveness of our graph-based text indexing in LightRAG. The results are presented in Table 2.\nEffectiveness of Dual-level Retrieval Paradigm. We begin by analyzing the effects of low-level and\nhigh-level retrieval paradigms. We compare two ablated models—each omitting one module—against\nLightRAG across four datasets. Here are our key observations for the different variants:\n7",
+     "score": null,
+     "origin": "previous_turn"
+    },
+    {
+     "index": 2,
+     "kind": "chunk",
+     "chunk_id": "43850b31-a6b4-4dfd-a778-9e8baf5c226d",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "Table 2: Performance of ablated versions of LightRAG, using NaiveRAG as reference.\nAgriculture CS Legal Mix\nNaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG NaiveRAG LightRAG\nComprehensiveness — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.4%, LightRAG 61.6%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 38.8%, LightRAG 61.2%\nDiversity — Agriculture: NaiveRAG 23.6%, LightRAG 76.4%; CS: NaiveRAG 38.0%, LightRAG 62.0%; Legal: NaiveRAG 13.6%, LightRAG 86.4%; Mix: NaiveRAG 32.4%, LightRAG 67.6%\nEmpowerment — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 16.4%, LightRAG 83.6%; Mix: NaiveRAG 42.8%, LightRAG 57.2%\nOverall — Agriculture: NaiveRAG 32.4%, LightRAG 67.6%; CS: NaiveRAG 38.8%, LightRAG 61.2%; Legal: NaiveRAG 15.2%, LightRAG 84.8%; Mix: NaiveRAG 40.0%, LightRAG 60.0%\nNaiveRAG -High NaiveRAG -High NaiveRAG -High NaiveRAG -High\nComprehensiveness — Agriculture: NaiveRAG 34.8%, -High 65.2%; CS: NaiveRAG 42.8%, -High 57.2%; Legal: NaiveRAG 23.6%, -High 76.4%; Mix: NaiveRAG 40.4%, -High 59.6%\nDiversity — Agriculture: NaiveRAG 27.2%, -High 72.8%; CS: NaiveRAG 36.8%, -High 63.2%; Legal: NaiveRAG 16.8%, -High 83.2%; Mix: NaiveRAG 36.0%, -High 64.0%\nEmpowerment — Agriculture: NaiveRAG 36.0%, -High 64.0%; CS: NaiveRAG 42.4%, -High 57.6%; Legal: NaiveRAG 22.8%, -High 77.2%; Mix: NaiveRAG 47.6%, -High 52.4%\nOverall — Agriculture: NaiveRAG 35.2%, -High 64.8%; CS: NaiveRAG 44.0%, -High 56.0%; Legal: NaiveRAG 22.0%, -High 78.0%; Mix: NaiveRAG 42.4%, -High 57.6%\nNaiveRAG -Low NaiveRAG -Low NaiveRAG -Low NaiveRAG -Low\nComprehensiveness — Agriculture: NaiveRAG 36.0%, -Low 64.0%; CS: NaiveRAG 43.2%, -Low 56.8%; Legal: NaiveRAG 19.2%, -Low 80.8%; Mix: NaiveRAG 36.0%, -Low 64.0%\nDiversity — Agriculture: NaiveRAG 28.0%, -Low 72.0%; CS: NaiveRAG 39.6%, -Low 60.4%; Legal: NaiveRAG 13.6%, -Low 86.4%; Mix: NaiveRAG 33.2%, -Low 66.8%\nEmpowerment — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 42.8%, -Low 57.2%; Legal: NaiveRAG 16.4%, -Low 83.6%; Mix: NaiveRAG 35.2%, -Low 64.8%\nOverall — Agriculture: NaiveRAG 34.8%, -Low 65.2%; CS: NaiveRAG 43.6%, -Low 56.4%; Legal: NaiveRAG 18.8%, -Low 81.2%; Mix: NaiveRAG 35.2%, -Low 64.8%\nNaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin NaiveRAG -Origin\nComprehensiveness — Agriculture: NaiveRAG 24.8%, -Origin 75.2%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 16.4%, -Origin 83.6%; Mix: NaiveRAG 44.4%, -Origin 55.6%\nDiversity — Agriculture: NaiveRAG 26.4%, -Origin 73.6%; CS: NaiveRAG 44.8%, -Origin 55.2%; Legal: NaiveRAG 14.4%, -Origin 85.6%; Mix: NaiveRAG 25.6%, -Origin 74.4%\nEmpowerment — Agriculture: NaiveRAG 32.0%, -Origin 68.0%; CS: NaiveRAG 43.2%, -Origin 56.8%; Legal: NaiveRAG 17.2%, -Origin 82.8%; Mix: NaiveRAG 45.2%, -Origin 54.8%\nOverall — Agriculture: NaiveRAG 25.6%, -Origin 74.4%; CS: NaiveRAG 39.2%, -Origin 60.8%; Legal: NaiveRAG 15.6%, -Origin 84.4%; Mix: NaiveRAG 44.4%, -Origin 55.6%",
+     "score": null,
+     "origin": "previous_turn"
+    },
+    {
+     "index": 3,
+     "kind": "chunk",
+     "chunk_id": "ca6f64e7-68f3-47a2-964d-360efacef963",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "• Low-level-only Retrieval: The -High variant removes high-order retrieval, leading to a significant\nperformance decline across nearly all datasets and metrics. This drop is mainly due to its emphasis\non the specific information, which focuses excessively on entities and their immediate neighbors.\nWhile this approach enables deeper exploration of directly related entities, it struggles to gather\ninformation for complex queries that demand comprehensive insights.\n• High-level-only Retrieval: The -Low variant prioritizes capturing a broader range of content by\nleveraging entity-wise relationships rather than focusing on specific entities. This approach offers\na significant advantage in comprehensiveness, allowing it to gather more extensive and varied\ninformation. However, the trade-off is a reduced depth in examining specific entities, which can\nlimit its ability to provide highly detailed insights. Consequently, this high-level-only retrieval\nmethod may struggle with tasks that require precise, detailed answers.\n• Hybrid Mode: The hybrid mode, or the full version of LightRAG, combines the strengths of\nboth low-level and high-level retrieval methods. It retrieves a broader set of relationships while\nsimultaneously conducting an in-depth exploration of specific entities. This dual-level approach\nensures both breadth in the retrieval process and depth in the analysis, providing a comprehensive\nview of the data. As a result, LightRAG achieves balanced performance across multiple dimensions.\nSemantic Graph Excels in RAG. We eliminated the use of original text in our retrieval process.\nSurprisingly, the resulting variant, -Origin, does not exhibit significant performance declines across\nall four datasets. In some cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between",
+     "score": null,
+     "origin": "previous_turn"
+    },
+    {
+     "index": 4,
+     "kind": "chunk",
+     "chunk_id": "577eceb9-b077-40e3-bbac-ada374937b91",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 8,
+     "page_end": 8,
+     "section_title": null,
+     "snippet": "cases, this variant even shows improvements (e.g. in Agriculture and Mix).\nWe attribute this phenomenon to the effective extraction of key information during the graph-based\nindexing process, which provides sufficient context for answering queries. Additionally, the original\ntext often contains irrelevant information that can introduce noise in the response.\n4.4 C ASE STUDY (RQ3)\nTo provide a clear comparison between baseline methods and our LightRAG, we present specific\ncase examples in Table 3, which includes responses to a machine learning question from both\nthe competitive baseline, GraphRAG, and our LightRAG framework. In this instance, LightRAG\noutperforms in all evaluation dimensions assessed by the LLM judge, including comprehensiveness,\ndiversity, empowerment, and overall quality. Our key observations are as follows:\ni) Comprehensiveness. Notably, LightRAG covers a broader range of machine learning metrics,\nshowcasing its comprehensiveness and ability to effectively discover relevant information. This\nhighlights the strength of our graph-based indexing paradigm, which excels in precise entity and\nrelation extraction as well as LLM profiling. ii) Both Diversity and Empowerment. Furthermore,\nLightRAG not only offers a more diverse array of information but also delivers more empowering\ncontent. This success is due to LightRAG’s hierarchical retrieval paradigm, which combines in-depth\n8",
+     "score": null,
+     "origin": "previous_turn"
+    },
+    {
+     "index": 5,
+     "kind": "chunk",
+     "chunk_id": "2ff1c720-778e-4752-808f-c1e2e2058e35",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 9,
+     "page_end": 9,
+     "section_title": null,
+     "snippet": "systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer 1 is more direct and systematic, Answer 2 excels in comprehensiveness,\ndiversity, and empowerment. It provides a richer exploration of the topic, including insights into user\nengagement and nuanced differences between metrics. This depth and breadth make it more informative for\nreaders seeking to thoroughly understand the evaluation of movie recommendation systems.\"\nexplorations of related entities through low-level retrieval to enhance empowerment with broader\nexplorations via high-level retrieval to improve answer diversity. Together, these approaches capture a\ncomprehensive global perspective of the knowledge domain, contributing to better RAG performance.\n4.5 M ODEL COST AND ADAPTABILITY ANALYSIS (RQ4)\nFigure 2: Comparison of Cost in Terms of To-\nkens and API Calls for GraphRAG and Ligh-\ntRAG on the Legal Dataset.\nPhase Retrieval Phase Incremental Text Update\nModel GraphRAG Ours GraphRAG Ours\nTokens 610 × 1,000 < 100 1,399 × 2 × 5,000 Textract+Textract\nAPI 610×1,000\nCmax 1 1,399 × 2 +Cextract CextractCalls\nWe compare the cost of our LightRAG with that of the\ntop-performing baseline, GraphRAG, from two key\nperspectives. First, we examine the number of tokens\nand API calls during the indexing and retrieval pro-\ncesses. Second, we analyze these",
+     "score": null,
+     "origin": "previous_turn"
+    },
+    {
+     "index": 6,
+     "kind": "chunk",
+     "chunk_id": "34529d7f-7689-4949-ab52-ffeade74290d",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 6,
+     "page_end": 6,
+     "section_title": null,
+     "snippet": "those involving complex high-level\nsemantics, poses significant challenges. To address this, we build on existing work (Edge et al.,\n2024) and adopt an LLM-based multi-dimensional comparison method. We employ a robust LLM,\nspecifically GPT-4o-mini, to rank each baseline against our LightRAG. The evaluation prompt we\nused is detailed in Appendix 7.3.4. In total, we utilize four evaluation dimensions, including:\ni) Comprehensiveness: How thoroughly does the answer address all aspects and details of the\nquestion? ii) Diversity: How varied and rich is the answer in offering different perspectives and\ninsights related to the question? iii) Empowerment: How effectively does the answer enable the\nreader to understand the topic and make informed judgments? iv) Overall: This dimension assesses\nthe cumulative performance across the three preceding criteria to identify the best overall answer.\nThe LLM directly compares two answers for each dimension and selects the superior response for\neach criterion. After identifying the winning answer for the three dimensions, the LLM combines the\nresults to determine the overall better answer. To ensure a fair evaluation and mitigate the potential\nbias that could arise from the order in which the answers are presented in the prompt, we alternate the\nplacement of each answer. We calculate win rates accordingly, ultimately leading to the final results.\n4.2 C OMPARISON OF LIGHT RAG WITH EXISTING RAG M ETHODS (RQ1)\nWe compare LightRAG against each baseline across various evaluation dimensions and datasets. The\nresults are presented in Table 1. Based on these findings, we draw the following conclusions:\n6",
+     "score": 0.4896,
+     "origin": "retrieval"
+    },
+    {
+     "index": 7,
+     "kind": "chunk",
+     "chunk_id": "ed9203b8-af3a-4f23-8152-693e73284fcb",
+     "document_id": "dbb7c092-2340-4bf5-aba9-59ac761245b5",
+     "filename": "2410.05779v3.pdf",
+     "page_start": 9,
+     "page_end": 9,
+     "section_title": null,
+     "snippet": "Squared Error (MSE) [...]\n4. Area Under the Curve (AUC) [...] 5. F-Measure [...] 6. User Engagement Metrics [...] Conclusion: A\ncomprehensive evaluation of movie recommendation systems employs a range of metrics that capture both\nthe accuracy of the recommendations and user satisfaction. By effectively leveraging these metrics, system\ndesigners can optimize recommendation engines to deliver more personalized and relevant experiences.\nLLM Decision Comprehensiveness: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 provides a broader array of metrics including MAPK, AUC, and user engagement\nmetrics alongside precision, recall, RMSE, and F-Measure. This gives a fuller view of how recommendation\nsystems can be evaluated. Answer 1, while detailed, is more focused on traditional metrics and lacks the\ninclusion of engagement metrics which are crucial for understanding user interaction.\"\nDiversity: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 not only covers a wide variety of metrics but also includes nuanced explanations\nof how some metrics interrelate and differ from one another, like the inclusion of both RMSE and MSE, as\nwell as the details behind AUC. In contrast, Answer 1 sticks primarily to standard metrics without much\nexploration of potential nuances.\"\nEmpowerment: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"Answer 2 empowers the reader more effectively by detailing how each metric functions and\nits importance in evaluating recommendation systems. By providing context such as the trade-offs between\nprecision and recall and emphasizing user engagement metrics, it enables readers to make more informed\njudgments and understand the implications of different metrics. Answer 1 is more straightforward but lacks\nthe depth of insight regarding why these metrics matter.\"\nOverall Winner: \"Winner\": \"Answer 2 (LightRAG)\",\n\"Explanation\": \"While Answer",
+     "score": 0.4697,
+     "origin": "retrieval"
+    }
+   ],
+   "answer": "根據文件中的比較結果，LightRAG 的幾個變體（ablated versions）在某些條件下表現不如完整版本，具體如下：\n\n1. **-High 變體（僅高階檢索）**：\n   - 在 **CS / Diversity** 條件下，-High 的 63.2% 高於 LightRAG 的 62.0%，差距為 +1.2 個百分點（+1.9% 相對值）[2]。\n   - 這個變體因為過度專注於特定實體及其直接相關資訊，導致在需要廣泛視角的任務中表現較差[3]。\n\n2. **-Low 變體（僅低階檢索）**：\n   - 在 **Mix / Comprehensiveness** 條件下，-Low 的 64.0% 高於 LightRAG 的 61.2%，差距為 +2.8 個百分點（+4.6% 相對值）[2]。\n   - 在 **Mix / Empowerment** 條件下，-Low 的 64.8% 高於 LightRAG 的 57.2%，差距為 +7.6 個百分點（+13.3% 相對值）[2]。\n   - 在 **Mix / Overall** 條件下，-Low 的 64.8% 高於 LightRAG 的 60.0%，差距為 +4.8 個百分點（+8.0% 相對值）[2]。\n   - 這個變體雖然在廣度上有優勢，但缺乏對特定實體的深入分析，導致在需要精確資訊的任務中表現較差[3]。\n\n3. **-Origin 變體（使用原始文本而非語義圖）**：\n   - 在 **Agriculture / Comprehensiveness** 條件下，-Origin 的 75.2% 高於 LightRAG 的 67.6%，差距為 +7.6 個百分點（+11.2% 相對值）[2]。\n   - 在 **Mix / Diversity** 條件下，-Origin 的 74.4% 高於 LightRAG 的 67.6%，差距為 +6.8 個百分點（+10.1% 相對值）[2]。\n   - 在 **Agriculture / Empowerment** 條件下，-Origin 的 68.0% 高於 LightRAG 的 67.6%，差距為 +0.4 個百分點（+0.6% 相對值）[2]。\n   - 在 **Agriculture / Overall** 條件下，-Origin 的 74.4% 高於 LightRAG 的 67.6%，差距為 +6.8 個百分點（+10.1% 相對值）[2]。\n   - 儘管在某些條件下表現優於 LightRAG，但整體而言，-Origin 的表現不如完整版本，特別是在需要語義圖索引優勢的任務中[3]。\n\n### 結論：\nLightRAG 的完整版本在大多數條件下表現優於其變體，但 -High、-Low 和 -Origin 在某些特定條件下表現較佳。這些例外情況顯示，不同檢索策略在不同任務上的適應性不同，完整版本的雙層檢索機制（結合低階與高階檢索）能提供更平衡的表現。[2][3]",
+   "elapsed_seconds": 42.3
+  }
+ ]
+}
