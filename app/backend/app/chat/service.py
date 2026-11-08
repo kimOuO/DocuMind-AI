@@ -126,6 +126,12 @@ FACTS_TOKEN_BUDGET = 800  # D92: the unambiguous exception wording needs the roo
 # D95: the rewrite of a follow-up is deterministic; it was the one call still sampling at the
 # model's default (0.6), so the same follow-up could be rewritten differently each time.
 REWRITE_TEMPERATURE = 0.0
+# D95: a rewrite longer than this many times the question (plus the allowance) has added
+# material the user did not ask — the model pads "compare LightRAG with GraphRAG" with both
+# definitions from the memory, 8 → 66 tokens — and is discarded. Real follow-ups grow far
+# less: 「那它的缺點呢？」 6 → 9, "and its drawbacks?" 4 → 13 tokens.
+REWRITE_GROWTH_FACTOR = 3
+REWRITE_GROWTH_ALLOWANCE = 12
 # The answer is saved to the database every this many pieces while it streams.
 SAVE_EVERY = 20
 
@@ -639,9 +645,10 @@ class ChatService:
         """The question rewritten from the conversation so far, or as asked.
 
         Without earlier turns there is nothing to resolve and no call is made.
-        A rewrite that fails, is cut short, is not a single line or exceeds the
-        question budget is not used: the question is kept as asked, and the
-        call is in the ledger either way.
+        A rewrite that fails, is cut short, is not a single line, exceeds the
+        question budget or grew far beyond the question (it added material, D95)
+        is not used: the question is kept as asked, and the call is in the
+        ledger either way.
         """
         memory = build_memory(
             list(prepared.history), self._counter, budget_tokens=MEMORY_TOKEN_BUDGET
@@ -667,11 +674,13 @@ class ChatService:
         if not result.finish_reason.is_complete:
             return prepared.question
         rewritten = clean_rewrite(result.text)
-        too_long = (
-            rewritten is not None
-            and self._counter.count(rewritten) > self._settings.question_token_budget
+        if rewritten is None:
+            return prepared.question
+        length = self._counter.count(rewritten)
+        grown = length > REWRITE_GROWTH_FACTOR * self._counter.count(prepared.question) + (
+            REWRITE_GROWTH_ALLOWANCE
         )
-        if rewritten is None or too_long:
+        if length > self._settings.question_token_budget or grown:
             return prepared.question
         return rewritten
 

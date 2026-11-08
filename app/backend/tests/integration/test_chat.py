@@ -855,6 +855,28 @@ async def test_the_route_is_decided_by_the_question_as_asked_not_by_its_rewrite(
     assert [s["kind"] for s in received["sources"]] == ["chunk"]
 
 
+async def test_a_rewrite_that_pads_the_question_with_material_is_discarded(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D95: after a summary answer, the model rewrote "compare lightRAG with GraphRAG" into a
+    66-token sentence carrying both definitions; retrieval then missed the table. A rewrite
+    that grew beyond three times the question plus 12 tokens is not used."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    padded = (
+        "Compare LightRAG, a Retrieval-Augmented Generation framework that integrates graph "
+        "structures into text indexing and retrieval to improve accuracy and efficiency for "
+        "large language models, with GraphRAG, a method that combines RAG and query-focused "
+        "summarization to answer global sensemaking questions using a knowledge graph."
+    )
+    model = StubOllama(["Graphs [1]."], rewrite_to=padded)
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    events(ask(kim, conversation, "summary this document."))
+    received = dict(events(ask(kim, conversation, "compare lightRAG with GraphRAG")))
+    assert len(model.rewrite_prompts) == 1  # the rewrite was attempted and is in the ledger
+    assert received["route"]["standalone_question"] == "compare lightRAG with GraphRAG"
+
+
 async def test_the_request_can_set_the_answer_temperature_between_0_and_1(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:
