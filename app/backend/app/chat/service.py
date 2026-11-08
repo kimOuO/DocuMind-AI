@@ -15,7 +15,7 @@ import re
 import uuid
 from collections.abc import AsyncIterator, Sequence
 from contextlib import aclosing
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from functools import partial
 from typing import Any
 
@@ -287,12 +287,11 @@ class ChatService:
             # "document summary" must not send a content question to the summary tree.
             question = await self._standalone_question(prepared)
             kind = question_type(prepared.question)
-            fallback_note = ""
             if kind == "summary" and await self._summary_tree_skipped(prepared):
                 # D91: the documents were uploaded without a summary tree; the question is
-                # answered from retrieval, and the answer says so.
+                # answered from retrieval. D97 (user): without a note after the answer —
+                # the route event and the document's summary status already say so.
                 kind = "retrieval"
-                fallback_note = _NO_SUMMARY_TREE[question_language(prepared.question)]
             yield ChatEvent("route", {"type": kind, "standalone_question": question})
 
             # D71: experimental modes. "roles" only changes the prompt (same evidence);
@@ -387,8 +386,6 @@ class ChatService:
                     await self._document_cards(prepared),
                 )
             )
-            if fallback_note:
-                evidence = replace(evidence, note=fallback_note)
             async with self._sessions() as session, session.begin():
                 await ChatRepository(session).start_streaming(
                     prepared.assistant_message_id, evidence.sources
@@ -1553,18 +1550,6 @@ def _without_program_figures(check: NumberCheck, facts_text: str) -> NumberCheck
         return check
     return NumberCheck(check.verified, kept, check.mislabelled, check.unresolved, check.overstated)
 
-
-# Said after an answer when a summary was asked of documents uploaded without a summary tree.
-_NO_SUMMARY_TREE = {
-    "other": (
-        "These documents were uploaded without a summary tree, so this answer comes from the "
-        "passages most similar to the question, not from a reading of the whole document."
-    ),
-    "zh": (
-        "這些文件上傳時選擇不建立摘要樹，所以這個回答只依據與問題最相近的片段，"
-        "不是讀完整份文件的摘要。"
-    ),
-}
 
 # Said instead of an answer when no retrieved chunk is similar enough to the question.
 _NOTHING_RELEVANT = {

@@ -1022,4 +1022,5 @@ async def test_a_summary_question_about_documents_without_a_summary_tree_is_answ
         db, "SELECT content FROM messages WHERE id = %s", by_name["start"]["assistant_message_id"]
     )[0]
     assert content.startswith("LightRAG builds a graph [1].")
-    assert "uploaded without a summary tree" in content
+    # D97 (user): no note is appended; the route event and the summary status say it.
+    assert "summary tree" not in content
