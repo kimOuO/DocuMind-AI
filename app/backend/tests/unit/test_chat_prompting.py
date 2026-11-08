@@ -148,6 +148,7 @@ def test_a_source_payload_carries_what_the_interface_shows(counter: Qwen3TokenCo
     assert payload == {
         "index": 1,
         "kind": "chunk",
+        "chunk_id": str(source.chunk_id),
         "document_id": str(source.document_id),
         "filename": "paper.pdf",
         "page_start": 8,
@@ -332,3 +333,29 @@ def test_the_documents_in_scope_are_listed_with_the_opening_of_their_summaries(
     assert "- notes.md: Bread notes." in prompt
     assert "About you: DocuMind-AI" in prompt
     assert "(no passage of the documents resembles the question)" in prompt
+
+
+def test_the_conversation_so_far_is_context_after_the_sources_not_a_source(
+    counter: Qwen3TokenCounter,
+) -> None:
+    """D99: a follow-up's answer sees the recent turns, between the sources and the
+    question, labelled as context; without earlier turns the block is absent."""
+    from app.chat.prompting import CONVERSATION_BUDGET, build_answer_prompt
+
+    chunk = RetrievedChunk(
+        uuid.uuid4(), uuid.uuid4(), "a.txt", 1, 0, "LightRAG builds a graph.", 6, 0.9
+    )
+    memory = "User: What does LightRAG build?\nAssistant: A graph [1]."
+    prompt, _ = build_answer_prompt(
+        "What are its drawbacks?", [chunk], counter, 5_000, conversation=memory
+    )
+    assert "Conversation so far" in prompt and memory in prompt
+    assert (
+        prompt.index("[1] a.txt")
+        < prompt.index("Conversation so far")
+        < prompt.index("Question: What")
+    )
+    assert "not a source" in prompt
+    bare, _ = build_answer_prompt("What are its drawbacks?", [chunk], counter, 5_000)
+    assert "Conversation so far" not in bare
+    assert CONVERSATION_BUDGET == 800

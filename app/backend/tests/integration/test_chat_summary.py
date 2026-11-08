@@ -115,7 +115,11 @@ async def test_a_summary_question_is_answered_from_the_stored_summaries(
     names = [name for name, _ in received]
     assert names[:3] == ["start", "route", "sources"]
     assert names[-2:] == ["usage", "done"]
-    assert received[1][1] == {"type": "summary", "standalone_question": "summary this document."}
+    assert received[1][1] == {
+        "type": "summary",
+        "standalone_question": "summary this document.",
+        "follow_up": None,
+    }
     sources = received[2][1]
     assert isinstance(sources, list) and len(sources) >= 3
     assert {s["kind"] for s in sources} == {"summary"}
@@ -165,7 +169,11 @@ async def test_a_summary_question_while_the_summary_is_not_ready_calls_no_model(
 
     # The explanation is streamed like an answer, so the client shows it; no usage event.
     assert [name for name, _ in received] == ["start", "route", "sources", "delta", "done"]
-    assert received[1][1] == {"type": "summary", "standalone_question": "Summarize this document"}
+    assert received[1][1] == {
+        "type": "summary",
+        "standalone_question": "Summarize this document",
+        "follow_up": None,
+    }
     assert received[2][1] == []
     assert received[4][1]["status"] == "completed"
     assert received[4][1]["answered"] is False

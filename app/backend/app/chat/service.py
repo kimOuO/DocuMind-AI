@@ -48,11 +48,13 @@ from app.chat.evidence import (
     overall_status,
 )
 from app.chat.memory import (
+    FOLLOW_UP_MAX_OUTPUT_TOKENS,
     MEMORY_TOKEN_BUDGET,
     HistoryMessage,
     build_memory,
     clean_rewrite,
-    needs_rewrite,
+    follow_up_prompt,
+    parse_follow_up,
     rewrite_prompt,
 )
 from app.chat.navigation import (
@@ -72,6 +74,7 @@ from app.chat.navigation import (
     select_evidence,
 )
 from app.chat.prompting import (
+    CONVERSATION_BUDGET,
     build_answer_prompt,
     build_summary_prompt,
     cited_indexes,
@@ -107,7 +110,7 @@ from app.core.errors import ApiError
 from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
 from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
 from app.llm.tokenizer import TokenCounter
-from app.models import User
+from app.models import Message, User
 from app.retrieval.expansion import MAX_FOLLOWING, table_context
 from app.retrieval.repository import RetrievalRepository, RetrievedChunk
 from app.retrieval.service import RetrievalService, SearchScope
@@ -154,6 +157,9 @@ class PreparedQuestion:
     # The sampling temperature of the answer call: the request's value, else the server's
     # ANSWER_TEMPERATURE; None means the model's default (AC-60, D94).
     temperature: float | None = None
+    # D99: the chunks the previous completed answer cited as sources, for a follow-up that
+    # retrieval cannot place (every candidate below the similarity threshold).
+    previous_chunk_ids: tuple[uuid.UUID, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -248,6 +254,7 @@ class ChatService:
 
         earlier = await ConversationRepository(self._db).messages(actor.id, conversation.id)
         history = tuple(HistoryMessage(m.role, m.content, m.status) for m in earlier)
+        previous_chunk_ids = _previous_chunk_ids(earlier)
         if temperature is None:
             temperature = self._settings.answer_temperature
         user_message_id, assistant_message_id = await ChatRepository(self._db).add_exchange(
@@ -263,6 +270,7 @@ class ChatService:
             scope,
             history,
             temperature,
+            previous_chunk_ids,
         )
 
     async def answer(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
@@ -285,14 +293,17 @@ class ChatService:
             # answer work from that standalone question. The route is decided by the
             # question as the user asked it (D95): a rewrite that adds words such as
             # "document summary" must not send a content question to the summary tree.
-            question = await self._standalone_question(prepared)
+            question, follow_up = await self._standalone_question(prepared)
             kind = question_type(prepared.question)
             if kind == "summary" and await self._summary_tree_skipped(prepared):
                 # D91: the documents were uploaded without a summary tree; the question is
                 # answered from retrieval. D97 (user): without a note after the answer —
                 # the route event and the document's summary status already say so.
                 kind = "retrieval"
-            yield ChatEvent("route", {"type": kind, "standalone_question": question})
+            yield ChatEvent(
+                "route",
+                {"type": kind, "standalone_question": question, "follow_up": follow_up},
+            )
 
             # D71: experimental modes. "roles" only changes the prompt (same evidence);
             # "navigate" adds a navigation call whose located places are fetched and put
@@ -648,27 +659,42 @@ class ChatService:
                 "error", {"code": "INTERNAL_ERROR", "detail": "The answer could not be produced."}
             )
 
-    async def _standalone_question(self, prepared: PreparedQuestion) -> str:
-        """The question rewritten from the conversation so far, or as asked.
+    async def _standalone_question(self, prepared: PreparedQuestion) -> tuple[str, bool | None]:
+        """The question rewritten from the conversation so far, or as asked, and whether
+        the model judged it a follow-up (None: no earlier turns, or the judgement failed).
 
-        Without earlier turns there is nothing to resolve and no call is made.
-        A rewrite that fails, is cut short, is not a single line, exceeds the
-        question budget or grew far beyond the question (it added material, D95)
-        is not used: the question is kept as asked, and the call is in the
-        ledger either way.
+        Without earlier turns there is nothing to resolve and no call is made. With
+        them, one short call decides whether the question leans on the conversation
+        (D99, the user's design: the model judges, not a keyword rule); a NEW question is
+        used as asked. A follow-up is rewritten; a rewrite that fails, is cut short, is
+        not a single line, exceeds the question budget or grew far beyond the question
+        (it added material, D95) is not used: the question is kept as asked, and every
+        call is in the ledger either way.
         """
         memory = build_memory(
             list(prepared.history), self._counter, budget_tokens=MEMORY_TOKEN_BUDGET
         )
-        # D96: a question that does not lean on the conversation is used as asked; the
-        # rewrite only ever added material to one.
-        if not memory or not needs_rewrite(prepared.question):
-            return prepared.question
+        if not memory:
+            return prepared.question, None
         context = CallContext(
             owner_id=prepared.actor.id,
             conversation_id=prepared.conversation_id,
             message_id=prepared.assistant_message_id,
         )
+        follow_up: bool | None = None
+        try:
+            judged = await self._gateway.generate(
+                follow_up_prompt(memory, prepared.question),
+                purpose="follow_up",
+                temperature=REWRITE_TEMPERATURE,
+                max_output_tokens=FOLLOW_UP_MAX_OUTPUT_TOKENS,
+                context=context,
+            )
+            follow_up = parse_follow_up(judged.text)
+        except (LLMCallFailed, ContextBudgetExceeded) as error:
+            logger.warning("Follow-up judgement skipped, the question is rewritten: %s", error)
+        if follow_up is False:
+            return prepared.question, False
         try:
             result = await self._gateway.generate(
                 rewrite_prompt(memory, prepared.question),
@@ -679,19 +705,19 @@ class ChatService:
             )
         except (LLMCallFailed, ContextBudgetExceeded) as error:
             logger.warning("Rewrite skipped, question used as asked: %s", error)
-            return prepared.question
+            return prepared.question, follow_up
         if not result.finish_reason.is_complete:
-            return prepared.question
+            return prepared.question, follow_up
         rewritten = clean_rewrite(result.text)
         if rewritten is None:
-            return prepared.question
+            return prepared.question, follow_up
         length = self._counter.count(rewritten)
         grown = length > REWRITE_GROWTH_FACTOR * self._counter.count(prepared.question) + (
             REWRITE_GROWTH_ALLOWANCE
         )
         if length > self._settings.question_token_budget or grown:
-            return prepared.question
-        return rewritten
+            return prepared.question, follow_up
+        return rewritten, follow_up
 
     async def _pages(
         self, prepared: PreparedQuestion, evidence: Evidence, cited: list[int]
@@ -1162,9 +1188,13 @@ class ChatService:
                 None if best is None else round(best, 3),
                 self._settings.min_similarity,
             )
-            return await retrieval.with_table_context(
-                prepared.actor, chunks[:BELOW_THRESHOLD_PASSAGES]
-            ), embedding
+            closest = chunks[:BELOW_THRESHOLD_PASSAGES]
+            # D99: a follow-up that retrieval cannot place keeps the previous turn's sources
+            # — "where does it lose?" after an answer built on a table needs that table.
+            previous = await retrieval.previous_sources(prepared.actor, prepared.previous_chunk_ids)
+            seen = {c.chunk_id for c in previous}
+            merged = [*previous, *[c for c in closest if c.chunk_id not in seen]]
+            return await retrieval.with_table_context(prepared.actor, merged), embedding
 
     async def _summary_tree_skipped(self, prepared: PreparedQuestion) -> bool:
         """Whether every document in scope was uploaded without a summary tree (D91)."""
@@ -1206,9 +1236,19 @@ class ChatService:
             EVIDENCE_TOKEN_BUDGET,
             preamble=preamble,
             documents=cards,
+            conversation=self._conversation(prepared),
         )
         sources = [source_payload(index, chunk) for index, chunk in enumerate(used, start=1)]
         return Evidence(prompt, sources, "", facts_info, preamble if facts_info else "")
+
+    def _conversation(self, prepared: PreparedQuestion) -> str:
+        """The conversation so far for the answer prompt (D99), within its budget; empty
+        when the setting is off or there are no earlier turns."""
+        if not self._settings.answer_context:
+            return ""
+        return build_memory(
+            list(prepared.history), self._counter, budget_tokens=CONVERSATION_BUDGET
+        )
 
     def _with_facts(
         self, question: str, candidates: list[RetrievedChunk]
@@ -1531,6 +1571,22 @@ class ChatService:
             await ChatRepository(session).finish(
                 prepared.assistant_message_id, status=status, content=content, answered=answered
             )
+
+
+def _previous_chunk_ids(earlier: Sequence[Message]) -> tuple[uuid.UUID, ...]:
+    """The chunk ids the last completed answer cited (D99); none when it had no chunk
+    sources (a summary answer) or when the sources predate the chunk_id field."""
+    for message in reversed(earlier):
+        if message.role == "assistant" and message.status == "completed":
+            ids = []
+            for source in message.sources:
+                if source.get("kind") == "chunk" and source.get("chunk_id"):
+                    try:
+                        ids.append(uuid.UUID(str(source["chunk_id"])))
+                    except ValueError:
+                        continue
+            return tuple(ids)
+    return ()
 
 
 def _without_derived_figures(check: NumberCheck, derived: Sequence[str]) -> NumberCheck:

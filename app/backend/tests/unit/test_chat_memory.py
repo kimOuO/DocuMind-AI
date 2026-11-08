@@ -10,7 +10,6 @@ from app.chat.memory import (
     HistoryMessage,
     build_memory,
     clean_rewrite,
-    needs_rewrite,
     rewrite_prompt,
 )
 from app.llm.tokenizer import Qwen3TokenCounter
@@ -116,32 +115,18 @@ def test_the_rewritten_question_is_cleaned_or_rejected() -> None:
     assert clean_rewrite("First line?\nSecond line explaining.") is None  # not a single question
 
 
-def test_only_a_question_that_leans_on_the_conversation_is_rewritten() -> None:
-    """D96: the rewrite resolves references; a question without any is used as asked (the
-    model padded "compare lightRAG with GraphRAG" with both definitions, 8 → 66 tokens)."""
-    for question in [
-        "那它的缺點呢？",
-        "and its drawbacks?",
-        "what about the ablated versions?",
-        "那第二篇呢？",
-        "Which one is cheaper?",
-        "它們的差別在哪？",
-        "為什麼會這樣？",
-        "Can you give the numbers for that?",
-        "the second one?",
-        "缺點？",
-        "drawbacks?",
-        "And the costs?",
-    ]:
-        assert needs_rewrite(question), question
-    for question in [
-        "summary this document.",
-        "compare lightRAG with GraphRAG",
-        "Performance of ablated versions of LightRAG",
-        "LightRAG 用哪四個評估面向比較回答品質？各是什麼意思？",
-        "In the Legal dataset, what are the Diversity win rates of NaiveRAG versus LightRAG?",
-        "GraphRAG 論文中，Podcast 與 News 資料集建出的圖各有多少節點與邊？",
-        "How large (in tokens) are the corpora each paper evaluates on?",
-        "如何在家烤酸種麵包？",
-    ]:
-        assert not needs_rewrite(question), question
+def test_the_follow_up_judgement_is_asked_without_any_word_of_the_documents() -> None:
+    """D99: the model decides whether a question leans on the conversation; the prompt's
+    examples are about an unrelated report, and "same topic" is explicitly not enough."""
+    from app.chat.memory import FOLLOW_UP_MAX_OUTPUT_TOKENS, follow_up_prompt, parse_follow_up
+
+    prompt = follow_up_prompt(
+        "User: What does LightRAG build?\nAssistant: A graph [1].", "那它的缺點呢？"
+    )
+    assert prompt.endswith("Message: 那它的缺點呢？\nAnswer:")
+    assert "same topic" in prompt and "NEW or FOLLOW-UP" in prompt
+    assert "solar" in prompt and "LightRAG" not in prompt.split("Conversation:")[0]
+    assert FOLLOW_UP_MAX_OUTPUT_TOKENS <= 16
+    assert parse_follow_up(" FOLLOW-UP\n") is True
+    assert parse_follow_up("New") is False
+    assert parse_follow_up("I am not sure") is None

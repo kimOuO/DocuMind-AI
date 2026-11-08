@@ -180,7 +180,7 @@
 | event | data | 說明 |
 |---|---|---|
 | `start` | `{"user_message_id": "uuid", "assistant_message_id": "uuid", "scope": {"mode": "all \| selected", "document_ids": ["uuid"]}, "temperature": 0.2}` | 兩則訊息已建立；`scope` 是這次實際搜尋的文件範圍；`temperature` 是回答呼叫實際使用的溫度（請求沒帶時為伺服器預設；`null` 表示模型預設，D94） |
-| `route` | `{"type": "retrieval \| summary", "standalone_question": "…"}` | 問題類型與改寫後的問題 |
+| `route` | `{"type": "retrieval \| summary", "standalone_question": "…", "follow_up": true}` | 問題類型與改寫後的問題；`follow_up` 是模型對「這句是否倚賴前文」的判斷（D99：true／false；第一題或判斷失敗為 null） |
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
 | `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000}` | Ollama 回報的實測用量 |
@@ -196,6 +196,7 @@
 {
   "index": 1,
   "kind": "chunk | summary",
+  "chunk_id": "uuid（chunk 才有，D99：追問時可沿用）",
   "document_id": "uuid",
   "filename": "2410.05779v3.pdf",
   "page_start": 8,

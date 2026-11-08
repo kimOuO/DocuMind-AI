@@ -7,43 +7,56 @@ recent turns verbatim, earlier turns reduced to their questions, nothing from
 answers that did not complete.
 """
 
-import re
 from dataclasses import dataclass
 
 from app.llm.tokenizer import TokenCounter
 
 MEMORY_TOKEN_BUDGET = 800  # docs/02-specs/02-architecture.md, section 4.3
 
-# D96: what makes a question lean on the conversation — a pronoun, a demonstrative (not
-# one pointing at the document itself: "this paper"), a connective at the start, a Chinese
-# referent, or a sentence-final 呢. A closed set, so a rule decides; the model asked the
-# same question called 16 of 19 self-contained questions "dependent" (decision log D95).
-_REFERENCE = re.compile(
-    r"\b(?:it|its|it's|they|them|their|theirs|one|ones|former|latter|above|same|also|too"
-    r"|either|both|other|others|another|such|then|again|previous|earlier|mentioned|said)\b"
-    r"|\b(?:this|that|these|those)\b(?!\s+(?:paper|document|file|report|article|study|work)s?\b)"
-    r"|\b(?:what|how)\s+about\b|^\s*(?:and|or|but|also|plus)\b"
-    r"|它|他們|她們|它們|牠|其|此|該|前者|後者|上述|同樣|也|又|還有|那麼|怎麼樣|如何呢|哪一?個|兩者|二者"
-    r"|(?:這|那)(?!(?:篇|份|個|本)?(?:論文|文件|文章|報告|檔案))"
-    r"|呢\s*[?？]?\s*$",
-    re.IGNORECASE,
-)
-_WORD = re.compile(r"[A-Za-z0-9][\w'-]*")
-_CJK = re.compile(r"[\u4e00-\u9fff]")
+# D99 (user): whether a question needs the conversation is the model's call, not a keyword
+# rule. The examples are about an unrelated report, so nothing of the user's documents is
+# written here; "same topic" is explicitly not "follow-up" (the model called 16 of 19
+# self-contained questions dependent when asked without that rule, decision log D95).
+FOLLOW_UP_INSTRUCTIONS = """\
+You decide whether a user's message can be answered by someone who has NOT seen the \
+conversation, using only the documents.
+
+Rule: being about the same topic as the conversation does NOT make a message a follow-up. A \
+message is a FOLLOW-UP only if it cannot be understood without the conversation: it points \
+back with words such as "it", "its", "they", "that", "the second one", "剛剛那個", "那它", or \
+it is a bare fragment that completes an earlier question.
+
+Examples (a conversation about some report on solar panels):
+- "compare monocrystalline with polycrystalline panels" -> NEW (same topic, but complete on its own)
+- "What test sites does the report use?" -> NEW
+- "Efficiency of the panels after ten years" -> NEW
+- "and its drawbacks?" -> FOLLOW-UP ("its" points back)
+- "那它的成本呢？" -> FOLLOW-UP
+- "what about the second site?" -> FOLLOW-UP
+- "成本？" -> FOLLOW-UP (fragment)
+
+Answer with exactly one word: NEW or FOLLOW-UP.
+
+Conversation:
+{memory}
+
+Message: {question}
+Answer:"""
+FOLLOW_UP_MAX_OUTPUT_TOKENS = 8
 
 
-def needs_rewrite(question: str) -> bool:
-    """Whether a follow-up has to be rewritten before retrieval (D96): it refers to the
-    conversation, or it is a fragment of two or three words. A complete question is used
-    as asked — the rewrite only adds material to it."""
-    text = question.strip()
-    if _REFERENCE.search(text):
+def follow_up_prompt(memory: str, question: str) -> str:
+    return FOLLOW_UP_INSTRUCTIONS.format(memory=memory, question=question)
+
+
+def parse_follow_up(text: str) -> bool | None:
+    """True for FOLLOW-UP, False for NEW, None when the answer is neither."""
+    upper = text.strip().upper()
+    if "FOLLOW" in upper:
         return True
-    cjk = _CJK.findall(text)
-    words = _WORD.findall(text)
-    if cjk:
-        return len(cjk) <= 4 and not words
-    return len(words) <= 2
+    if "NEW" in upper:
+        return False
+    return None
 
 
 @dataclass(frozen=True)

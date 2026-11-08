@@ -50,10 +50,25 @@ class RewritingModel:
         self.fail_answers = fail_answers
         self.rewrite_prompts: list[str] = []
         self.answer_prompts: list[str] = []
+        self.judge_prompts: list[str] = []
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
+        if not body["stream"] and "NEW or FOLLOW-UP" in body["prompt"]:
+            # D99: the follow-up judgement, a few tokens at temperature 0.
+            assert body["options"] == {"num_ctx": 10_000, "num_predict": 8, "temperature": 0.0}
+            self.judge_prompts.append(body["prompt"])
+            return httpx.Response(
+                200,
+                json={
+                    "response": "FOLLOW-UP",
+                    "done": True,
+                    "done_reason": "stop",
+                    "prompt_eval_count": 300,
+                    "eval_count": 2,
+                },
+            )
         if not body["stream"]:
             # The rewrite: bounded by the question budget, not the answer's; deterministic (D95).
             assert body["options"] == {"num_ctx": 10_000, "num_predict": 200, "temperature": 0.0}
@@ -116,8 +131,12 @@ async def test_the_first_question_of_a_conversation_is_used_as_asked(
 
     received = dict(events(ask(kim, conversation, FIRST)))
 
-    assert received["route"] == {"type": "retrieval", "standalone_question": FIRST}
-    assert model.rewrite_prompts == []
+    assert received["route"] == {
+        "type": "retrieval",
+        "standalone_question": FIRST,
+        "follow_up": None,
+    }
+    assert model.rewrite_prompts == [] and model.judge_prompts == []
     assert calls(db) == [("answer", "completed", "stop")]
 
 
@@ -132,7 +151,11 @@ async def test_a_follow_up_is_rewritten_from_the_conversation_before_retrieval(
 
     received = dict(events(ask(kim, conversation, FOLLOW_UP)))
 
-    assert received["route"] == {"type": "retrieval", "standalone_question": REWRITTEN}
+    assert received["route"] == {
+        "type": "retrieval",
+        "standalone_question": REWRITTEN,
+        "follow_up": True,
+    }
     # The rewrite saw the earlier turn and the follow-up as asked.
     [rewrite_prompt] = model.rewrite_prompts
     earlier_turn = "User: What does LightRAG build?\nAssistant: LightRAG builds a graph [1]."
@@ -143,6 +166,7 @@ async def test_a_follow_up_is_rewritten_from_the_conversation_before_retrieval(
     assert received["done"]["answered"] is True
     assert calls(db) == [
         ("answer", "completed", "stop"),
+        ("follow_up", "completed", "stop"),
         ("rewrite", "completed", "stop"),
         ("answer", "completed", "stop"),
     ]
@@ -182,7 +206,11 @@ async def test_an_unusable_rewrite_leaves_the_question_as_asked(
     assert received["route"]["standalone_question"] == FOLLOW_UP
     assert f"Question: {FOLLOW_UP}\nAnswer:" in model.answer_prompts[1]
     assert received["done"]["status"] == "completed"
-    assert calls(db)[1:] == [expected_call, ("answer", "completed", "stop")]
+    assert calls(db)[1:] == [
+        ("follow_up", "completed", "stop"),
+        expected_call,
+        ("answer", "completed", "stop"),
+    ]
 
 
 async def test_answers_that_did_not_complete_are_not_in_the_memory(

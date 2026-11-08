@@ -89,6 +89,8 @@ class Settings(BaseSettings):
     # D98 (user): the checks always run and go into the `done` event, but their notes are
     # appended to the answer only in debug mode; the demo shows the answer alone.
     check_notes: bool = False
+    # D99: the conversation so far goes into the answer prompt as context (not a source).
+    answer_context: bool = True
     # The tokenizer file the budget guard counts with, relative to app/backend, and its
     # SHA-256. Must be the tokenizer of LLM_MODEL: the Qwen3 file undercounts qwen3.6's
     # table text by up to 3% (D77/M5), so a qwen3.6 run points these at

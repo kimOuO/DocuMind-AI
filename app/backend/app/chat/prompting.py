@@ -97,6 +97,13 @@ def _source_block(index: int, chunk: RetrievedChunk) -> str:
 
 
 DOCUMENTS_BLOCK_BUDGET = 400  # tokens for the "Documents in scope" lines
+# D99: the conversation so far, after the sources and before the question.
+CONVERSATION_BUDGET = 800
+CONVERSATION_BLOCK = (
+    "Conversation so far (context for reading the question — it is not a source: every "
+    "statement about the documents still cites a numbered source above, and figures come "
+    "from the sources, not from earlier answers):\n{conversation}\n\n"
+)
 
 
 def build_answer_prompt(
@@ -107,12 +114,15 @@ def build_answer_prompt(
     *,
     preamble: str = "",
     documents: Sequence[StoredSummary] = (),
+    conversation: str = "",
 ) -> tuple[str, list[RetrievedChunk]]:
     """The prompt, and the chunks that were included in it (numbered from 1 in that order).
 
     A preamble (D71: the two-role instructions, or the Navigator's plan) goes before
     the instructions; the default prompt has none. The documents in scope are listed with
-    the opening of their summaries (D88), paid for out of the evidence budget."""
+    the opening of their summaries (D88), paid for out of the evidence budget. The
+    conversation so far (D99) is given as context to read the question by, never as a
+    source; it has its own budget (CONVERSATION_BUDGET, applied by the caller)."""
     documents_block = _documents_block(documents, counter, DOCUMENTS_BLOCK_BUDGET)
     evidence_budget -= counter.count(documents_block)
     used: list[RetrievedChunk] = []
@@ -133,7 +143,8 @@ def build_answer_prompt(
     instructions = INSTRUCTIONS.format(
         language_rule=LANGUAGE_RULES[question_language(question)], documents=documents_block
     )
-    return f"{preamble}{instructions}{sources}\n\nQuestion: {question}\nAnswer:", used
+    context = CONVERSATION_BLOCK.format(conversation=conversation) if conversation else ""
+    return f"{preamble}{instructions}{sources}\n\n{context}Question: {question}\nAnswer:", used
 
 
 def source_payload(index: int, chunk: RetrievedChunk) -> dict[str, Any]:
@@ -141,6 +152,7 @@ def source_payload(index: int, chunk: RetrievedChunk) -> dict[str, Any]:
     return {
         "index": index,
         "kind": "chunk",
+        "chunk_id": str(chunk.chunk_id),  # D99: a later turn may bring the chunk back
         "document_id": str(chunk.document_id),
         "filename": chunk.filename,
         "page_start": chunk.page,

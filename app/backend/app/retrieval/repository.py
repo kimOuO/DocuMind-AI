@@ -7,6 +7,7 @@ that are ready are searched.
 
 import re
 import uuid
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from sqlalchemy import and_, func, or_, select, text, union_all
@@ -123,6 +124,46 @@ class RetrievalRepository:
                 text=row.text,
                 token_count=row.token_count,
                 score=float(row.score),
+            )
+            for row in rows
+        ]
+
+    async def by_ids(
+        self, owner_id: uuid.UUID, chunk_ids: Sequence[uuid.UUID]
+    ) -> list[RetrievedChunk]:
+        """The owner's chunks with these ids, in document order, unscored (D99: the sources of
+        the previous turn, brought back for a follow-up that retrieval cannot place)."""
+        if not chunk_ids:
+            return []
+        rows = await self._db.execute(
+            select(
+                Chunk.id,
+                Chunk.document_id,
+                Document.filename,
+                Chunk.page,
+                Chunk.ordinal,
+                Chunk.text,
+                Chunk.token_count,
+            )
+            .join(Document, Document.id == Chunk.document_id)
+            .where(
+                Chunk.id.in_(list(chunk_ids)),
+                Document.owner_id == owner_id,
+                Document.status == "ready",
+            )
+            .order_by(Chunk.document_id, Chunk.ordinal)
+        )
+        return [
+            RetrievedChunk(
+                chunk_id=row.id,
+                document_id=row.document_id,
+                filename=row.filename,
+                page=row.page,
+                ordinal=row.ordinal,
+                text=row.text,
+                token_count=row.token_count,
+                score=None,
+                origin="previous_turn",
             )
             for row in rows
         ]

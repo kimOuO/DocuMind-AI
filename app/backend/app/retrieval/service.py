@@ -5,6 +5,7 @@ documents.
 """
 
 import uuid
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Literal
 
@@ -83,6 +84,12 @@ class RetrievalService:
         return await self._repo.search(
             actor.id, scope.document_ids, embedding, self._settings.top_k
         )
+
+    async def previous_sources(
+        self, actor: User, chunk_ids: Sequence[uuid.UUID]
+    ) -> list[RetrievedChunk]:
+        """The previous turn's source chunks, for a follow-up (D99)."""
+        return await self._repo.by_ids(actor.id, chunk_ids)
 
     async def with_table_context(
         self, actor: User, chunks: list[RetrievedChunk]

@@ -270,6 +270,7 @@ function describeOrigin(source: Source): string {
   }
   if (source.origin === 'table_context') return '表格之後的討論'
   if (source.origin === 'navigation') return '依閱讀計畫補充'
+  if (source.origin === 'previous_turn') return '沿用上一輪的來源'
   return source.score === null ? '' : `相似度 ${source.score.toFixed(2)}`
 }
 

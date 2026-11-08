@@ -18,7 +18,7 @@ from sqlalchemy import select
 
 from app.chat.repository import ChatRepository
 from app.chat.router import get_embedder, get_llm_gateway
-from app.chat.service import ChatService
+from app.chat.service import BELOW_THRESHOLD_PASSAGES, ChatService
 from app.core.database import get_sessionmaker
 from app.core.env_loader import get_settings
 from app.documents.storage import FileStorage
@@ -53,9 +53,12 @@ class StubOllama:
         status_code: int = 200,
         error: str = "",
         rewrite_to: str | None = None,
+        judge: str = "FOLLOW-UP",
     ) -> None:
         self.pieces = pieces
         self.rewrite_to = rewrite_to  # what the rewrite call answers; None = the question as asked
+        self.judge = judge  # what the follow-up judgement (D99) answers
+        self.judge_prompts: list[str] = []
         self.done_reason = done_reason
         self.completion_tokens = len(pieces) if completion_tokens is None else completion_tokens
         self.status_code = status_code
@@ -68,6 +71,19 @@ class StubOllama:
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
+        if not body["stream"] and "NEW or FOLLOW-UP" in body["prompt"]:
+            # D99: the follow-up judgement.
+            self.judge_prompts.append(body["prompt"])
+            return httpx.Response(
+                200,
+                json={
+                    "response": self.judge,
+                    "done": True,
+                    "done_reason": "stop",
+                    "prompt_eval_count": 300,
+                    "eval_count": 2,
+                },
+            )
         if not body["stream"]:
             # A follow-up's rewrite (AC-16): hand the question back unchanged.
             self.rewrite_prompts.append(body["prompt"])
@@ -203,7 +219,11 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
     assert names == ["start", "route", "sources", "delta", "delta", "delta", "usage", "done"]
     by_name = dict(stream)
     assert by_name["start"]["scope"] == {"mode": "all", "document_ids": [graph]}
-    assert by_name["route"] == {"type": "retrieval", "standalone_question": QUESTION}
+    assert by_name["route"] == {
+        "type": "retrieval",
+        "standalone_question": QUESTION,
+        "follow_up": None,
+    }
     [source] = by_name["sources"]
     assert (source["index"], source["kind"], source["filename"]) == (1, "chunk", "graph.txt")
     assert (source["document_id"], source["page_start"], source["page_end"]) == (graph, 1, 1)
@@ -851,6 +871,7 @@ async def test_the_route_is_decided_by_the_question_as_asked_not_by_its_rewrite(
     assert received["route"] == {
         "type": "retrieval",
         "standalone_question": "What does the document summary say about what LightRAG builds?",
+        "follow_up": True,
     }
     assert [s["kind"] for s in received["sources"]] == ["chunk"]
 
@@ -877,19 +898,77 @@ async def test_a_rewrite_that_pads_the_question_with_material_is_discarded(
     assert received["route"]["standalone_question"] == "compare it with GraphRAG"
 
 
-async def test_a_follow_up_that_stands_on_its_own_is_not_rewritten(
+async def test_a_question_the_model_judges_new_is_used_as_asked_without_a_rewrite(
     kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
 ) -> None:
-    """D96: with earlier turns, a complete question still skips the rewrite call — no
-    pronoun or fragment to resolve — and goes to retrieval as asked."""
+    """D99 (user's design): with earlier turns, one short call asks the model whether the
+    question leans on the conversation; a NEW one skips the rewrite and is retrieved as
+    asked. The judgement is in the ledger and in the route event."""
     await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
-    model = StubOllama(["Graphs [1]."], rewrite_to="padded, must not be asked for")
+    model = StubOllama(["Graphs [1]."], rewrite_to="padded, must not be asked for", judge="NEW")
     use_model(kim, tokenizer, model)
     conversation = new_conversation(kim)
     events(ask(kim, conversation, "summary this document."))
     received = dict(events(ask(kim, conversation, QUESTION)))
-    assert model.rewrite_prompts == []
-    assert received["route"] == {"type": "retrieval", "standalone_question": QUESTION}
+    assert len(model.judge_prompts) == 1 and model.rewrite_prompts == []
+    assert "summary this document." in model.judge_prompts[0]
+    assert received["route"] == {
+        "type": "retrieval",
+        "standalone_question": QUESTION,
+        "follow_up": False,
+    }
+    assert [
+        r[0] for r in db.execute("SELECT purpose FROM llm_calls ORDER BY created_at").fetchall()
+    ][-2:] == [
+        "follow_up",
+        "answer",
+    ]
+
+
+async def test_the_answer_of_a_follow_up_sees_the_conversation_as_context(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D99: the recent turns go into the answer prompt, after the sources, as context —
+    the first question's answer sees none."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."], judge="NEW")
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    events(ask(kim, conversation, QUESTION))
+    assert "Conversation so far" not in model.prompts[-1]
+    second = dict(events(ask(kim, conversation, "How many tokens does retrieval cost?")))
+    assert "error" not in second, second.get("error")
+    prompt = model.prompts[-1]
+    assert "Conversation so far" in prompt
+    assert f"User: {QUESTION}" in prompt and "Assistant: Graphs [1]." in prompt
+    assert prompt.index("[1] graph.txt") < prompt.index("Conversation so far")
+
+
+async def test_a_follow_up_retrieval_cannot_place_keeps_the_previous_turns_sources(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D99: when every candidate is below the similarity threshold, the chunks the
+    previous answer cited come back first, marked previous_turn, so that "where does it
+    lose?" after an answer built on a table still has the table."""
+    from app.core.env_loader import get_settings as settings_dependency
+
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    model = StubOllama(["Graphs [1]."], judge="FOLLOW-UP")
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+    first = dict(events(ask(kim, conversation, QUESTION)))
+    assert first["sources"][0]["filename"] == "graph.txt" and first["sources"][0]["chunk_id"]
+    strict = get_settings().model_copy(update={"min_similarity": 0.99})
+    kim.app.dependency_overrides[settings_dependency] = lambda: strict  # type: ignore[attr-defined]
+    use_model(kim, tokenizer, model)
+    second = dict(events(ask(kim, conversation, "and where does it lose?")))
+    kim.app.dependency_overrides.pop(settings_dependency, None)  # type: ignore[attr-defined]
+    assert "error" not in second, second.get("error")
+    assert second["route"]["follow_up"] is True
+    origins = [(s["filename"], s["origin"]) for s in second["sources"]]
+    assert origins[0] == ("graph.txt", "previous_turn")
+    assert second["sources"][0]["chunk_id"] == first["sources"][0]["chunk_id"]
+    assert len(origins) <= 1 + BELOW_THRESHOLD_PASSAGES
 
 
 async def test_without_debug_mode_the_answer_carries_no_check_notes(
