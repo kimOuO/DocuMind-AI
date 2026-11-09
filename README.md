@@ -2,6 +2,8 @@
 
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 
+簡報：[`docs/06-report/DocuMind-AI.pdf`](docs/06-report/DocuMind-AI.pdf)（可編輯版 [`DocuMind-AI.pptx`](docs/06-report/DocuMind-AI.pptx)）
+
 本機執行的文件問答平台：帳號與文件管理（PDF、TXT、Markdown）、入庫（表格整張保留並逐列改寫）、對話式問答（串流回答，來源附檔名、頁碼、片段；接著追問；文件沒有的就明說）、可選的全文摘要、每次模型呼叫的 token 帳本。
 
 ## 題目限制
@@ -158,7 +160,8 @@ DocuMind-AI/
 │   └── frontend/               React 前端
 ├── docs/                       規格與架構決策紀錄
 │   ├── 02-specs/               規格：01 需求與驗收條件、02 架構、03 介面、04 使用情境
-│   └── 03-decisions/           架構決策紀錄：選了什麼、為什麼
+│   ├── 03-decisions/           架構決策紀錄：選了什麼、為什麼
+│   └── 06-report/              簡報（PDF 與 PPTX）
 ├── evaluation/                 評測程式（題庫、標準答案與逐題紀錄保留在開發機，未公開）
 ├── sample-documents/           測試用文件（LightRAG 論文）
 ├── scripts/                    工具：啟動前檢查、API 測試、最小流程驗證、打包、匯出逐字稿

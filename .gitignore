@@ -45,6 +45,11 @@ docs/*
 !docs/02-specs/
 docs/02-specs/archive/
 !docs/03-decisions/
+# The final report: only the two finished files are published.
+!docs/06-report/
+docs/06-report/*
+!docs/06-report/DocuMind-AI.pdf
+!docs/06-report/DocuMind-AI.pptx
 
 # Evaluation: only the scripts and the folder guide are published. The question set, the
 # ground truth, the per-question records and the experiment reports stay on the
