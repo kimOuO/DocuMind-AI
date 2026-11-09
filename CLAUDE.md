@@ -24,7 +24,8 @@
 |---|---|
 | `make setup` | 建立 `.venv`、安裝前後端相依 |
 | `make dev` | 起資料庫容器，後端跑 venv、前端跑 Vite（熱重載） |
-| `make up` / `make down` | 全部用 Docker 啟動／停止（Demo 與交付模式） |
+| `make preflight` | 啟動前檢查：Docker、Ollama 與版本、必要模型、連接埠、資源建議；一次檢查完，最後列出所有要處理的項目 |
+| `make up` / `make down` | 先跑啟動前檢查，再全部用 Docker 啟動／停止（Demo 與交付模式） |
 | `make check` | lint、型別檢查、所有不需真實 LLM 的測試（會啟動資料庫容器；提交前必跑） |
 | `make test` | 只跑後端測試 |
 | `make smoke` | 最小流程驗證：bge-m3 → pgvector → qwen3 |
@@ -88,4 +89,4 @@
 - 文件（`docs/`、PPT）、與使用者的對話：繁體中文。
 - 程式碼、註解、API 欄位：英文。
 - commit 的標題與標記：英文；commit 的內文：繁體中文。
-- `README.md`：中英對照。
+- `README.md`：繁體中文（D109，使用者決定；不再中英對照）。

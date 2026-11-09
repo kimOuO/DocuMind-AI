@@ -1,78 +1,106 @@
 # DocuMind-AI
 
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
-Chat with your documents: upload a file, ask questions, get answers grounded in the document with citations.
 
-> 狀態 / Status（2026-11-08）：帳號、文件管理（PDF／TXT／Markdown）、入庫（表格整塊保留並逐格改寫、五種表格排版、多區塊表格一區塊一向量）、入庫時建立摘要樹（章節摘要 → 全文摘要，數字核對；可選的證據導向修復）、對話式問答（串流、來源的檔名／頁碼／片段、追問改寫、文件沒有的就明說、問系統本身也會回答、回答後的數字與結論核對；可選的比較事實注入）皆已完成；另有實驗性的兩次呼叫 `navigate` 模式（預設關閉）。回答溫度可由前端滑桿逐題調整（預設 0）。已知限制：模型偶爾把變體的定義望文生義（-High 讀成「只用 high-level」）；核對器對部分句型有誤報；表格支援範圍見 `evaluation/table-generalization/`。目前結果見下方「目前結果」。
-> Accounts, document management (PDF/TXT/Markdown), ingestion (tables kept whole and rewritten cell by cell in five layouts, one vector per block of a multi-block table), a summary tree built at ingestion (section summaries → document summary, figures checked; optional evidence-guided repair), and conversational chat (streaming, sources with file name/page/snippet, follow-up rewriting, saying plainly when the documents do not cover a question, answering questions about the assistant itself, post-answer checks of figures and conclusions; optional injection of program-computed comparison facts) are done; an experimental two-call `navigate` mode exists (off by default). Known limits: the model occasionally words a correct figure in the wrong direction; the checker has false positives on some sentence shapes; the supported table layouts are listed in `evaluation/table-generalization/`.
+本機執行的文件問答平台：帳號與文件管理（PDF、TXT、Markdown）、入庫（表格整張保留並逐列改寫）、對話式問答（串流回答，來源附檔名、頁碼、片段；接著追問；文件沒有的就明說）、可選的全文摘要、每次模型呼叫的 token 帳本。
 
-## 題目限制 / Constraints
+## 題目限制
 
 | 限制 | 做法 |
 |---|---|
-| LLM 只做 text-to-text，不得用 GPT/Gemini API 解析文件 | 文件以本地程式庫解析；LLM 為本機 Ollama |
-| LLM context 上限 10K tokens | 每次呼叫的 prompt + completion ≤ 10,000：送出前以內附的 Qwen3 tokenizer 在本地計數並分配預算；每個請求都要求 Ollama 拒絕超量的輸入、不捨棄已有的內容（`truncate=false`、`shift=false`），所以不會被悄悄截斷 |
+| LLM 只做 text-to-text，不得用 GPT／Gemini API 解析文件 | 文件以本地程式庫解析；模型是本機的 Ollama，文字不離開機器 |
+| LLM context 上限 10K tokens | 每次呼叫的 prompt 加輸出 ≤ 10,000：送出前以內附的 tokenizer 在本地計數並分配預算；每個請求都要求 Ollama 拒絕超量的輸入、不捨棄內容，所以不會被悄悄截斷 |
+| 找不到答案不編造 | 回答只依據檢索到的來源並逐句標出處；文件沒提到就明說 |
 
-## 快速啟動 / Quick start
+## 快速啟動
 
-需求 / Requirements：Docker（含 Compose）、[Ollama](https://ollama.com) 與下列模型：
+### 需要先準備的
+
+| 項目 | 版本 | 說明 |
+|---|---|---|
+| Docker Engine | ≥ 20.10（實測 29.5） | 含 Compose 外掛 ≥ 2.2（實測 5.1） |
+| [Ollama](https://ollama.com/download) | ≥ 0.24.0（實測 0.24.0） | 必須讓容器連得到：設定 `OLLAMA_HOST=0.0.0.0` 後重啟 Ollama |
+| 模型 `qwen3:32b` | 約 20 GB | 生成模型，必要 |
+| 模型 `bge-m3` | 約 1.2 GB | 嵌入模型，必要 |
+| 模型 `qwen3.6:27b-q4_K_M` | 約 17 GB | 選用：前端可切換的第二個生成模型；不用就把 `.env` 的 `ALT_LLM_MODEL` 留空 |
 
 ```bash
 ollama pull qwen3:32b
 ollama pull bge-m3
-ollama pull qwen3.6:27b-q4_K_M   # 選用 / optional：對話裡可切換的第二個模型（AC-63）
+ollama pull qwen3.6:27b-q4_K_M   # 選用
 ```
 
-Qwen3 的 tokenizer 已內附在專案中（`app/backend/third-party/qwen3-tokenizer/`，Apache-2.0），建置時不需要連到 Hugging Face。內附的只有 tokenizer：上面兩個模型仍須事先用 Ollama 安裝。
-The Qwen3 tokenizer is bundled with the project (Apache-2.0), so the build does not download it from Hugging Face. Only the tokenizer is bundled: the two models above must still be installed with Ollama beforehand.
+建議資源：顯示記憶體 ≥ 24 GB（實測 NVIDIA A40 46 GB）、記憶體 ≥ 16 GB、磁碟可用 ≥ 10 GB（模型另需約 21 GB）。沒有 GPU 也能執行，但一題可能要數分鐘。
 
-啟動 / Run：
+tokenizer 已內附在專案中（`app/backend/third-party/`，Apache-2.0），建置時不需要連到 Hugging Face。
+
+### 啟動
 
 ```bash
-docker compose up --build -d --wait     # 或 make up
+git clone git@github.com:kimOuO/DocuMind-AI.git
+cd DocuMind-AI
+make up
 # 開啟 http://127.0.0.1:3000
 ```
 
-註冊並登入後，可以上傳 PDF、TXT、Markdown 文件（文字檔須為 UTF-8）。上傳後會在背景解析並建立索引，清單上顯示進度；完成後顯示頁數與片段數，失敗時顯示原因並可重試。文件就緒後可在「提問」區塊發問：不勾選文件時搜尋所有可用的文件，回答下方列出來源，每則回答末尾標示它用的溫度與每一次 LLM 呼叫的 token（判斷追問、改寫、回答）。同一對話裡接著問時，模型先判斷這句是新問題還是延續前文，延續才把「他」「前一題的」改寫成實際對象再檢索。上傳預設不建摘要樹；要讀完整篇的摘要，按輸入框旁的「建立摘要」，系統先為範圍內的文件建摘要樹（16 頁論文約 3 分鐘，進度顯示在對話裡），再把摘要串流進對話。首頁同時顯示資料庫與 LLM 服務的狀態。
-After registering and logging in you can upload PDF, TXT and Markdown documents (text files must be UTF-8). Each upload is parsed and indexed in the background while the list shows its progress; when it is done the list shows the number of pages and chunks, and a failure shows its reason and can be retried. Once a document is ready you can ask questions in the chat panel: with no document ticked, all available documents are searched; each answer lists its sources and ends with the temperature it used and the tokens of every LLM call behind it (follow-up judgement, rewrite, answer). Within a conversation the model first judges whether a question continues the previous turns; only then is it rewritten ("it", "the previous one") into the thing it refers to before retrieval. Uploads do not build a summary tree by default; the 建立摘要 button beside the composer builds it for the documents in scope (about 3 minutes for a 16-page paper, progress shown in the chat) and then streams the summary into the conversation. The home page also shows whether the database and the LLM server are healthy.
+`make up` 做三件事：
 
-請從 `http://127.0.0.1:3000` 或 `http://localhost:3000` 開啟。用其他位址（例如區網 IP）開啟時，把該位址加進 `.env` 的 `ALLOWED_ORIGINS`，否則會被來源檢查擋下。
-Open the site at one of those two addresses. If you use another address, add it to `ALLOWED_ORIGINS` in `.env`; otherwise state-changing requests are refused by the origin check.
+1. 沒有 `.env` 就從 `.env.sample` 複製一份。
+2. **啟動前檢查**（`make preflight`）：Docker 與版本、Ollama 與版本、必要模型、容器連不連得到 Ollama、連接埠、資源。一次檢查完，最後列出所有未通過的項目與處理方式；有未通過的就不啟動。
+3. 建置並啟動三個容器（資料庫、後端、前端），資料表自動建立，全部健康後印出網址。
 
-- Ollama 必須監聽容器連得到的位址（`OLLAMA_HOST=0.0.0.0`）。若沒有預裝 Ollama，可改用內建的容器：`docker compose --profile ollama up --build`，並在 `.env` 設定 `COMPOSE_OLLAMA_HOST=ollama`（此模式尚未實測）。
-- 設定值見 `.env.sample`。`make setup`、`make up` 會在 `.env` 不存在時由它複製一份。
-- 兩個可選的回答改善，預設開啟（D88 起），實驗數據在 `evaluation/facts-ab/`：`ANSWER_FACTS=inject` 把程式從表格算出的比較事實（哪邊高、差幾個百分點、哪些例外）放進 prompt，讓比較題的結論與例外對得上表格；`SUMMARY_REPAIR=true` 在入庫時對數字歸錯對象或不存在的摘要句，以表格證據重寫一次，仍錯就刪句。`ANSWER_TEMPERATURE` 是回答取樣溫度的預設值（空白＝模型預設）；前端輸入框旁的滑桿可逐題調整 0 到 1，每則回答標示它用的溫度（AC-60）。`CHECK_NOTES=true` 是 debug 模式：回答後接上數字、標籤、全稱句、算術核對的註記並顯示核對面板；預設關閉，核對仍執行並記在 `done` 事件（AC-61）。
-- Two optional answering improvements, on by default since D88, measured in `evaluation/facts-ab/`: `ANSWER_FACTS=inject` puts the program's comparison facts from the tables (which side is higher, by how many points, every exception) into the prompt so that conclusions match the tables; `SUMMARY_REPAIR=true` rewrites, once and with the table's figures as evidence, a summary sentence whose figure is misattributed or absent from the pages, removing it if still wrong. `ANSWER_TEMPERATURE` is the default answer sampling temperature (empty = the model's default); a slider beside the composer sets it per question between 0 and 1, and every answer shows the temperature it used (AC-60). `CHECK_NOTES=true` is debug mode: the number, label, claim and arithmetic check notes are appended to answers and the check panel is shown; off by default, the checks still run and reach the `done` event (AC-61).
+後端與前端需要的套件都裝在容器裡，主機不用另外安裝 Python 或 Node。
+
+### 使用
+
+註冊並登入後，上傳 PDF、TXT 或 Markdown（文字檔須為 UTF-8）。上傳後在背景解析並建立索引，清單顯示進度；完成後顯示頁數與片段數，失敗時顯示原因並可重試。
+
+文件就緒後在對話區提問：
+
+- 不勾選文件時搜尋所有可用的文件；回答下方列出來源，點引用可看原文段落與 PDF 該頁。
+- 同一對話裡接著問時，模型先判斷這句是新問題還是延續前文，延續才把「他」「前一題的」改寫成實際對象再檢索。
+- 要讀完整篇的摘要，按輸入框旁的「建立摘要」：系統先為範圍內的文件建摘要樹（16 頁論文約 3 分鐘，進度顯示在對話裡），再把摘要寫進對話。上傳時預設不建摘要樹。
+- 輸入框下方可逐題調整溫度、切換模型、勾選思考模式；預設是溫度 0、`qwen3:32b`、思考關。
+- 每則回答末尾標示它用的模型、溫度，以及每一次模型呼叫的 token（判斷追問、改寫、回答）。
+
+其他：
+
+- 請從 `http://127.0.0.1:3000` 或 `http://localhost:3000` 開啟。用其他位址（例如區網 IP）開啟時，把該位址加進 `.env` 的 `ALLOWED_ORIGINS`，否則會被來源檢查擋下。
+- 設定值見 `.env.sample`。`CHECK_NOTES=true` 是除錯模式：回答後附上數字、標籤、算術核對的註記。
 - API 文件：`http://127.0.0.1:3000/api/v1/docs`。
 
-## 本地開發 / Local development
+## 指令
 
 ```bash
-make setup    # 建立 .venv（標準 venv + pip，Node 也裝在裡面）並安裝前後端相依
-make dev      # 資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
-make check    # lint、型別檢查、所有測試（會啟動資料庫容器）
-make smoke    # 最小流程驗證：bge-m3 → pgvector → qwen3
-make up && make smoke-api   # 部署後對運行中的系統跑 API 測試（上傳、提問、追問、無答案題、10K 帳本）
-make deploy   # 一次做完：完整檢查 → 重建部署 → API 測試，任何一步失敗就停
-make help     # 所有指令
+make preflight   # 啟動前檢查（make up 會自動先跑）
+make up          # 檢查後用 Docker 啟動全部；make down 停止
+make smoke-api   # 部署後對運行中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、10K 帳本
+make deploy      # 一次做完上線流程：完整檢查 → 重建部署 → API 測試，任何一步失敗就停
+
+make setup       # 開發用：建立 .venv（Python 與 Node 都裝在裡面）並安裝前後端相依
+make dev         # 開發用：資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
+make check       # lint、型別檢查、所有不需真實模型的測試
+make smoke       # 最小流程驗證：嵌入模型 → 向量庫 → 生成模型
+make help        # 所有指令
 ```
 
-只需要 Python 3.12。所有開發工具（含 Node，版本見 `app/frontend/.node-version`）都裝在 `.venv` 內，不會安裝到主機。
+`make smoke-api`、`make check`、`make deploy` 會用到 `.venv`，第一次請先 `make setup`（只需要 Python 3.12；`make deploy` 發現沒有 `.venv` 會自動先做）。所有開發工具都裝在 `.venv` 內，不會安裝到主機。
 
-## 架構 / Architecture
+## 架構
 
 ```
-瀏覽器 ──► frontend (Nginx + React) ──/api──► backend (FastAPI)
-                                                 ├──► db (PostgreSQL + pgvector)
-                                                 └──► Ollama（主機：qwen3:32b、bge-m3）
+瀏覽器 ──► 前端（Nginx + React）──/api──► 後端（FastAPI）
+                                            ├──► 資料庫（PostgreSQL + pgvector）
+                                            └──► Ollama（主機：qwen3:32b、bge-m3）
 ```
 
-### 程式碼架構 / Code layout
+部署由 `docker-compose.yml` 定義：資料庫、後端、前端三個容器，加上主機的 Ollama。
 
-後端依功能模組組織，每個模組內分三層：Router 收請求、Service 管業務規則與權限（每個方法都接收目前登入的使用者）、Repository 讀寫資料庫（每個查詢都帶擁有者條件）。LLM 與嵌入模型只經過 `llm/` 的 Gateway，送出前先以本地 tokenizer 計數、超過 10,000 就拒絕，每次呼叫寫入 `llm_calls` 帳本。
-The backend is organised by feature module, each in three layers: Router (HTTP), Service (rules and ownership; every method receives the acting user), Repository (database access; every query carries the owner). Models are reached only through the Gateway in `llm/`, which counts tokens locally, refuses anything over 10,000, and records every call in the `llm_calls` ledger.
+### 程式碼架構
 
-| 後端模組 `app/backend/app/` | 負責 / Responsibility |
+後端依功能模組組織，每個模組內分三層：Router 收請求、Service 管業務規則與權限（每個方法都接收目前登入的使用者）、Repository 讀寫資料庫（每個查詢都帶擁有者條件）。模型只經過 `llm/` 的 Gateway：送出前以本地 tokenizer 計數、超過 10,000 就拒絕，每次呼叫寫入 `llm_calls` 帳本。
+
+| 後端模組 `app/backend/app/` | 負責 |
 |---|---|
 | `auth` | 註冊、登入、session cookie（Argon2id） |
 | `documents` | 上傳、清單、刪除、重試；檔案存放 |
@@ -80,85 +108,67 @@ The backend is organised by feature module, each in three layers: Router (HTTP),
 | `retrieval` | 向量檢索（pgvector）、相似度門檻、表格後文補充 |
 | `summarization` | 摘要樹（map-reduce）、摘要數字核對與修復 |
 | `conversations` | 對話與訊息的儲存與讀取 |
-| `chat` | 問答流程：追問判斷與改寫、路由、證據裝填與事實塊、prompt、串流回答、答後核對 |
+| `chat` | 問答流程：追問判斷與改寫、路由、證據裝填與比較事實、prompt、串流回答、答後核對 |
 | `llm` | Ollama 請求組裝、預算守門、帳本、tokenizer、嵌入 |
 | `monitoring` | `/health`、帳本查詢 |
 | `core` | 設定（唯一讀取環境變數的地方）、資料庫連線、錯誤格式、SSE |
 
 資料表（`models.py`、`migrations/`）：`users`、`sessions`、`documents`、`ingestion_jobs`、`chunks`、`chunk_vectors`、`summaries`、`conversations`、`messages`、`llm_calls`。
-前端 `app/frontend/src/features/`：`auth`、`documents`（上傳與清單）、`chat`（對話、來源檢視、溫度、建立摘要）、`home`；`lib/api.ts` 是唯一呼叫後端的地方。
-細節與每個決定的理由見 `docs/02-specs/02-architecture.md` 與 `docs/03-decisions/`。
-Details and the reasoning behind each decision: `docs/02-specs/02-architecture.md` and `docs/03-decisions/`.
 
-## 資料夾導覽 / Folder guide
+前端 `app/frontend/src/features/`：`auth`、`documents`（上傳與清單）、`chat`（對話、來源檢視、溫度、模型、思考、建立摘要）、`home`；`lib/api.ts` 是唯一呼叫後端的地方。
+
+細節與每個決定的理由見 `docs/02-specs/02-architecture.md` 與 `docs/03-decisions/`。
+
+## 資料夾導覽
 
 ```
 DocuMind-AI/
 ├── app/                        要執行的程式
 │   ├── backend/                FastAPI 後端（程式、資料庫 migration、測試）
 │   └── frontend/               React 前端
+├── docs/                       規格與架構決策紀錄
+│   ├── 02-specs/               規格：01 需求與驗收條件、02 架構、03 介面、04 使用情境
+│   └── 03-decisions/           架構決策紀錄：選了什麼、為什麼
 ├── evaluation/                 評測程式（題庫、標準答案與逐題紀錄保留在開發機，未公開）
 ├── sample-documents/           測試用文件（LightRAG 論文）
-├── docs/                       規格與架構決策紀錄
-│   ├── 02-specs/               規格：01 需求、02 架構、03 介面、04 使用情境
-│   └── 03-decisions/           架構決策紀錄：選了什麼、為什麼
-├── scripts/                    工具腳本（匯出逐字稿、打包）
-├── .venv/                      開發環境（不進版控，make setup 建立）
+├── scripts/                    工具：啟動前檢查、API 測試、最小流程驗證、打包、匯出逐字稿
 ├── CLAUDE.md                   給 AI coding agent（Claude Code）的專案規則
+├── .claude/                    Claude Code 的設定與兩個流程（checkpoint、verify）
 └── Makefile / docker-compose.yml / .env.sample
 ```
 
-原則：資料夾用完整英文名稱、不用縮寫；還沒有內容的資料夾不預先建立。
+## 目前結果
 
-## 目前結果 / Current results
+三個必答題在示範部署上各問 10 次（十個對話，每個對話依序問三題；溫度 0、不建摘要樹）。判定由人逐句對原文，有錯誤資訊才算不通過。
 
-判定標準是「有錯誤資訊才算不通過」。`evaluation/` 只公開評測程式；題庫、標準答案、逐題紀錄與各實驗報告保留在開發機，需要時可另外提供。
-An answer fails only when it states something wrong. `evaluation/` publishes the evaluation scripts only; the question set, the ground truth, the per-question records and the experiment reports stay on the development machine and can be provided separately.
-
-| 測試 / Test | 條件 / Condition | 結果 / Result |
+| 題目 | 10 次結果 | 回答的狀況 |
 |---|---|---|
-| 題庫 19 題 / 19-question set | 逐題一次，事實注入與摘要修復開 | 18 / 19（剩跨文件名額 X1） |
-| 三個必答題 × 10，溫度 0 / Three required questions ×10 at temperature 0 | 各自新對話，兩批（D96 前） | 29/30、29/30（一次定義反向、一次配對錯） |
-| 同溫度 0.2、0.4 / at 0.2 and 0.4 | 同上 | 23/30、22/30（0 到 0.2 之間是明顯的坎） |
-| 同一對話三題，溫度 0，不建摘要樹 / Three questions in one conversation, no summary tree | 同一對話 ×10（D96 後）；另五個對話各一次（D101） | 30 / 30，十次同一篇；15 / 15，Q2、Q3 五次逐字相同 |
-| 對話連續性 / Follow-ups | 同一對話十題，新問題與追問交錯，追問用「他」「前一題的」指稱（D101） | 是否延續判斷 9 / 9；回答 8 / 10（一題多列不該互比的配對、一題把 610 個社群寫成 610 次呼叫） |
-| 其他論文 / Other papers | GraphRAG、RAPTOR 各一個對話三題（該論文版本的問題），溫度 0、不建摘要樹 | 第一次 6 / 6；重跑 4 / 6（圖的數字格無標籤配錯邊、長答案撞輸出上限） |
-| 表格泛化 / Table generalisation | 兩篇論文六張表，逐列改寫後對 LaTeX 原稿逐格比對 | 全部相符（五種表格形狀） |
-| 建立摘要按鍵 / Summary button | 未建摘要樹的 16 頁論文按一次 | 建樹 156 秒、全程 178 秒，來源全為摘要節點 |
-| 10K 合規 / 10K compliance | 示範部署帳本，2026-11-05 至 11-08，所有帳號 550 次完成呼叫 | 單次最大 7,971 tokens |
+| Q1 summary this document. | 10 / 10 無錯誤資訊 | 走一般檢索：研究問題與方法都有寫，缺實驗結果與數字。按「建立摘要」用摘要樹回答時，問題、方法、實驗結果都有，數字附頁碼 |
+| Q2 compare lightRAG with GraphRAG | 10 / 10 | 16 項比較中 LightRAG 13 項較高，Mix 資料集的 3 項例外與差距都正確；十次逐字相同 |
+| Q3 Performance of ablated versions of LightRAG | 10 / 10 | 各版本的數字、較高與較低的項數、例外都正確；十次逐字相同。沒有解釋三個版本各拿掉什麼 |
 
-逐題的問答原文與分析保留在開發機。
+三題每一次模型呼叫都在 10,000 tokens 內（單次最大 6,290）。
 
-未修的缺口 / Open gaps：變體定義望文生義（溫度 0 下 1/10、0.2 以上 2–3/10）；核對器把全稱句拿去對不含該指標的表（GraphRAG 一則誤報）；RAPTOR 的表格排版不在支援的五種內。詳見 `evaluation/stability/README.md`。
+## 兩個說明題
 
-## 兩個說明題 / The two required explanations
+**文件 token 超過 context 怎麼辦？**
 
-**文件 token 超過 context 怎麼辦？ / What if a document exceeds the context window?**
+一份論文約 20,000 到 40,000 tokens，從不整份送進模型。分四層：
 
-一份論文約 20,000 到 40,000 tokens，從不整份送進模型。做法分四層，每層都有數據（`evaluation/`、`docs/03-decisions/0010`）：
+1. **切塊索引**：入庫時依 400 tokens 切塊（三種大小的實驗中找得最全；切點不落在字或數字中間）。表格整張保留，逐列改寫成每個數字都帶方法、資料集、指標的句子；多組比較的表格每一組各建一個向量，任何一組符合問題就取回整張表。
+2. **只取相關片段**：提問時取相似度前 5 段，命中表格時補上表格後面的討論段；證據有預算上限，裝不下的整塊不送，不截斷。相似度都偏低時仍把最相近的三段交給模型判斷，由它明說文件沒提到。
+3. **呼叫前守門**：以模型自己的 tokenizer 在本地計數，prompt 加上保留的輸出必須 ≤ 10,000，超過就拒絕呼叫；對 Ollama 的請求固定上限並關閉自動截斷，超量時 Ollama 回錯誤而不是默默丟內容。
+4. **呼叫後記帳**：每次呼叫實際用了多少 tokens 都寫進帳本，介面也顯示。
 
-1. **切塊索引**：入庫時依 400 tokens、重疊 80 切塊（三種大小的實驗中 Recall 最高；切點不落在字或數字中間），表格整塊保留並逐格改寫成「列 — 群組: 欄 值」（支援兩層欄頭成對子欄、多字群組名、跨欄總標題、數值列標籤加分段列、成對比較表五種排版，兩篇論文六張表 570 格與 LaTeX 原始檔逐格全符）；每塊一個 bge-m3 向量存進 pgvector，多區塊的表格另存每個區塊的向量。
-2. **只取相關片段**：提問時取相似度前 5 的切塊（約 2,100 tokens），命中表格時補入表格後面的討論段；證據預算 5,500 tokens，裝不下的不送也不截斷。相似度都低於 0.50 時仍把最相近的三段交給模型自行判斷，並附上文件清單與摘要開頭，讓它能回答「這篇在講什麼」或明說文件沒提到。
-3. **呼叫前守門**：以內附的 Qwen3 tokenizer 在本地計數，prompt 加上輸出保留 2,500 必須 ≤ 10,000，超過就拒絕呼叫；對 Ollama 的請求固定 `num_ctx=10000`、`truncate=false`、`shift=false`，模型端不會悄悄截斷。
-4. **呼叫後記帳**：Ollama 回報的 `prompt_eval_count + eval_count` 寫進 `llm_calls` 帳本，介面顯示用量條；實驗工具對每次呼叫斷言 ≤ 10,000，到目前 100 多次真實模型紀錄全部合規（單次最高約 9,900）。
+守的是每一次呼叫；整份文件靠分段讀完。
 
-A paper is 20,000–40,000 tokens and is never sent whole. Four layers, each measured in `evaluation/`: (1) chunk at ingestion (400 tokens, 80 overlap — the best Recall of three sizes; boundaries never split a word or a number; tables kept whole and rewritten cell by cell as "row — group: column value" in five layouts, 570 cells of six tables across two papers matching the LaTeX sources cell by cell; one bge-m3 vector per chunk in pgvector, plus one per block of a multi-block table); (2) retrieve only the top-5 similar chunks (~2,100 tokens) plus the discussion that follows a retrieved table, within a 5,500-token evidence budget — what does not fit is left out, never cut; when nothing reaches similarity 0.50 the three closest passages still go to the model, with the list of documents and their summary openings, so it can answer "what is this paper about" or say plainly that the documents do not cover the question; (3) guard before the call: the bundled Qwen3 tokenizer counts locally, prompt + a 2,500-token output reserve must be ≤ 10,000 or the call is refused, and every Ollama request carries `num_ctx=10000`, `truncate=false`, `shift=false`; (4) account after the call: Ollama's `prompt_eval_count + eval_count` goes into the `llm_calls` ledger, shown in the UI; the experiment harness asserts ≤ 10,000 on every call — all 100+ recorded runs comply (peak ≈ 9,900).
+**Summary 怎麼處理？**
 
-**Summary 怎麼處理？ / How is "summary this document" handled?**
+兩種做法都有：
 
-全文摘要在入庫時建好，不在提問時現做：
+- **摘要樹**（上傳時勾選，或在對話按「建立摘要」）：程式依章節把文件切成單位，每個單位一次呼叫寫章節摘要並附頁碼，再一次呼叫合成全文摘要；章節摘要合起來太長就先分組濃縮。每次呼叫各自守 10K。摘要裡的數字會對回原文與表格，矛盾時憑表格重寫一次。之後問摘要只要一次呼叫，來源是各章節的摘要與頁碼範圍。讀完整篇，但 16 頁論文要先花約 3 分鐘、十一次呼叫。
+- **走一般檢索**（預設）：把「summary this document.」當一般問題，取最相近的 5 段回答。不用等，但只看到約一成多的論文，問題與方法寫得出來，常缺實驗結果。
 
-1. **章節切分**：辨識標題的編號與頁碼，依章節切成摘要單位（參考文獻排除）；超過 6,000 tokens 的章節再往下切。
-2. **章節摘要**：每個單位一次呼叫，最多 250 字，保留關鍵數字並附頁碼；撞到輸出上限的摘要重試兩次。
-3. **全文摘要**：由各章節摘要合併成最多 400 字的全文摘要；合併仍超量就再摺一層。
-4. **驗證狀態**：每份摘要的數字對照原文核對，存 VERIFIED／CONTRADICTED／UNCERTAIN／NOT_CHECKED。預設不改寫摘要；開 `SUMMARY_REPAIR=true` 時，數字歸錯對象、被表格反證的全稱句、或頁面上不存在的數字，會以表格的真實數字當證據請模型重寫一次，再核對，仍錯的句子刪除（實測四次觸發修對三條真錯，一條誤報在核對器修正後消失；見 `evaluation/facts-ab/`）。
-5. **回答**：「summary this document」走摘要路徑，以全文摘要加章節摘要回答並引用摘要節點（章節標題與頁碼範圍）；索引完成即可問一般問題，摘要還沒好時摘要類問題會明說尚未可用。
+## 開發方式
 
-已知限制：摘要本身是模型寫的，門檻式的全稱句（「所有指標都在 60% 以上」）核對抓不到；回答端的核對器對部分句型仍有誤報（例外句的比較對象範圍、「100 個 token」對上表格的 100），見 `evaluation/facts-ab/README.md`。
-
-The whole-document summary is built at ingestion, not at question time: (1) sections are cut by heading numbers and pages (references excluded; sections over 6,000 tokens split further); (2) one call per section, ≤ 250 words, key figures kept with page numbers, retried twice when the output limit is hit; (3) section summaries merge into a ≤ 400-word document summary, folding again if still too long; (4) every summary's figures are checked against the source text and stored with a status — VERIFIED / CONTRADICTED / UNCERTAIN / NOT_CHECKED; by default nothing is rewritten, and with `SUMMARY_REPAIR=true` a misattributed figure, a universal claim the table contradicts, or a figure absent from the pages is sent back once with the table's own figures as evidence, re-checked, and removed if still wrong (three real errors fixed in four triggers in our runs; see `evaluation/facts-ab/`); (5) "summary this document" answers from the document and section summaries and cites the summary nodes (section title and page range); ordinary questions work as soon as indexing finishes, and a summary question says so while the summary is still being built. Known limits: a model-written summary may make a threshold claim ("above 60% in all metrics") that the checks cannot catch; the answer-side checker still has false positives on some sentence shapes — see `evaluation/facts-ab/README.md`.
-
-## 開發方式 / How this was built
-
-以 AI-native 方式開發（Claude Code），流程為 SDD → TDD → Checkpoint。
-每個技術決策，包含 AI 建議被否決或修改的案例，都有紀錄；架構層級的決策與理由見 `docs/03-decisions/`。
+以 AI-native 方式開發（Claude Code），流程為規格先行、測試先行、每階段 checkpoint。協作規則寫在 `CLAUDE.md`：依規格與計畫推進並在每個階段先說明取得許可；改了前後端模組先完整檢查、再部署、再跑 API 測試；跑完測試劇本先記錄與分析，再討論修改。階段標記為 `cp-0` 到 `cp-6`；架構層級的決策與理由見 `docs/03-decisions/`。

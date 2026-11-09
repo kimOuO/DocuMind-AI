@@ -11,7 +11,7 @@ VENV     := .venv
 export PATH := $(CURDIR)/$(VENV)/bin:$(PATH)
 
 .PHONY: help setup dev dev-backend dev-frontend db migrate up down logs \
-        check check-backend check-frontend test smoke smoke-api deploy eval package transcript
+        check check-backend check-frontend test smoke smoke-api deploy preflight eval package transcript
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk -F':.*?## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -45,7 +45,10 @@ dev-backend:
 dev-frontend:
 	cd $(FRONTEND) && npm run dev
 
-up: .env ## Build and run everything in Docker (demo / delivery mode)
+preflight: ## Check the machine before starting: Docker, Ollama, models, ports, resources (all at once)
+	@bash scripts/preflight.sh
+
+up: .env preflight ## Check the machine, then build and run everything in Docker (demo / delivery mode)
 	docker compose up --build -d --wait
 	@echo "Open http://$${WEB_BIND:-127.0.0.1}:$${WEB_PORT:-3000}"
 
@@ -69,7 +72,8 @@ test: db ## Run the backend tests only
 smoke: migrate ## Minimal end-to-end check: bge-m3 -> pgvector -> qwen3 (AC-47)
 	$(VENV)/bin/python scripts/smoke_rag.py
 
-deploy: ## The whole release routine: full checks, rebuild the deployment, API test; stops at the first failure
+deploy: ## The whole release routine: setup if needed, full checks, rebuild the deployment, API test; stops at the first failure
+	@test -x $(VENV)/bin/python || $(MAKE) setup
 	$(MAKE) check
 	$(MAKE) up
 	$(MAKE) smoke-api
