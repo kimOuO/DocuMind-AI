@@ -23,7 +23,11 @@ setting() {  # 讀 .env（沒有就讀 .env.sample）的值，去掉行內註解
 }
 WEB_PORT="$(setting WEB_PORT 3000)"; DB_PORT="$(setting DB_PORT 5433)"
 OLLAMA_PORT="$(setting HTTP_OLLAMA_PORT 11434)"
-OLLAMA_URL="${PREFLIGHT_OLLAMA_URL:-http://127.0.0.1:${OLLAMA_PORT}}"
+# Ollama 在另一台機器時（.env 的 COMPOSE_OLLAMA_HOST 填了 IP），直接檢查那一台。
+OLLAMA_HOST_SETTING="$(setting COMPOSE_OLLAMA_HOST host.docker.internal)"
+REMOTE_OLLAMA=""
+if [[ "$OLLAMA_HOST_SETTING" != "host.docker.internal" && "$OLLAMA_HOST_SETTING" != "ollama" ]]; then REMOTE_OLLAMA="$OLLAMA_HOST_SETTING"; fi
+OLLAMA_URL="${PREFLIGHT_OLLAMA_URL:-http://${REMOTE_OLLAMA:-127.0.0.1}:${OLLAMA_PORT}}"
 
 failures=(); warnings=()
 ok()   { printf '  [通過]   %s\n' "$1"; }
@@ -70,7 +74,8 @@ else
     done
     # 後端在容器裡，經 Docker 橋接網路連主機的 Ollama：Ollama 只聽 127.0.0.1 時連不到。
     gateway="$(docker network inspect bridge -f '{{(index .IPAM.Config 0).Gateway}}' 2>/dev/null || true)"
-    if [[ -n "$gateway" ]]; then
+    if [[ -n "$REMOTE_OLLAMA" ]]; then ok "Ollama 在另一台機器（$REMOTE_OLLAMA:$OLLAMA_PORT），已連線確認"
+    elif [[ -n "$gateway" ]]; then
       if curl -s --max-time 5 "http://$gateway:$OLLAMA_PORT/api/version" >/dev/null 2>&1; then ok "容器連得到主機的 Ollama（$gateway:$OLLAMA_PORT）"
       else fail "Ollama 只接受本機連線，容器連不到" "讓 Ollama 監聽所有介面：設定環境變數 OLLAMA_HOST=0.0.0.0 後重啟 Ollama（systemd：sudo systemctl edit ollama 加 Environment=\"OLLAMA_HOST=0.0.0.0\"）"; fi
     fi

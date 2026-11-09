@@ -65,12 +65,18 @@ make up                # 改完重新執行才會生效
 | `WEB_BIND` | `127.0.0.1` | 要讓區網其他電腦連進來時改成 `0.0.0.0` |
 | `ALLOWED_ORIGINS` | `http://127.0.0.1:3000,http://localhost:3000` | 用其他網址開網頁時把它加進去，例如 `http://192.168.1.10:3000`；沒加的話登入與提問會被擋 |
 | `DB_PORT` | `5433` | 5433 埠已被占用 |
+| `COMPOSE_OLLAMA_HOST` | `host.docker.internal`（本機） | Ollama 裝在另一台機器時，填那台機器的 IP |
 | `HTTP_OLLAMA_PORT` | `11434` | Ollama 不在預設的埠 |
 | `LLM_MODEL`／`EMBED_MODEL` | `qwen3:32b`／`bge-m3` | 換模型；換生成模型要連同 tokenizer 設定一起改，見 `.env.sample` 的說明 |
 | `ALT_LLM_MODEL` | `qwen3.6:27b-q4_K_M` | 不提供第二個模型時留空 |
 | `ANSWER_TEMPERATURE` | `0` | 回答溫度的預設值；前端也能逐題調整 |
 | `LLM_THINKING` | `false` | 思考模式的預設值；前端也能逐題勾選 |
 | `CHECK_NOTES` | `false` | 改成 `true` 會在回答後附上數字核對的註記（除錯用） |
+
+**用 IP 連線的兩種情況**
+
+- 從別台電腦開這個網站：先查這台機器的 IP（`hostname -I`），在 `.env` 設 `WEB_BIND=0.0.0.0`，並把 `http://<這台機器的 IP>:3000` 加進 `ALLOWED_ORIGINS`（逗號分隔），重新 `make up` 後用該網址開啟。
+- Ollama 在另一台機器：在 `.env` 設 `COMPOSE_OLLAMA_HOST=<Ollama 那台的 IP>`，那台的 Ollama 同樣要監聽 `0.0.0.0`。
 
 其餘設定與說明見 `.env.sample`。
 
