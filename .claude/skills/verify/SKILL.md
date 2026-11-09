@@ -57,6 +57,7 @@ description: 改完程式後的驗證流程：秒級檢查 → 相關測試檔 �
 
 - commit 訊息寫到 scratchpad 的檔案再 `git commit -F`，**不要在 heredoc 裡再包 heredoc**（曾把 python 腳本當成 commit 訊息）。
 - 提交後 `make up`，`sleep 20`，`curl -s http://127.0.0.1:3000/api/v1/health` 確認 `status: ok` 與設定值。
+- 改了前端或後端模組，部署後一律跑 `make smoke-api`（約 2 分鐘）：註冊、上傳範例論文、提問、追問、無答案題、每則回答的用量、帳本 10K，12 項全過才算上線（CLAUDE.md 互動規則第 2 條）。
 - 示範環境的 API 要帶 `Origin: http://127.0.0.1:3000`，否則 403。
 
 ## 6. 實測與紀錄

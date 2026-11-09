@@ -52,6 +52,7 @@ make setup    # 建立 .venv（標準 venv + pip，Node 也裝在裡面）並安
 make dev      # 資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
 make check    # lint、型別檢查、所有測試（會啟動資料庫容器）
 make smoke    # 最小流程驗證：bge-m3 → pgvector → qwen3
+make up && make smoke-api   # 部署後對運行中的系統跑 API 測試（上傳、提問、追問、無答案題、10K 帳本）
 make help     # 所有指令
 ```
 

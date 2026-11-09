@@ -11,7 +11,7 @@ VENV     := .venv
 export PATH := $(CURDIR)/$(VENV)/bin:$(PATH)
 
 .PHONY: help setup dev dev-backend dev-frontend db migrate up down logs \
-        check check-backend check-frontend test smoke eval package transcript
+        check check-backend check-frontend test smoke smoke-api eval package transcript
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk -F':.*?## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -68,6 +68,9 @@ test: db ## Run the backend tests only
 
 smoke: migrate ## Minimal end-to-end check: bge-m3 -> pgvector -> qwen3 (AC-47)
 	$(VENV)/bin/python scripts/smoke_rag.py
+
+smoke-api: ## API test of the running deployment (after make up): upload, ask, follow-up, no-answer, 10K ledger
+	$(VENV)/bin/python scripts/smoke_api.py
 
 eval: db ## P4: retrieval-parameter experiment with the real embedding model (writes evaluation/retrieval-parameters/runs/)
 	cd $(BACKEND) && pytest -q -p no:cacheprovider -o addopts="" -m "llm and db" tests/integration/test_retrieval_parameters_real.py -s
