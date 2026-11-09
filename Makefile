@@ -81,7 +81,8 @@ deploy: ## The whole release routine: setup if needed, full checks, rebuild the 
 smoke-api: ## API test of the running deployment (after make up): upload, ask, follow-up, no-answer, 10K ledger
 	$(VENV)/bin/python scripts/smoke_api.py
 
-eval: db ## P4: retrieval-parameter experiment with the real embedding model (writes evaluation/retrieval-parameters/runs/)
+eval: db ## Retrieval-parameter experiment with the real embedding model (needs the local evaluation/ folder, which is not in git)
+	@test -d evaluation/retrieval-parameters || { echo "evaluation/ is kept on the development machine and is not part of the repository."; exit 1; }
 	cd $(BACKEND) && pytest -q -p no:cacheprovider -o addopts="" -m "llm and db" tests/integration/test_retrieval_parameters_real.py -s
 	cd evaluation/retrieval-parameters && ../../.venv/bin/python analyse.py
 

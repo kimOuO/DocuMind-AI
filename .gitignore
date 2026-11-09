@@ -51,13 +51,10 @@ docs/06-report/*
 !docs/06-report/DocuMind-AI.pdf
 !docs/06-report/DocuMind-AI.pptx
 
-# Evaluation: only the scripts and the folder guide are published. The question set, the
-# ground truth, the per-question records and the experiment reports stay on the
-# development machine.
-evaluation/**
-!evaluation/**/
-!evaluation/**/*.py
-!evaluation/README.md
+# Evaluation (question set, ground truth, per-question records, experiment reports and the
+# scripts that read them) stays on the development machine: the scripts cannot run without
+# the data, so none of it is published.
+evaluation/
 
 # Second sample paper (6.9 MB, above the repository file limit): download it, see sample-documents/README.md
 sample-documents/2404.16130v2.pdf

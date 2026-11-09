@@ -39,7 +39,7 @@ ollama pull qwen3.6:27b-q4_K_M   # 選用
 ### 2. 啟動
 
 ```bash
-git clone git@github.com:kimOuO/DocuMind-AI.git
+git clone https://github.com/kimOuO/DocuMind-AI.git
 cd DocuMind-AI
 make up
 ```
@@ -162,7 +162,6 @@ DocuMind-AI/
 │   ├── 02-specs/               規格：01 需求與驗收條件、02 架構、03 介面、04 使用情境
 │   ├── 03-decisions/           架構決策紀錄：選了什麼、為什麼
 │   └── 06-report/              簡報（PDF 與 PPTX）
-├── evaluation/                 評測程式（題庫、標準答案與逐題紀錄保留在開發機，未公開）
 ├── sample-documents/           測試用文件（LightRAG 論文）
 ├── scripts/                    工具：啟動前檢查、API 測試、最小流程驗證、打包、匯出逐字稿
 ├── CLAUDE.md                   給 AI coding agent（Claude Code）的專案規則

@@ -8,7 +8,7 @@
 最核心的功能是能可靠回答文件問題的 RAG；平台功能不能犧牲題目的驗收條件。
 規格見 `docs/02-specs/` 的 `01`–`04`，文件導覽見 `docs/README.md`，目前進度見 `docs/04-dev-journal/`。
 
-- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）、`README.md` 與定稿簡報（`06-report/DocuMind-AI.pdf`、`DocuMind-AI.pptx`）納入 git。** 階段回顧、AI 協作紀錄、簡報的其他檔案（產生程式、草稿、參考簡報）、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。`evaluation/` 在 git 內只有評測程式與資料夾說明；題庫、標準答案、逐題紀錄與各實驗報告只留在開發機（`.gitignore` 已設定）。
+- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）、`README.md` 與定稿簡報（`06-report/DocuMind-AI.pdf`、`DocuMind-AI.pptx`）納入 git。** 階段回顧、AI 協作紀錄、簡報的其他檔案（產生程式、草稿、參考簡報）、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。`evaluation/`（題庫、標準答案、逐題紀錄、各實驗報告與評測程式）整個只留在開發機，不進 git（`.gitignore` 已設定）。
 - **四份規格在 P1 完成後凍結。** 不再反覆修改已決定的設計；只有實作或測試發現實際問題時才改，改之前先向使用者說明，並在決策日誌新增一筆。
 - `docs/02-specs/archive/` 是已被取代的文件，內容不代表現行設計，不要依它實作。
 
@@ -30,7 +30,7 @@
 | `make test` | 只跑後端測試 |
 | `make smoke` | 最小流程驗證：bge-m3 → pgvector → qwen3 |
 | `make smoke-api` | 對部署中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、10K 帳本（`make up` 之後跑） |
-| `make eval` | 重跑檢索參數實驗（寫入 `evaluation/retrieval-parameters/runs/`） |
+| `make eval` | 重跑檢索參數實驗（需要開發機上的 `evaluation/`，不在 git 內） |
 | `make transcript` | 匯出對話逐字稿到 `docs/05-ai-collaboration/sessions/raw/` |
 | `make deploy` | 一次做完上線流程：`make check` → `make up` → `make smoke-api`，任何一步失敗就停 |
 | `make package` | 從已提交的內容打交付 zip |

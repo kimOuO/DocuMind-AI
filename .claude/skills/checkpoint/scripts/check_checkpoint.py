@@ -214,6 +214,12 @@ def check_sensitive(report: Report) -> None:
                 continue
             for match in pattern.finditer(text):
                 line_start = text.rfind("\n", 0, match.start()) + 1
+                # "git@github.com:owner/repo.git" is an SSH remote, not an email address.
+                if (
+                    label == "email address"
+                    and text[match.end() : match.end() + 1] == ":"
+                ):
+                    continue
                 # "scheme://user:password@host" is a connection URL, not an email address.
                 if (
                     label == "email address"
