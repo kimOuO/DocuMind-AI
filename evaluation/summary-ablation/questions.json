@@ -1,8 +1,0 @@
-{
- "purpose": "Ablation of the summary tree (D90): 'summary this document' answered from the top-5 retrieved chunks in one call, without the stored summaries. The questions are phrased so that the keyword router sends them to retrieval, not to the summary path.",
- "questions": [
-  {"id": "B1", "kind": "required", "question": "Describe what this paper proposes, how it works, and what the experiments found.", "route": "retrieval", "documents": ["lightrag"], "keyword_type": false, "expect_refusal": false, "evidence": [], "expected": "依 key-facts.md 的 Q1 標準（S1–S5）判定；對照組是走摘要路徑的 Q1"},
-  {"id": "B2", "kind": "required", "question": "這份文件提出了什麼方法、做了什麼實驗、結果如何？", "route": "retrieval", "documents": ["lightrag"], "keyword_type": false, "expect_refusal": false, "evidence": [], "expected": "同 B1，中文問法"},
-  {"id": "B3", "kind": "required", "question": "summary this document.", "route": "summary", "documents": ["lightrag"], "keyword_type": false, "expect_refusal": false, "evidence": [], "expected": "對照：同一次入庫的摘要路徑"}
- ]
-}

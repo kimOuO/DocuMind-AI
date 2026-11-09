@@ -1,25 +1,17 @@
-# evaluation — 實驗、標準答案與評測
+# evaluation — 評測程式
 
-讓參數與選型的決定有實驗數據可引用（`CLAUDE.md`：參數類決定必須引用這裡的數據）。
+參數與做法的決定都以實測為依據（`CLAUDE.md`：參數類決定必須引用實驗數據）。這個資料夾在版控裡只放**評測程式**；題庫、標準答案、逐題的問答紀錄與各實驗的報告保留在開發機，未公開，需要時可另外提供。
 
-## 內容
+| 程式 | 做什麼 |
+|---|---|
+| `ground-truth/build_paper_structure.py`、`build_graphrag_structure.py` | 從論文的 LaTeX 原始檔建立標準答案：表格每一格的方法、資料集、指標、數值，以及章節標題 |
+| `pdf-parser-comparison/compare_parsers.py` | 比較三個 PDF 解析套件的抽取品質（ADR 0005） |
+| `table2-chunking/measure_table2_rows.py` | 量切塊方法會不會把表格切散（ADR 0007） |
+| `table-generalization/check_cells.py` | 把系統讀出的表格每一格對回標準答案，驗證表格改寫是否泛化到其他論文 |
+| `retrieval-parameters/analyse.py` | 彙整切塊大小 × Top-K × 向量／混合檢索 × 相似度門檻的實驗（ADR 0010；`make eval`） |
+| `number-check/replay.py`、`answer-checks/replay.py` | 用存下來的真實回答重放數字核對與句級檢查，量誤報與漏報 |
+| `facts-ab/judge.py` | 事實塊開與關的對照實驗的機械檢查 |
+| `navigator-abc/analyse.py` | 單輪與導航模式對照實驗的指標彙整 |
+| `stability/judge.py`、`judge_conversation.py` | 同一題重複多次、同一對話多題的穩定性批次的機械檢查 |
 
-| 資料夾 | 是什麼 | 結論／用途 | 依據 |
-|---|---|---|---|
-| `ground-truth/` | 共用的標準答案：論文的 Table 1 與 Table 2（各 128 格）與 22 個章節標題；三個必答題的關鍵事實 | 所有實驗與 P3、P4 的驗收都對照它 | 取自論文的 LaTeX 原始檔；關鍵事實經使用者確認（D60） |
-| `pdf-parser-comparison/` | 實驗：三個 PDF 解析套件、六種設定的抽取品質 | 採用 pypdf 預設模式 | ADR 0005、決策日誌 D54 |
-| `table2-chunking/` | 實驗：切塊方法對 Table 2 的影響 | 目前的固定長度切塊是 AC-14 的比較基準；P3 的新方法在這裡對照 | 決策日誌 D57 |
-| `answer-checks/` | 回放：19 份有來源清單的真實回答，量測兩個句級檢查——全稱比較宣稱（對表格逐格查反例）與引用可疑（字面覆蓋率）——對照人工標註 | 全稱宣稱 TP 3／FP 0／FN 0；引用可疑 TP 12／FP 0／FN 1；門檻在這組資料上選定，樣本小 | 決策日誌 D68 |
-| `revision-ab/` | A/B：單輪 vs. 條件式驗證導向修正（最多兩次呼叫）vs. 永遠修正，同批 7 題、同文件、同期執行 33 次，人工依 key-facts 核對 | Q2 0/3→2/3、Q1 3/3→3/3（觸發全為誤報）、Q3 1/3→0/3（無觸發）；觸發題時間 2.3–2.9×；實驗模式預設關閉 | ADR 0008、決策日誌 D69 |
-| `navigator-abc/` | A/B/C：單輪 vs. 同 prompt 雙角色（Navigator／Analyst）vs. 導航呼叫→程式補取→分析呼叫，Q1–Q3＋G1–G2 各臂 3 次（45 次）；之後只重測 B：D73 改良取證（`B2-*`）、D74 涵蓋判定與 Evidence Matrix（`B3-*`）、D75 事實核對與確定性修正（`B4-*`、修復後 `B4b-*`）、D77 以 B3 為基準加 Navigator 的 N4 設定（`B5-*`）與換模型 qwen3.6:27b（`M5-*`）、Navigator-only 召回實驗（`N*-navigator.json`）、D78 矩陣第一次進 prompt（`B6-*`）；`answers.md` 收全部回答全文 | D71：C 5/15、A 7/15、B 5/15。B2 8/15。B3 7/15（事實正確 9、完整 13；Q3 三次四版本齊）。B4／B4b 3/15／8/15：自動修正正確 3 次、有害 5 次 → 不套用、只保留核對。B5 6/15（Table 1、Table 6 三次都進到 Analyst，336 個表格數字全對，錯在散文方向句與摘要原句）。M5 6/15（Q3 首次事實與完整同過；冗長、撞輸出上限，G2 0/3）。D78 發現矩陣預算 900 低於一張表的 1,348，D74 以來矩陣從未進 prompt；修後 B6（Q2、Q3）416 格全對、配對錯消失，Q2 2/3、Q3 1/3，錯剩全稱句。B7 計數式提示詞 Q2 1/3。D83 C8（single＋區塊向量）0/9、B8 1/9：Q1 六次敗在摘要原句的全稱宣稱，Q3 的計數規則把勝負數反；D84 退回 B6 文字的 B9 仍 0/6——B6 是抽樣高點，navigate 對比較題在 0–2/3 之間晃。預設維持單輪 | ADR 0009、決策日誌 D71、D73–D78 |
-| `number-check/` | 回放：25 份真實回答、312 個表格數字的人工標註，量測 AC-26 數字標籤核對改版前後的誤報、漏報與未判定 | 改版後誤報 13→0、漏報 6→0、未判定 31.1%；兩個真實案例的前後對照 | 決策日誌 D67、D68 |
-| `retrieval-parameters/` | P4（AC-19）：19 題題庫（`ground-truth/question-set.json`）；切塊 256／400／600 × K 3／5／8 × Vector／Hybrid（RRF）／Vector＋表格後文的 Recall@K、來源命中率、證據 tokens；相似度門檻 0.30–0.60 掃描；`make eval` 約 30 秒 | 400×5 Vector 最佳（Recall 0.84、命中 1.00）；Hybrid 未達採用條件（0.81／0.93）；門檻 0.50 可擋 3/3 無答案題且 0 誤拒（建議，餘裕小） | ADR 0010、決策日誌 D80 |
-
-
-## 命名規則
-
-- **一個實驗一個資料夾**。資料夾內：`README.md`（方法、彙整表、結論）、一支統一的測試程式、`requirements.txt`（只有實驗用、不進專案的套件時）。
-- **每個比較對象一個結果檔**，檔名說出比較對象：同一個套件的不同設定放在以套件命名的子資料夾（`pypdf/default.json`、`pypdf/layout.json`）；同一種量測、不同方法的結果用 `<方法>.<量測內容>.json`（`fixed-size-400-80.table2-rows.json`）。
-- **結果檔自己說明自己**：第一段是設定（`config` 或 `method`：套件、版本、呼叫方式或參數），之後才是數據。
-- 結果檔都能由統一的測試程式重新產生；重現方式寫在各資料夾的 `README.md`。
-- 標準答案放 `ground-truth/`，不放在任何實驗底下。
+這些程式讀寫的資料檔不在版控內，所以從 repo 取出後無法直接重跑；判定一律人工逐句對原文，程式只做機械檢查（數字是否出現、配對是否相加為 100 等）。

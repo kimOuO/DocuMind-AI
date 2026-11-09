@@ -11,7 +11,7 @@ VENV     := .venv
 export PATH := $(CURDIR)/$(VENV)/bin:$(PATH)
 
 .PHONY: help setup dev dev-backend dev-frontend db migrate up down logs \
-        check check-backend check-frontend test smoke smoke-api eval package transcript
+        check check-backend check-frontend test smoke smoke-api deploy eval package transcript
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk -F':.*?## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -68,6 +68,11 @@ test: db ## Run the backend tests only
 
 smoke: migrate ## Minimal end-to-end check: bge-m3 -> pgvector -> qwen3 (AC-47)
 	$(VENV)/bin/python scripts/smoke_rag.py
+
+deploy: ## The whole release routine: full checks, rebuild the deployment, API test; stops at the first failure
+	$(MAKE) check
+	$(MAKE) up
+	$(MAKE) smoke-api
 
 smoke-api: ## API test of the running deployment (after make up): upload, ask, follow-up, no-answer, 10K ledger
 	$(VENV)/bin/python scripts/smoke_api.py

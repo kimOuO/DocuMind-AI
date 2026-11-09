@@ -8,7 +8,7 @@
 最核心的功能是能可靠回答文件問題的 RAG；平台功能不能犧牲題目的驗收條件。
 規格見 `docs/02-specs/` 的 `01`–`04`，文件導覽見 `docs/README.md`，目前進度見 `docs/04-dev-journal/`。
 
-- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、簡報、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。`evaluation/` 在 git 內，但不隨交付 zip。
+- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、簡報、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。`evaluation/` 在 git 內只有評測程式與資料夾說明；題庫、標準答案、逐題紀錄與各實驗報告只留在開發機（`.gitignore` 已設定）。
 - **四份規格在 P1 完成後凍結。** 不再反覆修改已決定的設計；只有實作或測試發現實際問題時才改，改之前先向使用者說明，並在決策日誌新增一筆。
 - `docs/02-specs/archive/` 是已被取代的文件，內容不代表現行設計，不要依它實作。
 
@@ -31,7 +31,8 @@
 | `make smoke-api` | 對部署中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、10K 帳本（`make up` 之後跑） |
 | `make eval` | 重跑檢索參數實驗（寫入 `evaluation/retrieval-parameters/runs/`） |
 | `make transcript` | 匯出對話逐字稿到 `docs/05-ai-collaboration/sessions/raw/` |
-| `make package` | 從已提交的內容打交付 zip（不含 `evaluation/`，見 `.gitattributes`） |
+| `make deploy` | 一次做完上線流程：`make check` → `make up` → `make smoke-api`，任何一步失敗就停 |
+| `make package` | 從已提交的內容打交付 zip |
 
 - **所有開發都在專案的 venv 內進行，不在主機上安裝或執行開發工具。** Python、pip、Node、npm 都在 `.venv/bin/`（Node 由 nodeenv 裝進 venv）。
 - 不要用系統 Python、不要 `pip install` 到別處、不要用 nvm 或全域 npm。直接下指令前先 `source .venv/bin/activate`，或用 Makefile。唯一的例外是只用標準庫的兩支工具腳本：`scripts/export_transcript.py`（由 `.claude/settings.json` 的 hook 在 session 結束與壓縮前自動執行）與 checkpoint 的檢查腳本，可用系統 `python3`。
@@ -71,7 +72,7 @@
 這個專案的互動過程本身是交付物（要報告「如何與 AI 協作」）。三條主規則（D105，使用者訂）：
 
 1. **依規格與總計畫推進，每個階段先說明、取得許可再動手。** 工作依 `docs/02-specs/` 與階段計畫（P0–P7）推進。進入一個階段時重新設計該階段的細節，把計畫說明給使用者、詢問意見，取得許可後才開始實作。階段內小步 commit；階段結束時執行 checkpoint（全部檢查、更新紀錄）並打 tag。
-2. **改了系統模組（前端或後端）先驗證、再部署、再測 API。** `make check`（lint、型別、含 API 的整合測試）通過後才 `make up` 重建；部署後跑 `make smoke-api`，對運行中的系統走一遍註冊、上傳、提問、追問、無答案題與 10K 帳本檢查，全部通過才算上線。步驟見 `.claude/skills/verify/SKILL.md`。
+2. **改了系統模組（前端或後端）先驗證、再部署、再測 API。** `make check`（lint、型別、含 API 的整合測試）通過後才 `make up` 重建；部署後跑 `make smoke-api`（三步可用 `make deploy` 一次執行），對運行中的系統走一遍註冊、上傳、提問、追問、無答案題與 10K 帳本檢查，全部通過才算上線。步驟見 `.claude/skills/verify/SKILL.md`。
 3. **跑完測試劇本先分析、再討論、後修改。** 每次以測試劇本（`evaluation/` 的題庫與標準答案）實測後，保存逐題紀錄（回答、來源、每次呼叫的 token 用量），對照標準答案判定完成程度，列出問題與修正方向，向使用者報告並討論後才動手修改。
 
 紀錄方式：

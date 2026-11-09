@@ -1,5 +1,0 @@
-# Libraries compared in this experiment only. They are NOT project dependencies:
-# install them into a separate directory, see README.md.
-PyMuPDF==2.1
-pypdf==6.21.4
-pdfplumber==0.11.10

@@ -1,7 +1,7 @@
 """AC-53: section headings are recognised and normalised, and the limits are on record.
 
-The ground truth is the paper's LaTeX source (evaluation/ground-truth/
-paper-structure.json): 22 numbered section and subsection titles. pypdf splits
+The ground truth is the paper's LaTeX source (tests/fixtures/paper-structure.json, a copy
+of the file the evaluation scripts build): 22 numbered section and subsection titles. pypdf splits
 small-caps titles ("1 I NTRODUCTION"), so the normalised text is compared with
 the truth and every title that cannot be restored by rule is listed here.
 """
@@ -16,7 +16,7 @@ from app.ingestion.parsing import Page, parse_document
 
 ROOT = Path(__file__).resolve().parents[4]
 SAMPLE_PDF = ROOT / "sample-documents" / "2410.05779v3.pdf"
-GROUND_TRUTH = ROOT / "evaluation" / "ground-truth" / "paper-structure.json"
+GROUND_TRUTH = Path(__file__).resolve().parents[1] / "fixtures" / "paper-structure.json"
 
 # Page of each numbered heading in the PDF (checked by hand against the file, 2026-11-05).
 EXPECTED_PAGES = {
