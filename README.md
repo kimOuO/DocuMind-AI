@@ -40,16 +40,21 @@ tokenizer 已內附在專案中（`app/backend/third-party/`，Apache-2.0），�
 git clone git@github.com:kimOuO/DocuMind-AI.git
 cd DocuMind-AI
 make up
-# 開啟 http://127.0.0.1:3000
 ```
 
-`make up` 做三件事：
+直接執行 `make up` 就會檢查環境並部署：先檢查上表的項目（缺什麼會一次列出並說明怎麼補，有缺就不啟動），通過後建置並啟動資料庫、後端、前端三個容器，完成後印出網址 `http://127.0.0.1:3000`。主機不用另外安裝 Python 或 Node。
 
-1. 沒有 `.env` 就從 `.env.sample` 複製一份。
-2. **啟動前檢查**（`make preflight`）：Docker 與版本、Ollama 與版本、必要模型、容器連不連得到 Ollama、連接埠、資源。一次檢查完，最後列出所有未通過的項目與處理方式；有未通過的就不啟動。
-3. 建置並啟動三個容器（資料庫、後端、前端），資料表自動建立，全部健康後印出網址。
+想另外檢查時：
 
-後端與前端需要的套件都裝在容器裡，主機不用另外安裝 Python 或 Node。
+| 指令 | 檢查什麼 |
+|---|---|
+| `make preflight` | 只檢查環境，不啟動 |
+| `make smoke-api` | 部署後對運行中的系統實際操作一遍：註冊、上傳、提問、追問、無答案題、10K 帳本 |
+| `make check` | 程式本身：lint、型別檢查、自動測試 |
+| `make smoke` | 嵌入模型、向量庫、生成模型三者接不接得起來 |
+| `make deploy` | 一次做完：`make check` → `make up` → `make smoke-api`，任何一步失敗就停 |
+
+後四個指令會用到開發環境，第一次請先 `make setup`（只需要 Python 3.12，工具都裝在專案的 `.venv` 內；`make deploy` 會自動先做）。
 
 ### 使用
 
@@ -69,22 +74,14 @@ make up
 - 設定值見 `.env.sample`。`CHECK_NOTES=true` 是除錯模式：回答後附上數字、標籤、算術核對的註記。
 - API 文件：`http://127.0.0.1:3000/api/v1/docs`。
 
-## 指令
+## 開發指令
 
 ```bash
-make preflight   # 啟動前檢查（make up 會自動先跑）
-make up          # 檢查後用 Docker 啟動全部；make down 停止
-make smoke-api   # 部署後對運行中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、10K 帳本
-make deploy      # 一次做完上線流程：完整檢查 → 重建部署 → API 測試，任何一步失敗就停
-
-make setup       # 開發用：建立 .venv（Python 與 Node 都裝在裡面）並安裝前後端相依
-make dev         # 開發用：資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
-make check       # lint、型別檢查、所有不需真實模型的測試
-make smoke       # 最小流程驗證：嵌入模型 → 向量庫 → 生成模型
-make help        # 所有指令
+make setup   # 建立 .venv（Python 與 Node 都裝在裡面）並安裝前後端相依
+make dev     # 資料庫容器 + 後端（熱重載，:8000）+ 前端（Vite，:5173）
+make down    # 停止 Docker 部署
+make help    # 所有指令
 ```
-
-`make smoke-api`、`make check`、`make deploy` 會用到 `.venv`，第一次請先 `make setup`（只需要 Python 3.12；`make deploy` 發現沒有 `.venv` 會自動先做）。所有開發工具都裝在 `.venv` 內，不會安裝到主機。
 
 ## 架構
 
