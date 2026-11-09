@@ -908,6 +908,31 @@ test('the model control offers the other model and sends it with the question (A
   )
 })
 
+test('the thinking checkbox is off by default and sends thinking with the question (AC-64)', async () => {
+  const calls = mockApi(
+    routesFor(answerStream(), {
+      ...stored(),
+      messages: stored().messages.map((m) =>
+        m.role === 'assistant'
+          ? {
+              ...m,
+              temperature: 0,
+              usage: { prompt_tokens: 2099, completion_tokens: 1298, limit: 10000, thinking: true },
+            }
+          : m,
+      ),
+    }),
+  )
+  render(<ChatPanel documents={[PAPER]} />)
+  const box = await screen.findByRole('checkbox', { name: '思考模式' })
+  expect(box).not.toBeChecked()
+  await userEvent.click(box)
+  await ask()
+  const request = calls.find((call) => call.key === ASK)
+  expect(request?.body).toMatchObject({ question: QUESTION, thinking: true })
+  expect(await screen.findByLabelText('這則回答的溫度與 token')).toHaveTextContent('思考 開 ｜ 溫度 0.0')
+})
+
 test('the 建立摘要 button sends the summary action and shows the summary tree being built', async () => {
   const calls = mockApi(
     routesFor(

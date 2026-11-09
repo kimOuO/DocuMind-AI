@@ -114,7 +114,14 @@ from app.core.errors import ApiError
 from app.documents.repository import DocumentRepository
 from app.ingestion.scheduler import JobScheduler, NullScheduler
 from app.llm.embedding import Embedder, EmbeddingError, EmbeddingInputError
-from app.llm.gateway import CallContext, ContextBudgetExceeded, LLMCallFailed, LLMGateway, LLMResult
+from app.llm.gateway import (
+    CallContext,
+    ContextBudgetExceeded,
+    LLMCallFailed,
+    LLMGateway,
+    LLMResult,
+    estimate_prompt_tokens,
+)
 from app.llm.tokenizer import TokenCounter
 from app.models import Message, User
 from app.retrieval.expansion import MAX_FOLLOWING, table_context
@@ -126,6 +133,9 @@ logger = logging.getLogger(__name__)
 
 # Budget of one answer call (docs/02-specs/02-architecture.md, section 4.3).
 ANSWER_MAX_OUTPUT_TOKENS = 2_500
+# D106: in thinking mode the reasoning is output too, so the answer call may use the room
+# the prompt leaves, up to this much; prompt + output still has to fit the context limit.
+THINKING_MAX_OUTPUT_TOKENS = 5_000
 # D101: the summary action waits for the summary trees it queued, checking this often,
 # and gives up waiting (answering from whatever is ready) after this long.
 SUMMARY_POLL_SECONDS = 2.0
@@ -175,6 +185,9 @@ class PreparedQuestion:
     # D101: "summary" — build the summary trees of the documents in scope first, then
     # answer from them; None is an ordinary question.
     action: str | None = None
+    # D106: whether the answer call runs in thinking mode (the request's choice, else the
+    # server's LLM_THINKING).
+    thinking: bool = False
 
 
 @dataclass(frozen=True)
@@ -230,6 +243,7 @@ class ChatService:
         embedder: Embedder,
         gateway: LLMGateway,
         scheduler: JobScheduler | None = None,
+        answer_gateway: LLMGateway | None = None,
     ) -> None:
         self._db = db
         self._sessions = sessions
@@ -237,6 +251,9 @@ class ChatService:
         self._counter = counter
         self._embedder = embedder
         self._gateway = gateway
+        # D106: the gateway of the answer call; another one only when the question chose a
+        # thinking mode other than the server's.
+        self._answer_gateway = answer_gateway if answer_gateway is not None else gateway
         # D101: runs the summary jobs the summary action queues; without one they stay queued.
         self._scheduler: JobScheduler = scheduler if scheduler is not None else NullScheduler()
 
@@ -248,6 +265,7 @@ class ChatService:
         document_ids: list[uuid.UUID] | None,
         temperature: float | None = None,
         action: str | None = None,
+        thinking: bool | None = None,
     ) -> PreparedQuestion:
         """Check the question and store it with a pending answer. `temperature` is the
         request's choice for the answer call (0–1, validated by the router); omitted, the
@@ -291,6 +309,7 @@ class ChatService:
             temperature,
             previous_chunk_ids,
             action=action,
+            thinking=self._settings.llm_thinking if thinking is None else thinking,
         )
 
     async def answer(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
@@ -309,6 +328,8 @@ class ChatService:
                     "temperature": prepared.temperature,
                     # D104: the generation model of this question's calls.
                     "model": self._settings.llm_model,
+                    # D106: whether the answer call thinks first.
+                    "thinking": prepared.thinking,
                 },
             )
             # A follow-up is first made to stand on its own (AC-16); the retrieval and the
@@ -491,19 +512,26 @@ class ChatService:
                 conversation_id=prepared.conversation_id,
                 message_id=prepared.assistant_message_id,
             )
-            stream = self._gateway.stream(
+            stream = self._answer_gateway.stream(
                 evidence.prompt,
                 purpose="answer",
                 temperature=prepared.temperature,
-                max_output_tokens=ANSWER_MAX_OUTPUT_TOKENS,
+                max_output_tokens=self._answer_output_tokens(prepared, evidence.prompt),
                 context=context,
             )
+            announced_thinking = False
             # Closing the stream when this generator is closed lets the gateway
             # record the call as interrupted right away.
             async with aclosing(stream) as pieces:  # type: ignore[type-var]
                 async for piece in pieces:
                     if piece.result is not None:
                         result = piece.result
+                        continue
+                    if piece.thinking:
+                        # D106: the reasoning is not shown; the client is told once.
+                        if not announced_thinking:
+                            announced_thinking = True
+                            yield ChatEvent("stage", {"stage": "thinking"})
                         continue
                     received.append(piece.text)
                     if len(received) % SAVE_EVERY == 0:
@@ -584,6 +612,8 @@ class ChatService:
                     "limit": self._settings.llm_context_limit,
                     # D104: the model that made these calls; stored with the answer.
                     "model": self._settings.llm_model,
+                    # D106: whether the answer call ran in thinking mode.
+                    "thinking": prepared.thinking,
                     # D100 (user): every call of this question, each under the limit.
                     "breakdown": [
                         {
@@ -1640,6 +1670,18 @@ class ChatService:
                 answered=answered,
                 usage=usage,
             )
+
+    def _answer_output_tokens(self, prepared: PreparedQuestion, prompt: str) -> int:
+        """The output limit of the answer call. In thinking mode (D106) the reasoning is
+        output too, so the call gets the room the prompt leaves under the context limit,
+        up to THINKING_MAX_OUTPUT_TOKENS and never less than the ordinary limit; the
+        gateway's guard still checks prompt + output against the limit."""
+        if not prepared.thinking:
+            return ANSWER_MAX_OUTPUT_TOKENS
+        thinking_settings = self._settings.model_copy(update={"llm_thinking": True})
+        estimated = estimate_prompt_tokens(self._counter, thinking_settings, prompt)
+        room = self._settings.llm_context_limit - estimated
+        return max(ANSWER_MAX_OUTPUT_TOKENS, min(THINKING_MAX_OUTPUT_TOKENS, room))
 
     async def _build_summaries(self, prepared: PreparedQuestion) -> AsyncIterator[ChatEvent]:
         """D101: queue a summary job for every indexed document in scope that has no

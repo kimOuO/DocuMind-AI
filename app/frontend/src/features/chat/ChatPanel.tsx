@@ -66,6 +66,27 @@ function storeModel(value: string | null) {
   }
 }
 
+/** The user's thinking-mode choice (AC-64): null = server default. */
+const THINKING_KEY = 'documind.thinking'
+
+function readStoredThinking(): boolean | null {
+  try {
+    const raw = localStorage.getItem(THINKING_KEY)
+    return raw === null ? null : raw === 'true'
+  } catch {
+    return null
+  }
+}
+
+function storeThinking(value: boolean | null) {
+  try {
+    if (value === null) localStorage.removeItem(THINKING_KEY)
+    else localStorage.setItem(THINKING_KEY, String(value))
+  } catch {
+    // Storage unavailable: the choice still applies for this page.
+  }
+}
+
 /** The model choice beside the temperature (AC-63, D104): the server's default first, then
  * the other model it offers. Every call of the question uses the chosen model. */
 function ModelControl({
@@ -185,6 +206,7 @@ const ROUTE_LABEL: Record<string, string> = {
 }
 const STAGE_LABEL: Record<Stage, string> = {
   summarising: '建立摘要樹中：逐章讀完整份文件再濃縮，約 3 分鐘',
+  thinking: '模型思考中：推理過程不顯示，計入輸出 tokens',
   navigating: 'Navigator 規劃要看的章節與表格中',
   generating: '產生初稿中（兩次呼叫模式，初稿不會直接顯示）',
   verifying: '核對中',
@@ -210,6 +232,7 @@ const QUICK_QUESTIONS = ['summary this document.', '這份文件的主要結論�
 
 const STAGE_ORDER: Stage[] = [
   'summarising',
+  'thinking',
   'navigating',
   'generating',
   'verifying',
@@ -219,6 +242,7 @@ const STAGE_ORDER: Stage[] = [
 ]
 const STAGE_SHORT: Record<Stage, string> = {
   summarising: '建立摘要',
+  thinking: '思考',
   navigating: '規劃閱讀',
   generating: '產生初稿',
   verifying: '核對',
@@ -733,6 +757,7 @@ function MessageView({
           {((message.temperature !== undefined && message.temperature !== null) || message.usage) && (
             <p className="mt-1 text-xs text-muted" aria-label="這則回答的溫度與 token">
               {message.usage?.model && <span>模型 {message.usage.model} ｜ </span>}
+              {message.usage?.thinking && <span>思考 開 ｜ </span>}
               {message.temperature !== undefined && message.temperature !== null && (
                 <span>溫度 {message.temperature.toFixed(1)}</span>
               )}
@@ -780,6 +805,9 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   // D104 (AC-63): the generation model of the next question; null = the server's default.
   const [model, setModel] = useState<string | null>(() => readStoredModel())
   const [models, setModels] = useState<string[]>([])
+  // D106 (AC-64): thinking mode of the next answer; null = the server's default.
+  const [thinking, setThinking] = useState<boolean | null>(() => readStoredThinking())
+  const [defaultThinking, setDefaultThinking] = useState(false)
   // D98: the number-check panel is a debug aid, shown only when the server runs in debug mode.
   const [debugChecks, setDebugChecks] = useState(false)
   useEffect(() => {
@@ -788,6 +816,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
         setDefaultTemperature(health.answer_temperature)
         setDebugChecks(health.check_notes)
         setModels(health.llm_models ?? [])
+        setDefaultThinking(health.llm_thinking ?? false)
       })
       .catch(() => {
         // The slider then shows no default figure; asking still works.
@@ -952,6 +981,8 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
               )
               break
             case 'delta':
+              // The reasoning is over once the answer text starts.
+              setStage((current) => (current === 'thinking' ? null : current))
               updateAnswer((answer) => ({
                 ...answer,
                 content: answer.content + askEvent.data.text,
@@ -983,6 +1014,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
         action,
         // A stored choice the server no longer offers falls back to the default.
         model !== null && models.includes(model) && model !== models[0] ? model : null,
+        thinking !== null && thinking !== defaultThinking ? thinking : null,
       )
       // The stored conversation is the authority: reload it, and its title.
       if (started) await reload(conversationId)
@@ -1259,6 +1291,22 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
                   storeModel(value)
                 }}
               />
+            )}
+            {ready.length > 0 && (
+              <label className="mt-1 flex items-center gap-2 px-2 text-xs text-muted">
+                <input
+                  type="checkbox"
+                  aria-label="思考模式"
+                  checked={thinking ?? defaultThinking}
+                  disabled={asking}
+                  onChange={(event) => {
+                    const value = event.target.checked === defaultThinking ? null : event.target.checked
+                    setThinking(value)
+                    storeThinking(value)
+                  }}
+                />
+                <span>思考模式（回答前先推理；推理不顯示、計入輸出 tokens，較慢）</span>
+              </label>
             )}
             {ready.length > 0 && messages.length === 0 && (
               <div className="mt-2 flex flex-wrap gap-2" aria-label="快捷問題">

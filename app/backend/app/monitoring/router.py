@@ -31,6 +31,8 @@ class HealthResponse(BaseModel):
     llm_model: str
     # D104 (AC-63): the generation models a question may choose; the default first.
     llm_models: list[str]
+    # D106 (AC-64): the server's default for the answer call's thinking mode.
+    llm_thinking: bool
     embed_model: str
     llm_context_limit: int
     # The server's default answer temperature (AC-60); None = the model's default.
@@ -96,6 +98,7 @@ async def health(
         ollama=ollama,
         llm_model=settings.llm_model,
         llm_models=settings.llm_models(),
+        llm_thinking=settings.llm_thinking,
         embed_model=settings.embed_model,
         llm_context_limit=settings.llm_context_limit,
         answer_temperature=settings.answer_temperature,

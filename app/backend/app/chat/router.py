@@ -37,6 +37,9 @@ class QuestionBody(BaseModel):
     # D104 (AC-63): the generation model for every call of this question — one of the
     # models the server offers (GET /health `llm_models`); omitted = the default.
     model: str | None = Field(default=None, max_length=100)
+    # D106 (AC-64): thinking mode for the answer call of this question; omitted = the
+    # server's LLM_THINKING. The reasoning is not shown and counts as output tokens.
+    thinking: bool | None = None
 
 
 def get_embedder(settings: Settings = Depends(get_settings)) -> Embedder:
@@ -74,6 +77,16 @@ async def ask(
     if chosen is not settings:
         counter = get_token_counter_for(chosen.tokenizer_path, chosen.tokenizer_sha256)
         gateway = gateway.for_settings(chosen, counter)
+    # D106 (AC-64): thinking applies to the answer call only — the short judgement and
+    # rewrite calls have no room for it. The answer goes through the same gateway class
+    # bound to settings with the chosen mode, so its budget estimate renders the prompt
+    # the way Ollama will.
+    thinking = chosen.llm_thinking if body.thinking is None else body.thinking
+    answer_gateway = gateway
+    if thinking != chosen.llm_thinking:
+        answer_gateway = gateway.for_settings(
+            chosen.model_copy(update={"llm_thinking": thinking}), counter
+        )
     service = ChatService(
         db,
         sessions=get_sessionmaker(),
@@ -82,11 +95,18 @@ async def ask(
         embedder=embedder,
         gateway=gateway,
         scheduler=scheduler,
+        answer_gateway=answer_gateway,
     )
     # Every check happens here, before the stream starts: a refused question
     # gets an ordinary error response and leaves nothing behind.
     prepared = await service.prepare(
-        user, conversation_id, body.question, body.document_ids, body.temperature, body.action
+        user,
+        conversation_id,
+        body.question,
+        body.document_ids,
+        body.temperature,
+        body.action,
+        thinking,
     )
     # The answer can take a while and uses short sessions of its own.
     await db.close()

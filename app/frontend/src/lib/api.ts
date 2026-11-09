@@ -14,6 +14,8 @@ export interface Health {
   llm_context_limit: number
   /** D104 (AC-63): the generation models a question may choose; the default first. */
   llm_models?: string[]
+  /** D106 (AC-64): the server's default for the answer call's thinking mode. */
+  llm_thinking?: boolean
   /** The server's default answer temperature (AC-60); null = the model's default. */
   answer_temperature: number | null
   /** Debug mode (D98): the check notes are appended to answers and the check panel shown. */
@@ -206,6 +208,8 @@ export interface Usage {
   calls?: number
   /** D104: the generation model that made these calls. */
   model?: string
+  /** D106: whether the answer call ran in thinking mode. */
+  thinking?: boolean
   /** D100: every LLM call behind this answer (follow-up judgement, rewrite, answer), each under the limit. */
   breakdown?: { purpose: string; prompt_tokens: number | null; completion_tokens: number | null }[]
 }
@@ -230,7 +234,14 @@ export interface Revision {
 }
 
 export type Stage =
-  'summarising' | 'navigating' | 'generating' | 'verifying' | 'correcting' | 'revising' | 'finalizing'
+  | 'summarising'
+  | 'thinking'
+  | 'navigating'
+  | 'generating'
+  | 'verifying'
+  | 'correcting'
+  | 'revising'
+  | 'finalizing'
 
 /** What the experimental navigate mode did (D71); null in the other modes. */
 export interface DirectionIssue {
@@ -358,6 +369,8 @@ export type AskEvent =
         temperature: number | null
         /** D104: the generation model of this question's calls. */
         model?: string
+        /** D106: whether the answer call thinks first. */
+        thinking?: boolean
       }
     }
   | { name: 'route'; data: { type: string; standalone_question: string } }
@@ -408,6 +421,7 @@ export async function askQuestion(
   temperature: number | null = null,
   action: 'summary' | null = null,
   model: string | null = null,
+  thinking: boolean | null = null,
 ): Promise<void> {
   // `temperature` is sent only when the user chose one; omitted, the server's default
   // applies (AC-60). `action` "summary" (D101) is the summary button: the summary trees
@@ -417,6 +431,8 @@ export async function askQuestion(
   if (action !== null) body.action = action
   // D104 (AC-63): sent only when the user chose a model other than the server's default.
   if (model !== null) body.model = model
+  // D106 (AC-64): sent only when the user's choice differs from the server's default.
+  if (thinking !== null) body.thinking = thinking
   const response = await fetch(`${API}/conversations/${conversationId}/messages`, {
     method: 'POST',
     credentials: 'same-origin',

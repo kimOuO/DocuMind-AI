@@ -85,10 +85,13 @@ class LLMResult:
 
 @dataclass(frozen=True)
 class LLMChunk:
-    """A piece of streamed text. The last chunk carries the result instead."""
+    """A piece of streamed text. The last chunk carries the result instead. While a
+    model in thinking mode reasons (D106), chunks arrive with no text and `thinking` set:
+    the reasoning itself is not passed on, only that it is happening."""
 
     text: str
     result: LLMResult | None = None
+    thinking: bool = False
 
 
 class LLMGateway(Protocol):
@@ -232,6 +235,8 @@ class OllamaGateway:
                     if text:
                         received.append(text)
                         yield LLMChunk(text)
+                    elif item.get("thinking"):
+                        yield LLMChunk("", thinking=True)
                     if item.get("done"):
                         final = item
                         break

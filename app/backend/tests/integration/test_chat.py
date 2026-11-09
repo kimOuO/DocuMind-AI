@@ -71,11 +71,15 @@ class StubOllama:
         self.rewrite_options: list[dict] = []
         self.options: list[dict] = []  # the options of each answer request
         self.models: list[str] = []  # the model each request named (D104)
+        self.thinks: list[bool] = []  # the thinking mode of each request (D106)
+        self.num_predicts: list[int] = []  # the output limit of each answer request
+        self.check_output_limit = True  # answers are limited to 2,500 unless thinking
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
         self.models.append(body["model"])
+        self.thinks.append(body["think"])
         if not body["stream"] and "NEW or FOLLOW-UP" in body["prompt"]:
             # D99: the follow-up judgement.
             self.judge_prompts.append(body["prompt"])
@@ -106,14 +110,20 @@ class StubOllama:
             )
         self.prompts.append(body["prompt"])
         self.options.append(body["options"])
-        assert {k: body["options"][k] for k in ("num_ctx", "num_predict")} == {
-            "num_ctx": 10_000,
-            "num_predict": 2_500,
-        }
+        self.num_predicts.append(body["options"]["num_predict"])
+        assert body["options"]["num_ctx"] == 10_000
+        if self.check_output_limit:
+            assert body["options"]["num_predict"] == 2_500
+        thinking = body["think"]
         if self.status_code != 200:
             return httpx.Response(self.status_code, json={"error": self.error})
 
         async def lines() -> AsyncIterator[bytes]:
+            if thinking:
+                # A thinking model reasons first: chunks with no answer text.
+                yield (
+                    json.dumps({"response": "", "thinking": "Let me see", "done": False}) + "\n"
+                ).encode()
             for piece in self.pieces:
                 yield (json.dumps({"response": piece, "done": False}) + "\n").encode()
             final = {
@@ -243,6 +253,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "completion_tokens": 3,
         "limit": 10_000,
         "model": get_settings().llm_model,
+        "thinking": False,
         "breakdown": [{"purpose": "answer", "prompt_tokens": 321, "completion_tokens": 3}],
     }
     assert by_name["done"] == {
@@ -1207,6 +1218,36 @@ async def test_a_question_can_choose_the_other_model_and_every_call_uses_it(
     assert refused.status_code == 422
     assert refused.json()["code"] == "UNKNOWN_MODEL"
     assert counts(db) == before
+
+
+async def test_thinking_mode_is_chosen_per_question_and_applies_to_the_answer_call_only(
+    kim: TestClient, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D106 (AC-64): `thinking` turns the answer call's thinking mode on for one question.
+    The judgement and the rewrite stay as they were; the reasoning is not passed on, only
+    announced; and the answer call may use the room the prompt leaves, within the limit."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    assert kim.get("/api/v1/health").json()["llm_thinking"] is False
+    model = StubOllama(["LightRAG builds a graph [1]."], rewrite_to="What does LightRAG build?")
+    model.check_output_limit = False
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    first = dict(events(ask(kim, conversation, "What does LightRAG build?")))
+    assert (first["start"]["thinking"], first["usage"]["thinking"]) == (False, False)
+    assert model.num_predicts == [2_500]
+
+    received = events(ask(kim, conversation, "And what is it made of?", thinking=True))
+    second = dict(received)
+    assert (second["start"]["thinking"], second["usage"]["thinking"]) == (True, True)
+    # One call for the first question; then the judgement, the rewrite and the answer —
+    # only the answer thinks.
+    assert model.thinks == [False, False, False, True]
+    assert [data for name, data in received if name == "stage"] == [{"stage": "thinking"}]
+    assert "".join(d["text"] for n, d in received if n == "delta") == "LightRAG builds a graph [1]."
+    # The answer call gets the room the prompt leaves, up to 5,000, and never over the limit.
+    assert 2_500 < model.num_predicts[-1] <= 5_000
+    assert second["done"]["status"] == "completed"
 
 
 async def test_the_summary_action_builds_the_missing_summary_tree_and_answers_from_it(
