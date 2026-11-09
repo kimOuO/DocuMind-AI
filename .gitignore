@@ -45,11 +45,19 @@ docs/*
 !docs/02-specs/
 docs/02-specs/archive/
 !docs/03-decisions/
-# The final report: only the two finished files are published.
-!docs/06-report/
-docs/06-report/*
-!docs/06-report/DocuMind-AI.pdf
-!docs/06-report/DocuMind-AI.pptx
+# Phase journals: the four that are complete.
+!docs/04-dev-journal/
+docs/04-dev-journal/*
+!docs/04-dev-journal/P0.md
+!docs/04-dev-journal/P1.md
+!docs/04-dev-journal/P2.md
+!docs/04-dev-journal/P3.md
+# AI-collaboration records: the decision log and the insights. Raw transcripts, session
+# notes and screenshots stay on the development machine.
+!docs/05-ai-collaboration/
+docs/05-ai-collaboration/*
+!docs/05-ai-collaboration/decision-log.md
+!docs/05-ai-collaboration/insights.md
 
 # Evaluation (question set, ground truth, per-question records, experiment reports and the
 # scripts that read them) stays on the development machine: the scripts cannot run without

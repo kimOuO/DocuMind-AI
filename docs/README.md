@@ -6,7 +6,10 @@
 |---|---|
 | `02-specs/` | 平台規格，已確認並凍結 |
 | `03-decisions/` | 架構決策紀錄：一個技術選擇一篇，寫明考慮過的選項、決定與後果 |
-| `06-report/` | 簡報定稿：`DocuMind-AI.pdf` 與可編輯的 `DocuMind-AI.pptx` |
+| `04-dev-journal/` | 階段回顧 P0 至 P3：每個階段的目標、做了什麼、困難與解法、驗收結果 |
+| `05-ai-collaboration/` | 與 AI 協作的紀錄：`decision-log.md`（每個決策的背景、AI 建議、使用者原話、最終選擇與驗證）、`insights.md`（協作觀察） |
+
+簡報在專案最上層：`DocuMind-AI.pdf` 與 `DocuMind-AI.pptx`。評測資料、原始對話逐字稿與題目原文未公開。
 
 ### 規格怎麼讀
 

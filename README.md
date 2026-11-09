@@ -2,7 +2,7 @@
 
 讓 AI 跟文件對話：上傳文件，用聊天介面提問，LLM 依文件內容回答並附上來源。
 
-簡報：[`docs/06-report/DocuMind-AI.pdf`](docs/06-report/DocuMind-AI.pdf)（可編輯版 [`DocuMind-AI.pptx`](docs/06-report/DocuMind-AI.pptx)）
+簡報：[`DocuMind-AI.pdf`](DocuMind-AI.pdf)（可編輯版 [`DocuMind-AI.pptx`](DocuMind-AI.pptx)），就在專案最上層。
 
 本機執行的文件問答平台：帳號與文件管理（PDF、TXT、Markdown）、入庫（表格整張保留並逐列改寫）、對話式問答（串流回答，來源附檔名、頁碼、片段；接著追問；文件沒有的就明說）、可選的全文摘要、每次模型呼叫的 token 帳本。
 
@@ -161,11 +161,13 @@ DocuMind-AI/
 ├── docs/                       規格與架構決策紀錄
 │   ├── 02-specs/               規格：01 需求與驗收條件、02 架構、03 介面、04 使用情境
 │   ├── 03-decisions/           架構決策紀錄：選了什麼、為什麼
-│   └── 06-report/              簡報（PDF 與 PPTX）
+│   ├── 04-dev-journal/         階段回顧（P0 至 P3）：目標、做法、困難與解法、驗收
+│   └── 05-ai-collaboration/    與 AI 協作的紀錄：決策日誌（含我的原話與被否決的 AI 建議）、協作心得
 ├── sample-documents/           測試用文件（LightRAG 論文）
 ├── scripts/                    工具：啟動前檢查、API 測試、最小流程驗證、打包、匯出逐字稿
 ├── CLAUDE.md                   給 AI coding agent（Claude Code）的專案規則
 ├── .claude/                    Claude Code 的設定與兩個流程（checkpoint、verify）
+├── DocuMind-AI.pdf / .pptx     簡報
 └── Makefile / docker-compose.yml / .env.sample
 ```
 
