@@ -85,11 +85,11 @@ fi
 echo "三、連接埠"
 stack_running="$(docker compose ps -q 2>/dev/null | head -1 || true)"
 port_busy() { (command -v ss >/dev/null 2>&1 && ss -ltn 2>/dev/null | grep -qE "[:.]$1\s") || (command -v lsof >/dev/null 2>&1 && lsof -iTCP:"$1" -sTCP:LISTEN >/dev/null 2>&1); }
-for pair in "$WEB_PORT|網頁（WEB_PORT）" "$DB_PORT|資料庫（DB_PORT）"; do
-  port="${pair%%|*}"; label="${pair##*|}"
-  if [[ -n "$stack_running" ]]; then ok "連接埠 $port：$label，本專案的容器已在執行"
-  elif port_busy "$port"; then fail "連接埠 $port 已被其他程式占用（$label）" "停掉占用的程式，或在 .env 改 ${label#*（} 的值"
-  else ok "連接埠 $port 可用（$label）"; fi
+for triple in "$WEB_PORT|網頁|WEB_PORT" "$DB_PORT|資料庫|DB_PORT"; do
+  IFS='|' read -r port label key <<<"$triple"
+  if [[ -n "$stack_running" ]]; then ok "連接埠 $port（$label）：本專案的容器已在執行"
+  elif port_busy "$port"; then fail "連接埠 $port（$label）已被其他程式占用" "停掉占用的程式，或在 .env 把 $key 改成別的埠"
+  else ok "連接埠 $port（$label）可用"; fi
 done
 
 echo "四、資源建議"

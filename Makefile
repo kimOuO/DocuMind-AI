@@ -50,7 +50,7 @@ preflight: ## Check the machine before starting: Docker, Ollama, models, ports, 
 
 up: .env preflight ## Check the machine, then build and run everything in Docker (demo / delivery mode)
 	docker compose up --build -d --wait
-	@echo "Open http://$${WEB_BIND:-127.0.0.1}:$${WEB_PORT:-3000}"
+	@port=$$(grep -E '^WEB_PORT=' .env | tail -1 | cut -d= -f2 | sed 's/[[:space:]]*#.*//' | tr -d ' '); echo "Open http://127.0.0.1:$${port:-3000}"
 
 down: ## Stop the Docker deployment (data volumes are kept)
 	docker compose down
