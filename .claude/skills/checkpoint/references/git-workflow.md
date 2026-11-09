@@ -31,7 +31,7 @@ Co-Authored-By: …
 - **標題用英文**，簡短描述實際的變更，72 個字元以內。
 - `type`：`feat` 新功能、`fix` 修正、`refactor` 重整、`test` 測試、`docs` 文件、`chore` 工具與設定。
 - `scope` 是**功能模組**，不放 P0、P1、P2 等階段編號。目前使用的 scope：
-  `auth`、`documents`、`ingestion`、`retrieval`、`chat`、`summarization`、`llm`、`db`、`frontend`、`infra`、`evaluation`、`specs`、`project`。
+  `auth`、`documents`、`ingestion`、`retrieval`、`conversations`、`chat`、`summarization`、`llm`、`core`、`frontend`、`evaluation`、`specs`、`decisions`、`readme`、`config`、`deploy`、`package`、`agent-rules`、`tests`、`project`。
 - **內文用繁體中文**，固定三段：階段、完成、驗證。「驗證」只寫實際執行過的結果。
 - 一個工作項目拆成數個範圍清楚的提交（例如後端、前端、文件各一個）。每個提交都要能通過測試。
 

@@ -5,9 +5,10 @@
 | 指令 | 內容 | 何時執行 |
 |---|---|---|
 | `make check` | 後端 ruff、ruff format、mypy、pytest；前端 eslint、tsc、vitest | 每次 checkpoint |
-| `make test` | 含需要資料庫的測試（需先 `make db`） | 有資料庫相關變更時 |
+| `make test` | 只跑後端測試（會自動啟動資料庫容器） | 只改後端、想快一點時 |
 | `make eval` | 檢索與回答品質評測，產出 `evaluation/` 下的報告 | P4 及之後 |
-| `make up` | Docker 部署版；再呼叫 `/api/health` | Phase checkpoint |
+| `make up` | Docker 部署版；再呼叫 `/api/v1/health` | Phase checkpoint，或改了前後端模組之後 |
+| `make smoke-api` | 對部署中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、用量與 10K 帳本，共 12 項 | `make up` 之後 |
 
 每個指令記錄四項：執行的指令、exit code、通過與失敗的數量、日誌或報告的路徑。
 只寫實際看到的輸出。沒有執行的指令不要列出數字。

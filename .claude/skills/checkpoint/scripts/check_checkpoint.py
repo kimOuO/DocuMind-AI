@@ -47,6 +47,9 @@ SENSITIVE = {
     ),
     "phone number": re.compile(r"\b09\d{2}[- ]?\d{3}[- ]?\d{3}\b"),
 }
+# Folders of third-party text: the papers, and the evaluation records that quote their pages
+# (source snippets carry the authors' published e-mail addresses). Keys are still looked for.
+EMAIL_SCAN_EXCLUDE = ("evaluation/", "sample-documents/")
 # Files whose job is to describe these patterns, or that hold third-party text.
 SENSITIVE_SCAN_EXCLUDE = (
     "package-lock.json",
@@ -207,6 +210,8 @@ def check_sensitive(report: Report) -> None:
         except (UnicodeDecodeError, OSError):
             continue  # binary file
         for label, pattern in SENSITIVE.items():
+            if label == "email address" and rel.startswith(EMAIL_SCAN_EXCLUDE):
+                continue
             for match in pattern.finditer(text):
                 line_start = text.rfind("\n", 0, match.start()) + 1
                 # "scheme://user:password@host" is a connection URL, not an email address.

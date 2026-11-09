@@ -48,7 +48,7 @@ description: >
 
     python3 .claude/skills/checkpoint/scripts/check_checkpoint.py --mode <session|phase> [--tag cp-{number}-{outcome}]
 
-腳本會確認：位於 Git repository、目前 branch 與 HEAD、`git status`、`make` 目標存在、`docs/02-specs/` 與 `docs/04-dev-journal/` 存在、Tag 是否已存在、決策日誌是否有缺漏欄位。
+腳本只用標準庫，可用系統 `python3`。它會確認：位於 Git repository、目前 branch 與 HEAD、`git status`、`make` 目標存在、`docs/02-specs/` 與 `docs/04-dev-journal/` 存在、Tag 是否已存在、決策日誌是否有缺漏欄位。
 
 - 不可覆蓋既有 Tag。
 - 不可擅自丟棄工作區中的修改。
@@ -59,7 +59,7 @@ description: >
 
 ## 3. 執行測試與驗收
 
-執行 `make check`，P4 及之後另執行 `make eval`。記錄方式見 `references/validation.md`。
+執行 `make check`，P4 及之後另執行 `make eval`；這個階段改過前端或後端模組的，`make up` 重建後再跑 `make smoke-api`（CLAUDE.md 互動規則第 2 條）。記錄方式見 `references/validation.md`。
 
 - 對照 `docs/02-specs/` 的驗收條件，逐項記錄 PASS、FAIL 或 NOT TESTED。
 - 不可將未執行的驗收標示為 PASS。

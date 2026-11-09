@@ -8,14 +8,14 @@
 最核心的功能是能可靠回答文件問題的 RAG；平台功能不能犧牲題目的驗收條件。
 規格見 `docs/02-specs/` 的 `01`–`04`，文件導覽見 `docs/README.md`，目前進度見 `docs/04-dev-journal/`。
 
-- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。
+- **`docs/` 只有規格（`02-specs/`）、架構決策紀錄（`03-decisions/`）與 `README.md` 納入 git。** 階段回顧、AI 協作紀錄、簡報、題目原文只保留在開發機（`.gitignore` 已設定），不要 `git add -f` 它們。`evaluation/` 在 git 內，但不隨交付 zip。
 - **四份規格在 P1 完成後凍結。** 不再反覆修改已決定的設計；只有實作或測試發現實際問題時才改，改之前先向使用者說明，並在決策日誌新增一筆。
 - `docs/02-specs/archive/` 是已被取代的文件，內容不代表現行設計，不要依它實作。
 
 ## 不可違反的限制（來自題目）
 
 1. **LLM 只做 text-to-text。** 不得把檔案、圖片交給任何 LLM 或雲端 API 解析。文件解析一律用本地程式庫。
-2. **單次 LLM 呼叫的 prompt + completion ≤ 10,000 tokens。** 超量時用檢索、壓縮、map-reduce 處理，**絕不截斷**。所有呼叫都必須經過 `LLMClient` 的預算守門並寫入 `llm_calls` 帳本。送給 Ollama 的生成請求只能由 `app/backend/app/llm/ollama_api.py` 組裝（固定帶 `num_ctx`、`num_predict`、`truncate=false`、`shift=false`）。
+2. **單次 LLM 呼叫的 prompt + completion ≤ 10,000 tokens。** 超量時用檢索、壓縮、map-reduce 處理，**絕不截斷**。所有呼叫都必須經過 LLM Gateway（`app/backend/app/llm/gateway.py`）的預算守門並寫入 `llm_calls` 帳本；每題可選的另一個模型（AC-63）用它自己的 tokenizer 計數。送給 Ollama 的生成請求只能由 `app/backend/app/llm/ollama_api.py` 組裝（固定帶 `num_ctx`、`num_predict`、`truncate=false`、`shift=false`）。
 3. **找不到答案時不編造。** 回答必須有來源引用（檔名、頁碼、片段）。
 
 ## 常用指令
@@ -29,10 +29,12 @@
 | `make test` | 只跑後端測試 |
 | `make smoke` | 最小流程驗證：bge-m3 → pgvector → qwen3 |
 | `make smoke-api` | 對部署中的系統跑 API 測試：註冊、上傳、提問、追問、無答案題、10K 帳本（`make up` 之後跑） |
+| `make eval` | 重跑檢索參數實驗（寫入 `evaluation/retrieval-parameters/runs/`） |
 | `make transcript` | 匯出對話逐字稿到 `docs/05-ai-collaboration/sessions/raw/` |
+| `make package` | 從已提交的內容打交付 zip（不含 `evaluation/`，見 `.gitattributes`） |
 
 - **所有開發都在專案的 venv 內進行，不在主機上安裝或執行開發工具。** Python、pip、Node、npm 都在 `.venv/bin/`（Node 由 nodeenv 裝進 venv）。
-- 不要用系統 Python、不要 `pip install` 到別處、不要用 nvm 或全域 npm。直接下指令前先 `source .venv/bin/activate`，或用 Makefile。
+- 不要用系統 Python、不要 `pip install` 到別處、不要用 nvm 或全域 npm。直接下指令前先 `source .venv/bin/activate`，或用 Makefile。唯一的例外是只用標準庫的兩支工具腳本：`scripts/export_transcript.py`（由 `.claude/settings.json` 的 hook 在 session 結束與壓縮前自動執行）與 checkpoint 的檢查腳本，可用系統 `python3`。
 - 環境變數只能在 `app/backend/app/core/env_loader.py` 讀取；其他地方不得使用 `os.getenv` 或 `os.environ`（有測試檢查）。範例檔是 `.env.sample`。
 - 整合測試直接對真實的 PostgreSQL 執行，使用獨立的測試資料庫 `documind_test`；不為 Repository 建假實作。
 - 裝了新的 Python 套件，當下就寫進 `app/backend/requirements*.txt` 並釘死版本。
@@ -43,7 +45,7 @@
 ## 架構邊界
 
 - 資料夾結構見 `README.md` 的「資料夾導覽」。**命名用完整英文、不用縮寫；還沒有內容的資料夾不要預先建立**，新增資料夾前先向使用者說明用途。
-- 後端依功能模組組織（`auth`、`documents`、`ingestion`、`retrieval`、`conversations`、`chat`、`summarization`、`llm`、`monitoring`），用到才建立。分層：Router → Application Service → Repository／LLM Gateway。細節見 `docs/02-specs/02-architecture.md` 第 2 節。
+- 後端依功能模組組織（`auth`、`documents`、`ingestion`、`retrieval`、`conversations`、`chat`、`summarization`、`llm`、`monitoring`，共用設定與連線在 `core`），用到才建立。分層：Router → Application Service → Repository／LLM Gateway。細節見 `docs/02-specs/02-architecture.md` 第 2 節。
 - Router 不直接操作資料庫。業務規則、權限與狀態轉換放在 Service；**Service 的每個方法都明確接收操作者（目前登入的使用者）**。
 - Repository 的每個查詢都必須帶擁有者條件。存取別人的資源一律回 `404`。
 - 呼叫 Ollama 只能經過 LLM Gateway；預算檢查與帳本不得被繞過。
