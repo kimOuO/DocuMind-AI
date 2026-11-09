@@ -879,6 +879,35 @@ test('the token usage lists every call behind a follow-up, each under the limit'
   )
 })
 
+test('the model control offers the other model and sends it with the question (AC-63)', async () => {
+  const OTHER = 'qwen3.6:27b-q4_K_M'
+  const calls = mockApi({
+    ...routesFor(answerStream(), {
+      ...stored(),
+      messages: stored().messages.map((m) =>
+        m.role === 'assistant'
+          ? {
+              ...m,
+              temperature: 0,
+              usage: { prompt_tokens: 2099, completion_tokens: 298, limit: 10000, model: OTHER },
+            }
+          : m,
+      ),
+    }),
+    'GET /api/v1/health': { status: 200, body: { ...HEALTH, llm_models: ['qwen3:32b', OTHER] } },
+  })
+  render(<ChatPanel documents={[PAPER]} />)
+  const select = await screen.findByRole('combobox', { name: '回答模型' })
+  expect(select).toHaveValue('qwen3:32b')
+  await userEvent.selectOptions(select, OTHER)
+  await ask()
+  const request = calls.find((call) => call.key === ASK)
+  expect(request?.body).toMatchObject({ question: QUESTION, model: OTHER })
+  expect(await screen.findByLabelText('這則回答的溫度與 token')).toHaveTextContent(
+    `模型 ${OTHER} ｜ 溫度 0.0`,
+  )
+})
+
 test('the 建立摘要 button sends the summary action and shows the summary tree being built', async () => {
   const calls = mockApi(
     routesFor(

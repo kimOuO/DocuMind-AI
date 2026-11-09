@@ -20,6 +20,7 @@ Chat with your documents: upload a file, ask questions, get answers grounded in 
 ```bash
 ollama pull qwen3:32b
 ollama pull bge-m3
+ollama pull qwen3.6:27b-q4_K_M   # 選用 / optional：對話裡可切換的第二個模型（AC-63）
 ```
 
 Qwen3 的 tokenizer 已內附在專案中（`app/backend/third-party/qwen3-tokenizer/`，Apache-2.0），建置時不需要連到 Hugging Face。內附的只有 tokenizer：上面兩個模型仍須事先用 Ollama 安裝。

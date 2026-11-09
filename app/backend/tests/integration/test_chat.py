@@ -70,10 +70,12 @@ class StubOllama:
         self.rewrite_prompts: list[str] = []
         self.rewrite_options: list[dict] = []
         self.options: list[dict] = []  # the options of each answer request
+        self.models: list[str] = []  # the model each request named (D104)
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         assert (body["truncate"], body["shift"]) == (False, False)
+        self.models.append(body["model"])
         if not body["stream"] and "NEW or FOLLOW-UP" in body["prompt"]:
             # D99: the follow-up judgement.
             self.judge_prompts.append(body["prompt"])
@@ -240,6 +242,7 @@ async def test_an_answer_is_streamed_with_its_sources_and_stored(
         "prompt_tokens": 321,
         "completion_tokens": 3,
         "limit": 10_000,
+        "model": get_settings().llm_model,
         "breakdown": [{"purpose": "answer", "prompt_tokens": 321, "completion_tokens": 3}],
     }
     assert by_name["done"] == {
@@ -1157,6 +1160,53 @@ async def test_a_summary_question_about_documents_without_a_summary_tree_is_answ
     assert content.startswith("LightRAG builds a graph [1].")
     # D97 (user): no note is appended; the route event and the summary status say it.
     assert "summary tree" not in content
+
+
+async def test_a_question_can_choose_the_other_model_and_every_call_uses_it(
+    kim: TestClient, db: psycopg.Connection, tokenizer: Qwen3TokenCounter
+) -> None:
+    """D104 (AC-63): `model` picks the generation model for every call of the question —
+    the follow-up judgement, the rewrite and the answer — counted with that model's own
+    tokenizer; the default stays what it was, and a model that is not offered is refused
+    before anything is stored."""
+    await add_document(kim, tokenizer, "graph.txt", GRAPH.encode())
+    settings = get_settings()
+    other = settings.alt_llm_model
+    assert other and other != settings.llm_model
+    assert kim.get("/api/v1/health").json()["llm_models"] == [settings.llm_model, other]
+    model = StubOllama(["LightRAG builds a graph [1]."], rewrite_to="What does LightRAG build?")
+    use_model(kim, tokenizer, model)
+    conversation = new_conversation(kim)
+
+    first = dict(events(ask(kim, conversation, "What does LightRAG build?")))
+    assert first["start"]["model"] == settings.llm_model
+    assert first["usage"]["model"] == settings.llm_model
+
+    second = dict(events(ask(kim, conversation, "And what is it made of?", model=other)))
+    assert second["start"]["model"] == other
+    assert second["usage"]["model"] == other
+    assert [c["purpose"] for c in second["usage"]["breakdown"]] == [
+        "follow_up",
+        "rewrite",
+        "answer",
+    ]
+    # The first question made one call with the default; the second, three with the other.
+    assert model.models == [settings.llm_model, other, other, other]
+    ledger = db.execute(
+        "SELECT purpose, model FROM llm_calls WHERE message_id = %s ORDER BY created_at",
+        (second["start"]["assistant_message_id"],),
+    ).fetchall()
+    assert ledger == [("follow_up", other), ("rewrite", other), ("answer", other)]
+    stored = one(
+        db, "SELECT usage FROM messages WHERE id = %s", second["start"]["assistant_message_id"]
+    )[0]
+    assert stored["model"] == other
+
+    before = counts(db)
+    refused = ask(kim, conversation, "And again?", model="gpt-4o")
+    assert refused.status_code == 422
+    assert refused.json()["code"] == "UNKNOWN_MODEL"
+    assert counts(db) == before
 
 
 async def test_the_summary_action_builds_the_missing_summary_tree_and_answers_from_it(

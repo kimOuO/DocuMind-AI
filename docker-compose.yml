@@ -36,6 +36,7 @@ services:
       HTTP_OLLAMA_HOST: ${COMPOSE_OLLAMA_HOST:-host.docker.internal}
       HTTP_OLLAMA_PORT: ${HTTP_OLLAMA_PORT:-11434}
       LLM_MODEL: ${LLM_MODEL:-qwen3:32b}
+      ALT_LLM_MODEL: ${ALT_LLM_MODEL-qwen3.6:27b-q4_K_M}
       EMBED_MODEL: ${EMBED_MODEL:-bge-m3}
       LLM_CONTEXT_LIMIT: ${LLM_CONTEXT_LIMIT:-10000}
       # Retrieval and answering settings (defaults are the code's; see .env.sample).
@@ -44,7 +45,7 @@ services:
       TOP_K: ${TOP_K:-5}
       MIN_SIMILARITY: ${MIN_SIMILARITY:-0.50}
       ANSWER_MODE: ${ANSWER_MODE:-single}
-      ANSWER_TEMPERATURE: ${ANSWER_TEMPERATURE:-0.5}
+      ANSWER_TEMPERATURE: ${ANSWER_TEMPERATURE:-0}
       ANSWER_FACTS: ${ANSWER_FACTS:-inject}
       SUMMARY_REPAIR: ${SUMMARY_REPAIR:-true}
       CHECK_NOTES: ${CHECK_NOTES:-false}

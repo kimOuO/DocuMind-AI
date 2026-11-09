@@ -46,6 +46,61 @@ function storeTemperature(value: number | null) {
   }
 }
 
+/** The user's model choice is a per-browser convenience too (AC-63): null = server default. */
+const MODEL_KEY = 'documind.model'
+
+function readStoredModel(): string | null {
+  try {
+    return localStorage.getItem(MODEL_KEY)
+  } catch {
+    return null
+  }
+}
+
+function storeModel(value: string | null) {
+  try {
+    if (value === null) localStorage.removeItem(MODEL_KEY)
+    else localStorage.setItem(MODEL_KEY, value)
+  } catch {
+    // Storage unavailable: the choice still applies for this page.
+  }
+}
+
+/** The model choice beside the temperature (AC-63, D104): the server's default first, then
+ * the other model it offers. Every call of the question uses the chosen model. */
+function ModelControl({
+  value,
+  models,
+  disabled,
+  onChange,
+}: {
+  value: string | null
+  models: string[]
+  disabled: boolean
+  onChange: (value: string | null) => void
+}) {
+  if (models.length < 2) return null
+  const current = value !== null && models.includes(value) ? value : models[0]
+  return (
+    <label className="mt-1 flex items-center gap-2 px-2 text-xs text-muted">
+      <span>模型</span>
+      <select
+        aria-label="回答模型"
+        className="rounded-md border border-border bg-surface px-2 py-0.5 text-xs"
+        value={current}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value === models[0] ? null : event.target.value)}
+      >
+        {models.map((name, index) => (
+          <option key={name} value={name}>
+            {index === 0 ? `${name}（預設）` : name}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
 /** The temperature control beside the composer: a 0–1 slider in steps of 0.1 and a way
  * back to the server's default (AC-60, D94). */
 function TemperatureControl({
@@ -677,6 +732,7 @@ function MessageView({
           <SourceList sources={message.sources} onView={(source) => onCite(source, '')} />
           {((message.temperature !== undefined && message.temperature !== null) || message.usage) && (
             <p className="mt-1 text-xs text-muted" aria-label="這則回答的溫度與 token">
+              {message.usage?.model && <span>模型 {message.usage.model} ｜ </span>}
               {message.temperature !== undefined && message.temperature !== null && (
                 <span>溫度 {message.temperature.toFixed(1)}</span>
               )}
@@ -721,6 +777,9 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
   const [panelOpen, setPanelOpen] = useState(false)
   const [temperature, setTemperature] = useState<number | null>(() => readStoredTemperature())
   const [defaultTemperature, setDefaultTemperature] = useState<number | null>(null)
+  // D104 (AC-63): the generation model of the next question; null = the server's default.
+  const [model, setModel] = useState<string | null>(() => readStoredModel())
+  const [models, setModels] = useState<string[]>([])
   // D98: the number-check panel is a debug aid, shown only when the server runs in debug mode.
   const [debugChecks, setDebugChecks] = useState(false)
   useEffect(() => {
@@ -728,6 +787,7 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
       .then((health) => {
         setDefaultTemperature(health.answer_temperature)
         setDebugChecks(health.check_notes)
+        setModels(health.llm_models ?? [])
       })
       .catch(() => {
         // The slider then shows no default figure; asking still works.
@@ -921,6 +981,8 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
         },
         temperature,
         action,
+        // A stored choice the server no longer offers falls back to the default.
+        model !== null && models.includes(model) && model !== models[0] ? model : null,
       )
       // The stored conversation is the authority: reload it, and its title.
       if (started) await reload(conversationId)
@@ -1184,6 +1246,17 @@ export function ChatPanel({ documents, sidebar }: { documents: DocumentItem[]; s
                 onChange={(value) => {
                   setTemperature(value)
                   storeTemperature(value)
+                }}
+              />
+            )}
+            {ready.length > 0 && (
+              <ModelControl
+                value={model}
+                models={models}
+                disabled={asking}
+                onChange={(value) => {
+                  setModel(value)
+                  storeModel(value)
                 }}
               />
             )}

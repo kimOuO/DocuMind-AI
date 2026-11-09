@@ -13,11 +13,12 @@ from app.auth.router import current_user
 from app.chat.service import ChatService
 from app.core.database import get_session, get_sessionmaker
 from app.core.env_loader import Settings, get_settings
+from app.core.errors import ApiError
 from app.core.sse import SSE_HEADERS, format_sse
 from app.ingestion.scheduler import JobScheduler, get_job_scheduler
 from app.llm.embedding import Embedder, OllamaEmbedder
 from app.llm.gateway import LLMGateway, OllamaGateway
-from app.llm.tokenizer import get_token_counter
+from app.llm.tokenizer import get_token_counter, get_token_counter_for
 from app.models import User
 
 router = APIRouter(tags=["chat"])
@@ -33,6 +34,9 @@ class QuestionBody(BaseModel):
     # D101: "summary" builds the summary tree of the documents in scope first (when they
     # have none) and answers from it; the question text is the record shown in the chat.
     action: Literal["summary"] | None = None
+    # D104 (AC-63): the generation model for every call of this question — one of the
+    # models the server offers (GET /health `llm_models`); omitted = the default.
+    model: str | None = Field(default=None, max_length=100)
 
 
 def get_embedder(settings: Settings = Depends(get_settings)) -> Embedder:
@@ -57,11 +61,24 @@ async def ask(
     scheduler: JobScheduler = Depends(get_job_scheduler),
 ) -> StreamingResponse:
     """Ask a question. The answer arrives as server-sent events, ending with `done` or `error`."""
+    # D104 (AC-63): the model this question uses. The settings, the tokenizer and the
+    # gateway all follow it, so the budget guard counts with that model's own tokenizer.
+    chosen = settings.for_model(body.model)
+    if chosen is None:
+        raise ApiError(
+            422,
+            "UNKNOWN_MODEL",
+            f"Model {body.model!r} is not offered; choose one of {settings.llm_models()}.",
+        )
+    counter = get_token_counter()
+    if chosen is not settings:
+        counter = get_token_counter_for(chosen.tokenizer_path, chosen.tokenizer_sha256)
+        gateway = gateway.for_settings(chosen, counter)
     service = ChatService(
         db,
         sessions=get_sessionmaker(),
-        settings=settings,
-        counter=get_token_counter(),
+        settings=chosen,
+        counter=counter,
         embedder=embedder,
         gateway=gateway,
         scheduler=scheduler,

@@ -307,6 +307,8 @@ class ChatService:
                         "document_ids": [str(i) for i in prepared.scope.document_ids],
                     },
                     "temperature": prepared.temperature,
+                    # D104: the generation model of this question's calls.
+                    "model": self._settings.llm_model,
                 },
             )
             # A follow-up is first made to stand on its own (AC-16); the retrieval and the
@@ -580,6 +582,8 @@ class ChatService:
                     "prompt_tokens": result.prompt_tokens,
                     "completion_tokens": result.completion_tokens,
                     "limit": self._settings.llm_context_limit,
+                    # D104: the model that made these calls; stored with the answer.
+                    "model": self._settings.llm_model,
                     # D100 (user): every call of this question, each under the limit.
                     "breakdown": [
                         {

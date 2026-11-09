@@ -12,6 +12,8 @@ export interface Health {
   llm_model: string
   embed_model: string
   llm_context_limit: number
+  /** D104 (AC-63): the generation models a question may choose; the default first. */
+  llm_models?: string[]
   /** The server's default answer temperature (AC-60); null = the model's default. */
   answer_temperature: number | null
   /** Debug mode (D98): the check notes are appended to answers and the check panel shown. */
@@ -202,6 +204,8 @@ export interface Usage {
   /** The per-call limit; null when the figures are the sum of several calls (D69). */
   limit: number | null
   calls?: number
+  /** D104: the generation model that made these calls. */
+  model?: string
   /** D100: every LLM call behind this answer (follow-up judgement, rewrite, answer), each under the limit. */
   breakdown?: { purpose: string; prompt_tokens: number | null; completion_tokens: number | null }[]
 }
@@ -352,6 +356,8 @@ export type AskEvent =
         scope: SearchScope
         /** The temperature the answer call uses: the request's, else the server's default. */
         temperature: number | null
+        /** D104: the generation model of this question's calls. */
+        model?: string
       }
     }
   | { name: 'route'; data: { type: string; standalone_question: string } }
@@ -401,6 +407,7 @@ export async function askQuestion(
   onEvent: (event: AskEvent) => void,
   temperature: number | null = null,
   action: 'summary' | null = null,
+  model: string | null = null,
 ): Promise<void> {
   // `temperature` is sent only when the user chose one; omitted, the server's default
   // applies (AC-60). `action` "summary" (D101) is the summary button: the summary trees
@@ -408,6 +415,8 @@ export async function askQuestion(
   const body: Record<string, unknown> = { question, document_ids: documentIds }
   if (temperature !== null) body.temperature = temperature
   if (action !== null) body.action = action
+  // D104 (AC-63): sent only when the user chose a model other than the server's default.
+  if (model !== null) body.model = model
   const response = await fetch(`${API}/conversations/${conversationId}/messages`, {
     method: 'POST',
     credentials: 'same-origin',

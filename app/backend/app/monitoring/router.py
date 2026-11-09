@@ -29,6 +29,8 @@ class HealthResponse(BaseModel):
     database: DependencyStatus
     ollama: DependencyStatus
     llm_model: str
+    # D104 (AC-63): the generation models a question may choose; the default first.
+    llm_models: list[str]
     embed_model: str
     llm_context_limit: int
     # The server's default answer temperature (AC-60); None = the model's default.
@@ -93,6 +95,7 @@ async def health(
         database=database,
         ollama=ollama,
         llm_model=settings.llm_model,
+        llm_models=settings.llm_models(),
         embed_model=settings.embed_model,
         llm_context_limit=settings.llm_context_limit,
         answer_temperature=settings.answer_temperature,

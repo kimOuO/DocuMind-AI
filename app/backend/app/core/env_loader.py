@@ -100,6 +100,31 @@ class Settings(BaseSettings):
     # third-party/qwen3.6-tokenizer (see its README).
     tokenizer_path: str = "third-party/qwen3-tokenizer/tokenizer.json"
     tokenizer_sha256: str = "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    # D104 (AC-63): a second generation model the user may pick per question in the chat
+    # panel; LLM_MODEL stays the default. Its own tokenizer counts for the budget guard —
+    # the two vocabularies differ, and the wrong one undercounts by up to 3%. Empty = none.
+    alt_llm_model: str = "qwen3.6:27b-q4_K_M"
+    alt_tokenizer_path: str = "third-party/qwen3.6-tokenizer/tokenizer.json"
+    alt_tokenizer_sha256: str = "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+
+    def llm_models(self) -> list[str]:
+        """The generation models a question may use: the default first."""
+        return [self.llm_model, *([self.alt_llm_model] if self.alt_llm_model else [])]
+
+    def for_model(self, model: str | None) -> "Settings | None":
+        """These settings with `model` as the generation model and its tokenizer; the
+        settings themselves for the default (or no choice); None for a model not offered."""
+        if model is None or model == self.llm_model:
+            return self
+        if self.alt_llm_model and model == self.alt_llm_model:
+            return self.model_copy(
+                update={
+                    "llm_model": self.alt_llm_model,
+                    "tokenizer_path": self.alt_tokenizer_path,
+                    "tokenizer_sha256": self.alt_tokenizer_sha256,
+                }
+            )
+        return None
 
     @field_validator("answer_facts")
     @classmethod

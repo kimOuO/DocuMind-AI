@@ -164,9 +164,12 @@
   "question": "compare lightRAG with GraphRAG",
   "document_ids": ["uuid"],
   "temperature": 0.2,
-  "action": "summary"
+  "action": "summary",
+  "model": "qwen3.6:27b-q4_K_M"
 }
 ```
+
+`model`（選填，D104）：這一題的生成模型，必須是 `GET /health` 的 `llm_models` 之一；省略或 `null` 用預設。這一題的判斷追問、改寫、回答都用它，預算守門以該模型的 tokenizer 計數。不在清單內回 `422`，`code` 為 `UNKNOWN_MODEL`，不建立訊息、不呼叫 LLM。
 
 `action`（選填，D101）：`"summary"` 是前端的「建立摘要」按鍵：先為範圍內沒有摘要樹的已索引文件排摘要任務並等待（`stage` 事件 `summarising`），再以摘要路線回答；不判斷追問、不改寫；`question` 就是對話裡顯示的紀錄（前端送「請為這份文件建立摘要」）。省略或 `null` 是一般提問。
 
@@ -183,11 +186,11 @@
 
 | event | data | 說明 |
 |---|---|---|
-| `start` | `{"user_message_id": "uuid", "assistant_message_id": "uuid", "scope": {"mode": "all \| selected", "document_ids": ["uuid"]}, "temperature": 0.2}` | 兩則訊息已建立；`scope` 是這次實際搜尋的文件範圍；`temperature` 是回答呼叫實際使用的溫度（請求沒帶時為伺服器預設；`null` 表示模型預設，D94） |
+| `start` | `{"user_message_id": "uuid", "assistant_message_id": "uuid", "scope": {"mode": "all \| selected", "document_ids": ["uuid"]}, "temperature": 0.2, "model": "qwen3:32b"}` | 兩則訊息已建立；`scope` 是這次實際搜尋的文件範圍；`temperature` 是回答呼叫實際使用的溫度（請求沒帶時為伺服器預設；`null` 表示模型預設，D94） |
 | `route` | `{"type": "retrieval \| summary", "standalone_question": "…", "follow_up": true}` | 問題類型與改寫後的問題；`follow_up` 是模型對「這句是否倚賴前文」的判斷（D99：true／false；第一題或判斷失敗為 null） |
 | `sources` | 來源清單，格式見下 | 這次回答可引用的來源 |
 | `delta` | `{"text": "…"}` | 回答的一小段文字，重複多次 |
-| `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000, "breakdown": [{"purpose": "follow_up", "prompt_tokens": 328, "completion_tokens": 5}, {"purpose": "rewrite", …}, {"purpose": "answer", …}]}` | Ollama 回報的實測用量；`prompt_tokens`／`completion_tokens` 是回答那一次，`breakdown`（D100）列出這一題的每一次呼叫，各自受 `limit` 約束 |
+| `usage` | `{"prompt_tokens": 2610, "completion_tokens": 412, "limit": 10000, "model": "qwen3:32b", "breakdown": [{"purpose": "follow_up", "prompt_tokens": 328, "completion_tokens": 5}, {"purpose": "rewrite", …}, {"purpose": "answer", …}]}` | Ollama 回報的實測用量；`prompt_tokens`／`completion_tokens` 是回答那一次，`breakdown`（D100）列出這一題的每一次呼叫，各自受 `limit` 約束 |
 | `stage` | `{"stage": "generating"}` — 只在實驗模式出現；例外是 `{"stage": "summarising", "ready": 0, "total": 1}`（D101，`action: "summary"` 等待摘要樹時每 2 秒一次，`ready` 是範圍內已有摘要樹的文件數）。兩次呼叫修正模式（`ANSWER_REVISION=true`，D69）依序 `generating`、`verifying`、（`revising`、`verifying`）、`finalizing`；此模式不串流初稿，`delta` 在 `finalizing` 之後才送，是**生成完成後的逐段傳送**，不是模型即時串流。導航模式（`ANSWER_MODE=navigate`，D71）在 `sources` 之前送一個 `navigating`，之後的回答仍是即時串流 | 進行中 |
 | `done` | `{"status": "completed", "answered": true, "cited": [1, 3], "unverified_numbers": [], "verified_numbers": [{"number": "83.6%", "document_id": "uuid", "page": 7, "snippet": "…"}], "mislabelled_numbers": [{"number": "59.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Comprehensiveness", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…"}], "unresolved_numbers": [{"number": "57.6%", "answer_labels": ["Overall", "Mix"], "source_labels": [["Overall", "Mix", "-High", "vs NaiveRAG"]], "sentence": "…", "reason": "missing"}], "overstated_claims": [{"sentence": "…", "method": "LightRAG", "compared": ["-High"], "higher": 4, "lower": 2, "examples": ["Diversity / Agriculture: LightRAG 60.0% vs -High 62.0% (p. 1)"], "status": "contradicted", "reason": null}], "doubtful_citations": [{"sentence": "…", "cited": [3], "closer": [5], "coverage_cited": 0.1, "coverage_closer": 0.7}], "finish_reason": "stop", "revision": null}` | 結束 |
 | `error` | `{"detail": "…", "code": "…"}` | 失敗；助理訊息的狀態為 `failed` |
@@ -274,7 +277,7 @@
 
 ### 1.7 `GET /health`
 
-不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、context 上限，以及回答的預設取樣溫度 `answer_temperature`（`ANSWER_TEMPERATURE` 的值；`null` 表示模型預設，D94），供前端的溫度控制項顯示「預設」是多少；`check_notes`（`CHECK_NOTES`，D98）為 true 時是 debug 模式：核對註記接在回答後、前端顯示核對面板，否則都不顯示。其餘格式與 P0 相同。
+不需登入。回應整體狀態、資料庫與 Ollama 各自是否正常、模型名稱、可選的生成模型 `llm_models`（預設在前，D104）、context 上限，以及回答的預設取樣溫度 `answer_temperature`（`ANSWER_TEMPERATURE` 的值；`null` 表示模型預設，D94），供前端的溫度控制項顯示「預設」是多少；`check_notes`（`CHECK_NOTES`，D98）為 true 時是 debug 模式：核對註記接在回答後、前端顯示核對面板，否則都不顯示。其餘格式與 P0 相同。
 
 ## 2. 受管理的物件與生命週期
 

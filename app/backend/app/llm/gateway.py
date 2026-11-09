@@ -112,6 +112,10 @@ class LLMGateway(Protocol):
         temperature: float | None = None,
     ) -> AsyncIterator[LLMChunk]: ...
 
+    def for_settings(self, settings: Settings, counter: TokenCounter) -> "LLMGateway":
+        """The same gateway bound to other settings — another model with its tokenizer (D104)."""
+        ...
+
 
 def estimate_prompt_tokens(counter: TokenCounter, settings: Settings, prompt: str) -> int:
     """Tokens the prompt will use once Ollama wraps it, plus the safety buffer."""
@@ -138,7 +142,19 @@ class OllamaGateway:
         self._sessions = sessions
         self._counter = counter
         self._transport = transport
+        self._timeout_seconds = timeout_seconds
         self._timeout = httpx.Timeout(timeout_seconds, connect=10)
+
+    def for_settings(self, settings: Settings, counter: TokenCounter) -> "OllamaGateway":
+        """The same gateway (ledger, transport) for another model and its tokenizer (D104):
+        every call still passes the budget guard, counted with that model's own tokenizer."""
+        return OllamaGateway(
+            settings=settings,
+            sessions=self._sessions,
+            counter=counter,
+            transport=self._transport,
+            timeout_seconds=self._timeout_seconds,
+        )
 
     async def generate(
         self,
